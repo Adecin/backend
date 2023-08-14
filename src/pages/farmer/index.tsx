@@ -15,7 +15,7 @@ import FormLabel from "@mui/material/FormLabel";
 import { useRouter } from "next/navigation";
 import TextInput from "@/components/inputComponents/textInput";
 import TextArea from "@/components/inputComponents/texArea";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { listFarmers } from "@/redux/reducer/farmer/list-former";
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
@@ -23,8 +23,12 @@ const ListFieldOfficer = () => {
   const [searchValue, setSearchValue] = useState("");
   const [allSelect, setSelect] = useState(false);
   const [manageOpen, setManageOpen] = useState(false);
+  const [checkedData, setCheckData] = useState<any>([3]);
   const router = useRouter();
   const dispatch = useDispatch();
+  const ListFarmer = useSelector((store: any) => store.ListFormer);
+
+  // console.log("datasss", ListFarmer);
 
   // useEffect
 
@@ -33,21 +37,228 @@ const ListFieldOfficer = () => {
   }, []);
 
   // table data
-  const data = [
-    {
-      checkBox: <Checkbox />,
+  // const data = [
+  //   {
+  //     checkBox: <Checkbox />,
+  //     photo: (
+  //       <img
+  //         onClick={() => {
+  //           router.push("/farmer/1");
+  //         }}
+  //         className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
+  //         alt="photo"
+  //         src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+  //       />
+  //     ),
+  //     farmer_id: "EMP001",
+  //     Name: "John Doe",
+  //     regulation: (
+  //       <div>
+  //         <div className="flex items-center">
+  //           <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
+  //         </div>{" "}
+  //         <div className="flex my-[10px] items-center">
+  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
+  //           monitoring
+  //         </div>
+  //       </div>
+  //     ),
+  //     approved_status: (
+  //       <div>
+  //         <div className="text-[#F75656]">Pending</div>
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     checkBox: <Checkbox />,
+  //     photo: (
+  //       <img
+  //         onClick={() => {
+  //           router.push("/farmer/1");
+  //         }}
+  //         className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
+  //         alt="photo"
+  //         src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+  //       />
+  //     ),
+  //     farmer_id: "EMP001",
+  //     Name: "John Doe",
+  //     regulation: (
+  //       <div>
+  //         <div className="flex items-center">
+  //           <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
+  //         </div>{" "}
+  //         <div className="flex my-[10px] items-center">
+  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
+  //           monitoring
+  //         </div>
+  //       </div>
+  //     ),
+  //     approved_status: (
+  //       <div>
+  //         <div className="text-[#70B10E]">Approved</div>
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     checkBox: <Checkbox />,
+  //     photo: (
+  //       <img
+  //         onClick={() => {
+  //           router.push("/farmer/1");
+  //         }}
+  //         className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
+  //         alt="photo"
+  //         src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+  //       />
+  //     ),
+  //     farmer_id: "EMP001",
+  //     Name: "John Doe",
+  //     regulation: (
+  //       <div>
+  //         <div className="flex items-center">
+  //           <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
+  //         </div>{" "}
+  //         <div className="flex my-[10px] items-center">
+  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F8B34C]" /> Crop
+  //           monitoring
+  //         </div>
+  //       </div>
+  //     ),
+  //     approved_status: (
+  //       <div>
+  //         <div className="text-[#F75656]">Pending</div>
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     checkBox: <Checkbox />,
+  //     photo: (
+  //       <img
+  //         onClick={() => {
+  //           router.push("/farmer/1");
+  //         }}
+  //         className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
+  //         alt="photo"
+  //         src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+  //       />
+  //     ),
+  //     farmer_id: "EMP001",
+  //     Name: "John Doe",
+  //     regulation: (
+  //       <div>
+  //         <div className="flex items-center">
+  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F8B34C]" /> STP
+  //         </div>{" "}
+  //         <div className="flex my-[10px] items-center">
+  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
+  //           monitoring
+  //         </div>
+  //       </div>
+  //     ),
+  //     approved_status: (
+  //       <div>
+  //         <div className="text-[#70B10E]">Approved</div>
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     checkBox: <Checkbox />,
+  //     photo: (
+  //       <img
+  //         onClick={() => {
+  //           router.push("/farmer/1");
+  //         }}
+  //         className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
+  //         alt="photo"
+  //         src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+  //       />
+  //     ),
+  //     farmer_id: "EMP001",
+  //     Name: "John Doe",
+  //     regulation: (
+  //       <div>
+  //         <div className="flex items-center">
+  //           <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
+  //         </div>{" "}
+  //         <div className="flex my-[10px] items-center">
+  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
+  //           monitoring
+  //         </div>
+  //       </div>
+  //     ),
+  //     approved_status: (
+  //       <div>
+  //         <div className="text-[#F75656]">Pending</div>
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     checkBox: <Checkbox />,
+  //     photo: (
+  //       <img
+  //         onClick={() => {
+  //           router.push("/farmer/1");
+  //         }}
+  //         className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
+  //         alt="photo"
+  //         src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+  //       />
+  //     ),
+  //     farmer_id: "EMP001",
+  //     Name: "John Doe",
+  //     regulation: (
+  //       <div>
+  //         <div className="flex items-center">
+  //           <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
+  //         </div>{" "}
+  //         <div className="flex my-[10px] items-center">
+  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
+  //           monitoring
+  //         </div>
+  //       </div>
+  //     ),
+  //     approved_status: (
+  //       <div>
+  //         <div className="text-[#70B10E]">Approved</div>
+  //       </div>
+  //     ),
+  //   },
+  // ];
+
+  const filterData = ListFarmer.response.data?.map((e: any, index: number) => {
+    return {
+      checkBox: (
+        <Checkbox
+          checked={allSelect ? true : checkedData.includes(e.id)}
+          onChange={() => {
+            console.log(checkedData);
+            if (checkedData.includes(e.id)) {
+              const findIndex = checkedData.indexOf(e.id);
+              const cloneData = [...checkedData];
+              cloneData.splice(findIndex, 1);
+              setCheckData(cloneData);
+            } else {
+              setCheckData([...checkedData, e.id]);
+            }
+          }}
+        />
+      ),
       photo: (
         <img
           onClick={() => {
-            router.push("/farmer/1");
+            router.push("/farmer/" + e.id);
           }}
           className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
           alt="photo"
-          src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+          src={
+            e.profileImage ??
+            "https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+          }
         />
       ),
-      farmer_id: "EMP001",
-      Name: "John Doe",
+      farmer_id: e.id,
+      Name: e.name,
       regulation: (
         <div>
           <div className="flex items-center">
@@ -61,166 +272,17 @@ const ListFieldOfficer = () => {
       ),
       approved_status: (
         <div>
-          <div className="text-[#F75656]">Pending</div>
-        </div>
-      ),
-    },
-    {
-      checkBox: <Checkbox />,
-      photo: (
-        <img
-          onClick={() => {
-            router.push("/farmer/1");
-          }}
-          className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
-          alt="photo"
-          src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
-        />
-      ),
-      farmer_id: "EMP001",
-      Name: "John Doe",
-      regulation: (
-        <div>
-          <div className="flex items-center">
-            <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
-          </div>{" "}
-          <div className="flex my-[10px] items-center">
-            <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
-            monitoring
+          <div
+            className={
+              e.status != "Not Approved" ? "text-[#F75656]" : "text-error"
+            }
+          >
+            {e.status}
           </div>
         </div>
       ),
-      approved_status: (
-        <div>
-          <div className="text-[#70B10E]">Approved</div>
-        </div>
-      ),
-    },
-    {
-      checkBox: <Checkbox />,
-      photo: (
-        <img
-          onClick={() => {
-            router.push("/farmer/1");
-          }}
-          className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
-          alt="photo"
-          src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
-        />
-      ),
-      farmer_id: "EMP001",
-      Name: "John Doe",
-      regulation: (
-        <div>
-          <div className="flex items-center">
-            <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
-          </div>{" "}
-          <div className="flex my-[10px] items-center">
-            <div className="w-[15px] mr-3 h-[15px] bg-[#F8B34C]" /> Crop
-            monitoring
-          </div>
-        </div>
-      ),
-      approved_status: (
-        <div>
-          <div className="text-[#F75656]">Pending</div>
-        </div>
-      ),
-    },
-    {
-      checkBox: <Checkbox />,
-      photo: (
-        <img
-          onClick={() => {
-            router.push("/farmer/1");
-          }}
-          className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
-          alt="photo"
-          src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
-        />
-      ),
-      farmer_id: "EMP001",
-      Name: "John Doe",
-      regulation: (
-        <div>
-          <div className="flex items-center">
-            <div className="w-[15px] mr-3 h-[15px] bg-[#F8B34C]" /> STP
-          </div>{" "}
-          <div className="flex my-[10px] items-center">
-            <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
-            monitoring
-          </div>
-        </div>
-      ),
-      approved_status: (
-        <div>
-          <div className="text-[#70B10E]">Approved</div>
-        </div>
-      ),
-    },
-    {
-      checkBox: <Checkbox />,
-      photo: (
-        <img
-          onClick={() => {
-            router.push("/farmer/1");
-          }}
-          className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
-          alt="photo"
-          src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
-        />
-      ),
-      farmer_id: "EMP001",
-      Name: "John Doe",
-      regulation: (
-        <div>
-          <div className="flex items-center">
-            <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
-          </div>{" "}
-          <div className="flex my-[10px] items-center">
-            <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
-            monitoring
-          </div>
-        </div>
-      ),
-      approved_status: (
-        <div>
-          <div className="text-[#F75656]">Pending</div>
-        </div>
-      ),
-    },
-    {
-      checkBox: <Checkbox />,
-      photo: (
-        <img
-          onClick={() => {
-            router.push("/farmer/1");
-          }}
-          className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
-          alt="photo"
-          src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
-        />
-      ),
-      farmer_id: "EMP001",
-      Name: "John Doe",
-      regulation: (
-        <div>
-          <div className="flex items-center">
-            <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
-          </div>{" "}
-          <div className="flex my-[10px] items-center">
-            <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
-            monitoring
-          </div>
-        </div>
-      ),
-      approved_status: (
-        <div>
-          <div className="text-[#70B10E]">Approved</div>
-        </div>
-      ),
-    },
-  ];
+    };
+  });
 
   return (
     <>
@@ -409,7 +471,7 @@ const ListFieldOfficer = () => {
             onClick={(e: boolean) => {
               setSelect(e);
             }}
-            data={data}
+            data={filterData ?? []}
           />
         </div>
       </div>

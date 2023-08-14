@@ -39,7 +39,7 @@ const ListFormer: any = createSlice({
     });
     builder.addCase(listFarmers.fulfilled, (state: any, { payload }: any) => {
       state.isLoading = false;
-      state.response = payload.data;
+      state.response = payload.data?.data;
       state.Message = payload.data.message;
       state.isSuccess = true;
     });

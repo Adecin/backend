@@ -8,6 +8,14 @@ interface propsData {
 }
 
 const DynamicTable = ({ data, onClick, backgroundColor }: propsData) => {
+  if (!data || data.length === 0) {
+    return (
+      <>
+        <div>No Data Found</div>
+      </>
+    );
+  }
+
   const keys = Object.keys(data[0]);
   return (
     <>

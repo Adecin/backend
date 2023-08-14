@@ -2,11 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import { baseApi } from "@/redux/baseapi";
 
 // stores
-import listFormer from "./reducer/farmer/list-former";
+import ListFormer from "./reducer/farmer/list-former";
 
 export const store = configureStore({
   reducer: {
-    listFormer: listFormer,
+    ListFormer: ListFormer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware: any) => {
