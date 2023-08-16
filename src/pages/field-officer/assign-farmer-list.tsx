@@ -49,7 +49,7 @@ export default function FarmerList(props: any) {
       </div>
       <div className="py-3 px-[2rem] m-[1rem]">
         <FormGroup>
-          {data.map((item: any, index: any) => {
+          {data?.map((item: any, index: any) => {
             return (
               <FormControlLabel
                 key={index}
