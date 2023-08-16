@@ -33,7 +33,7 @@ export default function OtpSubmit(props: any) {
     const otpNotNull = (item: any) => item !== ``;
 
     return (
-        <div className="loginContainer flex flex-col items-center m-auto bg-[#EBEFF8] rounded-[5px] w-[514px] py-4 my-[2rem]" >
+        <div className="loginContainer flex flex-col items-center m-auto bg-[#EBEFF8] rounded-[5px] w-[514px] py-4" >
             <p
                 style={{
                     color: "#232323",
