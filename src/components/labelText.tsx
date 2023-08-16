@@ -1,4 +1,4 @@
- const LabelText = (props: any) => {
+const LabelText = (props: any) => {
     const { classes, labelName, customStyle } = props;
     return (
         <p className={classes} style={{

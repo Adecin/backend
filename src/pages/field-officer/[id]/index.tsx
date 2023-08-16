@@ -8,7 +8,7 @@ import DatakeyValue from "@/components/textComponents/keyValueText";
 import SurveyTable from "@/components/surveyTable";
 import { useRouter } from "next/navigation";
 import BreadCrumb from "@/components/table/bread-crumb";
-import LabelText from "@/components/lebelText";
+import LabelText from "@/components/labelText";
 import Link from "next/link";
 
 const dataTable = [

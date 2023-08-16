@@ -22,6 +22,7 @@ interface propsType {
   required?: boolean;
   error?: any;
   value?: any;
+  placeHolderStyle?: any;
   placeHolderText: string;
   background?: string;
 }
@@ -42,6 +43,7 @@ export default function SelectMenu(props: propsType) {
     error = {},
     value,
     placeHolderText = "select value",
+    placeHolderStyle,
     background,
   } = props;
 
