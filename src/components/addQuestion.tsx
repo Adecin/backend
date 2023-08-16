@@ -40,7 +40,7 @@ export default function AddQuestion(props: any) {
     return (
         <div className="flex justify-between">
             <div className="">
-                <div className="text-grey flex items-center">
+                <div className="text-text flex items-center">
                     <span style={{
                         fontSize: "16px"
                     }}>{questionIndex}</span>
@@ -55,6 +55,7 @@ export default function AddQuestion(props: any) {
                         error={errors}
                         placeholder="Enter the question here"
                         customStyle={{
+                            color:"#858585",
                             padding: "1rem",
                             background: "#F7F7F7",
                             width: "497px"
@@ -66,6 +67,7 @@ export default function AddQuestion(props: any) {
                     fieldStyle={{ color: "#3D7FFA", background: "#F7F7F7", width: "340px" }}
                     labelname={""}
                     name={"answerType"}
+                    placeHolderStyle={{color: "#3D7FFA",}}
                     data={answerType}
                     handleChange={handleChange}
                     value={values}

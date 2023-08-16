@@ -27,7 +27,7 @@ const SurveyTable = ({ data, onClick }: propsData) => {
                                 </th>
                             )
                             )}
-                            <th className="text-center">{`Downloadd`}</th>
+                            <th className="text-grey text-center">{`Download`}</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y-[10px] divide-white">
