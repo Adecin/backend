@@ -199,7 +199,7 @@ const sideMenu = [
   },
   {
     name: "Survey",
-    url: "/survey",
+    url: "/create-survey",
   },
   {
     name: "border",

@@ -11,6 +11,9 @@ interface propsType {
   touched?: any;
   resizeValue?: any;
   required?: boolean;
+  value?: any;
+  classes?: any;
+  customStyle?: any;
 }
 
 export default function TextArea(props: propsType) {
@@ -25,11 +28,14 @@ export default function TextArea(props: propsType) {
     name,
     resizeValue,
     required,
+    classes,
+    value,
+    customStyle
   } = props;
 
   return (
     <>
-      <div className="flex flex-col  p-4 ">
+      <div className={`flex flex-col  p-4` + classes }>
         <label
           className="pb-1 text-[#858585] leading-[18.75px] font-normal capitalize"
           style={{ ...labelStyle }}
@@ -50,6 +56,7 @@ export default function TextArea(props: propsType) {
         <textarea
           style={{
             resize: resizeValue,
+            ...customStyle
           }}
           className={`w-full px-2 py-3 placeholder-gray-400 placeholder-opacity-25 outline-none rounded-[5px] h-[100px] ${
             touched && touched[name] && error && error[name]
@@ -60,6 +67,8 @@ export default function TextArea(props: propsType) {
           onBlur={onblur}
           name={name}
           onChange={handleChange}
+          value={value[name] ?? ""}
+
         />
         <span className="text-[10px] my-1 text-error">
           {(touched && touched[name] && error && error[name]) ?? ""}

@@ -10,6 +10,7 @@ interface InputTypes {
   touched?: any;
   type?: string;
   customStyle?: any;
+  labelStyle?: any;
   classes?: any;
   required?: boolean;
   value?: any;
@@ -29,12 +30,13 @@ const TextInput = (props: InputTypes) => {
     customStyle,
     classes,
     required,
+    labelStyle,
   } = props;
   return (
     <>
       <div className={`flex flex-col p-3 ${classes}`}>
         <label className={`text-grey pb-1 capitalize `}>
-          <span>{label ?? ""}</span>{" "}
+          <span style={labelStyle}>{label ?? ""}</span>{" "}
           {required ? (
             <span
               style={{
