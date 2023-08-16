@@ -7,21 +7,12 @@ import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import LabelText from "./labelText";
+import SelectMenu from "./inputComponents/selectMenu";
 
-const questData = [
-    {
-        question: "wvaebk.jev ?",
-        answer: "",
-        answerType: ""
-    },
-    {
-        question: "wvaebk.jev ?",
-        options: [],
-        answerType: "dropdown"
-    }
-]
 
 export default function QuestionaireComp(props: any) {
+
+    const { data } = props;
     const [addQuestion, setAddQuestion] = useState(false);
     const [editQestion, setEditQuestion] = useState(false);
 
@@ -77,7 +68,7 @@ export default function QuestionaireComp(props: any) {
                 letterSpacing: "0.05em"
             }}>{`Questions`}</p>
             <div>
-                {questData.map((item: any, index: any) => {
+                {data?.map((item: any, index: any) => {
 
                     const handleEdit = () => {
                         setEditQuestion(true)
@@ -90,19 +81,44 @@ export default function QuestionaireComp(props: any) {
                     console.log(`item`, item.answerType);
 
                     return (
-                        <div key={index} className="flex justify-between">
-                            <div style={{
-                                padding: "1.5rem",
-                                borderBottom: "1px solid #858585"
-                            }}>
+                        <div key={index} style={{
+                            padding: "1.5rem",
+                            borderBottom: "1px solid #858585"
+                        }} className="flex justify-between w-full">
+                            <div >
                                 <div className="flex items-center">
                                     <span className="text-grey text-[18px]">{`${index + 1}.`}</span>
                                     <LabelText classes={` p-[1rem] [m-1rem]`}
                                         customStyle={{
-                                            padding: "1.5rem",
+                                            padding: "1rem",
                                             margin: "1rem",
                                             background: "#F7F7F7",
                                         }} labelName={item.question} />
+                                </div>
+                                <div>
+                                    {item?.answerType == 'dropdown' ? <SelectMenu
+                                        classes={`pt-[1rem] my-3`}
+                                        fieldStyle={{ color: "#3D7FFA", background: "#F7F7F7", width: "340px" }}
+                                        labelname={""}
+                                        name={"answerType"}
+                                        data={item.options}
+                                        handleChange={handleChange}
+                                        value={values}
+                                        placeHolderText={"Add answer type"}
+                                    /> : <TextInput
+                                        label={`Answer`}
+                                        labelStyle={{ color: "#3D7FFA" }}
+                                        name="option"
+                                        customStyle={{
+                                            background: "#F7F7F7",
+                                            outline:"1px solid #F7F7F7",
+                                            marginTop: "0.5rem",
+                                            width: "336px"
+                                        }}
+                                        value={values}
+                                        handleChange={(e: any) => {
+                                            console.log(e.target.value);
+                                        }} />}
                                 </div>
                                 {(editQestion && item.answerType == "dropdown") && <div className="flex">
                                     <div className=" bg-grey w-full flex flex-col mt-[1rem] px-[2rem] py-[1rem] relative"
@@ -164,6 +180,12 @@ export default function QuestionaireComp(props: any) {
                         </div>)
                 })}
             </div>
+            {addQuestion && <div style={{
+                padding: "1.5rem",
+                borderBottom: "1px solid #858585"
+            }}>
+                <AddQuestion questionIndex={data.length + 1} onClose={handleCancelQues} />
+            </div>}
             <div className="py-3" style={{}}>
                 <CustomButton
                     classes={`text-primary `}
@@ -179,7 +201,6 @@ export default function QuestionaireComp(props: any) {
                     }}
                 />
             </div>
-            {addQuestion && <AddQuestion questionIndex={questData.length + 1} onClose={handleCancelQues} />}
         </div>
     )
 }

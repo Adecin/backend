@@ -22,6 +22,7 @@ interface propsType {
   required?: boolean;
   error?: any;
   value?: any;
+  placeHolderStyle?: any;
   placeHolderText: string;
   background?: string;
 }
@@ -42,6 +43,7 @@ export default function SelectMenu(props: propsType) {
     error = {},
     value = { name: "", id: 0 },
     placeHolderText = "select value",
+    placeHolderStyle,
     background,
   } = props;
 
@@ -112,7 +114,7 @@ export default function SelectMenu(props: propsType) {
           onBlur={handleBlur}
           readOnly={readOnly}
         >
-          <MenuItem disabled value={"1"}>
+          <MenuItem disabled value={"1"} style={placeHolderStyle}>
             {placeHolderText}
           </MenuItem>
           {Array.isArray(data) &&

@@ -224,9 +224,9 @@ const FarmerList = () => {
                 <div className="w-[300px] ">
                   <SelectMenu
                     name="manager"
-                    labelname=" Survey"
+                    labelname="Survey"
                     handleChange={() => {}}
-                    placeHolderText="Select Manager"
+                    placeHolderText="Select Survey"
                     background="blue"
                     data={[
                       {
@@ -243,9 +243,9 @@ const FarmerList = () => {
                 <div className="w-[300px] ml-2">
                   <SelectMenu
                     name="manager"
-                    labelname=" Field Officer"
+                    labelname="Field Officer"
                     handleChange={() => {}}
-                    placeHolderText="Select Manager"
+                    placeHolderText="Select Field Officer"
                     background="blue"
                     data={[
                       {

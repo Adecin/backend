@@ -76,7 +76,7 @@ export default function OtpSubmit(props: any) {
                 letterSpacing: "0.1em",
                 textAlign: "center",
             }}><span className="text-grey pr-1">{`Didn't receive OTP`}</span><span className="text-primary pl-1 cursor-pointer underline">{`Resend again?`}</span></p>
-            <div className="w-full flex gap-x-6 px-3">
+            <div className="w-full flex justify-center gap-x-6 px-3">
                 <CustomButton
                     classes={`m-auto py-2 px-[2rem] my-3 text-[#fff]`}
                     disable={!(otp.every(otpNotNull))}
