@@ -23,6 +23,7 @@ const questData = [
 
 export default function QuestionaireComp(props: any) {
     const [addQuestion, setAddQuestion] = useState(false);
+    const [editQestion, setEditQuestion] = useState(false);
 
     const QuestionaireSchema = Yup.object().shape({
         question: Yup.string().required('Please enter your question.'),
@@ -77,7 +78,6 @@ export default function QuestionaireComp(props: any) {
             }}>{`Questions`}</p>
             <div>
                 {questData.map((item: any, index: any) => {
-                    const [editQestion, setEditQuestion] = useState(false);
 
                     const handleEdit = () => {
                         setEditQuestion(true)
@@ -90,7 +90,7 @@ export default function QuestionaireComp(props: any) {
                     console.log(`item`, item.answerType);
 
                     return (
-                        <div className="flex justify-between">
+                        <div key={index} className="flex justify-between">
                             <div style={{
                                 padding: "1.5rem",
                                 borderBottom: "1px solid #858585"
