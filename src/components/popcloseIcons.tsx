@@ -5,7 +5,7 @@ export default function PopCloseIcon (props : any) {
     const {handleClick,style} = props;
     return(
         <CloseOutlinedIcon className='flex self-end mx-3 my-2' style={{
-            color:"#CCCCCC",
+            color:"#000",
             cursor:"pointer",
             ...style
         }} onClick={handleClick} />
@@ -16,7 +16,7 @@ export function PopCloseRoundedIcon (props : any) {
     const {handleClick, style} = props;
     return(
         <HighlightOffRoundedIcon className='flex self-end mx-3 my-2' style={{
-            color:"#CCCCCC",
+            color:"#000",
             cursor:"pointer",
             ...style
         }} onClick={handleClick} />

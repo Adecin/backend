@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useState } from "react";
 import FarmerList from "./field-officer/assign-farmer-list";
 import { PopCloseRoundedIcon } from "../components/popcloseIcons";
+import background from "../assets/image/authBg.png"
 
 export default function AuthScreen(props: any) {
     const [showLogin, setShowLogin] = useState(true);
@@ -40,27 +41,28 @@ export default function AuthScreen(props: any) {
         <>
             <div className="flex flex-col justify-center items-center" style={{
                 backgroundImage: `url(./authBg.png)`,
+                backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
                 height: "100vh",
             }}>
-                {/* <Image className="" src={`bannerBg`} alt="not found" height={100} width={100} style={{
-                    height: "100vh",
-                    width: "100vw"
-                }} /> */}
                 {showLogin ? <AppLogin forgrtLink={showforgetPassword} /> : (showForget ? <ForegetPasswordComp resetPop={handleresetOpen} /> : '')}
             </div>
-            <Dialog open={isresetpOpen} maxWidth={`sm`} fullWidth={true}>
-                <PopCloseRoundedIcon handleClick={handleresetClose} style={{
-                    position: "absolute",
-                    top: "5px"
-                }} />
-                <OtpSubmit onClose={() => { handleresetClose }} setpasswordPop={handlePasswordOpen} />
+            <Dialog open={isresetpOpen} >
+                <div className="flex flex-col">
+                    <PopCloseRoundedIcon handleClick={handleresetClose} style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px"
+                    }} />
+                    <OtpSubmit onClose={() => { handleresetClose }} setpasswordPop={handlePasswordOpen} />
+                </div>
             </Dialog>
-            <Dialog open={passwordPop} maxWidth={`sm`} fullWidth={true}>
+            <Dialog open={passwordPop} >
                 <PopCloseRoundedIcon handleClick={handlePasswordClose} style={{
                     position: "absolute",
-                    top: "5px"
+                    top: "10px",
+                    right: "10px"
                 }} />
                 <ResetComp onClose={() => { handlePasswordClose }} />
             </Dialog>

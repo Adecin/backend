@@ -4,8 +4,8 @@ import * as Yup from "yup";
 import { styled as muIstyle } from "@mui/material";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import styled from "@emotion/styled";
-import CustomButton from "../customButton";
 import TextInput from "../inputComponents/textInput";
+import CustomButton from "../customButton";
 
 export default function ResetComp(props: any) {
     const { onClose } = props;
@@ -62,7 +62,7 @@ export default function ResetComp(props: any) {
     }, []);
 
     return (
-        <div className="loginContainer m-auto bg-[#EBEFF8] rounded-[5px] w-[514px] py-4 my-[2rem]" >
+        <div className="loginContainer m-auto bg-[#EBEFF8] rounded-[5px] w-[514px] py-4" >
             <p
                 style={{
                     color: "#232323",
