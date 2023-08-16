@@ -14,7 +14,7 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import FarmerList from "../assign-farmer-list";
 import BreadCrumb from "@/components/table/bread-crumb";
-import LabelText from "@/components/lebelText";
+import LabelText from "@/components/labelText";
 import PhoneNumber from "@/components/inputComponents/phoneNumber";
 
 export default function OfficerProfileEdit(props: any) {
