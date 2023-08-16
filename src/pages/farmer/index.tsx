@@ -257,7 +257,7 @@ const ListFieldOfficer = () => {
           }
         />
       ),
-      farmer_id: e.id,
+      farmer_id: e.farmerId,
       Name: e.name,
       regulation: (
         <div>
@@ -274,7 +274,9 @@ const ListFieldOfficer = () => {
         <div>
           <div
             className={
-              e.status != "Not Approved" ? "text-[#F75656]" : "text-error"
+              e.status == "Reject" || e.status == "Pending"
+                ? "text-error"
+                : "text-[#70B10E]"
             }
           >
             {e.status}

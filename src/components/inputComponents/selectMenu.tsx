@@ -16,7 +16,7 @@ interface propsType {
   data: {}[];
   fieldStyle?: any;
   handleChange: any;
-  handleBlur?: any;
+  onblur?: any;
   touched?: any;
   readOnly?: boolean;
   required?: boolean;
@@ -35,12 +35,12 @@ export default function SelectMenu(props: propsType) {
     data,
     fieldStyle,
     handleChange,
-    handleBlur,
+    onblur,
     touched = {},
     readOnly = false,
     required = false,
     error = {},
-    value = { name: "", id: 0 },
+    value,
     placeHolderText = "select value",
     background,
   } = props;
@@ -108,11 +108,11 @@ export default function SelectMenu(props: propsType) {
           onChange={handleChange}
           name={name}
           style={{ ...fieldStyle, outline: "none", border: "none" }}
-          value={value ? value[name] ?? "1" : "1"}
-          onBlur={handleBlur}
+          value={value ? (value[name] != "" ? value[name] : "d") : "d"}
+          onBlur={onblur}
           readOnly={readOnly}
         >
-          <MenuItem disabled value={"1"}>
+          <MenuItem disabled value={"d"}>
             {placeHolderText}
           </MenuItem>
           {Array.isArray(data) &&

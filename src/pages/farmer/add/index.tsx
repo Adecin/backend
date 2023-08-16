@@ -1,19 +1,131 @@
 "use client";
-
+import * as Yup from "yup";
+import { Formik, useFormik } from "formik";
 import PhoneNumber from "@/components/inputComponents/phoneNumber";
 import SelectMenu from "@/components/inputComponents/selectMenu";
 import TextInput from "@/components/inputComponents/textInput";
 import BreadCrumb from "@/components/table/bread-crumb";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getState } from "@/redux/reducer/dropdown/get-state";
 
 const AddFarmer = () => {
+  // other data
   const searchQuery = useSearchParams();
   const farmer_id = searchQuery?.get("id");
-
+  const dispatch = useDispatch();
   const [formDetailData, setFormDetailData] = useState(["1"]);
   const openProfile: any = useRef(null);
   const aadhar: any = useRef(null);
+  const GetState = useSelector((state: any) => state.ListState);
+  const GetDistrict = useSelector((state: any) => state.ListDistrict);
+  const GetSVillage = useSelector((state: any) => state.ListVillage);
+
+  console.log(GetState);
+
+  // useEffects
+  useEffect(() => {
+    dispatch(getState());
+  }, []);
+
+  // dropdowns
+  const stateDropDown = GetState.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
+
+  //<==================== validations ================================>
+  const ProfileSchemas = Yup.object().shape({
+    name: Yup.string().required("name is required"),
+    TBGRId: Yup.string().required("TBGRId  is required"),
+    phoneNo: Yup.number().required("phone number is required"),
+    age: Yup.string().required("age is required"),
+    gender: Yup.string().required("age is required"),
+    // address
+    address: Yup.string().required("house no or street area is required"),
+    stateId: Yup.string().required("state is required"),
+    districtId: Yup.string().required("district is required"),
+    vilageId: Yup.string().required("village is required"),
+    pinCode: Yup.number().required("pin code is required"),
+    // family info
+    martialStatus: Yup.string().required("Marital status is required"),
+    spouseName: Yup.string().required("spouse name is required"),
+    childrenMale: Yup.number().required("Male children is required"),
+    childrenFemale: Yup.number().required("female children is required"),
+    // government id proof
+    adharNumber: Yup.number().required("aadhar number is required"),
+    // images
+    profileImage: Yup.mixed()
+      // .test(
+      //   "profile image required",
+      //   "Unsupported Format - We only allow jpg,png,jpeg .",
+      //   (value: any) => {
+      //     if (value.type) {
+      //       if (["jpg", "png", "jpeg"].includes(value.type)) {
+      //         return true;
+      //       } else {
+      //         return false;
+      //       }
+      //     } else {
+      //       return false;
+      //     }
+      //   }
+      // )
+      .required("Is required"),
+    adharImage: Yup.mixed().required("Is required"),
+  });
+  // <================ field values ===================>
+  const formik = useFormik({
+    initialValues: {
+      profileImage: {
+        name: "",
+      },
+      name: "",
+      farmerId: "",
+      TBGRId: "",
+      countryCode: "+91",
+      phoneNo: "",
+      age: "",
+      gender: "",
+      education: "",
+      address: "",
+      stateId: "",
+      districtId: "",
+      vilageId: "",
+      pincode: "",
+      martialStatus: "",
+      spouseName: "",
+      childrenMale: "",
+      childrenFemale: "",
+      adharNumber: "",
+      adharImage: {
+        name: "",
+      },
+    },
+    validationSchema: ProfileSchemas,
+    onSubmit: (values: any) => {
+      // submit(values);
+    },
+  });
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    touched,
+    setFieldTouched,
+    setFieldValue,
+    resetForm,
+    setErrors,
+    errors,
+    setFieldError,
+  } = formik;
+
+  console.log(values);
+  console.log(errors);
+
   return (
     <>
       <div className="p-5">
@@ -36,7 +148,18 @@ const AddFarmer = () => {
                   alt="profile"
                   className="rounded-[50%] w-[100px] h-[100px]"
                 />
-                <input type="file" hidden ref={openProfile} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  ref={openProfile}
+                  name={"profileImage"}
+                  onChange={(e: any) => {
+                    setFieldValue(`profileImage`, e.target.files[0]);
+
+                    setFieldTouched(`profileImage`, true, false);
+                  }}
+                />
                 <div
                   onClick={() => {
                     openProfile.current.click();
@@ -63,32 +186,48 @@ const AddFarmer = () => {
                   <TextInput
                     label="Name"
                     name="name"
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                     placeholder="Enter Name"
-                    handleChange={() => {}}
                   />
                 </div>
                 <div>
                   <TextInput
                     label="Farmer ID"
                     placeholder="Enter Farmer id"
-                    name="farmer_id"
-                    handleChange={() => {}}
+                    name="farmerId"
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
                 <div>
                   <TextInput
                     label="TBGR ID"
                     placeholder="Enter tbgr id"
-                    name="farmer_id"
-                    handleChange={() => {}}
+                    name="TBGRId"
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
                 <div>
                   <PhoneNumber
                     label="Phone Number"
                     placeholder="Enter number"
-                    name="age"
-                    handleChange={() => {}}
+                    name="phoneNo"
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
                 <div>
@@ -96,33 +235,49 @@ const AddFarmer = () => {
                     label="Age"
                     placeholder="Enter age"
                     name="age"
-                    handleChange={() => {}}
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
                 <div className="pt-5">
                   <SelectMenu
-                    name="manager"
+                    name="gender"
                     labelname="Gender"
-                    handleChange={() => {}}
-                    placeHolderText="Select Manager"
+                    placeHolderText="Select Gender"
                     data={[
                       {
-                        name: "vijay",
-                        id: "09",
+                        name: "Male",
+                        id: "MALE",
                       },
                       {
-                        name: "vijay",
-                        id: "09",
+                        name: "FeMale",
+                        id: "FEMALE",
+                      },
+                      {
+                        name: "Trans Gender",
+                        id: "TRANS GENDER",
                       },
                     ]}
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
                 <div>
                   <TextInput
                     label="Education"
                     placeholder="Enter Education"
-                    name="farmer_id"
-                    handleChange={() => {}}
+                    name="education"
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
               </div>
@@ -136,39 +291,29 @@ const AddFarmer = () => {
             </div>
             <div className="max-w-[1200px] rounded-[10px] bg-lblue flex">
               <div className="grid grid-cols-2 w-full lg:grid-cols-3">
-                <div className="w-[100%]">
-                  <TextInput
-                    label="Pin Code"
-                    name="name"
-                    placeholder="Type Pin Code"
-                    handleChange={() => {}}
-                  />
-                </div>
                 <div>
                   <TextInput
                     label="House No,Street,area"
                     placeholder="Type here"
-                    name="farmer_id"
-                    handleChange={() => {}}
+                    name="address"
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
-                </div>
-
+                </div>{" "}
                 <div className="pt-5">
                   <SelectMenu
-                    name="Village"
-                    labelname="Village"
-                    handleChange={() => {}}
-                    placeHolderText="Select village"
-                    data={[
-                      {
-                        name: "vijay",
-                        id: "09",
-                      },
-                      {
-                        name: "vijay",
-                        id: "09",
-                      },
-                    ]}
+                    name="stateId"
+                    labelname="State"
+                    placeHolderText="Select state"
+                    data={stateDropDown ?? []}
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
                 <div className="pt-5">
@@ -192,9 +337,9 @@ const AddFarmer = () => {
                 <div className="pt-5">
                   <SelectMenu
                     name="Village"
-                    labelname="State"
+                    labelname="Village"
                     handleChange={() => {}}
-                    placeHolderText="Select state"
+                    placeHolderText="Select village"
                     data={[
                       {
                         name: "vijay",
@@ -205,6 +350,14 @@ const AddFarmer = () => {
                         id: "09",
                       },
                     ]}
+                  />
+                </div>
+                <div className="w-[100%]">
+                  <TextInput
+                    label="Pin Code"
+                    name="name"
+                    placeholder="Type Pin Code"
+                    handleChange={() => {}}
                   />
                 </div>
               </div>

@@ -5,12 +5,13 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 
-export default function Tabs() {
+export default function Tabs({ data }: any) {
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+  console.log("data", data);
 
   return (
     <Box sx={{ width: "100%", typography: "body1", minHeight: "500px" }}>
@@ -26,72 +27,80 @@ export default function Tabs() {
             }}
             onChange={handleChange}
           >
-            <Tab label="Field 1" value="1" />
-            <Tab label="Field 2" value="2" />
-            <Tab label="Field 3" value="3" />
-            <Tab label="Field 4" value="4" />
+            {data?.response?.data?.map((e: any, index: number) => {
+              return (
+                <Tab
+                  key={index}
+                  label={"Field " + (index + 1)}
+                  value={(index + 1).toLocaleString()}
+                />
+              );
+            })}
           </TabList>
         </Box>
-        <TabPanel value="1">
-          <FieldOne />
-        </TabPanel>
-        <TabPanel value="2">
-          <FieldOne />
-        </TabPanel>
-        <TabPanel value="3">
-          <FieldOne />
-        </TabPanel>
-        <TabPanel value="4">
-          <FieldOne />
-        </TabPanel>
+        {data?.response?.data?.map((e: any, index: number) => {
+          return (
+            <TabPanel key={index} value={(index + 1).toLocaleString()}>
+              <FieldOne data={e} />
+            </TabPanel>
+          );
+        })}
       </TabContext>
     </Box>
   );
 }
 
-const FieldOne = () => {
+const FieldOne = ({ data }: any) => {
   return (
     <div>
       {" "}
       <div className="bg-lblue  max-w-[1400px]  my-2 p-5 rounded-[10px] grid grid-cols-5 ">
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Acreage</div>
-          <div className="my-4 text-text text-[14px]">2.2</div>
+          <div className="my-4 text-text text-[14px]">{data.acres ?? ""}</div>
         </div>{" "}
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Soil Type</div>
-          <div className="my-4 text-text text-[14px]">Silt</div>
+          <div className="my-4 text-text text-[14px]">
+            {data.soilType ?? ""}
+          </div>
         </div>{" "}
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">
             Irrigation Type{" "}
           </div>
-          <div className="my-4 text-text text-[14px]">Bore well</div>
+          <div className="my-4 text-text text-[14px]">
+            {data.irrigationType ?? ""}
+          </div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">OwnerShip</div>
-          <div className="my-4 text-text text-[14px]">Free Hold</div>
+          <div className="my-4 text-text text-[14px]">
+            {data.ownership ?? ""}
+          </div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Field ID</div>
-          <div className="my-4 text-text text-[14px]">023434</div>
+          <div className="my-4 text-text text-[14px]">{data.id}</div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">
             Registration Number
           </div>
-          <div className="my-4 text-text text-[14px]">PYG425786</div>
+          <div className="my-4 text-text text-[14px]">
+            {data.registrationNumber ?? ""}
+          </div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Gio Location</div>
           <div className="my-4 text-primary underline text-[14px]">
-            {`2°10'26.5"E`}
+            {data.geoLocation ?? ""}
           </div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Plot Map</div>
           <div className="my-4 text-primary  underline text-[14px]">
-            {`2°10'26.5"E`}
+            {data.plotMap ?? ""}
           </div>
         </div>
       </div>

@@ -3,15 +3,33 @@
 import SelectMenu from "@/components/inputComponents/selectMenu";
 import BreadCrumb from "@/components/table/bread-crumb";
 import DynamicTable from "@/components/table/dynamicTable";
-import Tabs from "@/components/tabs/tabe";
+import Tabs from "@/components/tabs/farm-details";
+import { listFarm } from "@/redux/reducer/farmer/list-farm";
+import { listOneFarmer } from "@/redux/reducer/farmer/list-one-farmer";
 import {
   Checkbox,
   FormControl,
   FormControlLabel,
   RadioGroup,
 } from "@mui/material";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const FarmerList = () => {
+  const dispatch = useDispatch();
+  const params = useSearchParams();
+  const farmer_id: any = params?.get("id");
+  const router = useRouter();
+  //  farmer data
+  const farmerData = useSelector((state: any) => state.listOneFarmer);
+  const farmData = useSelector((state: any) => state.listFarm);
+  // useEffect
+  useEffect(() => {
+    dispatch(listOneFarmer(farmer_id));
+    dispatch(listFarm(farmer_id));
+  }, [farmer_id]);
+
   // table data
   const tableData = [
     {
@@ -66,7 +84,12 @@ const FarmerList = () => {
         {/* bread crumbs */}
         <div className="flex items-center justify-between">
           <BreadCrumb lastName="View Profile" />
-          <div className="bg-primary flex cursor-pointer justify-center px-4 items-center py-1 button-box-shadow rounded-[30px] text-white text-[14px]">
+          <div
+            onClick={() => {
+              router.push("/farmer/add?id=" + farmer_id);
+            }}
+            className="bg-primary flex cursor-pointer justify-center px-4 items-center py-1 button-box-shadow rounded-[30px] text-white text-[14px]"
+          >
             <svg
               className="mr-2"
               width="13"
@@ -91,7 +114,10 @@ const FarmerList = () => {
           <div className="bg-lblue my-2 p-5 rounded-[10px] flex items-center">
             <div>
               <img
-                src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+                src={
+                  farmerData.response.profileImage ??
+                  "https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+                }
                 alt="profile"
                 className="rounded-[50%] w-[160px] h-[160px]"
               />
@@ -102,25 +128,27 @@ const FarmerList = () => {
                 <span className="text-text font-[400]">
                   Name &nbsp; - &nbsp;
                 </span>
-                Vijay Prasath
+                {farmerData.response.name ?? ""}
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   Phone Number &nbsp; - &nbsp;
                 </span>
-                91 9876873454
+                {(farmerData.response.countryCode ?? "") +
+                  ` ` +
+                  (farmerData.response.phoneNo ?? "")}
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   Gender &nbsp; - &nbsp;
                 </span>
-                Male
+                {farmerData.response.gender ?? ""}
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   Education &nbsp; - &nbsp;
                 </span>
-                12th Passed Out
+                {farmerData.response.education ?? ""}
               </div>
             </div>
             {/* second line */}
@@ -129,25 +157,25 @@ const FarmerList = () => {
                 <span className="text-text font-[400]">
                   Farmer ID &nbsp; - &nbsp;
                 </span>
-                DTE001
+                {farmerData.response.farmerId}
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   TBGR ID &nbsp; - &nbsp;
                 </span>
-                873454
+                {farmerData.response.TBGRId ?? ""}
               </div>
-              <div className="my-4">
+              {/* <div className="my-4">
                 <span className="text-text font-[400]">
                   Date Of Birth &nbsp; - &nbsp;
                 </span>
                 24/08/1994
-              </div>
+              </div> */}
               <div className="my-4">
                 <span className="text-text font-[400]">
                   Age &nbsp; - &nbsp;
                 </span>
-                101
+                {farmerData.response.age ?? ""}
               </div>
             </div>
           </div>
@@ -161,8 +189,8 @@ const FarmerList = () => {
             <div className="bg-lblue w-auto my-2 p-5 rounded-[10px] flex items-center">
               <div className="px-5 ">
                 <div className="my-4 text-text">
-                  G8,248/250, Ln Complex, G8,248/250, lncplx, oldtaragupetB53,
-                  Lal Build, Old Taragupet, Bangalore - 560053
+                  {(farmerData.response.address ?? "") +
+                    (farmerData.response.pincode ?? "")}
                 </div>
               </div>
             </div>
@@ -177,9 +205,14 @@ const FarmerList = () => {
             <div className="bg-lblue w-auto my-2 p-5 rounded-[10px] flex items-center">
               <div className="px-5 ">
                 <div className="my-4 text-[#858585] text-[16px]">Aadhar No</div>
-                <div className="my-4 text-text text-[14px]">1235 5287 4589</div>
-                <a className="my-4 text-primary underline text-[14px] ">
-                  vijay aadhar.pdf
+                <div className="my-4 text-text text-[14px]">
+                  {farmerData.response.adharNumber ?? ""}
+                </div>
+                <a
+                  href={farmerData.response.adharImage ?? "#"}
+                  className="my-4 text-primary underline text-[14px] "
+                >
+                  view adhar card
                 </a>
               </div>
             </div>
@@ -195,25 +228,33 @@ const FarmerList = () => {
               <div className="my-4 text-[#858585] text-[16px]">
                 Marital Status
               </div>
-              <div className="my-4 text-text text-[14px]">Married</div>
+              <div className="my-4 text-text text-[14px]">
+                {farmerData.response.martialStatus ?? ""}
+              </div>
             </div>{" "}
             <div className="px-5 ">
               <div className="my-4 text-[#858585] text-[16px]">
                 Spouse Name No
               </div>
-              <div className="my-4 text-text text-[14px]">Vijay</div>
+              <div className="my-4 text-text text-[14px]">
+                {farmerData.response.spouseName ?? ""}
+              </div>
             </div>{" "}
             <div className="px-5 ">
               <div className="my-4 text-[#858585] text-[16px]">Children</div>
-              <div className="my-4 text-text text-[14px]">Male-2</div>
-              <div className="my-4 text-text text-[14px]">Female-2</div>
+              <div className="my-4 text-text text-[14px]">
+                Male-{farmerData.response.childrenFemale ?? ""}
+              </div>
+              <div className="my-4 text-text text-[14px]">
+                Female-{farmerData.response.childrenMale ?? ""}
+              </div>
             </div>
           </div>
         </div>
         {/* farmer details */}
         <div className="text-text my-4 text-[16px]">Farmer Details</div>
         {/* tabs */}
-        <Tabs />
+        <Tabs data={farmData} />
         {/* survey details */}
         <div>
           <div className="text-text my-4 text-[16px]">Survey Details</div>

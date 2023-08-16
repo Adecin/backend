@@ -41,7 +41,7 @@ const PhoneNumber = (props: InputTypes) => {
             className="py-4 px-2 bg-[#FBFBFB] rounded-l-[5px]"
             value={CountryCode}
           >
-            <option value={"91"}>+91</option>
+            <option value={"+91"}>+91</option>
           </select>
           <input
             className={`w-full px-2 py-3 placeholder-gray-400 placeholder-opacity-25  outline-none rounded-r-[5px] ${
