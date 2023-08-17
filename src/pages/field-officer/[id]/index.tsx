@@ -47,7 +47,7 @@ const surveyData = [
     survey: "DTE 2023",
     field_officer: "KK001",
     location: "Dakshina Kannada,Karapakam, 600 061",
-    farmer_id: "KK001",
+    farmer_id: "KK002",
   },
 ];
 
