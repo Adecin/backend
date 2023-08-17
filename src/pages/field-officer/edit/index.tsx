@@ -5,20 +5,177 @@ import { Button, Chip, Dialog, IconButton } from "@mui/material";
 import Image from "next/image";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import TextInput from "@/components/inputComponents/textInput";
-import TextArea from "@/components/inputComponents/texArea";
 import SelectMenu from "@/components/inputComponents/selectMenu";
-import { isValidHttpUrl } from "@/components/helpers/helperFunction";
-import { Labrada } from "next/font/google";
 import CustomButton from "@/components/customButton";
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FarmerList from "../assign-farmer-list";
 import BreadCrumb from "@/components/table/bread-crumb";
 import LabelText from "@/components/labelText";
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
 import PhoneNumber from "@/components/inputComponents/phoneNumber";
+import { oneFieldOfficer } from "@/redux/reducer/fieldOfficer/getOne";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { getState } from "@/redux/reducer/dropdown/get-state";
+import { getDistrict } from "@/redux/reducer/dropdown/get-district";
+import { getVillage } from '@/redux/reducer/dropdown/get-village';
+import { updateFieldOfficer } from "@/redux/reducer/fieldOfficer/updateFieldOfficer";
 
 export default function OfficerProfileEdit(props: any) {
   const [farmerPop, setFarmerPop] = useState(false);
+  const router = useRouter();
+  const params = useSearchParams();
+  const fieldOfficer_id: any = params?.get("id");
+  const [previewImage, setPreviewImage] = useState<any>(null);
+  const openProfile: any = useRef(null);
+  const aadhar: any = useRef(null);
+  const education: any = useRef(null);
+
+  const dispatch = useDispatch();
+  const getOneField = useSelector((store: any) => store.OneFieldOfficerData);
+  const getOneFieldData = getOneField.response
+  console.log(getOneFieldData);
+
+  // api data
+  const GetState = useSelector((state: any) => state.ListState);
+  const GetDistrict = useSelector((state: any) => state.ListDistrict);
+  const GetSVillage = useSelector((state: any) => state.ListVillage);
+
+  // dropdowns
+  const stateDropDown = GetState.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
+  const districtDropDown = GetDistrict.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
+  const villageDropDown = GetSVillage.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
+  const marriedDropDown = [
+    {
+      id: "Married",
+      name: "Married",
+    },
+    {
+      id: "UnMarried",
+      name: "UnMarried",
+    },
+    {
+      id: "Divorced",
+      name: "Divorced",
+    },
+  ];
+
+  useEffect(() => {
+    dispatch(getState());
+    dispatch(getVillage());
+    dispatch(getDistrict());
+  }, [])
+
+  useEffect(() => {
+    dispatch(oneFieldOfficer(fieldOfficer_id))
+  }, [fieldOfficer_id])
+
+
+  const fieldProfileSchema = Yup.object().shape({
+    employeeId: Yup.string().required('Employee Id is required'),
+    name: Yup.string().required('Name is required'),
+    phoneNo: Yup.string()
+      .matches(/^[0-9]+$/, 'Must be only digits')
+      .min(10, 'Must be exactly 10 digits')
+      .max(10, 'Must be exactly 10 digits')
+      .required('Contact number is required'),
+    emailId: Yup.string().required('Email is required').matches(
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      'Enter valid email'
+    ),
+    companyEmailId: Yup.string().required('Company Email is required').matches(
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      'Enter valid email'
+    ),
+    dob: Yup.string().required('dob is required'),
+    gender: Yup.string().required("age is required"),
+    address: Yup.string().required('address is required'),
+    pincode: Yup.string().required('pincode is required'),
+    stateId: Yup.string().required("state is required"),
+    districtId: Yup.string().required("district is required"),
+    villageId: Yup.string().required("village is required"),
+    joiningDate: Yup.string().required("Joining Date is required"),
+    relievingDate: Yup.string().required("Relieving Date is required"),
+    martialStatus: Yup.string().required("Marital status is required"),
+    educationName: Yup.string().required('educationName is required'),
+    aadharNo: Yup.string().required("Aadhar Number is required"),
+  });
+
+  // formik
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      employeeId: getOneFieldData?.employeeId ?? '',
+      name: getOneFieldData?.name ?? '',
+      phoneNo: getOneFieldData?.phoneNo ?? '',
+      emailId: getOneFieldData?.emailId ?? '',
+      companyEmailId: getOneFieldData?.companyEmailId ?? '',
+      dob: getOneFieldData?.dob ?? '',
+      gender: getOneFieldData?.gender ?? '',
+      address: getOneFieldData?.address ?? '',
+      stateId: getOneFieldData?.stateId?.id ?? '',
+      districtId: getOneFieldData?.districtId?.id ?? '',
+      villageId: getOneFieldData?.villageId?.id ?? '',
+      pincode: getOneFieldData?.pincode ?? '',
+      joiningDate: getOneFieldData?.joiningDate ?? '',
+      relievingDate: getOneFieldData?.relievingDate ?? '',
+      educationName: getOneFieldData?.educationName ?? '',
+      educationCertificate: getOneFieldData?.educationCertificate ?? "",
+      martialStatus: getOneFieldData?.martialStatus ?? "",
+      spouseName: getOneFieldData?.spouseName ?? "",
+      childrenMale: getOneFieldData?.childrenMale ?? "",
+      childrenFemale: getOneFieldData?.childrenFemale ?? "",
+      aadharNo: getOneFieldData?.aadharNo ?? '',
+      aadharImage: getOneFieldData?.aadharImage ?? "",
+      profileImage: getOneFieldData?.profileImage ?? "",
+
+    },
+    validationSchema: fieldProfileSchema,
+    onSubmit: (values: any) => {
+      console.log(values);
+      submit(values);
+    },
+  });
+
+  // submit farm
+  const submit = (data: any) => {
+    const apiFormData = new FormData();
+
+    for (let key in data) {
+      apiFormData.append(key, data[key]);
+    }
+    apiFormData.append('id',fieldOfficer_id);
+    apiFormData.append("status", "Approved");
+    dispatch(updateFieldOfficer(apiFormData));
+  };
+
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    touched,
+    setFieldTouched,
+    setFieldValue,
+    resetForm,
+    setErrors,
+    errors,
+    setFieldError,
+  }: any = formik;
 
   const PageHeader = styled.p`
     font-size: 18px;
@@ -43,147 +200,218 @@ export default function OfficerProfileEdit(props: any) {
           <div className="profileInfo">
             <HeaderText required={true} text={`Personal info`} />
             <div className="bg-[#F4F8FF] flex gap-x-6 p-[2rem] mt-[1rem]">
-              <div className="imageContainerdiv mt-5">
-                <LabelText labelName={`Profile photo`} />
-                <div className="imageContainer relative flex flex-col bg-[#F5F5F5] h-[136px] w-[136px] rounded-[50%] my-3 mt-6">
+              <div className="imageContainer">
+                <div className="p-5 relative w-[180px] max-w-[150px] h-[180px]">
+                  <div className="text-grey text-[16px] my-2">
+                    Profile Photo <span className="text-error">*</span>
+                  </div>
                   <img
-                    className="m-auto m-auto rounded-[50%] "
-                    src={`app/field-officer/profile.svg`}
+                    src={
+                      previewImage ?? values.profileImage ??
+                      "https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+                    }
                     alt="profile"
-                    width={100}
-                    height={100}
+                    className="rounded-[50%] w-[100px] h-[100px]"
                   />
-                  <IconButton
-                    className="m-1 p-0 w-6 self-end"
-                    color="primary"
-                    aria-label="upload picture"
-                    component="label"
-                    style={{ position: "absolute", bottom: "0", right: "0" }}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    ref={openProfile}
+                    name={"profileImage"}
+                    onChange={(e: any) => {
+                      setFieldValue(`profileImage`, e.target.files[0]);
+                      setPreviewImage(URL.createObjectURL(e.target.files[0]));
+                      setFieldTouched(`profileImage`, true, false);
+                    }}
+                  />
+                  <div
+                    onClick={() => {
+                      openProfile.current.click();
+                    }}
+                    className="bg-primary cursor-pointer p-2 w-[30px] rounded-[50%] absolute right-6 bottom-5"
                   >
-                    <input
-                      hidden
-                      accept="image/*"
-                      //onChange={() => {}}
-                      type="file"
-                    />
-                    <EditRoundedIcon
-                      className=""
-                      style={{
-                        fontSize: "1.5rem",
-                        cursor: "pointer",
-                        color: "#FFFFFF",
-                        background: "#3D7FFA",
-                        borderRadius: "50px",
-                      }}
-                    />
-                  </IconButton>
+                    <svg
+                      width="13"
+                      height="13"
+                      viewBox="0 0 13 13"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M11.5944 4.39863L8.57133 1.40685L9.56717 0.409589C9.83984 0.13653 10.1749 0 10.5723 0C10.9696 0 11.3044 0.13653 11.5766 0.409589L12.5725 1.40685C12.8451 1.67991 12.9874 2.00948 12.9993 2.39556C13.0111 2.78164 12.8807 3.11098 12.608 3.38356L11.5944 4.39863ZM10.563 5.44932L3.02308 13H0V9.9726L7.53993 2.42192L10.563 5.44932Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </div>
+                  <div className="p-5 pt-0 text-[10px] text-error">
+                    {touched?.profileImage && errors?.profileImage
+                      ? errors?.profileImage ?? ""
+                      : ""}
+                  </div>
                 </div>
               </div>
               <div className="w-full grid grid-cols-3">
                 <TextInput
+                  value={values}
                   label={"Employee ID"}
-                  name="employee_id"
+                  name="employeeId"
                   placeholder="Type ID in exact format"
-                  handleChange={(e: any) => {
-                    console.log(e.target.value);
-                  }}
+                  onblur={handleBlur}
+                  handleChange={handleChange}
+                  touched={touched}
+                  error={errors}
+                  required={true}
                 />
                 <TextInput
+                  value={values}
                   label={"Name"}
-                  name="employee_id"
+                  name="name"
                   placeholder="Type name"
-                  handleChange={(e: any) => {
-                    console.log(e.target.value);
-                  }}
+                  onblur={handleBlur}
+                  handleChange={handleChange}
+                  touched={touched}
+                  error={errors}
+                  required={true}
                 />
                 <PhoneNumber
+                  value={values}
                   label="Phone Number"
                   placeholder="Type phone mobile"
-                  name="phone"
-                  handleChange={() => {}}
+                  name="phoneNo"
+                  onblur={handleBlur}
+                  handleChange={handleChange}
+                  touched={touched}
+                  error={errors}
+                  required={true}
                 />
                 <TextInput
+                  value={values}
                   label={"Personal mail ID"}
-                  name="employee_id"
+                  name="emailId"
                   placeholder="Type mail ID"
-                  handleChange={(e: any) => {
-                    console.log(e.target.value);
-                  }}
+                  onblur={handleBlur}
+                  handleChange={handleChange}
+                  touched={touched}
+                  error={errors}
+                  required={true}
                 />
                 <TextInput
+                  value={values}
                   label={"Company mail ID"}
-                  name="employee_id"
+                  name="companyEmailId"
                   placeholder="Type mail ID"
-                  handleChange={(e: any) => {
-                    console.log(e.target.value);
-                  }}
+                  onblur={handleBlur}
+                  handleChange={handleChange}
+                  touched={touched}
+                  error={errors}
+                  required={true}
                 />
                 <TextInput
+                  value={values}
                   label={"Date of birth"}
-                  name="employee_id"
+                  name="dob"
                   type="date"
-                  handleChange={(e: any) => {
-                    console.log(e.target.value);
-                  }}
+                  onblur={handleBlur}
+                  handleChange={handleChange}
+                  touched={touched}
+                  error={errors}
+                  required={true}
                 />
                 <SelectMenu
                   classes={`pt-[1rem]`}
-                  labelname={"Gender"}
-                  name={""}
-                  data={[]}
-                  handleChange={undefined}
-                  value={undefined}
-                  placeHolderText={"Select"}
+                  name="gender"
+                  labelname="Gender"
+                  placeHolderText="Select Gender"
+                  data={[
+                    {
+                      name: "Male",
+                      id: "MALE",
+                    },
+                    {
+                      name: "Female",
+                      id: "FEMALE",
+                    }
+                  ]}
+                  value={values}
+                  handleChange={handleChange}
+                  onblur={handleBlur}
+                  touched={touched}
+                  required={true}
+                  error={errors}
                 />
               </div>
             </div>
           </div>
-
           <div className="address">
             <HeaderText text={`Address`} required={true} />
             <div className="bg-[#F4F8FF] p-[2rem] mt-[1rem] w-full grid grid-cols-3">
               <TextInput
+                value={values}
                 label={"House No, street, area"}
-                name="employee_id"
+                name="address"
                 placeholder="Type here"
+                onblur={handleBlur}
+                handleChange={handleChange}
+                touched={touched}
+                error={errors}
+                required={true}
+              />
+              <SelectMenu
+                classes={`pt-[1rem]`}
+                name="stateId"
+                labelname="State"
+                placeHolderText="Select state"
+                data={stateDropDown ?? []}
+                value={values}
                 handleChange={(e: any) => {
-                  console.log(e.target.value);
+                  dispatch(getDistrict("?stateId=" + e.target.value));
+                  setFieldValue("stateId", e.target.value);
                 }}
+                onblur={handleBlur}
+                touched={touched}
+                required={true}
+                error={errors}
               />
               <SelectMenu
                 classes={`pt-[1rem]`}
-                labelname={"District"}
-                name={""}
-                data={[]}
-                handleChange={undefined}
-                value={undefined}
-                placeHolderText={"Select"}
+                name="districtId"
+                labelname="District"
+                placeHolderText="Select district"
+                data={districtDropDown ?? []}
+                value={values}
+                handleChange={(e: any) => {
+                  dispatch(getDistrict("?districtId=" + e.target.value));
+                  setFieldValue("districtId", e.target.value);
+                }}
+                onblur={handleBlur}
+                touched={touched}
+                required={true}
+                error={errors}
               />
               <SelectMenu
                 classes={`pt-[1rem]`}
-                labelname={"State"}
-                name={""}
-                data={[]}
-                handleChange={undefined}
-                value={undefined}
-                placeHolderText={"Select"}
-              />
-              <SelectMenu
-                classes={`pt-[1rem]`}
-                labelname={"Village"}
-                name={""}
-                data={[]}
-                handleChange={undefined}
-                value={undefined}
-                placeHolderText={"Select"}
+                name="villageId"
+                labelname="Village"
+                placeHolderText="Select village"
+                data={villageDropDown ?? []}
+                value={values}
+                handleChange={handleChange}
+                onblur={handleBlur}
+                touched={touched}
+                required={true}
+                error={errors}
               />
               <TextInput
+                value={values}
                 label={"Pin code"}
-                name="employee_id"
+                name="pincode"
                 placeholder="Type pin code"
-                handleChange={(e: any) => {
-                  console.log(e.target.value);
-                }}
+                onblur={handleBlur}
+                handleChange={handleChange}
+                touched={touched}
+                error={errors}
+                required={true}
               />
             </div>
           </div>
@@ -193,23 +421,27 @@ export default function OfficerProfileEdit(props: any) {
               <div className="bg-[#F4F8FF] w-full flex mt-[1rem] px-[2rem] py-[1rem]">
                 <div className="w-full">
                   <TextInput
-                    required={true}
+                    value={values}
                     label={"Joining date"}
-                    name="employee_id"
+                    required={true}
+                    name="joiningDate"
                     type="date"
-                    handleChange={(e: any) => {
-                      console.log(e.target.value);
-                    }}
+                    onblur={handleBlur}
+                    handleChange={handleChange}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
                 <div className="w-full">
                   <TextInput
+                    value={values}
                     label={"Relieving date"}
-                    name="employee_id"
+                    name="relievingDate"
                     type="date"
-                    handleChange={(e: any) => {
-                      console.log(e.target.value);
-                    }}
+                    onblur={handleBlur}
+                    handleChange={handleChange}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
               </div>
@@ -219,40 +451,50 @@ export default function OfficerProfileEdit(props: any) {
               <div className="bg-[#F4F8FF] flex flex-col mt-[1rem] px-[2rem] py-[1rem]">
                 <div className="w-full">
                   <TextInput
+                    value={values}
                     label={"Education"}
-                    name="employee_id"
+                    name="educationName"
                     placeholder="Type education (ex: 12th, B.com etc)"
                     customStyle={{
                       width: "100%",
                     }}
-                    handleChange={(e: any) => {
-                      console.log(e.target.value);
-                    }}
+                    onblur={handleBlur}
+                    handleChange={handleChange}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
                 <div className="flex justify-between items-center mt-4 px-4">
-                  <Button
-                    className="m-0 p-0 mr-2 w-[10rem]"
-                    color="primary"
-                    aria-label="upload picture"
-                    component="label"
-                    style={{
-                      textTransform: "none",
-                      fontSize: "16px",
+                  <input
+                    ref={education}
+                    type="file"
+                    hidden
+                    name={"educationCertificate"}
+                    accept="image/*, .doc, .pdf, .docx"
+                    onChange={(e: any) => {
+                      setFieldValue(`educationCertificate`, e.target.files[0]);
+                      setFieldTouched(`educationCertificate`, true, false);
                     }}
-                  >
-                    Upload Certificate
-                    <input
-                      hidden
-                      accept="image/*"
-                      //onChange={() => {}}
-                      type="file"
-                    />
-                  </Button>
-                  <LabelText
-                    customStyle={{ width: "200px", fontSize: "11px" }}
-                    labelName={`(file format pdf,word,image) *`}
                   />
+                  <div
+                    onClick={() => {
+                      education.current.click();
+                    }}
+                    className="text-primary underline cursor-pointer"
+                  >
+                    Upload Certificate*{" "}
+                  </div>
+                  <span className="text-grey  underline-none">
+                    &nbsp;(file format pdf,word,image)*
+                  </span>
+                </div>
+                <div className="p-5 pt-0 text-[10px] text-error">
+                  {touched?.educationCertificate && errors?.educationCertificate
+                    ? errors?.educationCertificate ?? ""
+                    : ""}
+                </div>
+                <div className="p-5 pt-0 text-text">
+                  {values.educationCertificate?.name ?? ""}
                 </div>
               </div>
             </div>
@@ -263,22 +505,26 @@ export default function OfficerProfileEdit(props: any) {
               <div className="bg-[#F4F8FF] w-full mt-[1rem] p-[2rem]">
                 <div className="grid grid-cols-2 w-full">
                   <SelectMenu
-                    labelname={"Marital status"}
-                    name={""}
-                    data={[]}
-                    handleChange={undefined}
-                    value={undefined}
-                    placeHolderText={"Select"}
+                    name="martialStatus"
+                    labelname="Marital Status"
+                    placeHolderText="Select status"
+                    data={marriedDropDown}
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
                   <TextInput
-                    label={"Spouse name"}
-                    name="employee_id"
-                    type="date"
-                    classes={`pt-0`}
+                    classes={'pt-0'}
+                    label="Spouse Name"
                     placeholder="Type name here"
-                    handleChange={(e: any) => {
-                      console.log(e.target.value);
-                    }}
+                    name="spouseName"
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
                 <div>
@@ -288,20 +534,60 @@ export default function OfficerProfileEdit(props: any) {
                   />
                   <div className="grid grid-cols-2 w-full">
                     <SelectMenu
-                      labelname={"Male"}
-                      name={""}
-                      data={[]}
-                      handleChange={undefined}
-                      value={undefined}
-                      placeHolderText={"Select"}
+                      name="childrenMale"
+                      labelname="Male"
+                      placeHolderText="Select village"
+                      data={[
+                        {
+                          name: "1",
+                          id: "1",
+                        },
+                        {
+                          name: "2",
+                          id: "2",
+                        },
+                        {
+                          name: "3",
+                          id: "3",
+                        },
+                        {
+                          name: "4",
+                          id: "4",
+                        },
+                      ]}
+                      value={values}
+                      handleChange={handleChange}
+                      onblur={handleBlur}
+                      touched={touched}
+                      error={errors}
                     />
                     <SelectMenu
-                      labelname={"Female"}
-                      name={""}
-                      data={[]}
-                      handleChange={undefined}
-                      value={undefined}
-                      placeHolderText={"Select"}
+                      name="childrenFemale"
+                      labelname="Female"
+                      placeHolderText="Select district"
+                      data={[
+                        {
+                          name: "1",
+                          id: "1",
+                        },
+                        {
+                          name: "2",
+                          id: "2",
+                        },
+                        {
+                          name: "3",
+                          id: "3",
+                        },
+                        {
+                          name: "4",
+                          id: "4",
+                        },
+                      ]}
+                      value={values}
+                      handleChange={handleChange}
+                      onblur={handleBlur}
+                      touched={touched}
+                      error={errors}
                     />
                   </div>
                 </div>
@@ -311,39 +597,61 @@ export default function OfficerProfileEdit(props: any) {
               <HeaderText text={`Government ID proof`} required={true} />
               <div className="bg-[#F4F8FF] mt-[1rem] py-[1rem]">
                 <TextInput
+                  value={values}
                   label={"Aadhar no"}
-                  name="employee_id"
+                  name="aadharNo"
                   placeholder="Type Aadhar number here"
-                  handleChange={(e: any) => {
-                    console.log(e.target.value);
-                  }}
+                  onblur={handleBlur}
+                  handleChange={handleChange}
+                  touched={touched}
+                  error={errors}
                 />
                 <div className="flex items-center justify-between">
-                  <Button
-                    className="m-0 p-0 mr-2 w-[12rem]"
-                    color="primary"
-                    aria-label="upload picture"
-                    component="label"
-                    style={{
-                      textTransform: "none",
-                      fontSize: "16px",
+                  <input
+                    ref={aadhar}
+                    type="file"
+                    hidden
+                    name={"aadharImage"}
+                    accept="image/*, .doc, .pdf, .docx"
+                    onChange={(e: any) => {
+                      setFieldValue(`aadharImage`, e.target.files[0]);
+                      setFieldTouched(`aadharImage`, true, false);
                     }}
-                  >
-                    Upload Aadhar*
-                    <input
-                      hidden
-                      accept="image/*"
-                      //onChange={() => {}}
-                      type="file"
-                    />
-                  </Button>
-                  <LabelText
-                    customStyle={{ width: "200px", fontSize: "11px" }}
-                    labelName={`(file format pdf,word,image) *`}
                   />
+
+                  <div
+                    onClick={() => {
+                      aadhar.current.click();
+                    }}
+                    className="text-primary underline cursor-pointer"
+                  >
+                    Upload Aadhar*{" "}
+                  </div>
+                  <span className="text-grey  underline-none">
+                    &nbsp;(file format pdf,word,image)*
+                  </span>
+                </div>
+                <div className="p-5 pt-0 text-[10px] text-error">
+                  {touched?.aadharImage && errors?.aadharImage
+                    ? errors?.aadharImage ?? ""
+                    : ""}
+                </div>
+                <div className="p-5 pt-0 text-text">
+                  {values.aadharImage?.name ?? ""}
                 </div>
               </div>
             </div>
+          </div>
+          <div className="flex self-center">
+            <CustomButton
+              buttonName={`Update Profile`}
+              customStyle={{
+                padding: "1rem 3rem",
+              }}
+              handleOnClick={() => {
+                handleSubmit();
+              }}
+            />
           </div>
           <div className="w-full">
             <HeaderText text={`Assign Farmer`} required={true} />
@@ -381,9 +689,9 @@ export default function OfficerProfileEdit(props: any) {
                     <Chip
                       sx={{
                         "&.css-50y8m9-MuiButtonBase-root-MuiChip-root .MuiChip-deleteIcon":
-                          {
-                            color: "#ffffff",
-                          },
+                        {
+                          color: "#ffffff",
+                        },
                       }}
                       style={{
                         background: "#3D7FFA",
@@ -392,7 +700,7 @@ export default function OfficerProfileEdit(props: any) {
                         color: "#fff",
                       }}
                       label="DTC0001"
-                      onDelete={() => {}}
+                      onDelete={() => { }}
                     />
                     <Chip
                       style={{
@@ -402,7 +710,7 @@ export default function OfficerProfileEdit(props: any) {
                         color: "#fff",
                       }}
                       label="DTC0001"
-                      onDelete={() => {}}
+                      onDelete={() => { }}
                     />
                     <Chip
                       style={{
@@ -412,7 +720,7 @@ export default function OfficerProfileEdit(props: any) {
                         color: "#fff",
                       }}
                       label="DTC0001"
-                      onDelete={() => {}}
+                      onDelete={() => { }}
                     />
                   </div>
                 </div>

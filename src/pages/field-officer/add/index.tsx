@@ -60,6 +60,21 @@ export default function OfficerProfileAdd(props: any) {
     }
   );
 
+  const marriedDropDown = [
+    {
+      id: "Married",
+      name: "Married",
+    },
+    {
+      id: "UnMarried",
+      name: "UnMarried",
+    },
+    {
+      id: "Divorced",
+      name: "Divorced",
+    },
+  ];
+
   const fieldProfileSchema = Yup.object().shape({
     employeeId: Yup.string().required('Employee Id is required'),
     name: Yup.string().required('Name is required'),
@@ -350,11 +365,7 @@ export default function OfficerProfileAdd(props: any) {
                   {
                     name: "Female",
                     id: "FEMALE",
-                  },
-                  {
-                    name: "Trans Gender",
-                    id: "TRANS GENDER",
-                  },
+                  }
                 ]}
                 value={values}
                 handleChange={handleChange}
@@ -532,16 +543,7 @@ export default function OfficerProfileAdd(props: any) {
                   name="martialStatus"
                   labelname="Marital Status"
                   placeHolderText="Select status"
-                  data={[
-                    {
-                      name: "Married",
-                      id: "Married",
-                    },
-                    {
-                      name: "UnMarried",
-                      id: "UnMarried",
-                    },
-                  ]}
+                  data={marriedDropDown}
                   value={values}
                   handleChange={handleChange}
                   onblur={handleBlur}

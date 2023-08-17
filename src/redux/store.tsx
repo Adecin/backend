@@ -12,6 +12,7 @@ import ListVillage from "./reducer/dropdown/get-village";
 import ListFieldOfficerData from "./reducer/fieldOfficer/getList";
 import OneFieldOfficerData from "./reducer/fieldOfficer/getOne";
 import AddFieldOfficerData from "./reducer/fieldOfficer/addFieldOfficer";
+import UpdateFieldOfficerData from "./reducer/fieldOfficer/updateFieldOfficer";
 
 // crop
 import ListCrop from "./reducer/crop/get-all-crop";
@@ -40,10 +41,11 @@ export const store = configureStore({
     listFarm: listFarm,
     EditFarmer: EditFarmer,
     //fieldOfficer
-    ListFieldOfficerData: ListFieldOfficerData,
-    OneFieldOfficerData: OneFieldOfficerData,
-    AddFieldOfficerData: AddFieldOfficerData,
-
+    ListFieldOfficerData:ListFieldOfficerData,
+    OneFieldOfficerData:OneFieldOfficerData,
+    AddFieldOfficerData:AddFieldOfficerData,
+    UpdateFieldOfficerData:UpdateFieldOfficerData,
+    
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware: any) => {
