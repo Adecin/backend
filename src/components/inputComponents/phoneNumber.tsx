@@ -12,6 +12,7 @@ interface InputTypes {
   customStyle?: any;
   classes?: any;
   value?: any;
+  required?: boolean;
 }
 
 const PhoneNumber = (props: InputTypes) => {
@@ -28,6 +29,7 @@ const PhoneNumber = (props: InputTypes) => {
     customStyle,
     classes,
     value,
+    required
   } = props;
   return (
     <>
@@ -56,6 +58,7 @@ const PhoneNumber = (props: InputTypes) => {
             value={(value && value[name]) ?? ""}
             onChange={handleChange}
             style={customStyle}
+            required={required}
           />
         </div>
         <span className="text-[10px] my-1 text-error">

@@ -14,6 +14,7 @@ interface InputTypes {
   classes?: any;
   required?: boolean;
   value?: any;
+  readOnly?:any
 }
 
 const TextInput = (props: InputTypes) => {
@@ -31,6 +32,7 @@ const TextInput = (props: InputTypes) => {
     classes,
     required,
     labelStyle,
+    readOnly
   } = props;
   return (
     <>
@@ -55,13 +57,14 @@ const TextInput = (props: InputTypes) => {
               ? "text-error border-2 border-error"
               : ""
           }`}
+          readOnly={readOnly}
           placeholder={placeholder ?? "Enter text"}
           onBlur={onblur}
           name={name}
           type={type}
           onChange={handleChange}
           style={customStyle}
-          value={(value && value[name]) ?? ""}
+          value={(value && value[name]) ?? value}
         />
         <span className="text-[10px] my-1 text-error">
           {(touched && touched[name] && error && error[name]) ?? ""}

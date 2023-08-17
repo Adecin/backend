@@ -5,9 +5,10 @@ interface propsData {
   data: any;
   onClick?: any;
   backgroundColor?: string;
+  classes?:any;
 }
 
-const DynamicTable = ({ data, onClick, backgroundColor }: propsData) => {
+const DynamicTable = ({ data, onClick, backgroundColor,classes }: propsData) => {
   if (!data || data.length === 0) {
     return (
       <>
@@ -60,7 +61,7 @@ const DynamicTable = ({ data, onClick, backgroundColor }: propsData) => {
                 key={index}
               >
                 {keys.map((key) => (
-                  <td className="text-start py-1 pl-5 " key={key}>
+                  <td className={`text-start py-1 pl-5` + classes}  key={key}>
                     <div className="  ">
                       <div className="text-text font-[500]">{item[key]}</div>
                     </div>
