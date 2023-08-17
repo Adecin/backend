@@ -86,7 +86,7 @@ export default function OfficerProfile(props: any) {
             borderRadius: "30px",
           }}
           handleOnClick={() => {
-            router.push(`/field-officer/edit`);
+            router.push(`/staff-management/add`);
           }}
         />
       </div>

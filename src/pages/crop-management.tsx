@@ -63,18 +63,16 @@ export default function CropManagement(props: any) {
     const [value, setValue] = React.useState(0);
     const [searchValue, setSearchValue] = React.useState("");
 
-
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 
     return (
         <div>
-            <div className="flex justify-between mt-14 mb-6 mr-12">
+            <div className="absolute top-0 sticky bg-white flex justify-between mt-14 mb-6 mr-12">
                 <div className="">
                     <BreadCrumb classes={` font-bold text-[#43424D]`} />
                 </div>
-
                 <Filter
                     value={searchValue}
                     applyFilter={() => { }}
@@ -102,8 +100,9 @@ export default function CropManagement(props: any) {
             </Tabs>
             <CustomTabPanel value={value} index={0}>
                 {cropData.map((item: any, index: any) => {
+                    console.log(`item`,item)
                     return (
-                        <TypeElement key={index} />
+                        <TypeElement key={index} crop_year={item.year} crop_name={item.cropName}/>
                     )
                 })}
                 <CustomButton
@@ -112,7 +111,7 @@ export default function CropManagement(props: any) {
                     startIcon={<AddCircleIcon className="text-primary" />}
                     customStyle={{
                         background: "none",
-                        padding: "3rem 1rem",
+                        padding: "1rem 3rem",
                         color: "#3D7FFA",
                     }}
                     handleOnClick={() => {
@@ -122,7 +121,7 @@ export default function CropManagement(props: any) {
             <CustomTabPanel value={value} index={1}>
                 {cropData.map((item: any, index: any) => {
                     return (
-                        <TypeElement key={index}/>
+                        <TypeElement key={index} crop_year={item.year} crop_name={item.cropName}/>
                     )
                 })}
                 <CustomButton
@@ -143,8 +142,12 @@ export default function CropManagement(props: any) {
     )
 };
 
-const TypeElement = () => {
+const TypeElement = (props: any) => {
     const [editCrop, setEditCrop] = useState(true);
+    const {crop_year, crop_name} = props;
+
+    console.log(`crop_year`,crop_year),
+    console.log(`crop_name`,crop_name);
 
     const SignInSchema = Yup.object().shape({
         crop_name: Yup.string()
@@ -189,7 +192,7 @@ const TypeElement = () => {
                     classes={` py-0 pt-2`}
                     label={""}
                     name="crop_name"
-                    value={values}
+                    value={crop_name}
                     onblur={handleBlur}
                     touched={touched}
                     handleChange={handleChange}
@@ -207,7 +210,7 @@ const TypeElement = () => {
                     classes={` py-0 pt-2`}
                     label={""}
                     name="crop_year"
-                    value={values}
+                    value={crop_year}
                     onblur={handleBlur}
                     touched={touched}
                     handleChange={handleChange}

@@ -147,7 +147,6 @@ export default function QuestionaireComp(props: any) {
                                         buttonName={`Add Option`}
                                         startIcon={<AddCircleIcon className="text-primary" />}
                                         customStyle={{
-                                            height: "3rem",
                                             background: "none",
                                             padding: "1rem 3rem",
                                             color: "#3D7FFA",

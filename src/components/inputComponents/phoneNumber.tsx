@@ -61,7 +61,7 @@ const PhoneNumber = (props: InputTypes) => {
             onBlur={onblur}
             name={name}
             type={type}
-            value={(value && value[name]) ?? ""}
+            value={(value && value[name]) ?? value}
             onChange={handleChange}
             style={customStyle}
           />

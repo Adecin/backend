@@ -30,6 +30,7 @@ const FarmerList = () => {
     dispatch(listFarm(farmer_id));
   }, [farmer_id]);
 
+
   // table data
   const tableData = [
     {
@@ -84,7 +85,7 @@ const FarmerList = () => {
       <div className="p-5 mb-[100px]">
         {/* bread crumbs */}
         <div className="flex items-center justify-between">
-          <BreadCrumb lastName="View Profile" />
+          <BreadCrumb lastName={farmer_id} />
           <div
             onClick={() => {
               router.push("/farmer/add?id=" + farmer_id);

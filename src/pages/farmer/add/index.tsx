@@ -169,9 +169,7 @@ const AddFarmer = () => {
       childrenMale: farmerOneData.response?.childrenMale ?? "",
       childrenFemale: farmerOneData.response?.childrenFemale ?? "",
       adharNumber: farmerOneData.response?.adharNumber ?? "",
-      adharImage: farmerOneData.response?.adharImage ?? {
-        name: "",
-      },
+      adharImage: farmerOneData.response?.adharImage ?? "",
     },
     validationSchema: ProfileSchemas,
     onSubmit: (values: any) => {
