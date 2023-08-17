@@ -8,7 +8,10 @@ interface InputTypes {
   placeholder?: string;
   onblur?: any;
   touched?: any;
+  countryCodeName?: string;
+  required?: boolean;
   type?: string;
+  changeCountryCode?: any;
   customStyle?: any;
   classes?: any;
   value?: any;
@@ -23,8 +26,11 @@ const PhoneNumber = (props: InputTypes) => {
     onblur,
     touched,
     handleChange,
+    countryCodeName = "",
+    changeCountryCode,
     placeholder,
     name,
+    required,
     type,
     customStyle,
     classes,
@@ -34,14 +40,16 @@ const PhoneNumber = (props: InputTypes) => {
   return (
     <>
       <div className={`flex flex-col p-4 ${classes}`}>
-        <label className={`text-grey pb-1 capitalize `}>{label ?? ""}</label>
+        <label className={`text-grey pb-1 capitalize `}>
+          {label ?? ""}
+          <span className="text-error">{required ? "*" : ""}</span>
+        </label>
         <div className="flex items-center">
           <select
-            onChange={(e) => {
-              setCountryCode(e.target.value);
-            }}
+            onChange={changeCountryCode}
+            name={countryCodeName ?? ""}
             className="py-4 px-2 bg-[#FBFBFB] rounded-l-[5px]"
-            value={CountryCode}
+            value={(value && value[countryCodeName]) ?? ""}
           >
             <option value={"+91"}>+91</option>
           </select>

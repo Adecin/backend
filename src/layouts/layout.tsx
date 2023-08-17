@@ -16,11 +16,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* <div>
           <Heder />
         </div> */}
-      <div className="flex w-[100%] h-[100%]">
+      <div className="flex w-[100%] h-[100vh]">
         <div className="h-[100%] overflow-hidden">
-        {(pathName ===`/login`) ? ""  : <Sidebar />}
+          {pathName === `/login` ? "" : <Sidebar />}
         </div>
-        <div className="w-[100%] overflow-auto h-[100vh]">
+        <div
+          className="w-[100%]  h-[100vh]"
+          style={{
+            overflow: "auto",
+          }}
+        >
           <ReduxProvider store={store}>{children}</ReduxProvider>
         </div>
       </div>

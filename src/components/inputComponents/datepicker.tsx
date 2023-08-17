@@ -7,17 +7,29 @@ interface InputTypes {
   name: string;
   placeholder?: string;
   onblur?: any;
+  required?: boolean;
   touched?: any;
 }
 
 const DatePicker = (props: InputTypes) => {
-  const { label, error, onblur, touched, handleChange, placeholder, name } =
-    props;
+  const {
+    label,
+    required,
+    error,
+    onblur,
+    touched,
+    handleChange,
+    placeholder,
+    name,
+  } = props;
 
   return (
     <>
       <div className="flex flex-col  p-4 ">
-        <label className={`text-grey pb-1 capitalize `}>{label ?? ""}</label>
+        <label className={`text-grey pb-1 capitalize `}>
+          {label ?? ""}
+          <span>{required ? "*" : ""}</span>
+        </label>
         <input
           className={`w-full px-2 py-3 placeholder-gray-400 placeholder-opacity-25  outline-none rounded-[5px] ${
             touched && touched[name] && error && error[name]

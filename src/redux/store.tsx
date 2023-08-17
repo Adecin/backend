@@ -11,6 +11,9 @@ import ListState from "./reducer/dropdown/get-state";
 import ListDistrict from "./reducer/dropdown/get-district";
 import ListVillage from "./reducer/dropdown/get-village";
 
+// crop
+import ListCrop from "./reducer/crop/get-all-crop";
+
 export const store = configureStore({
   reducer: {
     ListFormer: ListFormer,
@@ -20,6 +23,8 @@ export const store = configureStore({
     ListState: ListState,
     ListDistrict: ListDistrict,
     ListVillage: ListVillage,
+    // crop
+    ListCrop: ListCrop,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware: any) => {
