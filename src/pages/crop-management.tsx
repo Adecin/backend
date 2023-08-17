@@ -101,9 +101,9 @@ export default function CropManagement(props: any) {
                 <StyledTab label={`Non FCV type`} className="mx-6 px-6" />
             </Tabs>
             <CustomTabPanel value={value} index={0}>
-                {cropData.map((item) => {
+                {cropData.map((item: any, index: any) => {
                     return (
-                        <TypeElement />
+                        <TypeElement key={index} />
                     )
                 })}
                 <CustomButton
@@ -120,9 +120,9 @@ export default function CropManagement(props: any) {
                 />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                {cropData.map((item) => {
+                {cropData.map((item: any, index: any) => {
                     return (
-                        <TypeElement />
+                        <TypeElement key={index}/>
                     )
                 })}
                 <CustomButton
