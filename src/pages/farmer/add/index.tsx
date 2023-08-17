@@ -228,7 +228,7 @@ const AddFarmer = () => {
                 </div>
                 <img
                   src={
-                    previewImage ??
+                    previewImage ?? values.profileImage ??
                     "https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
                   }
                   alt="profile"

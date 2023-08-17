@@ -60,7 +60,6 @@ export default function OfficerProfile(props: any) {
   const dispatch = useDispatch();
   const getOneField = useSelector((store: any) => store.OneFieldOfficerData);
   const getOneFieldData = getOneField.response
-  console.log(getOneFieldData)
 
   useEffect(() => {
     dispatch(oneFieldOfficer(fieldOfficer_id))
@@ -94,7 +93,7 @@ export default function OfficerProfile(props: any) {
             borderRadius: "30px",
           }}
           handleOnClick={() => {
-            router.push(`/field-officer/edit`);
+            router.push(`/field-officer/edit?id=${fieldOfficer_id}`);
           }}
         />
       </div>
@@ -113,14 +112,14 @@ export default function OfficerProfile(props: any) {
                     <div
                       className="text-base leading-[24px] font-normal tracking-wider"
                     >
-                      {getOneFieldData.user_educationName}
+                      {getOneFieldData.educationName}
                     </div>
                   </div>
                 </td>
                 <td className="text-start py-1 pr-5 ">
                   <div className="  ">
                     <Link
-                      href={`${getOneFieldData.user_educationCertificate}`}
+                      href={`${getOneFieldData.educationCertificate}`}
                       target="_blank"
                       download
                       rel="noopener noreferrer"
@@ -148,7 +147,7 @@ export default function OfficerProfile(props: any) {
           >
             <p
               style={{ maxWidth: "422px" }}
-            >{`${getOneFieldData.user_address}, ${getOneFieldData.village_name}, ${getOneFieldData.district_name}, ${getOneFieldData.state_name} - ${getOneFieldData.user_pincode}`}</p>
+            >{`${getOneFieldData.address}, ${getOneFieldData.villageId?.name}, ${getOneFieldData.districtId?.name}, ${getOneFieldData.stateId?.name} - ${getOneFieldData.pincode}`}</p>
           </div>
         </div>
         <div className="idDocuments my-2">
@@ -158,9 +157,9 @@ export default function OfficerProfile(props: any) {
             className="px-8 py-8 mt-[1rem] w-[228px] rounded-[10px] flex flex-col gap-y-2"
           >
             <LabelText labelName={`Aadhar No`} />
-            <p>{getOneFieldData.user_aadharNo}</p>
+            <p>{getOneFieldData.aadharNo}</p>
             <Link
-              href={`${getOneFieldData.user_aadharImage}`}
+              href={`${getOneFieldData.aadharImage}`}
               target="_blank"
               download
               style={{
@@ -173,7 +172,7 @@ export default function OfficerProfile(props: any) {
                 textAlign: "left",
                 textDecoration:"underline"
               }}
-            >{`${getOneFieldData.user_name}.pdf`}</Link>
+            >{`${getOneFieldData.name}.pdf`}</Link>
           </div>
         </div>
       </div>
@@ -272,7 +271,7 @@ const PersonalDetailCard = ({ data }: any) => {
       <div className="flex justify-around bg-[#F4F8FF] p-[1rem] gap-x-4 mt-4">
         <img
           src={
-            data.user_profileImage ??
+            data.profileImage ??
             "https://image.winudf.com/v2/image1/bmV0LndsbHBwci5ib3lzX3Byb2ZpbGVfcGljdHVyZXNfc2NyZWVuXzBfMTY2NzUzNzYxN18wOTk/screen-0.webp?fakeurl=1&type=.webp"
           }
           alt={"profile"}
@@ -280,21 +279,21 @@ const PersonalDetailCard = ({ data }: any) => {
         />
         <div className="w-full flex justify-around p-[1rem] mx-[1rem]">
           <div className=" flex flex-col gap-y-6 mr-[3rem]">
-            <DatakeyValue label={`Name`} value={data.user_name} />
-            <DatakeyValue label={`Phone number`} value={`+91 ${data.user_phoneNo}`} />
+            <DatakeyValue label={`Name`} value={data.name} />
+            <DatakeyValue label={`Phone number`} value={`+91 ${data.phoneNo}`} />
             <DatakeyValue
               label={`Personal mail ID`}
-              value={data.user_emailId}
+              value={data.emailId}
             />
             <DatakeyValue
               label={`Company mail ID`}
-              value={data.user_companyEmailId}
+              value={data.companyEmailId}
             />
           </div>
           <Separater />
           <div className="flex flex-col gap-y-6">
-            <DatakeyValue label={`Employee ID`} value={data.user_employeeId} />
-            <DatakeyValue label={`Date of birth`} value={data.user_dob} />
+            <DatakeyValue label={`Employee ID`} value={data.employeeId} />
+            <DatakeyValue label={`Date of birth`} value={data.dob} />
           </div>
         </div>
       </div>
