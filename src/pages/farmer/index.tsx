@@ -17,6 +17,7 @@ import TextInput from "@/components/inputComponents/textInput";
 import TextArea from "@/components/inputComponents/texArea";
 import { useDispatch, useSelector } from "react-redux";
 import { listFarmers } from "@/redux/reducer/farmer/list-former";
+import { styled, Tab, Box, Tabs } from "@mui/material";
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
 const ListFieldOfficer = () => {
@@ -376,7 +377,7 @@ const ListFieldOfficer = () => {
             <BreadCrumb classes={` font-bold text-[#43424D]`} />
             <Filter
               value={searchValue}
-              applyFilter={() => {}}
+              applyFilter={() => { }}
               onSearch={(e: string) => {
                 setSearchValue(e);
               }}
@@ -482,16 +483,75 @@ const ListFieldOfficer = () => {
 };
 export default ListFieldOfficer;
 
-// manage popup or dialog
+
+const StyledTab = styled((props: any) => <Tab {...props} />)(({ theme }) => ({
+  fontWeight: 500,
+  fontSize: '16px',
+  lineHeight: '21px',
+  margin: '0 1rem',
+  textTransform: 'none',
+  color: "#858585",
+  '&.Mui-selected': {
+    fontWeight: 700,
+    color: '#3D7FFA',
+  },
+}));
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+};
+
 
 const Dialogs = ({ closePopUp }: any) => {
   const [is_approve, setApprove] = useState("true");
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
   return (
     <>
-      <div>
-        {/* radio button */}
+      <Tabs className=""
+        sx={{
+          ".css-heg063-MuiTabs-flexContainer": {
+            borderBottom: "2px solid #D9D9D9",
+            padding: "0 1rem"
+          }
+        }}
+        value={value}
+        onChange={handleChange}
+        aria-label="">
+        <StyledTab label={`Approval`} className="" />
+        <StyledTab label={`Assign field officer`} className="" />
+        <StyledTab label={`Assign survey`} className="" />
+      </Tabs>
+      <CustomTabPanel index={0} value={value}>
         <div className="w-[400px] px-3 mb-5 flex items-center">
-          <div className="pr-5 text-[18px]">Status</div>
           <FormControl>
             <RadioGroup
               value={is_approve}
@@ -529,45 +589,9 @@ const Dialogs = ({ closePopUp }: any) => {
             </RadioGroup>
           </FormControl>
         </div>
-        {/* dropdown */}
         {is_approve === "true" ? (
           <>
             {" "}
-            <div className="text-[18px] mb-5">Assign Field Officer</div>
-            <div className="w-[400px] ">
-              <SelectMenu
-                name="manager"
-                handleChange={() => {}}
-                placeHolderText="Employee ID"
-                data={[
-                  {
-                    name: "vijay",
-                    id: "09",
-                  },
-                  {
-                    name: "vijay",
-                    id: "09",
-                  },
-                ]}
-              />
-            </div>
-            <div className="w-[400px] ">
-              <SelectMenu
-                name="manager"
-                handleChange={() => {}}
-                placeHolderText="name of field officer"
-                data={[
-                  {
-                    name: "vijay",
-                    id: "09",
-                  },
-                  {
-                    name: "vijay",
-                    id: "09",
-                  },
-                ]}
-              />
-            </div>
           </>
         ) : (
           <>
@@ -575,6 +599,7 @@ const Dialogs = ({ closePopUp }: any) => {
               <TextArea
                 label={"Reason"}
                 name="reason"
+                value={``}
                 placeholder="Enter Reason"
                 handleChange={(e: any) => {
                   console.log(e.target.value);
@@ -583,14 +608,12 @@ const Dialogs = ({ closePopUp }: any) => {
             </div>
           </>
         )}
-
-        {/* button */}
-        <div className="flex justify-end mr-5">
+        <div className="flex justify-center mr-5">
           <div
             onClick={() => {
               closePopUp();
             }}
-            className="bg-[#BEBEBE] cursor-pointer px-8 mx-2 rounded-[5px] text-white py-1"
+            className="bg-[#BEBEBE] cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
           >
             Cancel
           </div>
@@ -598,12 +621,115 @@ const Dialogs = ({ closePopUp }: any) => {
             onClick={() => {
               closePopUp();
             }}
-            className="bg-primary cursor-pointer px-8 mx-2 rounded-[5px] text-white py-1"
+            className="bg-primary cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
           >
             Save
           </div>
         </div>
-      </div>
+      </CustomTabPanel >
+      <CustomTabPanel index={1} value={value}>
+        <div className="w-[400px] ">
+        <p className="text-grey ml-5 my-4" style={{
+          fontSize: "16px",
+          fontWeight: 500,
+          lineHeight: "24px",
+          letterSpacing: "0.05em",
+        }}>Select</p>
+          <SelectMenu
+            name="manager"
+            handleChange={() => { }}
+            placeHolderText="Employee ID"
+            data={[
+              {
+                name: "vijay",
+                id: "09",
+              },
+              {
+                name: "vijay",
+                id: "09",
+              },
+            ]}
+          />
+        </div>
+        <div className="w-[400px] ">
+          <SelectMenu
+            name="manager"
+            handleChange={() => { }}
+            placeHolderText="Name of Field Officer"
+            data={[
+              {
+                name: "vijay",
+                id: "09",
+              },
+              {
+                name: "vijay",
+                id: "09",
+              },
+            ]}
+          />
+        </div>
+        <div className="flex justify-center mr-5">
+          <div
+            onClick={() => {
+              closePopUp();
+            }}
+            className="bg-[#BEBEBE] cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
+          >
+            Cancel
+          </div>
+          <div
+            onClick={() => {
+              closePopUp();
+            }}
+            className="bg-primary cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
+          >
+            Save
+          </div>
+        </div>
+      </CustomTabPanel>
+      <CustomTabPanel index={2} value={value}>
+        <p className="text-grey ml-5 my-4" style={{
+          fontSize: "16px",
+          fontWeight: 500,
+          lineHeight: "24px",
+          letterSpacing: "0.05em",
+        }}>Select</p>
+      <div className="w-[400px] ">
+          <SelectMenu
+            name="manager"
+            handleChange={() => { }}
+            placeHolderText="Select survey name"
+            data={[
+              {
+                name: "vijay",
+                id: "09",
+              },
+              {
+                name: "vijay",
+                id: "09",
+              },
+            ]}
+          />
+        </div>
+        <div className="flex justify-center mr-5">
+          <div
+            onClick={() => {
+              closePopUp();
+            }}
+            className="bg-[#BEBEBE] cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
+          >
+            Cancel
+          </div>
+          <div
+            onClick={() => {
+              closePopUp();
+            }}
+            className="bg-primary cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
+          >
+            Save
+          </div>
+        </div>
+      </CustomTabPanel>
     </>
   );
 };
@@ -617,7 +743,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3">
           <SelectMenu
             name="survey"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Survey"
             data={[
               {
@@ -634,7 +760,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3">
           <SelectMenu
             name="manager"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Select district"
             data={[
               {
@@ -651,7 +777,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
             name="village"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Select Village"
             data={[
               {
@@ -668,7 +794,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
             name="officer"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Select Field Officer"
             data={[
               {
