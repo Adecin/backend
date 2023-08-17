@@ -296,14 +296,16 @@ const ListFieldOfficer = () => {
           sx={{
             outline: "none",
             padding: "20px",
-            "& .MuiDialog-root .MuiPaper-root": {
+            "& .MuiDialog-root ": {
               borderRadius: "10px",
+            },
+            "& .MuiPaper-root ": {
               background: "#F9FAFB",
             },
             "& .MuiDialog-container": { outline: "none" },
           }}
         >
-          <div className="ml-auto mt-3 mr-2">
+          <div className="ml-auto bg-[#F9FAFB] mt-3 mr-2">
             <svg
               onClick={() => {
                 setManageOpen(false);
@@ -361,7 +363,7 @@ const ListFieldOfficer = () => {
               </defs>
             </svg>
           </div>
-          <div className="px-7 pb-7 bg-[#F9FAFB]">
+          <div className="px-7 pb-7  bg-[#F9FAFB]">
             <div className="mb-5 text-[20px]">Manage</div>
             <Dialogs
               closePopUp={() => {
@@ -377,7 +379,7 @@ const ListFieldOfficer = () => {
             <BreadCrumb classes={` font-bold text-[#43424D]`} />
             <Filter
               value={searchValue}
-              applyFilter={() => { }}
+              applyFilter={() => {}}
               onSearch={(e: string) => {
                 setSearchValue(e);
               }}
@@ -483,17 +485,16 @@ const ListFieldOfficer = () => {
 };
 export default ListFieldOfficer;
 
-
 const StyledTab = styled((props: any) => <Tab {...props} />)(({ theme }) => ({
   fontWeight: 500,
-  fontSize: '16px',
-  lineHeight: '21px',
-  margin: '0 1rem',
-  textTransform: 'none',
+  fontSize: "16px",
+  lineHeight: "21px",
+  margin: "0 1rem",
+  textTransform: "none",
   color: "#858585",
-  '&.Mui-selected': {
+  "&.Mui-selected": {
     fontWeight: 700,
-    color: '#3D7FFA',
+    color: "#3D7FFA",
   },
 }));
 
@@ -502,7 +503,6 @@ interface TabPanelProps {
   index: number;
   value: number;
 }
-
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -515,15 +515,10 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
-};
-
+}
 
 const Dialogs = ({ closePopUp }: any) => {
   const [is_approve, setApprove] = useState("true");
@@ -536,16 +531,18 @@ const Dialogs = ({ closePopUp }: any) => {
 
   return (
     <>
-      <Tabs className=""
+      <Tabs
+        className=""
         sx={{
           ".css-heg063-MuiTabs-flexContainer": {
             borderBottom: "2px solid #D9D9D9",
-            padding: "0 1rem"
-          }
+            padding: "0 1rem",
+          },
         }}
         value={value}
         onChange={handleChange}
-        aria-label="">
+        aria-label=""
+      >
         <StyledTab label={`Approval`} className="" />
         <StyledTab label={`Assign field officer`} className="" />
         <StyledTab label={`Assign survey`} className="" />
@@ -590,9 +587,7 @@ const Dialogs = ({ closePopUp }: any) => {
           </FormControl>
         </div>
         {is_approve === "true" ? (
-          <>
-            {" "}
-          </>
+          <> </>
         ) : (
           <>
             <div>
@@ -626,18 +621,23 @@ const Dialogs = ({ closePopUp }: any) => {
             Save
           </div>
         </div>
-      </CustomTabPanel >
+      </CustomTabPanel>
       <CustomTabPanel index={1} value={value}>
         <div className="w-[400px] ">
-        <p className="text-grey ml-5 my-4" style={{
-          fontSize: "16px",
-          fontWeight: 500,
-          lineHeight: "24px",
-          letterSpacing: "0.05em",
-        }}>Select</p>
+          <p
+            className="text-grey ml-5 my-4"
+            style={{
+              fontSize: "16px",
+              fontWeight: 500,
+              lineHeight: "24px",
+              letterSpacing: "0.05em",
+            }}
+          >
+            Select
+          </p>
           <SelectMenu
             name="manager"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Employee ID"
             data={[
               {
@@ -654,7 +654,7 @@ const Dialogs = ({ closePopUp }: any) => {
         <div className="w-[400px] ">
           <SelectMenu
             name="manager"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Name of Field Officer"
             data={[
               {
@@ -688,16 +688,21 @@ const Dialogs = ({ closePopUp }: any) => {
         </div>
       </CustomTabPanel>
       <CustomTabPanel index={2} value={value}>
-        <p className="text-grey ml-5 my-4" style={{
-          fontSize: "16px",
-          fontWeight: 500,
-          lineHeight: "24px",
-          letterSpacing: "0.05em",
-        }}>Select</p>
-      <div className="w-[400px] ">
+        <p
+          className="text-grey ml-5 my-4"
+          style={{
+            fontSize: "16px",
+            fontWeight: 500,
+            lineHeight: "24px",
+            letterSpacing: "0.05em",
+          }}
+        >
+          Select
+        </p>
+        <div className="w-[400px] ">
           <SelectMenu
             name="manager"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Select survey name"
             data={[
               {
@@ -743,7 +748,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3">
           <SelectMenu
             name="survey"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Survey"
             data={[
               {
@@ -760,7 +765,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3">
           <SelectMenu
             name="manager"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Select district"
             data={[
               {
@@ -777,7 +782,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
             name="village"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Select Village"
             data={[
               {
@@ -794,7 +799,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
             name="officer"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Select Field Officer"
             data={[
               {
