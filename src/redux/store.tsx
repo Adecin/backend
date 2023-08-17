@@ -14,6 +14,9 @@ import ListVillage from "./reducer/dropdown/get-village";
 // crop
 import ListCrop from "./reducer/crop/get-all-crop";
 
+// farmer
+import AddFarmer from "./reducer/farmer/add-farmer";
+
 export const store = configureStore({
   reducer: {
     ListFormer: ListFormer,
@@ -25,6 +28,8 @@ export const store = configureStore({
     ListVillage: ListVillage,
     // crop
     ListCrop: ListCrop,
+    //  farmer
+    AddFarmer: AddFarmer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware: any) => {
