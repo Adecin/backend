@@ -64,10 +64,11 @@ export default function AddQuestion(props: any) {
                 </div>
                 <SelectMenu
                     classes={`pt-[1rem] my-3`}
-                    fieldStyle={{ color: "#3D7FFA", background: "#F7F7F7", width: "340px" }}
-                    labelname={""}
-                    name={"answerType"}
-                    placeHolderStyle={{color: "#3D7FFA",}}
+                    fieldStyle={{ background: "#F7F7F7", width: "340px" }}
+                    labelname={"AnswerType"}
+                    labelStyle={{color: "#3D7FFA"}}
+                    name={"AnswerType"}
+                    placeHolderStyle={{color: "#3D7FFA"}}
                     data={answerType}
                     handleChange={handleChange}
                     value={values}
