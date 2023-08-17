@@ -46,7 +46,7 @@ export default function OfficerProfileAdd(props: any) {
               <div className="imageContainer relative flex flex-col bg-[#F5F5F5] h-[136px] w-[136px] my-3 mt-6">
                 <Image
                   className="m-auto h-full w-full"
-                  src={``}
+                  src={`/profileSvg.svg`}
                   alt="alt"
                   width={100}
                   height={100}
@@ -79,6 +79,7 @@ export default function OfficerProfileAdd(props: any) {
             </div>
             <div className="w-full grid grid-cols-3">
               <TextInput
+                required
                 label={"Employee ID"}
                 name="employee_id"
                 placeholder="Type ID in exact format"
@@ -87,6 +88,7 @@ export default function OfficerProfileAdd(props: any) {
                 }}
               />
               <TextInput
+                required
                 label={"Name"}
                 name="employee_id"
                 placeholder="Type name"
@@ -95,12 +97,14 @@ export default function OfficerProfileAdd(props: any) {
                 }}
               />
               <PhoneNumber
+                required
                 label="Phone Number"
                 placeholder="Type phone mobile"
                 name="phone"
-                handleChange={() => {}}
+                handleChange={() => { }}
               />
               <TextInput
+                required
                 label={"Personal mail ID"}
                 name="employee_id"
                 placeholder="Type mail ID"
@@ -109,6 +113,7 @@ export default function OfficerProfileAdd(props: any) {
                 }}
               />
               <TextInput
+                required
                 label={"Company mail ID"}
                 name="employee_id"
                 placeholder="Type mail ID"
@@ -117,6 +122,7 @@ export default function OfficerProfileAdd(props: any) {
                 }}
               />
               <TextInput
+                required
                 label={"Date of birth"}
                 name="employee_id"
                 type="date"
@@ -125,6 +131,7 @@ export default function OfficerProfileAdd(props: any) {
                 }}
               />
               <SelectMenu
+                required
                 classes={`pt-[1rem]`}
                 labelname={"Gender"}
                 name={""}
@@ -140,6 +147,7 @@ export default function OfficerProfileAdd(props: any) {
           <HeaderText text={`Address`} required={true} />
           <div className="bg-[#F4F8FF] p-[2rem] mt-[1rem] w-full grid grid-cols-3">
             <TextInput
+              required
               label={"House No, street, area"}
               name="employee_id"
               placeholder="Type here"
@@ -148,6 +156,7 @@ export default function OfficerProfileAdd(props: any) {
               }}
             />
             <SelectMenu
+              required
               classes={`pt-[1rem]`}
               labelname={"District"}
               name={""}
@@ -157,6 +166,7 @@ export default function OfficerProfileAdd(props: any) {
               placeHolderText={"Select"}
             />
             <SelectMenu
+              required
               classes={`pt-[1rem]`}
               labelname={"State"}
               name={""}
@@ -166,6 +176,7 @@ export default function OfficerProfileAdd(props: any) {
               placeHolderText={"Select"}
             />
             <SelectMenu
+              required
               classes={`pt-[1rem]`}
               labelname={"Village"}
               name={""}
@@ -175,6 +186,7 @@ export default function OfficerProfileAdd(props: any) {
               placeHolderText={"Select"}
             />
             <TextInput
+              required
               label={"Pin code"}
               name="employee_id"
               placeholder="Type pin code"
@@ -229,7 +241,7 @@ export default function OfficerProfileAdd(props: any) {
               </div>
               <div className="flex justify-between items-center mt-4 px-4">
                 <Button
-                  className="m-0 p-0 mr-2 w-[10rem]"
+                  className="m-0 p-0 mr-2 w-[11rem]"
                   color="primary"
                   aria-label="upload picture"
                   component="label"
@@ -271,7 +283,6 @@ export default function OfficerProfileAdd(props: any) {
                 <TextInput
                   label={"Spouse name"}
                   name="employee_id"
-                  type="date"
                   classes={`pt-0`}
                   placeholder="Type name here"
                   handleChange={(e: any) => {
@@ -366,7 +377,7 @@ export default function OfficerProfileAdd(props: any) {
                 />
                 <SelectMenu
                   //readOnly={!profileCreated}
-                  labelname={"State name"}
+                  labelname={"District name"}
                   name={""}
                   data={[]}
                   handleChange={undefined}
@@ -375,7 +386,7 @@ export default function OfficerProfileAdd(props: any) {
                 />
                 <SelectMenu
                   //readOnly={!profileCreated}
-                  labelname={"Village"}
+                  labelname={"Village name"}
                   name={""}
                   data={[]}
                   handleChange={undefined}

@@ -281,9 +281,9 @@ const FieldOfficerFilter = () => {
             <div>
                 <LabelText labelName={label} customStyle={{maxWidth:"140px"}} />
                 <div className={`flex flex-col mx-3` + classes}>
-                    {accessList.map((item: any) => {
+                    {accessList.map((item: any, index: any) => {
                         return (
-                            <FormControlLabel
+                            <FormControlLabel key={index}
                                 control={
                                     <Checkbox checked={checked} onChange={() => { setChecked(!checked) }} name={item.name} />
                                 }

@@ -93,7 +93,7 @@ export default function OfficerProfile(props: any) {
       <PersonalDetailCard />
       <div className="my-2">
         <HeaderText text={`Education details`} />
-        <table className="w-full my-4">
+        <table className="w-[60%] my-4">
           <tbody className="flex flex-col gap-y-4">
             {dataedu.map((item: any, index: number) => (
               <div
@@ -131,12 +131,12 @@ export default function OfficerProfile(props: any) {
         </table>
       </div>
       {/* <AddressComponent /> */}
-      <div className="flex justify-between">
+      <div className="flex justify-start gap-x-12">
         <div className="addressDeatails my-2">
           <HeaderText text={`Address details`} />
           <div
             style={addressStyle}
-            className="px-8 py-8 mt-[1rem] rounded-[10px]"
+            className="px-8 py-8 mt-[1rem] rounded-[10px] text-text"
           >
             <p
               style={{ maxWidth: "422px" }}
@@ -147,10 +147,10 @@ export default function OfficerProfile(props: any) {
           <HeaderText text={`Government ID proof`} />
           <div
             style={addressStyle}
-            className="px-8 py-8 mt-[1rem] w-[228px] rounded-[10px]"
+            className="px-8 py-8 mt-[1rem] w-[228px] rounded-[10px] flex flex-col gap-y-2"
           >
             <LabelText labelName={`Aadhar No`} />
-            <p>{`1235 5287 4589`}</p>
+            <p className="text-text">{`1235 5287 4589`}</p>
             <Link
               href={""}
               style={{
@@ -161,6 +161,7 @@ export default function OfficerProfile(props: any) {
                 lineHeight: "21px",
                 letterSpacing: "0.05em",
                 textAlign: "left",
+                textDecoration:"underline"
               }}
             >{`ranga rao aadhar.pdf`}</Link>
           </div>
@@ -239,25 +240,9 @@ const AssignedTask = ({ data, onClick }: any) => {
 };
 
 const addressStyle = {
-  width: "406px",
   height: "130px",
   background: "#F4F8FF",
   padding: "2rem",
-};
-
-const AddressComponent = () => {
-  return (
-    <div className="addressDeatails my-2">
-      <HeaderText text={`Address details`} />
-      <div className="">
-        <div style={addressStyle} className="">
-          <p
-            style={{ maxWidth: "240px" }}
-          >{`G8,248/250, Ln Complex, G8,248/250, lncplx, oldtaragupetB53, Lal Build, Old Taragupet, Bangalore - 560053`}</p>
-        </div>
-      </div>
-    </div>
-  );
 };
 
 const PersonalDetailCard = () => {
@@ -326,23 +311,12 @@ const SurveyComponent = (props: any) => {
           <div className="w-full">
             <SelectMenu
               fieldStyle={{ background: "#F4F8FF" }}
-              labelname={"Crop Year"}
+              labelname={"Survey"}
               name={""}
               data={[]}
               handleChange={undefined}
               value={undefined}
-              placeHolderText={"Crop Year"}
-            />
-          </div>
-          <div className="w-full">
-            <SelectMenu
-              fieldStyle={{ background: "#F4F8FF" }}
-              labelname={"Crop Type"}
-              name={""}
-              data={[]}
-              handleChange={undefined}
-              value={undefined}
-              placeHolderText={"Crop Type"}
+              placeHolderText={"Survey"}
             />
           </div>
           <div className="w-full">
@@ -353,7 +327,7 @@ const SurveyComponent = (props: any) => {
               data={[]}
               handleChange={undefined}
               value={undefined}
-              placeHolderText={"Farmer Id"}
+              placeHolderText={"Farmer ID"}
             />
           </div>
           <div className="w-full">
