@@ -66,6 +66,12 @@ const FieldOne = ({ data }: any) => {
           </div>
         </div>{" "}
         <div className="px-5 flex flex-col  justify-between">
+          <div className="my-4 text-[#858585] text-[16px]">Crop Type</div>
+          <div className="my-4 text-text text-[14px]">
+            {data.cropTypeId?.name ?? ""}
+          </div>
+        </div>{" "}
+        <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">
             Irrigation Type{" "}
           </div>
@@ -80,8 +86,8 @@ const FieldOne = ({ data }: any) => {
           </div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
-          <div className="my-4 text-[#858585] text-[16px]">Field ID</div>
-          <div className="my-4 text-text text-[14px]">{data.id}</div>
+          <div className="my-4 text-[#858585] text-[16px]">Farm ID</div>
+          <div className="my-4 text-text text-[14px]">{data.farmId}</div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">

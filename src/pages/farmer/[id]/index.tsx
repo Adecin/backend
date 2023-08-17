@@ -30,7 +30,6 @@ const FarmerList = () => {
     dispatch(listFarm(farmer_id));
   }, [farmer_id]);
 
-
   // table data
   const tableData = [
     {
@@ -260,7 +259,8 @@ const FarmerList = () => {
         {/* farmer details */}
         <div className="text-text my-4 text-[16px]">Farmer Details</div>
         {/* tabs */}
-        <Tabs data={farmData} />
+        {farmData?.response?.data ? <Tabs data={farmData} /> : ""}
+
         {/* survey details */}
         <div>
           <div className="text-text my-4 text-[16px]">Survey Details</div>
