@@ -69,7 +69,7 @@ export default function CropManagement(props: any) {
 
     return (
         <div>
-            <div className="flex justify-between mt-14 mb-6 mr-12">
+            <div className="absolute top-0 sticky bg-white flex justify-between mt-14 mb-6 mr-12">
                 <div className="">
                     <BreadCrumb classes={` font-bold text-[#43424D]`} />
                 </div>

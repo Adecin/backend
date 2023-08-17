@@ -13,7 +13,6 @@ interface InputTypes {
   labelStyle?: any;
   classes?: any;
   required?: boolean;
-
   value?: any;
   readOnly?:any
 }

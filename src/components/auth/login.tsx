@@ -102,6 +102,7 @@ export default function AppLogin(props: any) {
                                 classes={` py-0 pt-2`}
                                 required
                                 label={"Email"}
+                                labelStyle={{fontWeight:600, color:"#43424D"}}
                                 name="email"
                                 value={values}
                                 onblur={handleBlur}
@@ -115,6 +116,7 @@ export default function AppLogin(props: any) {
                             <TextInput
                                 classes={` py-0 pt-2`}
                                 label={`Password`}
+                                labelStyle={{fontWeight:600, color:"#43424D"}}
                                 type={showPassword ? 'text' : 'password'}
                                 name="password"
                                 value={values}

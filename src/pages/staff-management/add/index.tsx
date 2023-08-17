@@ -34,6 +34,12 @@ export default function OfficerProfileAdd(props: any) {
     }
   `;
 
+  const gender =[
+    {name:"Male", id:"male"},
+    {name:"Female", id:"female"},
+    {name:"Others", id:"others"},
+  ]
+
   return (
     <div className="p-[3rem]">
       <BreadCrumb lastName="Add Sraff" />
@@ -101,8 +107,9 @@ export default function OfficerProfileAdd(props: any) {
                 placeholder="Type phone mobile"
                 name="phone"
                 required
-                handleChange={() => { }}
-              />
+                handleChange={(e: any) => {
+                  console.log(e.target.value);
+                }}              />
               <TextInput
                 label={"Personal mail ID"}
                 name="employee_id"
@@ -135,9 +142,9 @@ export default function OfficerProfileAdd(props: any) {
                 labelname={"Gender"}
                 required
                 name={""}
-                data={[]}
+                data={gender}
                 handleChange={undefined}
-                value={undefined}
+                value={(e: any) => (e.target.value)}
                 placeHolderText={"Select"}
               />
             </div>

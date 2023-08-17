@@ -372,7 +372,7 @@ const ListFieldOfficer = () => {
 
         <div className="px-4">
           {/* bread crumb and filters */}
-          <div className="flex justify-between">
+          <div className="absolute top-0 sticky bg-white flex justify-between">
             <BreadCrumb classes={` font-bold text-[#43424D]`} />
             <Filter
               value={searchValue}

@@ -7,6 +7,8 @@ import BreadCrumb from "@/components/table/bread-crumb";
 import Filter from "@/components/table/filter";
 import SelectMenu from "@/components/inputComponents/selectMenu";
 import { useRouter } from "next/navigation";
+import Badge from "@mui/material/Badge";
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 //import { BiBell } from "react-icons/bi";
 
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
@@ -231,9 +233,12 @@ const ListFieldOfficer = () => {
     <>
       <div className="p-5">
         {/* bread crumb and filters */}
-        <div>
+        <div className="flex justify-end px-8 m-3">
+          <Badge badgeContent={2} color="error">
+            <NotificationsNoneIcon className="text-primary text-[28px]" />
+          </Badge>
         </div>
-        <div className="flex justify-between">
+        <div className="absolute top-0 sticky bg-white flex justify-between">
           <div className="">
             <BreadCrumb classes={` font-bold text-[#43424D]`} />
           </div>
