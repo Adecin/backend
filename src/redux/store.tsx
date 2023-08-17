@@ -2,9 +2,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import { baseApi } from "@/redux/baseapi";
 
 // stores
-import ListFormer from "./reducer/farmer/list-former";
-import listOneFarmer from "./reducer/farmer/list-one-farmer";
-import listFarm from "./reducer/farmer/list-farm";
 
 // dropdown
 import ListState from "./reducer/dropdown/get-state";
@@ -16,12 +13,14 @@ import ListCrop from "./reducer/crop/get-all-crop";
 
 // farmer
 import AddFarmer from "./reducer/farmer/add-farmer";
+import AddFarm from "./reducer/farmer/add-farm";
+import ListFormer from "./reducer/farmer/list-former";
+import listOneFarmer from "./reducer/farmer/list-one-farmer";
+import listFarm from "./reducer/farmer/list-farm";
+import EditFarmer from "./reducer/farmer/edit-farmer";
 
 export const store = configureStore({
   reducer: {
-    ListFormer: ListFormer,
-    listOneFarmer: listOneFarmer,
-    listFarm: listFarm,
     // common data
     ListState: ListState,
     ListDistrict: ListDistrict,
@@ -30,6 +29,11 @@ export const store = configureStore({
     ListCrop: ListCrop,
     //  farmer
     AddFarmer: AddFarmer,
+    AddFarm: AddFarm,
+    ListFormer: ListFormer,
+    listOneFarmer: listOneFarmer,
+    listFarm: listFarm,
+    EditFarmer: EditFarmer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware: any) => {

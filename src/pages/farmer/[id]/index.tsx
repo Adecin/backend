@@ -78,6 +78,7 @@ const FarmerList = () => {
   const data = tableData.map((e, index) => {
     return { No: index + 1, ...e };
   });
+
   return (
     <>
       <div className="p-5 mb-[100px]">
@@ -186,11 +187,15 @@ const FarmerList = () => {
             {/* title */}
             <div className="text-text my-4 text-[16px]">Address Details</div>
             {/* content */}
-            <div className="bg-lblue w-auto my-2 p-5 rounded-[10px] flex items-center">
+            <div className="bg-lblue  w-auto my-2 p-5 rounded-[10px] flex items-center">
               <div className="px-5 ">
-                <div className="my-4 text-text">
-                  {(farmerData.response.address ?? "") +
-                    (farmerData.response.pincode ?? "")}
+                <div className="my-4 text-text ">
+                  {farmerData.response.address ?? ""}
+                  <br />
+                  {farmerData.response.villageId?.name ?? ""},<br />
+                  {farmerData.response.districtId?.name ?? ""},<br />
+                  {farmerData.response.stateId?.name ?? ""}-
+                  {farmerData.response.pincode ?? ""}
                 </div>
               </div>
             </div>
