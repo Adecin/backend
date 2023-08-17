@@ -119,9 +119,9 @@ export default function QuestionaireComp(props: any) {
 
                                 {(editQestion && item.answerType == "dropdown") && <div className=" flex w-full ml-8">
                                     <div className="gird grid-cols-3">
-                                    {item.options.map((optionItem: any) => {
+                                    {item.options.map((optionItem: any, index: any) => {
                                         return (
-                                            <div className=" bg-grey w-full flex flex-col mt-[1rem] px-[2rem] relative"
+                                            <div key={index} className=" bg-grey w-full flex flex-col mt-[1rem] px-[2rem] relative"
                                                 style={{
                                                     background: "#F7F7F7"
                                                 }}>
