@@ -6,7 +6,7 @@ import { useState } from "react";
 interface Filter {
   onSearch: any;
   value: string;
-  addUrl: string;
+  addUrl?: string;
   filter: any;
   applyFilter: any;
 }
@@ -84,7 +84,7 @@ const Filter = ({ onSearch, value, addUrl, filter, applyFilter }: Filter) => {
         )}
 
         {/* add  */}
-        <div className="px-2">
+        {addUrl && <div className="px-2">
           <div
             onClick={() => {
               router.push(addUrl);
@@ -111,7 +111,7 @@ const Filter = ({ onSearch, value, addUrl, filter, applyFilter }: Filter) => {
             </div>
             add
           </div>
-        </div>
+        </div> }
       </div>
     </>
   );

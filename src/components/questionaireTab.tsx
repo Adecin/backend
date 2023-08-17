@@ -58,7 +58,12 @@ export default function QuestionaireComp(props: any) {
     const handleCancelQues = () => {
         setAddQuestion(false)
     }
-
+    const handleEdit = () => {
+        setEditQuestion(true)
+    };
+    const handleCancelEdit = () => {
+        setEditQuestion(false)
+    }
     return (
         <div>
             <p style={{
@@ -70,15 +75,6 @@ export default function QuestionaireComp(props: any) {
             <div>
                 {data?.map((item: any, index: any) => {
 
-                    const handleEdit = () => {
-                        setEditQuestion(true)
-                    };
-
-                    const handleCancelEdit = () => {
-                        setEditQuestion(false)
-                    }
-                    console.log(`editQestion`, editQestion);
-                    console.log(`item`, item.answerType);
 
                     return (
                         <div key={index} style={{
@@ -95,7 +91,7 @@ export default function QuestionaireComp(props: any) {
                                             background: "#F7F7F7",
                                         }} labelName={item.question} />
                                 </div>
-                                <div>
+                                <div className="mx-4">
                                     {item?.answerType == 'dropdown' ? <SelectMenu
                                         classes={`pt-[1rem] my-3`}
                                         fieldStyle={{ color: "#3D7FFA", background: "#F7F7F7", width: "340px" }}
@@ -104,14 +100,14 @@ export default function QuestionaireComp(props: any) {
                                         data={item.options}
                                         handleChange={handleChange}
                                         value={values}
-                                        placeHolderText={"Add answer type"}
+                                        placeHolderText={"Drop down"}
                                     /> : <TextInput
                                         label={`Answer`}
-                                        labelStyle={{ color: "#3D7FFA" }}
+                                        labelStyle={{ color: "#3D7FFA", marginLeft: "0.5rem" }}
                                         name="option"
                                         customStyle={{
                                             background: "#F7F7F7",
-                                            outline:"1px solid #F7F7F7",
+                                            outline: "1px solid #F7F7F7",
                                             marginTop: "0.5rem",
                                             width: "336px"
                                         }}
@@ -120,8 +116,56 @@ export default function QuestionaireComp(props: any) {
                                             console.log(e.target.value);
                                         }} />}
                                 </div>
-                                {(editQestion && item.answerType == "dropdown") && <div className="flex">
-                                    <div className=" bg-grey w-full flex flex-col mt-[1rem] px-[2rem] py-[1rem] relative"
+
+                                {(editQestion && item.answerType == "dropdown") && <div className=" flex w-full ml-8">
+                                    <div className="gird grid-cols-3">
+                                    {item.options.map((optionItem: any, index: any) => {
+                                        return (
+                                            <div key={index} className=" bg-grey w-full flex flex-col mt-[1rem] px-[2rem] relative"
+                                                style={{
+                                                    background: "#F7F7F7"
+                                                }}>
+                                                <DoDisturbOnIcon className="flex self-end absolute top-[10px]" style={{ color: "red" }} />
+                                                <TextInput
+                                                    label={`Option ${optionItem?.id}`}
+                                                    labelStyle={{ color: "#3D7FFA" }}
+                                                    name="option"
+                                                    customStyle={{
+                                                        marginTop: "0.5rem",
+                                                        width: "336px"
+                                                    }}
+                                                    value={optionItem?.name}
+                                                    handleChange={(e: any) => {
+                                                        console.log(e.target.value);
+                                                    }} />
+                                            </div>
+                                        )
+                                    })}
+                                    </div>
+                                    <CustomButton
+                                        classes={`text-primary w-full`}
+                                        buttonName={`Add Option`}
+                                        startIcon={<AddCircleIcon className="text-primary" />}
+                                        customStyle={{
+                                            height: "3rem",
+                                            background: "none",
+                                            padding: "1rem 3rem",
+                                            color: "#3D7FFA",
+                                        }}
+                                        handleOnClick={() => {
+                                            setFieldValue('opt', [
+                                                ...values.option,
+                                                {
+                                                    name: '',
+                                                    id: ''
+                                                }
+                                            ]);
+                                        }}
+                                    />
+
+                                </div>}
+                                {/* {(editQestion && item.answerType == "dropdown") && <div className="flex items-center ml-8">
+                                    <div className=" bg-grey w-full flex flex-col mt-[1rem] px-[2rem] relative"
                                         style={{
                                             background: "#F7F7F7"
                                         }}>
@@ -145,6 +189,7 @@ export default function QuestionaireComp(props: any) {
                                         buttonName={`Add Option`}
                                         startIcon={<AddCircleIcon className="text-primary" />}
                                         customStyle={{
+                                            height:"3rem",
                                             background: "none",
                                             padding: "1rem 3rem",
                                             color: "#3D7FFA",
@@ -160,7 +205,7 @@ export default function QuestionaireComp(props: any) {
                                         }}
                                     />
                                 </div>
-                                }
+                                } */}
                             </div>
                             <div className="flex flex-col justify-evenly">
                                 <CustomButton
