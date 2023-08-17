@@ -14,6 +14,10 @@ import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { listFarm } from "@/redux/reducer/farmer/list-farm";
 import { getCrop } from "@/redux/reducer/crop/get-all-crop";
 import { addFarmer } from "@/redux/reducer/farmer/add-farmer";
+import { addFarm } from "@/redux/reducer/farmer/add-farm";
+import { listOneFarmer } from "@/redux/reducer/farmer/list-one-farmer";
+import { editFarmer } from "@/redux/reducer/farmer/edit-farmer";
+import { editFarm } from "@/redux/reducer/farmer/edit-farm";
 
 const AddFarmer = () => {
   // other data
@@ -30,20 +34,26 @@ const AddFarmer = () => {
   const GetSVillage = useSelector((state: any) => state.ListVillage);
   const farmData = useSelector((state: any) => state.listFarm);
   const addFarmerData = useSelector((state: any) => state.AddFarmer);
+  const AddFarm = useSelector((state: any) => state.AddFarm);
+  const farmerOneData = useSelector((state: any) => state.listOneFarmer);
 
   // useEffects
   useEffect(() => {
     dispatch(getState());
     dispatch(getVillage());
     dispatch(getDistrict());
-
     dispatch(getCrop());
-  }, []);
+    if (farmer_id) {
+      dispatch(listOneFarmer(farmer_id));
+    }
+  }, [farmer_id]);
 
   useEffect(() => {
-    if (addFarmerData.response.id)
-      dispatch(listFarm(addFarmerData.response.id));
-  }, [addFarmerData]);
+    if (addFarmerData.response.id || farmer_id) {
+      dispatch(listFarm(addFarmerData.response.id ?? farmer_id));
+      setFormDetail(false);
+    }
+  }, [addFarmerData, AddFarm, farmer_id]);
 
   // dropdowns
   const stateDropDown = GetState.response?.data?.map(
@@ -102,59 +112,64 @@ const AddFarmer = () => {
       .required("Aadhar card number is required"),
 
     // images
-    profileImage: Yup.mixed()
+    profileImage: farmerOneData.response?.id
+      ? Yup.string().notRequired()
+      : Yup.mixed()
 
-      .test(
-        "profile image required",
-        "profile image required",
-        (value: any) => {
-          if (value.type) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-      )
-      .required("Profile image  is required"),
+          .test(
+            "profile image required",
+            "profile image required",
+            (value: any) => {
+              if (value.type) {
+                return true;
+              } else {
+                return false;
+              }
+            }
+          )
+          .required("Profile image  is required"),
 
-    adharImage: Yup.mixed()
-      .test(
-        "aadhar card is required",
-        "aadhar card is required",
-        (value: any) => {
-          if (value.type) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-      )
-      .required("aadhar card is required"),
+    adharImage: farmerOneData.response?.id
+      ? Yup.string().notRequired()
+      : Yup.mixed()
+          .test(
+            "aadhar card is required",
+            "aadhar card is required",
+            (value: any) => {
+              if (value.type) {
+                return true;
+              } else {
+                return false;
+              }
+            }
+          )
+          .required("aadhar card is required"),
   });
 
   // <================ field values ===================>
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      profileImage: "",
-      name: "",
-      farmerId: "",
-      TBGRId: "",
-      countryCode: "+91",
-      phoneNo: "",
-      age: "",
-      gender: "",
-      education: "",
-      address: "",
-      stateId: "",
-      districtId: "",
-      villageId: "",
-      pincode: "",
-      martialStatus: "",
-      spouseName: "",
-      childrenMale: "",
-      childrenFemale: "",
-      adharNumber: "",
-      adharImage: "",
+      profileImage: farmerOneData.response?.profileImage ?? "",
+      name: farmerOneData.response?.name ?? "",
+      farmerId: farmerOneData.response?.farmerId ?? "",
+      TBGRId: farmerOneData.response?.TBGRId ?? "",
+      countryCode: farmerOneData.response?.countryCode ?? "+91",
+      phoneNo: farmerOneData.response?.phoneNo ?? "",
+      age: farmerOneData.response?.age ?? "",
+      gender: farmerOneData.response?.gender ?? "",
+      education: farmerOneData.response?.education ?? "",
+      address: farmerOneData.response?.address ?? "",
+      stateId: farmerOneData.response?.stateId?.id ?? "",
+      districtId: farmerOneData.response?.districtId?.id ?? "",
+      villageId: farmerOneData.response?.villageId?.id ?? "",
+      pincode: farmerOneData.response?.pincode ?? "",
+      martialStatus: farmerOneData.response?.martialStatus ?? "",
+      spouseName: farmerOneData.response?.spouseName ?? "",
+      childrenMale: farmerOneData.response?.childrenMale ?? "",
+      childrenFemale: farmerOneData.response?.childrenFemale ?? "",
+      adharNumber: farmerOneData.response?.adharNumber ?? "",
+      adharImage: farmerOneData.response?.adharImage ?? "",
     },
     validationSchema: ProfileSchemas,
     onSubmit: (values: any) => {
@@ -169,8 +184,13 @@ const AddFarmer = () => {
     for (let key in data) {
       apiFormData.append(key, data[key]);
     }
-    apiFormData.append("status", "Approved");
-    dispatch(addFarmer(apiFormData));
+    if (farmer_id) {
+      apiFormData.append("id", farmer_id);
+      dispatch(editFarmer(apiFormData));
+    } else {
+      apiFormData.append("status", "Approved");
+      dispatch(addFarmer(apiFormData));
+    }
   };
 
   const {
@@ -606,7 +626,7 @@ const AddFarmer = () => {
             </div>
           </div>
           {/* save profile */}
-          {addFarmerData.response.id ? (
+          {addFarmerData.response.id && !farmer_id ? (
             ""
           ) : (
             <div className="p-5 mt-5 flex justify-center">
@@ -616,13 +636,13 @@ const AddFarmer = () => {
                 }}
                 className="bg-primary cursor-pointer text-white px-5 py-2 rounded-[5px]"
               >
-                Create Profile
+                {farmer_id ? "Update" : "Create"} Profile
               </div>
             </div>
           )}
 
           {/* form details */}
-          {!addFarmerData.response.id ? (
+          {!addFarmerData.response.id && !farmer_id ? (
             ""
           ) : (
             <>
@@ -632,7 +652,12 @@ const AddFarmer = () => {
                   return (
                     <>
                       <div key={index} className="my-3">
-                        <FormDetails data={e} index={index} />
+                        <FormDetails
+                          formerId={addFarmerData.response.id ?? farmer_id}
+                          is_edit={farmer_id ? true : false}
+                          data={e}
+                          index={index}
+                        />
                       </div>
                     </>
                   );
@@ -640,7 +665,13 @@ const AddFarmer = () => {
               </div>
               {/* add form details */}
               {addFormDetail ? (
-                <FormDetails index={farmData.response.data?.length ?? 0} />
+                <FormDetails
+                  formerId={addFarmerData.response.id ?? farmer_id}
+                  index={farmData.response.data?.length ?? 0}
+                  closeFarm={() => {
+                    setFormDetail(false);
+                  }}
+                />
               ) : (
                 ""
               )}
@@ -675,7 +706,7 @@ const AddFarmer = () => {
 };
 export default AddFarmer;
 
-const FormDetails = ({ data, index }: any) => {
+const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
   const dispatch = useDispatch();
 
   const GetState = useSelector((state: any) => state.ListState);
@@ -730,30 +761,34 @@ const FormDetails = ({ data, index }: any) => {
     registrationNumber: Yup.string().required(
       "registration number is required"
     ),
-    geoLocation: Yup.string().required("geoLocation is required"),
-    plotMap: Yup.string().required("plotMap is required"),
     irrigationType: Yup.string().required("irrigation type is required"),
   });
 
   // <================ field values ===================>
   const formik = useFormik({
     initialValues: {
-      state: "",
-      district: "",
-      village: "",
-      cropTypeId: "",
-      acres: "",
-      soilType: "",
-      ownership: "",
-      irrigationType: "",
-      farmId: "",
-      registrationNumber: "",
-      geoLocation: "",
-      plotMap: "",
+      farmerId: formerId ?? "",
+      state: data?.state ?? "",
+      district: data?.district ?? "",
+      village: data?.village ?? "",
+      cropTypeId: data?.cropTypeId?.id ?? "",
+      acres: data?.acres ?? "",
+      soilType: data?.soilType ?? "",
+      ownership: data?.ownership ?? "",
+      irrigationType: data?.irrigationType ?? "",
+      farmId: data?.farmId ?? "",
+      registrationNumber: data?.registrationNumber ?? "",
+      geoLocation: data?.geoLocation ?? "",
+      plotMap: data?.plotMap ?? "",
     },
     validationSchema: farmSchemas,
     onSubmit: (values: any) => {
-      // submit(values);
+      if (!is_edit) {
+        dispatch(addFarm(values));
+      } else {
+        values.id = data?.id;
+        dispatch(editFarm(values));
+      }
     },
   });
   const {
@@ -785,7 +820,7 @@ const FormDetails = ({ data, index }: any) => {
                 value={values}
                 handleChange={(e: any) => {
                   dispatch(getDistrict("?stateId=" + e.target.value));
-                  setFieldValue("stateId", e.target.value);
+                  setFieldValue("state", e.target.value);
                 }}
                 required={true}
                 onblur={handleBlur}
@@ -802,7 +837,7 @@ const FormDetails = ({ data, index }: any) => {
                 value={values}
                 handleChange={(e: any) => {
                   dispatch(getDistrict("?districtId=" + e.target.value));
-                  setFieldValue("districtId", e.target.value);
+                  setFieldValue("district", e.target.value);
                 }}
                 required={true}
                 onblur={handleBlur}
@@ -943,6 +978,33 @@ const FormDetails = ({ data, index }: any) => {
               />
             </div>
           </div>
+          {data?.id && !is_edit ? (
+            ""
+          ) : (
+            <div className="w-[100%] flex justify-end p-3 items-centner">
+              {is_edit ? (
+                ""
+              ) : (
+                <div
+                  onClick={() => {
+                    closeFarm();
+                    resetForm();
+                  }}
+                  className="px-8 cursor-pointer py-3 rounded-[5px] bg-grey mx-2 text-white"
+                >
+                  Delete
+                </div>
+              )}
+              <div
+                onClick={() => {
+                  handleSubmit();
+                }}
+                className="px-8 cursor-pointer py-3 rounded-[5px] bg-primary text-white"
+              >
+                {is_edit ? "Update" : "Save"}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
