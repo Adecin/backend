@@ -15,7 +15,6 @@ interface InputTypes {
   customStyle?: any;
   classes?: any;
   value?: any;
-  required?: boolean;
 }
 
 const PhoneNumber = (props: InputTypes) => {
@@ -35,7 +34,6 @@ const PhoneNumber = (props: InputTypes) => {
     customStyle,
     classes,
     value,
-    required
   } = props;
   return (
     <>

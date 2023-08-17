@@ -13,7 +13,7 @@ export default function CustomButton(props: any) {
 
   return (
     <Button
-      className={`bg-primary hover:bg-primary ` + classes}
+      className={` hover:bg-primary ` + classes}
       style={{
         background:"#3D7FFA",
         color: "#fff",
