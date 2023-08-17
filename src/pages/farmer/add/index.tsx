@@ -154,9 +154,7 @@ const AddFarmer = () => {
       childrenMale: "",
       childrenFemale: "",
       adharNumber: "",
-      adharImage: {
-        name: "",
-      },
+      adharImage: "",
     },
     validationSchema: ProfileSchemas,
     onSubmit: (values: any) => {

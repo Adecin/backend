@@ -1,6 +1,6 @@
 "use client";
 
-import React, { lazy, Suspense, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import Head from "next/head";
 import { Metadata } from "next";
 import BreadCrumb from "@/components/table/bread-crumb";
@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import Badge from "@mui/material/Badge";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 //import { BiBell } from "react-icons/bi";
+import { listFieldOfficer } from "@/redux/reducer/fieldOfficer/getList";
+import { useDispatch, useSelector } from "react-redux";
 
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
@@ -17,217 +19,38 @@ const ListFieldOfficer = () => {
   const [searchValue, setSearchValue] = useState("");
   const router = useRouter();
 
-  // table data
-  const data = [
-    {
+  const dispatch = useDispatch();
+  const ListFieldOfficer = useSelector((store: any) => store.ListFieldOfficerData);
+  // const ListOfficerData = ListFieldOfficer.response.data
+  // console.log(ListOfficerData)
+
+  useEffect(() => {
+    dispatch(listFieldOfficer(""))
+  }, [])
+
+
+  const filterData = ListFieldOfficer.response.data?.map((e: any, index: number) => {
+    console.log(e.profileImage)
+    return {
       photo: (
         <img
           onClick={() => {
-            router.push(`/field-officer/profile`);
+            router.push("/field-officer/" + e.id);
           }}
-          className="w-[68px] h-[56px] rounded-[5px] cursor-pointer "
+          className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
           alt="photo"
-          src="https://moodoffdp.com/wp-content/uploads/2023/04/Instagram-Girl-DP.jpg"
+          src={
+            e.profileImage ??
+            "https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+          }
         />
       ),
-      employee_id: "EMP001",
-      Name: "John Doe",
-      phone_number: "9234439878",
+      employee_id: e.employeeId,
+      Name: e.name,
+      phone_number: e.phoneNo,
       task_status: "8/157",
-    },
-    {
-      photo: (
-        <img
-          onClick={() => {
-            router.push(`/field-officer/profile`);
-          }}
-          className="w-[68px] h-[56px] rounded-[5px] cursor-pointer "
-          alt="photo"
-          src="https://moodoffdp.com/wp-content/uploads/2023/04/Instagram-Girl-DP.jpg"
-        />
-      ),
-      employee_id: "EMP001",
-      Name: "Jane Smith",
-      phone_number: "9234439878",
-      task_status: "8/157",
-    },
-    {
-      photo: (
-        <img
-          onClick={() => {
-            router.push(`/field-officer/profile`);
-          }}
-          className="w-[68px] h-[56px] rounded-[5px] cursor-pointer "
-          alt="photo"
-          src="https://moodoffdp.com/wp-content/uploads/2023/04/Instagram-Girl-DP.jpg"
-        />
-      ),
-      employee_id: "EMP001",
-      Name: "John Doe",
-      phone_number: "9234439878",
-      task_status: "8/157",
-    },
-    {
-      photo: (
-        <img
-          onClick={() => {
-            router.push(`/field-officer/profile`);
-          }}
-          className="w-[68px] h-[56px] rounded-[5px] cursor-pointer "
-          alt="photo"
-          src="https://moodoffdp.com/wp-content/uploads/2023/04/Instagram-Girl-DP.jpg"
-        />
-      ),
-      employee_id: "EMP001",
-      Name: "John Doe",
-      phone_number: "9234439878",
-      task_status: "8/157",
-    },
-    {
-      photo: (
-        <img
-          onClick={() => {
-            router.push(`/field-officer/profile`);
-          }}
-          className="w-[68px] h-[56px] rounded-[5px] cursor-pointer "
-          alt="photo"
-          src="https://moodoffdp.com/wp-content/uploads/2023/04/Instagram-Girl-DP.jpg"
-        />
-      ),
-      employee_id: "EMP001",
-      Name: "John Doe",
-      phone_number: "9234439878",
-      task_status: "8/157",
-    },
-    {
-      photo: (
-        <img
-          onClick={() => {
-            router.push(`/field-officer/profile`);
-          }}
-          className="w-[68px] h-[56px] rounded-[5px] cursor-pointer "
-          alt="photo"
-          src="https://moodoffdp.com/wp-content/uploads/2023/04/Instagram-Girl-DP.jpg"
-        />
-      ),
-      employee_id: "EMP001",
-      Name: "John Doe",
-      phone_number: "9234439878",
-      task_status: "8/157",
-    },
-    {
-      photo: (
-        <img
-          onClick={() => {
-            router.push(`/field-officer/profile`);
-          }}
-          className="w-[68px] h-[56px] rounded-[5px] cursor-pointer "
-          alt="photo"
-          src="https://moodoffdp.com/wp-content/uploads/2023/04/Instagram-Girl-DP.jpg"
-        />
-      ),
-      employee_id: "EMP001",
-      Name: "John Doe",
-      phone_number: "9234439878",
-      task_status: "8/157",
-    },
-    {
-      photo: (
-        <img
-          onClick={() => {
-            router.push(`/field-officer/profile`);
-          }}
-          className="w-[68px] h-[56px] rounded-[5px] cursor-pointer "
-          alt="photo"
-          src="https://moodoffdp.com/wp-content/uploads/2023/04/Instagram-Girl-DP.jpg"
-        />
-      ),
-      employee_id: "EMP001",
-      Name: "John Doe",
-      phone_number: "9234439878",
-      task_status: "8/157",
-    },
-    {
-      photo: (
-        <img
-          onClick={() => {
-            router.push(`/field-officer/profile`);
-          }}
-          className="w-[68px] h-[56px] rounded-[5px] cursor-pointer "
-          alt="photo"
-          src="https://moodoffdp.com/wp-content/uploads/2023/04/Instagram-Girl-DP.jpg"
-        />
-      ),
-      employee_id: "EMP001",
-      Name: "John Doe",
-      phone_number: "9234439878",
-      task_status: "8/157",
-    },
-    {
-      photo: (
-        <img
-          onClick={() => {
-            router.push(`/field-officer/profile`);
-          }}
-          className="w-[68px] h-[56px] rounded-[5px] cursor-pointer "
-          alt="photo"
-          src="https://moodoffdp.com/wp-content/uploads/2023/04/Instagram-Girl-DP.jpg"
-        />
-      ),
-      employee_id: "EMP001",
-      Name: "John Doe",
-      phone_number: "9234439878",
-      task_status: "8/157",
-    },
-    {
-      photo: (
-        <img
-          onClick={() => {
-            router.push(`/field-officer/profile`);
-          }}
-          className="w-[68px] h-[56px] rounded-[5px] cursor-pointer "
-          alt="photo"
-          src="https://moodoffdp.com/wp-content/uploads/2023/04/Instagram-Girl-DP.jpg"
-        />
-      ),
-      employee_id: "EMP001",
-      Name: "John Doe",
-      phone_number: "9234439878",
-      task_status: "8/157",
-    },
-    {
-      photo: (
-        <img
-          onClick={() => {
-            router.push(`/field-officer/profile`);
-          }}
-          className="w-[68px] h-[56px] rounded-[5px] cursor-pointer "
-          alt="photo"
-          src="https://moodoffdp.com/wp-content/uploads/2023/04/Instagram-Girl-DP.jpg"
-        />
-      ),
-      employee_id: "EMP001",
-      Name: "John Doe",
-      phone_number: "9234439878",
-      task_status: "8/157",
-    },
-    {
-      photo: (
-        <img
-          onClick={() => {
-            router.push(`/field-officer/profile`);
-          }}
-          className="w-[68px] h-[56px] rounded-[5px] cursor-pointer "
-          alt="photo"
-          src="https://moodoffdp.com/wp-content/uploads/2023/04/Instagram-Girl-DP.jpg"
-        />
-      ),
-      employee_id: "EMP001",
-      Name: "John Doe",
-      phone_number: "9234439878",
-      task_status: "8/157",
-    },
-  ];
+    }
+  });
 
   return (
     <>
@@ -257,7 +80,7 @@ const ListFieldOfficer = () => {
             addUrl={"/field-officer/add"}
           />
         </div>
-        <DynamicTable data={data} />
+        <DynamicTable data={filterData ?? []} />
       </div>
       {/* <DynamicTable data={data} /> */}
     </>
