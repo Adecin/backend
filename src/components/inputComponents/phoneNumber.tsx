@@ -8,7 +8,9 @@ interface InputTypes {
   placeholder?: string;
   onblur?: any;
   touched?: any;
+  countryCodeName?: string;
   type?: string;
+  changeCountryCode?: any;
   customStyle?: any;
   classes?: any;
   value?: any;
@@ -22,6 +24,8 @@ const PhoneNumber = (props: InputTypes) => {
     onblur,
     touched,
     handleChange,
+    countryCodeName = "",
+    changeCountryCode,
     placeholder,
     name,
     type,
@@ -35,11 +39,10 @@ const PhoneNumber = (props: InputTypes) => {
         <label className={`text-grey pb-1 capitalize `}>{label ?? ""}</label>
         <div className="flex items-center">
           <select
-            onChange={(e) => {
-              setCountryCode(e.target.value);
-            }}
+            onChange={changeCountryCode}
+            name={countryCodeName ?? ""}
             className="py-4 px-2 bg-[#FBFBFB] rounded-l-[5px]"
-            value={CountryCode}
+            value={(value && value[countryCodeName]) ?? ""}
           >
             <option value={"+91"}>+91</option>
           </select>

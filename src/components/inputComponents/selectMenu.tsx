@@ -92,7 +92,10 @@ export default function SelectMenu(props: propsType) {
             color: `${value && value[name] ? "" : "rgba(133, 133, 133, 0.24)"}`,
             "&.MuiOutlinedInput-root": {
               "& fieldset": {
-                border: "none",
+                border:
+                  touched[name] && error[name]
+                    ? "2px solid var(--error)"
+                    : "none",
                 outline: "none",
               },
               "&:hover fieldset": {
@@ -134,7 +137,7 @@ export default function SelectMenu(props: propsType) {
         style={{
           marginBottom: "1rem",
         }}
-        className="red"
+        className="text-error text-[10px]"
       >
         {touched[name] && error[name] ? error[name] : ""}
       </ErrorMsgContainer>

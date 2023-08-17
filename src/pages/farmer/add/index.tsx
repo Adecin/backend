@@ -9,24 +9,35 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getState } from "@/redux/reducer/dropdown/get-state";
+import { getVillage } from "@/redux/reducer/dropdown/get-village";
+import { getDistrict } from "@/redux/reducer/dropdown/get-district";
+import { listFarm } from "@/redux/reducer/farmer/list-farm";
+import { getCrop } from "@/redux/reducer/crop/get-all-crop";
 
 const AddFarmer = () => {
   // other data
   const searchQuery = useSearchParams();
   const farmer_id = searchQuery?.get("id");
   const dispatch = useDispatch();
-  const [formDetailData, setFormDetailData] = useState(["1"]);
+  const [addFormDetail, setFormDetail] = useState<any>(false);
+  const [previewImage, setPreviewImage] = useState<any>(null);
   const openProfile: any = useRef(null);
   const aadhar: any = useRef(null);
+  // api data
   const GetState = useSelector((state: any) => state.ListState);
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
+  const farmData = useSelector((state: any) => state.listFarm);
 
   console.log(GetState);
 
   // useEffects
   useEffect(() => {
     dispatch(getState());
+    dispatch(getVillage());
+    dispatch(getDistrict());
+    dispatch(listFarm(3));
+    dispatch(getCrop());
   }, []);
 
   // dropdowns
@@ -35,8 +46,19 @@ const AddFarmer = () => {
       return { id: e.id, name: e.name };
     }
   );
+  const districtDropDown = GetDistrict.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
+  const villageDropDown = GetSVillage.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
 
   //<==================== validations ================================>
+
   const ProfileSchemas = Yup.object().shape({
     name: Yup.string().required("name is required"),
     TBGRId: Yup.string().required("TBGRId  is required"),
@@ -48,16 +70,20 @@ const AddFarmer = () => {
     stateId: Yup.string().required("state is required"),
     districtId: Yup.string().required("district is required"),
     vilageId: Yup.string().required("village is required"),
-    pinCode: Yup.number().required("pin code is required"),
+    pincode: Yup.number().typeError("invalid pin code").notRequired(),
     // family info
     martialStatus: Yup.string().required("Marital status is required"),
     spouseName: Yup.string().required("spouse name is required"),
     childrenMale: Yup.number().required("Male children is required"),
     childrenFemale: Yup.number().required("female children is required"),
     // government id proof
-    adharNumber: Yup.number().required("aadhar number is required"),
+    adharNumber: Yup.string()
+      // .matches(aadharPattern, "Invalid Aadhar card number")
+      .required("Aadhar card number is required"),
+
     // images
-    profileImage: Yup.mixed()
+    profileImage:
+      //  Yup.mixed()
       // .test(
       //   "profile image required",
       //   "Unsupported Format - We only allow jpg,png,jpeg .",
@@ -73,8 +99,13 @@ const AddFarmer = () => {
       //     }
       //   }
       // )
-      .required("Is required"),
-    adharImage: Yup.mixed().required("Is required"),
+      // .required("Is required")
+      Yup.object().shape({
+        name: Yup.string().required("Profile image  is required"),
+      }),
+    adharImage: Yup.object().shape({
+      name: Yup.string().required("aadhar card is required"),
+    }),
   });
   // <================ field values ===================>
   const formik = useFormik({
@@ -121,10 +152,7 @@ const AddFarmer = () => {
     setErrors,
     errors,
     setFieldError,
-  } = formik;
-
-  console.log(values);
-  console.log(errors);
+  }: any = formik;
 
   return (
     <>
@@ -144,7 +172,10 @@ const AddFarmer = () => {
               <div className="p-5 relative w-[180px] max-w-[150px] h-[180px]">
                 <div className="text-grey text-[16px] my-2">Profile Photo</div>
                 <img
-                  src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+                  src={
+                    previewImage ??
+                    "https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+                  }
                   alt="profile"
                   className="rounded-[50%] w-[100px] h-[100px]"
                 />
@@ -156,7 +187,7 @@ const AddFarmer = () => {
                   name={"profileImage"}
                   onChange={(e: any) => {
                     setFieldValue(`profileImage`, e.target.files[0]);
-
+                    setPreviewImage(URL.createObjectURL(e.target.files[0]));
                     setFieldTouched(`profileImage`, true, false);
                   }}
                 />
@@ -178,6 +209,11 @@ const AddFarmer = () => {
                       fill="white"
                     />
                   </svg>
+                </div>
+                <div className="p-5 pt-0 text-[10px] text-error">
+                  {touched?.profileImage && errors?.profileImage
+                    ? errors?.profileImage?.name
+                    : ""}
                 </div>
               </div>
               {/* form */}
@@ -223,6 +259,8 @@ const AddFarmer = () => {
                     label="Phone Number"
                     placeholder="Enter number"
                     name="phoneNo"
+                    countryCodeName="countryCode"
+                    changeCountryCode={handleChange}
                     value={values}
                     handleChange={handleChange}
                     onblur={handleBlur}
@@ -310,7 +348,10 @@ const AddFarmer = () => {
                     placeHolderText="Select state"
                     data={stateDropDown ?? []}
                     value={values}
-                    handleChange={handleChange}
+                    handleChange={(e: any) => {
+                      dispatch(getDistrict("?stateId=" + e.target.value));
+                      setFieldValue("stateId", e.target.value);
+                    }}
                     onblur={handleBlur}
                     touched={touched}
                     error={errors}
@@ -318,46 +359,43 @@ const AddFarmer = () => {
                 </div>
                 <div className="pt-5">
                   <SelectMenu
-                    name="Village"
+                    name="districtId"
                     labelname="District"
-                    handleChange={() => {}}
                     placeHolderText="Select district"
-                    data={[
-                      {
-                        name: "vijay",
-                        id: "09",
-                      },
-                      {
-                        name: "vijay",
-                        id: "09",
-                      },
-                    ]}
+                    data={districtDropDown ?? []}
+                    value={values}
+                    handleChange={(e: any) => {
+                      dispatch(getDistrict("?districtId=" + e.target.value));
+                      setFieldValue("districtId", e.target.value);
+                    }}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
                 <div className="pt-5">
                   <SelectMenu
-                    name="Village"
+                    name="vilageId"
                     labelname="Village"
-                    handleChange={() => {}}
                     placeHolderText="Select village"
-                    data={[
-                      {
-                        name: "vijay",
-                        id: "09",
-                      },
-                      {
-                        name: "vijay",
-                        id: "09",
-                      },
-                    ]}
+                    data={villageDropDown ?? []}
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
                 <div className="w-[100%]">
                   <TextInput
                     label="Pin Code"
-                    name="name"
+                    name="pincode"
                     placeholder="Type Pin Code"
-                    handleChange={() => {}}
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
               </div>
@@ -375,28 +413,36 @@ const AddFarmer = () => {
                   <div className="flex w-full">
                     <div className="pt-5 w-full">
                       <SelectMenu
-                        name="Village"
+                        name="martialStatus"
                         labelname="Marital Status"
-                        handleChange={() => {}}
                         placeHolderText="Select status"
                         data={[
                           {
-                            name: "vijay",
-                            id: "09",
+                            name: "Married",
+                            id: "MARRIED",
                           },
                           {
-                            name: "vijay",
-                            id: "09",
+                            name: "UnMarried",
+                            id: "UNMARRED",
                           },
                         ]}
+                        value={values}
+                        handleChange={handleChange}
+                        onblur={handleBlur}
+                        touched={touched}
+                        error={errors}
                       />
                     </div>
                     <div className="w-full">
                       <TextInput
                         label="Spouse Name"
                         placeholder="Type name here"
-                        name="farmer_id"
-                        handleChange={() => {}}
+                        name="spouseName"
+                        value={values}
+                        handleChange={handleChange}
+                        onblur={handleBlur}
+                        touched={touched}
+                        error={errors}
                       />
                     </div>
                   </div>
@@ -404,38 +450,62 @@ const AddFarmer = () => {
                   <div className="flex">
                     <div className="pt-2 w-full">
                       <SelectMenu
-                        name="Village"
+                        name="childrenMale"
                         labelname="Male"
-                        handleChange={() => {}}
                         placeHolderText="Select village"
                         data={[
                           {
-                            name: "vijay",
-                            id: "09",
+                            name: "1",
+                            id: "1",
                           },
                           {
-                            name: "vijay",
-                            id: "09",
+                            name: "2",
+                            id: "2",
+                          },
+                          {
+                            name: "3",
+                            id: "3",
+                          },
+                          {
+                            name: "4",
+                            id: "4",
                           },
                         ]}
+                        value={values}
+                        handleChange={handleChange}
+                        onblur={handleBlur}
+                        touched={touched}
+                        error={errors}
                       />
                     </div>
                     <div className="pt-2 w-full">
                       <SelectMenu
-                        name="Village"
+                        name="childrenFemale"
                         labelname="Female"
-                        handleChange={() => {}}
                         placeHolderText="Select district"
                         data={[
                           {
-                            name: "vijay",
-                            id: "09",
+                            name: "1",
+                            id: "1",
                           },
                           {
-                            name: "vijay",
-                            id: "09",
+                            name: "2",
+                            id: "2",
+                          },
+                          {
+                            name: "3",
+                            id: "3",
+                          },
+                          {
+                            name: "4",
+                            id: "4",
                           },
                         ]}
+                        value={values}
+                        handleChange={handleChange}
+                        onblur={handleBlur}
+                        touched={touched}
+                        error={errors}
                       />
                     </div>
                   </div>
@@ -455,12 +525,28 @@ const AddFarmer = () => {
                   <TextInput
                     label="Aadhar No"
                     placeholder="Type name here"
-                    name="farmer_id"
-                    handleChange={() => {}}
+                    name="adharNumber"
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    error={errors}
                   />
                 </div>
+
                 <div className=" p-5 pt-0 flex items-center ">
-                  <input ref={aadhar} type="file" hidden />
+                  <input
+                    ref={aadhar}
+                    type="file"
+                    hidden
+                    name={"adharImage"}
+                    accept="image/*, .doc, .pdf, .docx"
+                    onChange={(e: any) => {
+                      setFieldValue(`adharImage`, e.target.files[0]);
+                      setFieldTouched(`adharImage`, true, false);
+                    }}
+                  />
+
                   <div
                     onClick={() => {
                       aadhar.current.click();
@@ -469,21 +555,40 @@ const AddFarmer = () => {
                   >
                     Upload Aadhar*{" "}
                   </div>
-                  <span className="text-grey underline-none">
+                  <span className="text-grey  underline-none">
                     &nbsp;(file format pdf,word,image)*
                   </span>
                 </div>
+                <div className="p-5 pt-0 text-[10px] text-error">
+                  {touched?.adharImage && errors?.adharImage
+                    ? errors?.adharImage?.name
+                    : ""}
+                </div>
+                <div className="p-5 pt-0 text-text">
+                  {values.adharImage?.name ?? ""}
+                </div>
               </div>
+            </div>
+          </div>
+          {/* save profile */}
+          <div className="p-5 flex justify-center">
+            <div
+              onClick={() => {
+                handleSubmit();
+              }}
+              className="bg-primary cursor-pointer text-white px-5 py-2 rounded-[5px]"
+            >
+              Create Profile
             </div>
           </div>
           {/* form details */}
           <div>
             <div className="text-text my-4 text-[16px]">Farmer Details</div>
-            {formDetailData.map((e, index) => {
+            {farmData.response.data?.map((e: any, index: number) => {
               return (
                 <>
                   <div key={index} className="my-3">
-                    <FormDetails index={index} />
+                    <FormDetails data={e} index={index} />
                   </div>
                 </>
               );
@@ -492,7 +597,7 @@ const AddFarmer = () => {
           {/* add new farm details */}
           <div
             onClick={() => {
-              setFormDetailData([...formDetailData, "1"]);
+              setFormDetail(true);
             }}
             className="max-w-[1200px] mt-5 p-5 items-center bg-lblue rounded-[10px] cursor-pointer flex"
           >
@@ -518,7 +623,86 @@ const AddFarmer = () => {
 };
 export default AddFarmer;
 
-const FormDetails = ({ index }: any) => {
+const FormDetails = ({ data, index }: any) => {
+  const dispatch = useDispatch();
+
+  const GetState = useSelector((state: any) => state.ListState);
+  const GetDistrict = useSelector((state: any) => state.ListDistrict);
+  const GetSVillage = useSelector((state: any) => state.ListVillage);
+  const CropList = useSelector((state: any) => state.ListCrop);
+
+  // dropdowns
+  const stateDropDown = GetState.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
+  const districtDropDown = GetDistrict.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
+  const villageDropDown = GetSVillage.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
+  const cropDropDown = CropList.response?.data?.map((e: any, index: number) => {
+    return { id: e.id, name: e.name };
+  });
+
+  const farmSchemas = Yup.object().shape({
+    state: Yup.string().required("state is required"),
+    district: Yup.string().required("district is required"),
+    village: Yup.string().required("village  is required"),
+    cropTypeId: Yup.number().required("crop type is required"),
+    acres: Yup.string().required("acres is required"),
+    soilType: Yup.string().required("soilType is required"),
+    ownership: Yup.string().required("ownership is required"),
+    farmId: Yup.string().required("farmId is required"),
+    registrationNumber: Yup.string().required(
+      "registration number is required"
+    ),
+    geoLocation: Yup.string().required("geoLocation is required"),
+    plotMap: Yup.string().required("plotMap is required"),
+    irrigationType: Yup.string().required("irrigation type is required"),
+  });
+
+  // <================ field values ===================>
+  const formik = useFormik({
+    initialValues: {
+      state: "",
+      district: "",
+      village: "",
+      cropTypeId: "",
+      acres: "",
+      soilType: "",
+      ownership: "",
+      irrigationType: "",
+      farmId: "",
+      registrationNumber: "",
+      geoLocation: "",
+      plotMap: "",
+    },
+    validationSchema: farmSchemas,
+    onSubmit: (values: any) => {
+      // submit(values);
+    },
+  });
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    touched,
+    setFieldTouched,
+    setFieldValue,
+    resetForm,
+    setErrors,
+    errors,
+    setFieldError,
+  }: any = formik;
+
   return (
     <>
       <div className="">
@@ -527,120 +711,156 @@ const FormDetails = ({ index }: any) => {
           <div className="grid grid-cols-2 w-full lg:grid-cols-3">
             <div className="pt-5">
               <SelectMenu
-                name="Village"
-                labelname="District Name"
-                handleChange={() => {}}
+                name="state"
+                labelname="State Name"
                 placeHolderText="Select district"
-                data={[
-                  {
-                    name: "vijay",
-                    id: "09",
-                  },
-                  {
-                    name: "vijay",
-                    id: "09",
-                  },
-                ]}
+                data={stateDropDown ?? []}
+                value={values}
+                handleChange={(e: any) => {
+                  dispatch(getDistrict("?stateId=" + e.target.value));
+                  setFieldValue("stateId", e.target.value);
+                }}
+                onblur={handleBlur}
+                touched={touched}
+                error={errors}
               />
             </div>
             <div className="pt-5">
               <SelectMenu
-                name="Village"
+                name="district"
+                labelname="District Name"
+                placeHolderText="Select district"
+                data={districtDropDown ?? []}
+                value={values}
+                handleChange={(e: any) => {
+                  dispatch(getDistrict("?districtId=" + e.target.value));
+                  setFieldValue("districtId", e.target.value);
+                }}
+                onblur={handleBlur}
+                touched={touched}
+                error={errors}
+              />
+            </div>
+            <div className="pt-5">
+              <SelectMenu
+                name="village"
                 labelname="Village"
-                handleChange={() => {}}
                 placeHolderText="Select village"
-                data={[
-                  {
-                    name: "vijay",
-                    id: "09",
-                  },
-                  {
-                    name: "vijay",
-                    id: "09",
-                  },
-                ]}
+                data={villageDropDown ?? []}
+                value={values}
+                handleChange={handleChange}
+                onblur={handleBlur}
+                touched={touched}
+                error={errors}
               />
             </div>
             <div className="pt-5">
               <SelectMenu
-                name="Village"
+                name="cropTypeId"
                 labelname="Crop Type"
-                handleChange={() => {}}
                 placeHolderText="Select crop type"
-                data={[
-                  {
-                    name: "vijay",
-                    id: "09",
-                  },
-                  {
-                    name: "vijay",
-                    id: "09",
-                  },
-                ]}
+                data={cropDropDown ?? []}
+                value={values}
+                handleChange={handleChange}
+                onblur={handleBlur}
+                touched={touched}
+                error={errors}
               />
             </div>
             <div className="w-[100%]">
               <TextInput
                 label="Acreage"
-                name="name"
-                placeholder="Type in numbers"
-                handleChange={() => {}}
+                name="acres"
+                placeholder="Type in here"
+                value={values}
+                handleChange={handleChange}
+                onblur={handleBlur}
+                touched={touched}
+                error={errors}
               />
             </div>
             <div className="w-[100%]">
               <TextInput
                 label="Soil Type"
-                name="name"
+                name="soilType"
                 placeholder="Type her"
-                handleChange={() => {}}
+                value={values}
+                handleChange={handleChange}
+                onblur={handleBlur}
+                touched={touched}
+                error={errors}
               />
             </div>
             <div className="w-[100%]">
               <TextInput
                 label="Irrigation Type"
-                name="name"
+                name="irrigationType"
                 placeholder="Type her"
-                handleChange={() => {}}
+                value={values}
+                handleChange={handleChange}
+                onblur={handleBlur}
+                touched={touched}
+                error={errors}
               />
             </div>
             <div className="w-[100%]">
               <TextInput
                 label="Ownership"
-                name="name"
+                name="ownership"
                 placeholder="Type her"
-                handleChange={() => {}}
+                value={values}
+                handleChange={handleChange}
+                onblur={handleBlur}
+                touched={touched}
+                error={errors}
               />
             </div>
             <div className="w-[100%]">
               <TextInput
-                label="Field ID"
-                name="name"
-                placeholder="Type field id"
-                handleChange={() => {}}
+                label="Farm ID"
+                name="farmId"
+                placeholder="Type farm id"
+                value={values}
+                handleChange={handleChange}
+                onblur={handleBlur}
+                touched={touched}
+                error={errors}
               />
             </div>
             <div className="w-[100%]">
               <TextInput
                 label="Registration Number"
-                name="name"
+                name="registrationNumber"
                 placeholder="Type registration no"
-                handleChange={() => {}}
+                value={values}
+                handleChange={handleChange}
+                onblur={handleBlur}
+                touched={touched}
+                error={errors}
               />
             </div>
             <div className="w-[100%]">
               <TextInput
                 label="Gio Location"
-                name="name"
+                name="geoLocation"
                 placeholder="Type gio location"
-                handleChange={() => {}}
+                value={values}
+                handleChange={handleChange}
+                onblur={handleBlur}
+                touched={touched}
+                error={errors}
               />
             </div>
             <div className="w-[100%]">
               <TextInput
                 label="Plot Map"
-                name="name"
+                name="plotMap"
                 placeholder="type plot map"
-                handleChange={() => {}}
+                value={values}
+                handleChange={handleChange}
+                onblur={handleBlur}
+                touched={touched}
+                error={errors}
               />
             </div>
           </div>
