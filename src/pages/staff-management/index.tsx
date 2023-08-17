@@ -8,6 +8,8 @@ import Filter from "@/components/table/filter";
 import SelectMenu from "@/components/inputComponents/selectMenu";
 import { useRouter } from "next/navigation";
 import StaffDataTab from "@/components/staffManagement/staffManagementTab";
+import LabelText from "@/components/labelText";
+import { FormControlLabel, Checkbox } from "@mui/material";
 //import { BiBell } from "react-icons/bi";
 
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
@@ -265,17 +267,42 @@ export default ListFieldOfficer;
 
 const FieldOfficerFilter = () => {
 
-    const filterChecks=()=>{
 
+    const Userfilter = (props: any) => {
+        const { label,classes } = props;
+        const accessList = [
+            { name: "view", label: "View" },
+            { name: "edit", label: "Edit" },
+            { name: "delete", label: "Delete" },
+            { name: "print", label: "Print" }
+        ];
+        const [checked, setChecked] = useState(false);
+        return (
+            <div>
+                <LabelText labelName={label} customStyle={{maxWidth:"140px"}} />
+                <div className={`flex flex-col mx-3` + classes}>
+                    {accessList.map((item: any) => {
+                        return (
+                            <FormControlLabel
+                                control={
+                                    <Checkbox checked={checked} onChange={() => { setChecked(!checked) }} name={item.name} />
+                                }
+                                label={item.label}
+                            />
+                        )
+                    })}
+                </div>
+            </div>
+        )
     }
     return (
         <>
-            <div className="grid grid-cols-2 ">
-                <div className="w-[350px] px-3">
+            <div className="flex flex-col ">
+                <div className="w-[50%] px-3">
                     <SelectMenu
-                        name="manager"
+                        name="job_title"
                         handleChange={() => { }}
-                        placeHolderText="Select Manager"
+                        placeHolderText="Job title"
                         data={[
                             {
                                 name: "vijay",
@@ -288,8 +315,13 @@ const FieldOfficerFilter = () => {
                         ]}
                     />
                 </div>
-                <div>
-
+                <div className="flex gap-x-3 m-3 ">
+                    <Userfilter label={`Farmer master`} classes={` mt-6`}/>
+                    <Userfilter label={`Farmer profile`} classes={` mt-6`}/>
+                    <Userfilter label={`Field officer master`} />
+                    <Userfilter label={`Field officer profile`} />
+                    <Userfilter label={`STP Survey Data`} classes={` mt-6`}/>
+                    <Userfilter label={`Crop Monitoring Survey data`} />
                 </div>
             </div>
         </>

@@ -616,9 +616,9 @@ const FieldOfficerFilter = () => {
       <div className="grid grid-cols-2 mb-6">
         <div className="w-[350px] px-3">
           <SelectMenu
-            name="manager"
+            name="survey"
             handleChange={() => {}}
-            placeHolderText="crop type"
+            placeHolderText="Survey"
             data={[
               {
                 name: "vijay",
@@ -650,9 +650,9 @@ const FieldOfficerFilter = () => {
         </div>
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
-            name="manager"
+            name="village"
             handleChange={() => {}}
-            placeHolderText="village"
+            placeHolderText="Select Village"
             data={[
               {
                 name: "vijay",
@@ -667,9 +667,9 @@ const FieldOfficerFilter = () => {
         </div>
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
-            name="manager"
+            name="officer"
             handleChange={() => {}}
-            placeHolderText="Field Officer"
+            placeHolderText="Select Field Officer"
             data={[
               {
                 name: "vijay",
