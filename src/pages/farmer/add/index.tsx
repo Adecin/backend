@@ -13,6 +13,7 @@ import { getVillage } from "@/redux/reducer/dropdown/get-village";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { listFarm } from "@/redux/reducer/farmer/list-farm";
 import { getCrop } from "@/redux/reducer/crop/get-all-crop";
+import { addFarmer } from "@/redux/reducer/farmer/add-farmer";
 
 const AddFarmer = () => {
   // other data
@@ -28,17 +29,21 @@ const AddFarmer = () => {
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
   const farmData = useSelector((state: any) => state.listFarm);
-
-  console.log(GetState);
+  const addFarmerData = useSelector((state: any) => state.AddFarmer);
 
   // useEffects
   useEffect(() => {
     dispatch(getState());
     dispatch(getVillage());
     dispatch(getDistrict());
-    dispatch(listFarm(3));
+
     dispatch(getCrop());
   }, []);
+
+  useEffect(() => {
+    if (addFarmerData.response.id)
+      dispatch(listFarm(addFarmerData.response.id));
+  }, [addFarmerData]);
 
   // dropdowns
   const stateDropDown = GetState.response?.data?.map(
@@ -56,6 +61,20 @@ const AddFarmer = () => {
       return { id: e.id, name: e.name };
     }
   );
+  const marriedDropDown = [
+    {
+      id: "Married",
+      name: "Married",
+    },
+    {
+      id: "UnMarried",
+      name: "UnMarried",
+    },
+    {
+      id: "Divorced",
+      name: "Divorced",
+    },
+  ];
 
   //<==================== validations ================================>
 
@@ -70,8 +89,10 @@ const AddFarmer = () => {
     address: Yup.string().required("house no or street area is required"),
     stateId: Yup.string().required("state is required"),
     districtId: Yup.string().required("district is required"),
-    vilageId: Yup.string().required("village is required"),
-    pincode: Yup.number().typeError("invalid pin code").notRequired(),
+    villageId: Yup.string().required("village is required"),
+    pincode: Yup.number()
+      .typeError("invalid pin code")
+      .required("pincode is required"),
     // family info
     martialStatus: Yup.string().required("Marital status is required"),
 
@@ -81,37 +102,40 @@ const AddFarmer = () => {
       .required("Aadhar card number is required"),
 
     // images
-    profileImage:
-      //  Yup.mixed()
-      // .test(
-      //   "profile image required",
-      //   "Unsupported Format - We only allow jpg,png,jpeg .",
-      //   (value: any) => {
-      //     if (value.type) {
-      //       if (["jpg", "png", "jpeg"].includes(value.type)) {
-      //         return true;
-      //       } else {
-      //         return false;
-      //       }
-      //     } else {
-      //       return false;
-      //     }
-      //   }
-      // )
-      // .required("Is required")
-      Yup.object().shape({
-        name: Yup.string().required("Profile image  is required"),
-      }),
-    adharImage: Yup.object().shape({
-      name: Yup.string().required("aadhar card is required"),
-    }),
+    profileImage: Yup.mixed()
+
+      .test(
+        "profile image required",
+        "profile image required",
+        (value: any) => {
+          if (value.type) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      )
+      .required("Profile image  is required"),
+
+    adharImage: Yup.mixed()
+      .test(
+        "aadhar card is required",
+        "aadhar card is required",
+        (value: any) => {
+          if (value.type) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      )
+      .required("aadhar card is required"),
   });
+
   // <================ field values ===================>
   const formik = useFormik({
     initialValues: {
-      profileImage: {
-        name: "",
-      },
+      profileImage: "",
       name: "",
       farmerId: "",
       TBGRId: "",
@@ -123,7 +147,7 @@ const AddFarmer = () => {
       address: "",
       stateId: "",
       districtId: "",
-      vilageId: "",
+      villageId: "",
       pincode: "",
       martialStatus: "",
       spouseName: "",
@@ -136,9 +160,21 @@ const AddFarmer = () => {
     },
     validationSchema: ProfileSchemas,
     onSubmit: (values: any) => {
-      // submit(values);
+      submit(values);
     },
   });
+
+  // submit farm
+  const submit = (data: any) => {
+    const apiFormData = new FormData();
+
+    for (let key in data) {
+      apiFormData.append(key, data[key]);
+    }
+    apiFormData.append("status", "Approved");
+    dispatch(addFarmer(apiFormData));
+  };
+
   const {
     values,
     handleBlur,
@@ -213,7 +249,7 @@ const AddFarmer = () => {
                 </div>
                 <div className="p-5 pt-0 text-[10px] text-error">
                   {touched?.profileImage && errors?.profileImage
-                    ? errors?.profileImage?.name
+                    ? errors?.profileImage ?? ""
                     : ""}
                 </div>
               </div>
@@ -300,10 +336,6 @@ const AddFarmer = () => {
                         name: "FeMale",
                         id: "FEMALE",
                       },
-                      {
-                        name: "Trans Gender",
-                        id: "TRANS GENDER",
-                      },
                     ]}
                     value={values}
                     handleChange={handleChange}
@@ -342,6 +374,7 @@ const AddFarmer = () => {
                     placeholder="Type here"
                     name="address"
                     value={values}
+                    required={true}
                     handleChange={handleChange}
                     onblur={handleBlur}
                     touched={touched}
@@ -353,6 +386,7 @@ const AddFarmer = () => {
                     name="stateId"
                     labelname="State"
                     placeHolderText="Select state"
+                    required={true}
                     data={stateDropDown ?? []}
                     value={values}
                     handleChange={(e: any) => {
@@ -368,6 +402,7 @@ const AddFarmer = () => {
                   <SelectMenu
                     name="districtId"
                     labelname="District"
+                    required={true}
                     placeHolderText="Select district"
                     data={districtDropDown ?? []}
                     value={values}
@@ -382,8 +417,9 @@ const AddFarmer = () => {
                 </div>
                 <div className="pt-5">
                   <SelectMenu
-                    name="vilageId"
+                    name="villageId"
                     labelname="Village"
+                    required={true}
                     placeHolderText="Select village"
                     data={villageDropDown ?? []}
                     value={values}
@@ -398,6 +434,7 @@ const AddFarmer = () => {
                     label="Pin Code"
                     name="pincode"
                     placeholder="Type Pin Code"
+                    required={true}
                     value={values}
                     handleChange={handleChange}
                     onblur={handleBlur}
@@ -423,17 +460,9 @@ const AddFarmer = () => {
                         name="martialStatus"
                         labelname="Marital Status"
                         placeHolderText="Select status"
-                        data={[
-                          {
-                            name: "Married",
-                            id: "MARRIED",
-                          },
-                          {
-                            name: "UnMarried",
-                            id: "UNMARRED",
-                          },
-                        ]}
+                        data={marriedDropDown}
                         value={values}
+                        required={true}
                         handleChange={handleChange}
                         onblur={handleBlur}
                         touched={touched}
@@ -533,6 +562,7 @@ const AddFarmer = () => {
                     label="Aadhar No"
                     placeholder="Type name here"
                     name="adharNumber"
+                    required={true}
                     value={values}
                     handleChange={handleChange}
                     onblur={handleBlur}
@@ -568,7 +598,7 @@ const AddFarmer = () => {
                 </div>
                 <div className="p-5 pt-0 text-[10px] text-error">
                   {touched?.adharImage && errors?.adharImage
-                    ? errors?.adharImage?.name
+                    ? errors?.adharImage ?? ""
                     : ""}
                 </div>
                 <div className="p-5 pt-0 text-text">
@@ -578,51 +608,68 @@ const AddFarmer = () => {
             </div>
           </div>
           {/* save profile */}
-          <div className="p-5 flex justify-center">
-            <div
-              onClick={() => {
-                handleSubmit();
-              }}
-              className="bg-primary cursor-pointer text-white px-5 py-2 rounded-[5px]"
-            >
-              Create Profile
+          {addFarmerData.response.id ? (
+            ""
+          ) : (
+            <div className="p-5 mt-5 flex justify-center">
+              <div
+                onClick={() => {
+                  handleSubmit();
+                }}
+                className="bg-primary cursor-pointer text-white px-5 py-2 rounded-[5px]"
+              >
+                Create Profile
+              </div>
             </div>
-          </div>
+          )}
+
           {/* form details */}
-          <div>
-            <div className="text-text my-4 text-[16px]">Farmer Details</div>
-            {farmData.response.data?.map((e: any, index: number) => {
-              return (
-                <>
-                  <div key={index} className="my-3">
-                    <FormDetails data={e} index={index} />
-                  </div>
-                </>
-              );
-            })}
-          </div>
-          {/* add new farm details */}
-          <div
-            onClick={() => {
-              setFormDetail(true);
-            }}
-            className="max-w-[1200px] mt-5 p-5 items-center bg-lblue rounded-[10px] cursor-pointer flex"
-          >
-            <svg
-              width="18"
-              height="18"
-              className="mx-2"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10 0C7.35774 0.0318782 4.83268 1.09568 2.96418 2.96418C1.09568 4.83268 0.0318782 7.35774 0 10C0.0318782 12.6423 1.09568 15.1673 2.96418 17.0358C4.83268 18.9043 7.35774 19.9681 10 20C12.6423 19.9681 15.1673 18.9043 17.0358 17.0358C18.9043 15.1673 19.9681 12.6423 20 10C19.9681 7.35774 18.9043 4.83268 17.0358 2.96418C15.1673 1.09568 12.6423 0.0318782 10 0ZM15.7143 10.7143H10.7143V15.7143H9.28571V10.7143H4.28571V9.28571H9.28571V4.28571H10.7143V9.28571H15.7143V10.7143Z"
-                fill="#3D7FFA"
-              />
-            </svg>
-            <div className="text-primary ">Add another farm details</div>
-          </div>
+          {!addFarmerData.response.id ? (
+            ""
+          ) : (
+            <>
+              <div>
+                <div className="text-text my-4 text-[16px]">Farmer Details</div>
+                {farmData.response.data?.map((e: any, index: number) => {
+                  return (
+                    <>
+                      <div key={index} className="my-3">
+                        <FormDetails data={e} index={index} />
+                      </div>
+                    </>
+                  );
+                })}
+              </div>
+              {/* add form details */}
+              {addFormDetail ? (
+                <FormDetails index={farmData.response.data?.length ?? 0} />
+              ) : (
+                ""
+              )}
+              {/* add new farm details */}
+              <div
+                onClick={() => {
+                  setFormDetail(true);
+                }}
+                className="max-w-[1200px] mt-5 p-5 items-center bg-lblue rounded-[10px] cursor-pointer flex"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  className="mx-2"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10 0C7.35774 0.0318782 4.83268 1.09568 2.96418 2.96418C1.09568 4.83268 0.0318782 7.35774 0 10C0.0318782 12.6423 1.09568 15.1673 2.96418 17.0358C4.83268 18.9043 7.35774 19.9681 10 20C12.6423 19.9681 15.1673 18.9043 17.0358 17.0358C18.9043 15.1673 19.9681 12.6423 20 10C19.9681 7.35774 18.9043 4.83268 17.0358 2.96418C15.1673 1.09568 12.6423 0.0318782 10 0ZM15.7143 10.7143H10.7143V15.7143H9.28571V10.7143H4.28571V9.28571H9.28571V4.28571H10.7143V9.28571H15.7143V10.7143Z"
+                    fill="#3D7FFA"
+                  />
+                </svg>
+                <div className="text-primary ">Add another farm details</div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>
@@ -657,6 +704,21 @@ const FormDetails = ({ data, index }: any) => {
   const cropDropDown = CropList.response?.data?.map((e: any, index: number) => {
     return { id: e.id, name: e.name };
   });
+
+  const ownerDropDown = [
+    {
+      id: "Own",
+      name: "Own",
+    },
+    {
+      id: "Leased",
+      name: "Leased",
+    },
+    {
+      id: "Both",
+      name: "Both",
+    },
+  ];
 
   const farmSchemas = Yup.object().shape({
     state: Yup.string().required("state is required"),
@@ -727,6 +789,7 @@ const FormDetails = ({ data, index }: any) => {
                   dispatch(getDistrict("?stateId=" + e.target.value));
                   setFieldValue("stateId", e.target.value);
                 }}
+                required={true}
                 onblur={handleBlur}
                 touched={touched}
                 error={errors}
@@ -743,6 +806,7 @@ const FormDetails = ({ data, index }: any) => {
                   dispatch(getDistrict("?districtId=" + e.target.value));
                   setFieldValue("districtId", e.target.value);
                 }}
+                required={true}
                 onblur={handleBlur}
                 touched={touched}
                 error={errors}
@@ -756,6 +820,7 @@ const FormDetails = ({ data, index }: any) => {
                 data={villageDropDown ?? []}
                 value={values}
                 handleChange={handleChange}
+                required={true}
                 onblur={handleBlur}
                 touched={touched}
                 error={errors}
@@ -769,6 +834,7 @@ const FormDetails = ({ data, index }: any) => {
                 data={cropDropDown ?? []}
                 value={values}
                 handleChange={handleChange}
+                required={true}
                 onblur={handleBlur}
                 touched={touched}
                 error={errors}
@@ -784,6 +850,7 @@ const FormDetails = ({ data, index }: any) => {
                 onblur={handleBlur}
                 touched={touched}
                 error={errors}
+                required={true}
               />
             </div>
             <div className="w-[100%]">
@@ -796,6 +863,7 @@ const FormDetails = ({ data, index }: any) => {
                 onblur={handleBlur}
                 touched={touched}
                 error={errors}
+                required={true}
               />
             </div>
             <div className="w-[100%]">
@@ -806,22 +874,26 @@ const FormDetails = ({ data, index }: any) => {
                 value={values}
                 handleChange={handleChange}
                 onblur={handleBlur}
+                required={true}
                 touched={touched}
                 error={errors}
               />
             </div>
-            <div className="w-[100%]">
-              <TextInput
-                label="Ownership"
+            <div className="pt-5">
+              <SelectMenu
                 name="ownership"
-                placeholder="Type her"
+                labelname="Ownership"
+                placeHolderText="Select ownership type"
+                data={ownerDropDown ?? []}
                 value={values}
                 handleChange={handleChange}
+                required={true}
                 onblur={handleBlur}
                 touched={touched}
                 error={errors}
               />
             </div>
+
             <div className="w-[100%]">
               <TextInput
                 label="Farm ID"
@@ -830,6 +902,7 @@ const FormDetails = ({ data, index }: any) => {
                 value={values}
                 handleChange={handleChange}
                 onblur={handleBlur}
+                required={true}
                 touched={touched}
                 error={errors}
               />
@@ -844,6 +917,7 @@ const FormDetails = ({ data, index }: any) => {
                 onblur={handleBlur}
                 touched={touched}
                 error={errors}
+                required={true}
               />
             </div>
             <div className="w-[100%]">
