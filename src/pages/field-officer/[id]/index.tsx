@@ -6,10 +6,13 @@ import CustomButton from "@/components/customButton";
 import HeaderText from "@/components/textComponents/headerText";
 import DatakeyValue from "@/components/textComponents/keyValueText";
 import SurveyTable from "@/components/surveyTable";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import BreadCrumb from "@/components/table/bread-crumb";
 import LabelText from "@/components/labelText";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { oneFieldOfficer } from "@/redux/reducer/fieldOfficer/getOne";
+import { useEffect } from "react";
 
 const dataTable = [
   {
@@ -48,15 +51,20 @@ const surveyData = [
   },
 ];
 
-const dataedu = [
-  { degree: "12th", certificate: "Certificate" },
-  { degree: "B.com", certificate: "Certificate" },
-];
 export default function OfficerProfile(props: any) {
   //const { data } = props
   const router = useRouter();
+  const params = useSearchParams();
+  const fieldOfficer_id: any = params?.get("id");
 
-  const educationDetails = Object.keys(dataedu[0]);
+  const dispatch = useDispatch();
+  const getOneField = useSelector((store: any) => store.OneFieldOfficerData);
+  const getOneFieldData = getOneField.response
+  console.log(getOneFieldData)
+
+  useEffect(() => {
+    dispatch(oneFieldOfficer(fieldOfficer_id))
+  }, [fieldOfficer_id])
 
   return (
     <div className="flex flex-col my-[5rem] m-[3rem] gap-y-6">
@@ -90,43 +98,43 @@ export default function OfficerProfile(props: any) {
           }}
         />
       </div>
-      <PersonalDetailCard />
+      <PersonalDetailCard data={getOneFieldData} />
       <div className="my-2">
         <HeaderText text={`Education details`} />
         <table className="w-[60%] my-4">
           <tbody className="flex flex-col gap-y-4">
-            {dataedu.map((item: any, index: number) => (
-              <div
-                className="flex bg-[#F4F8FF] py-4 px-6 rounded-[8px] gap-x-8"
-                key={index}
-              >
-                <span className="w-[3rem]">{index + 1}</span>
-                <tr className="w-full flex justify-between">
-                  {educationDetails.map((key) => {
-                    console.log(`key`, key);
-                    return (
-                      <td className="text-start py-1 pr-5 " key={key}>
-                        <div className="  ">
-                          <div
-                            className="text-base leading-[24px] font-normal tracking-wider"
-                            style={
-                              key == "certificate"
-                                ? {
-                                    color: "#3D7FFA",
-                                    textDecoration: "underline",
-                                  }
-                                : {}
-                            }
-                          >
-                            {item[key]}
-                          </div>
-                        </div>
-                      </td>
-                    );
-                  })}
-                </tr>
-              </div>
-            ))}
+            <div
+              className="flex bg-[#F4F8FF] py-4 px-6 rounded-[8px] gap-x-8"
+            >
+              <span className="w-[3rem]">1</span>
+              <tr className="w-full flex justify-between">
+                <td className="text-start py-1 pr-5 ">
+                  <div className="  ">
+                    <div
+                      className="text-base leading-[24px] font-normal tracking-wider"
+                    >
+                      {getOneFieldData.user_educationName}
+                    </div>
+                  </div>
+                </td>
+                <td className="text-start py-1 pr-5 ">
+                  <div className="  ">
+                    <Link
+                      href={`${getOneFieldData.user_educationCertificate}`}
+                      target="_blank"
+                      download
+                      rel="noopener noreferrer"
+                      style={{
+                        color: "#3D7FFA",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      {'Certificate'}
+                    </Link>
+                  </div>
+                </td>
+              </tr>
+            </div>
           </tbody>
         </table>
       </div>
@@ -140,7 +148,7 @@ export default function OfficerProfile(props: any) {
           >
             <p
               style={{ maxWidth: "422px" }}
-            >{`G8,248/250, Ln Complex, G8,248/250, lncplx, oldtaragupetB53, Lal Build, Old Taragupet, Bangalore - 560053`}</p>
+            >{`${getOneFieldData.user_address}, ${getOneFieldData.village_name}, ${getOneFieldData.district_name}, ${getOneFieldData.state_name} - ${getOneFieldData.user_pincode}`}</p>
           </div>
         </div>
         <div className="idDocuments my-2">
@@ -150,9 +158,11 @@ export default function OfficerProfile(props: any) {
             className="px-8 py-8 mt-[1rem] w-[228px] rounded-[10px] flex flex-col gap-y-2"
           >
             <LabelText labelName={`Aadhar No`} />
-            <p className="text-text">{`1235 5287 4589`}</p>
+            <p>{getOneFieldData.user_aadharNo}</p>
             <Link
-              href={""}
+              href={`${getOneFieldData.user_aadharImage}`}
+              target="_blank"
+              download
               style={{
                 textTransform: "none",
                 color: "#3D7FFA",
@@ -163,7 +173,7 @@ export default function OfficerProfile(props: any) {
                 textAlign: "left",
                 textDecoration:"underline"
               }}
-            >{`ranga rao aadhar.pdf`}</Link>
+            >{`${getOneFieldData.user_name}.pdf`}</Link>
           </div>
         </div>
       </div>
@@ -220,8 +230,8 @@ const AssignedTask = ({ data, onClick }: any) => {
                             taskStatus() == `completed`
                               ? { color: `#70B10E` }
                               : taskStatus() == `pending`
-                              ? { color: "red" }
-                              : { color: "grey" }
+                                ? { color: "red" }
+                                : { color: "grey" }
                           }
                         >
                           {item[key]}
@@ -245,7 +255,7 @@ const addressStyle = {
   padding: "2rem",
 };
 
-const PersonalDetailCard = () => {
+const PersonalDetailCard = ({ data }: any) => {
   const Separater = styled.div`
     ::after {
       content: "";
@@ -262,6 +272,7 @@ const PersonalDetailCard = () => {
       <div className="flex justify-around bg-[#F4F8FF] p-[1rem] gap-x-4 mt-4">
         <img
           src={
+            data.user_profileImage ??
             "https://image.winudf.com/v2/image1/bmV0LndsbHBwci5ib3lzX3Byb2ZpbGVfcGljdHVyZXNfc2NyZWVuXzBfMTY2NzUzNzYxN18wOTk/screen-0.webp?fakeurl=1&type=.webp"
           }
           alt={"profile"}
@@ -269,21 +280,21 @@ const PersonalDetailCard = () => {
         />
         <div className="w-full flex justify-around p-[1rem] mx-[1rem]">
           <div className=" flex flex-col gap-y-6 mr-[3rem]">
-            <DatakeyValue label={`Name`} value={`Mohammed`} />
-            <DatakeyValue label={`Phone number`} value={`+91 985746328`} />
+            <DatakeyValue label={`Name`} value={data.user_name} />
+            <DatakeyValue label={`Phone number`} value={`+91 ${data.user_phoneNo}`} />
             <DatakeyValue
               label={`Personal mail ID`}
-              value={`mohammed@gmail.com`}
+              value={data.user_emailId}
             />
             <DatakeyValue
               label={`Company mail ID`}
-              value={`mohammed@dte.com`}
+              value={data.user_companyEmailId}
             />
           </div>
           <Separater />
           <div className="flex flex-col gap-y-6">
-            <DatakeyValue label={`Employee ID`} value={`DTE001`} />
-            <DatakeyValue label={`Date of birth`} value={`23/56/1994`} />
+            <DatakeyValue label={`Employee ID`} value={data.user_employeeId} />
+            <DatakeyValue label={`Date of birth`} value={data.user_dob} />
           </div>
         </div>
       </div>
