@@ -30,33 +30,22 @@ export default function TextArea(props: propsType) {
     required,
     classes,
     value,
-    customStyle
+    customStyle,
   } = props;
 
   return (
     <>
-      <div className={`flex flex-col  p-4` + classes }>
+      <div className={`flex flex-col  p-4` + classes}>
         <label
           className="pb-1 text-[#858585] leading-[18.75px] font-normal capitalize"
           style={{ ...labelStyle }}
         >
-          {label}{" "}
-          {required ? (
-            <span
-              style={{
-                color: "#ff2626",
-              }}
-            >
-              *
-            </span>
-          ) : (
-            ""
-          )}{" "}
+          {label} {required ? <span className="text-error">*</span> : ""}{" "}
         </label>
         <textarea
           style={{
             resize: resizeValue,
-            ...customStyle
+            ...customStyle,
           }}
           className={`w-full px-2 py-3 placeholder-gray-400 placeholder-opacity-25 outline-none rounded-[5px] h-[100px] ${
             touched && touched[name] && error && error[name]
@@ -68,7 +57,6 @@ export default function TextArea(props: propsType) {
           name={name}
           onChange={handleChange}
           value={value[name] ?? ""}
-
         />
         <span className="text-[10px] my-1 text-error">
           {(touched && touched[name] && error && error[name]) ?? ""}

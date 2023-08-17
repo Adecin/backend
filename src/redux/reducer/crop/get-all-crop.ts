@@ -39,7 +39,7 @@ const ListCrop: any = createSlice({
     });
     builder.addCase(getCrop.fulfilled, (Crop: any, { payload }: any) => {
       Crop.isLoading = false;
-      Crop.response = payload.data?.data;
+      Crop.response = payload.data;
       Crop.Message = payload.data.message;
       Crop.isSuccess = true;
     });

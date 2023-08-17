@@ -65,6 +65,7 @@ const AddFarmer = () => {
     phoneNo: Yup.number().required("phone number is required"),
     age: Yup.string().required("age is required"),
     gender: Yup.string().required("age is required"),
+    farmerId: Yup.string().required("farmer id is required"),
     // address
     address: Yup.string().required("house no or street area is required"),
     stateId: Yup.string().required("state is required"),
@@ -73,9 +74,7 @@ const AddFarmer = () => {
     pincode: Yup.number().typeError("invalid pin code").notRequired(),
     // family info
     martialStatus: Yup.string().required("Marital status is required"),
-    spouseName: Yup.string().required("spouse name is required"),
-    childrenMale: Yup.number().required("Male children is required"),
-    childrenFemale: Yup.number().required("female children is required"),
+
     // government id proof
     adharNumber: Yup.string()
       // .matches(aadharPattern, "Invalid Aadhar card number")
@@ -170,7 +169,9 @@ const AddFarmer = () => {
             <div className="max-w-[1200px] bg-lblue  rounded-[10px] flex">
               {/* profile */}
               <div className="p-5 relative w-[180px] max-w-[150px] h-[180px]">
-                <div className="text-grey text-[16px] my-2">Profile Photo</div>
+                <div className="text-grey text-[16px] my-2">
+                  Profile Photo <span className="text-error">*</span>
+                </div>
                 <img
                   src={
                     previewImage ??
@@ -222,6 +223,7 @@ const AddFarmer = () => {
                   <TextInput
                     label="Name"
                     name="name"
+                    required={true}
                     value={values}
                     handleChange={handleChange}
                     onblur={handleBlur}
@@ -236,6 +238,7 @@ const AddFarmer = () => {
                     placeholder="Enter Farmer id"
                     name="farmerId"
                     value={values}
+                    required={true}
                     handleChange={handleChange}
                     onblur={handleBlur}
                     touched={touched}
@@ -248,6 +251,7 @@ const AddFarmer = () => {
                     placeholder="Enter tbgr id"
                     name="TBGRId"
                     value={values}
+                    required={true}
                     handleChange={handleChange}
                     onblur={handleBlur}
                     touched={touched}
@@ -262,6 +266,7 @@ const AddFarmer = () => {
                     countryCodeName="countryCode"
                     changeCountryCode={handleChange}
                     value={values}
+                    required={true}
                     handleChange={handleChange}
                     onblur={handleBlur}
                     touched={touched}
@@ -276,6 +281,7 @@ const AddFarmer = () => {
                     value={values}
                     handleChange={handleChange}
                     onblur={handleBlur}
+                    required={true}
                     touched={touched}
                     error={errors}
                   />
@@ -303,6 +309,7 @@ const AddFarmer = () => {
                     handleChange={handleChange}
                     onblur={handleBlur}
                     touched={touched}
+                    required={true}
                     error={errors}
                   />
                 </div>

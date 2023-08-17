@@ -70,17 +70,7 @@ export default function SelectMenu(props: propsType) {
         style={{ ...labelStyle }}
       >
         {labelname ?? ""}{" "}
-        {required ? (
-          <span
-            style={{
-              color: "#ff2626",
-            }}
-          >
-            *
-          </span>
-        ) : (
-          ""
-        )}{" "}
+        {required ? <span className="text-error">*</span> : ""}{" "}
       </label>
       <FormControl className="w-full">
         {/* <DropdownLabel id="helper-label">{labelname}</DropdownLabel> */}
