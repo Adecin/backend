@@ -20,7 +20,7 @@ const dataTable = [
     farmer_id: "KK001",
     Name: "Ranga Ramasamy",
     location: "Dakshina Kannada,Karapakam, 600 061",
-    status: "completed",
+    status: "Completed",
   },
 ];
 

@@ -234,9 +234,7 @@ const ListFieldOfficer = () => {
         <>
             <div className="p-5">
                 {/* bread crumb and filters */}
-                <div>
-                </div>
-                <div className="flex justify-between">
+                <div className="absolute top-0 sticky bg-white flex justify-between">
                     <div className="">
                         <BreadCrumb classes={` font-bold text-[#43424D]`} />
                     </div>

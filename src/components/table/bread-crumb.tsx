@@ -18,7 +18,7 @@ const BreadCrumb = ({ lastName, classes }: { lastName?: string, classes?: any })
 
   return (
     <>
-      <div className="py-5 px-4">
+      <div className="py-5 px-4 bg-white">
         <div className="flex items-center">
           {filterPath?.map((breadCrumb: any, index: number) => {
             return (
