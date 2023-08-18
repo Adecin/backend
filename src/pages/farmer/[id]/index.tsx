@@ -190,7 +190,7 @@ const FarmerList = () => {
             <div className="bg-lblue  w-auto my-2 p-5 rounded-[10px] flex items-center">
               <div className="px-5 ">
                 <div className="my-4 text-text ">
-                  {farmerData.response.address ?? ""}
+                  {farmerData.response.address ?? ""},
                   <br />
                   {farmerData.response.villageId?.name ?? ""},<br />
                   {farmerData.response.districtId?.name ?? ""},<br />
@@ -259,10 +259,11 @@ const FarmerList = () => {
         {/* farmer details */}
         <div className="text-text my-4 text-[16px]">Farmer Details</div>
         {/* tabs */}
-        {farmData?.response?.data ? <Tabs data={farmData} /> : ""}
+        {farmData?.response?.data?.length != 0 ? <Tabs data={farmData} /> : ""}
 
+        {/* second phase */}
         {/* survey details */}
-        <div>
+        {/* <div>
           <div className="text-text my-4 text-[16px]">Survey Details</div>
           <div className="flex items-center">
             <div className="text-text w-[70px]">Filter By : </div>
@@ -361,11 +362,11 @@ const FarmerList = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* table */}
-        <div className="max-w-[1100px] my-9">
+        {/* <div className="max-w-[1100px] my-9">
           <DynamicTable backgroundColor="lblue" data={data} />
-        </div>
+        </div> */}
       </div>
     </>
   );

@@ -22,6 +22,9 @@ import { getState } from "@/redux/reducer/dropdown/get-state";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from '@/redux/reducer/dropdown/get-village';
 import { updateFieldOfficer } from "@/redux/reducer/fieldOfficer/updateFieldOfficer";
+import { unassignFarmerList } from "@/redux/reducer/fieldOfficer/unAssignFarmerList";
+import { assignFarmerList } from '@/redux/reducer/fieldOfficer/assignFarmerList';
+
 
 export default function OfficerProfileEdit(props: any) {
   const [farmerPop, setFarmerPop] = useState(false);
@@ -42,10 +45,19 @@ export default function OfficerProfileEdit(props: any) {
   const GetState = useSelector((state: any) => state.ListState);
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
+  const unAssignListFarmer = useSelector((store: any) => store.UnassignFarmerListData);
+  const assignFarmerListFarmer = useSelector((store: any) => store.AssignFarmerListData);
   const UpdateOfficer = useSelector((state: any) => state.UpdateFieldOfficerData);
 
   const pathName = usePathname();
 
+  const [filterData, setFilterData] = useState({
+    stateFilter: 'all',
+    districtFilter: '',
+    villageFillter: ''
+  });
+
+  console.log(assignFarmerListFarmer?.response);
   // dropdowns
   const stateDropDown = GetState.response?.data?.map(
     (e: any, index: number) => {
@@ -81,11 +93,18 @@ export default function OfficerProfileEdit(props: any) {
     dispatch(getState());
     dispatch(getVillage());
     dispatch(getDistrict());
+    dispatch(unassignFarmerList(""));
   }, [])
 
   useEffect(() => {
+    const query = `?village=${filterData.villageFillter}`;
+    dispatch(unassignFarmerList(query));
+  }, [filterData, farmerPop])
+
+  useEffect(() => {
     dispatch(oneFieldOfficer(fieldOfficer_id))
-  }, [fieldOfficer_id])
+    dispatch(assignFarmerList(`?id=${fieldOfficer_id}`))
+  }, [fieldOfficer_id, farmerPop])
 
 
   const fieldProfileSchema = Yup.object().shape({
@@ -104,17 +123,17 @@ export default function OfficerProfileEdit(props: any) {
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       'Enter valid email'
     ),
-    dob: Yup.string().required('dob is required'),
-    gender: Yup.string().required("age is required"),
-    address: Yup.string().required('address is required'),
-    pincode: Yup.string().required('pincode is required'),
-    stateId: Yup.string().required("state is required"),
-    districtId: Yup.string().required("district is required"),
-    villageId: Yup.string().required("village is required"),
+    dob: Yup.string().required('Dob is required'),
+    gender: Yup.string().required("Gender is required"),
+    address: Yup.string().required('Address is required'),
+    pincode: Yup.string().required('Pincode is required'),
+    stateId: Yup.string().required("State is required"),
+    districtId: Yup.string().required("District is required"),
+    villageId: Yup.string().required("Village is required"),
     joiningDate: Yup.string().required("Joining Date is required"),
     relievingDate: Yup.string().required("Relieving Date is required"),
     martialStatus: Yup.string().required("Marital status is required"),
-    educationName: Yup.string().required('educationName is required'),
+    educationName: Yup.string().required('Education is required'),
     aadharNo: Yup.string().required("Aadhar Number is required"),
   });
 
@@ -161,7 +180,7 @@ export default function OfficerProfileEdit(props: any) {
     for (let key in data) {
       apiFormData.append(key, data[key]);
     }
-    apiFormData.append('id',fieldOfficer_id);
+    apiFormData.append('id', fieldOfficer_id);
     apiFormData.append("status", "Approved");
     dispatch(updateFieldOfficer(apiFormData));
   };
@@ -539,7 +558,7 @@ export default function OfficerProfileEdit(props: any) {
                     <SelectMenu
                       name="childrenMale"
                       labelname="Male"
-                      placeHolderText="Select village"
+                      placeHolderText="Select Male"
                       data={[
                         {
                           name: "1",
@@ -567,7 +586,7 @@ export default function OfficerProfileEdit(props: any) {
                     <SelectMenu
                       name="childrenFemale"
                       labelname="Female"
-                      placeHolderText="Select district"
+                      placeHolderText="Select Female"
                       data={[
                         {
                           name: "1",
@@ -669,33 +688,63 @@ export default function OfficerProfileEdit(props: any) {
                   placeHolderText={"Select"}
                 />
                 <SelectMenu
-                  labelname={"State name"}
-                  name={""}
-                  data={[]}
-                  handleChange={undefined}
-                  value={undefined}
-                  placeHolderText={"Select"}
+                  name="districtIds"
+                  labelname="District"
+                  placeHolderText="Select district"
+                  data={districtDropDown ?? []}
+                  value={values}
+                  handleChange={handleChange}
+                  onblur={handleBlur}
+                  touched={touched}
+                  required={true}
+                  error={errors}
                 />
                 <SelectMenu
-                  labelname={"Village"}
-                  name={""}
-                  data={[]}
-                  handleChange={undefined}
-                  value={undefined}
-                  placeHolderText={"Select"}
+                  name="villageFillter"
+                  labelname="Village"
+                  placeHolderText="Select village"
+                  data={villageDropDown ?? []}
+                  value={filterData}
+                  handleChange={(e: any) => {
+                    setFilterData({
+                      ...filterData,
+                      villageFillter: e.target.value
+                    })
+                    console.log(e.target.value);
+                  }}
+                  onblur={handleBlur}
+                  touched={touched}
+                  required={true}
+                  error={errors}
                 />
               </div>
               <div className="px-[1rem] flex items-center gap-x-8">
                 <div>
                   <LabelText labelName={`Farmer`} />
-                  <div className="flex gap-x-4 pt-3">
-                    <Chip
-                      sx={{
-                        "&.css-50y8m9-MuiButtonBase-root-MuiChip-root .MuiChip-deleteIcon":
-                        {
-                          color: "#ffffff",
-                        },
-                      }}
+                  <div className="gap-x-4 pt-3">
+                    {assignFarmerListFarmer?.response?.length ?
+                      assignFarmerListFarmer?.response?.map((item: any, index: number) => {
+                        console.log(item);
+                        return (
+                          <>
+                            <Chip
+                              style={{
+                                margin: '5px',
+                                background: "#3D7FFA",
+                                padding: "1.5rem",
+                                borderRadius: "10px",
+                                color: "#fff",
+                              }}
+                              label={item.farmerId.farmerId}
+                              onDelete={() => { }}
+                            />
+                          </>
+                        )
+                      })
+                      :
+                      <p>No Assigned Data</p>
+                    }
+                    {/* <Chip
                       style={{
                         background: "#3D7FFA",
                         padding: "1.5rem",
@@ -724,7 +773,7 @@ export default function OfficerProfileEdit(props: any) {
                       }}
                       label="DTC0001"
                       onDelete={() => { }}
-                    />
+                    /> */}
                   </div>
                 </div>
                 <CustomButton
@@ -755,7 +804,7 @@ export default function OfficerProfileEdit(props: any) {
               </div>
             </div>
           </div>
-          <div className="bg-[#F4F8FF] w-full p-[1rem]">
+          {/* <div className="bg-[#F4F8FF] w-full p-[1rem]">
             <CustomButton
               startIcon={
                 <svg
@@ -780,7 +829,7 @@ export default function OfficerProfileEdit(props: any) {
                 setFarmerPop(true);
               }}
             />
-          </div>
+          </div> */}
           <div className="flex self-center">
             <CustomButton
               buttonName={`Save Changes`}
@@ -797,17 +846,10 @@ export default function OfficerProfileEdit(props: any) {
           onClose={() => {
             setFarmerPop(false);
           }}
-          data={farmerData}
+          data={unAssignListFarmer.response.data}
+          fieldOfficerId={fieldOfficer_id}
         />
       </Dialog>
     </>
   );
 }
-
-const farmerData = [
-  { name: "Anbu", id: "" },
-  { name: "Babu", id: "" },
-  { name: "RajaManickam Selvaraj", id: "" },
-  { name: "Dharmaraj Selvadhurai", id: "" },
-  { name: "Venkata Narashimha Raju", id: "" },
-];

@@ -34,6 +34,7 @@ const AddFarmer = () => {
   const GetSVillage = useSelector((state: any) => state.ListVillage);
   const farmData = useSelector((state: any) => state.listFarm);
   const addFarmerData = useSelector((state: any) => state.AddFarmer);
+  const editFarmerData = useSelector((state: any) => state.EditFarmer);
   const AddFarm = useSelector((state: any) => state.AddFarm);
   const farmerOneData = useSelector((state: any) => state.listOneFarmer);
 
@@ -89,12 +90,21 @@ const AddFarmer = () => {
   //<==================== validations ================================>
 
   const ProfileSchemas = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    TBGRId: Yup.string().required("TBGR Id  is required"),
-    phoneNo: Yup.number().required("Phone Number is required"),
-    age: Yup.string().required("Age is required"),
-    gender: Yup.string().required("Gender is required"),
-    farmerId: Yup.string().required("Farmer id is required"),
+    name: Yup.string().required("name is required"),
+    TBGRId: Yup.string()
+      .matches(/^[0-9]+$/, "invalid TBGRId")
+      .min(8, "invalid TBGRId")
+      .max(8, "invalid TBGRId")
+      .required("TBGRId  is required"),
+    phoneNo: Yup.number().required("phone number is required"),
+    age: Yup.string()
+      .matches(/^[0-9]+$/, "invalid age")
+      .required("age is required"),
+    gender: Yup.string().required("gender is required"),
+    farmerId: Yup.string()
+      .matches(/^[A-Z]{4}\d{7}/, "invalid farmer id")
+      .max(11, "invalid farmer id")
+      .required("farmer id is required"),
     // address
     address: Yup.string().required("House No or Street Area is required"),
     stateId: Yup.string().required("State is required"),
@@ -108,7 +118,9 @@ const AddFarmer = () => {
 
     // government id proof
     adharNumber: Yup.string()
-      // .matches(aadharPattern, "Invalid Aadhar card number")
+      .matches(/^[0-9]+$/, "aadhar number")
+      .min(12, "invalid aadhar number")
+      .max(12, "invalid aadhar number")
       .required("Aadhar card number is required"),
 
     // images
@@ -150,26 +162,38 @@ const AddFarmer = () => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      profileImage: farmerOneData.response?.profileImage ?? "",
-      name: farmerOneData.response?.name ?? "",
-      farmerId: farmerOneData.response?.farmerId ?? "",
-      TBGRId: farmerOneData.response?.TBGRId ?? "",
-      countryCode: farmerOneData.response?.countryCode ?? "+91",
-      phoneNo: farmerOneData.response?.phoneNo ?? "",
-      age: farmerOneData.response?.age ?? "",
-      gender: farmerOneData.response?.gender ?? "",
-      education: farmerOneData.response?.education ?? "",
-      address: farmerOneData.response?.address ?? "",
-      stateId: farmerOneData.response?.stateId?.id ?? "",
-      districtId: farmerOneData.response?.districtId?.id ?? "",
-      villageId: farmerOneData.response?.villageId?.id ?? "",
-      pincode: farmerOneData.response?.pincode ?? "",
-      martialStatus: farmerOneData.response?.martialStatus ?? "",
-      spouseName: farmerOneData.response?.spouseName ?? "",
-      childrenMale: farmerOneData.response?.childrenMale ?? "",
-      childrenFemale: farmerOneData.response?.childrenFemale ?? "",
-      adharNumber: farmerOneData.response?.adharNumber ?? "",
-      adharImage: farmerOneData.response?.adharImage ?? "",
+      profileImage: farmer_id
+        ? farmerOneData.response?.profileImage ?? null
+        : null,
+      name: farmer_id ? farmerOneData.response?.name ?? "" : "",
+      farmerId: farmer_id ? farmerOneData.response?.farmerId ?? "" : "",
+      TBGRId: !farmer_id ? "" : farmerOneData.response?.TBGRId ?? "",
+      countryCode: farmer_id
+        ? farmerOneData.response?.countryCode ?? "+91"
+        : "+91",
+      phoneNo: !farmer_id ? "" : farmerOneData.response?.phoneNo ?? "",
+      age: !farmer_id ? "" : farmerOneData.response?.age ?? "",
+      gender: !farmer_id ? "" : farmerOneData.response?.gender ?? "",
+      education: !farmer_id ? "" : farmerOneData.response?.education ?? "",
+      address: !farmer_id ? "" : farmerOneData.response?.address ?? "",
+      stateId: !farmer_id ? "" : farmerOneData.response?.stateId?.id ?? "",
+      districtId: !farmer_id
+        ? ""
+        : farmerOneData.response?.districtId?.id ?? "",
+      villageId: !farmer_id ? "" : farmerOneData.response?.villageId?.id ?? "",
+      pincode: !farmer_id ? "" : farmerOneData.response?.pincode ?? "",
+      martialStatus: !farmer_id
+        ? ""
+        : farmerOneData.response?.martialStatus ?? "",
+      spouseName: !farmer_id ? "" : farmerOneData.response?.spouseName ?? "",
+      childrenMale: !farmer_id
+        ? ""
+        : farmerOneData.response?.childrenMale ?? "",
+      childrenFemale: !farmer_id
+        ? ""
+        : farmerOneData.response?.childrenFemale ?? "",
+      adharNumber: !farmer_id ? "" : farmerOneData.response?.adharNumber ?? "",
+      adharImage: !farmer_id ? "" : farmerOneData.response?.adharImage ?? "",
     },
     validationSchema: ProfileSchemas,
     onSubmit: (values: any) => {
@@ -228,7 +252,8 @@ const AddFarmer = () => {
                 </div>
                 <img
                   src={
-                    previewImage ?? values.profileImage ??
+                    previewImage ??
+                    values.profileImage ??
                     "https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
                   }
                   alt="profile"
@@ -293,7 +318,9 @@ const AddFarmer = () => {
                     name="farmerId"
                     value={values}
                     required={true}
-                    handleChange={handleChange}
+                    handleChange={(e: any) => {
+                      setFieldValue("farmerId", e.target.value.toUpperCase());
+                    }}
                     onblur={handleBlur}
                     touched={touched}
                     error={errors}
@@ -363,6 +390,7 @@ const AddFarmer = () => {
                     error={errors}
                   />
                 </div>
+
                 <div>
                   <TextInput
                     label="Education"
@@ -506,7 +534,7 @@ const AddFarmer = () => {
                       <SelectMenu
                         name="childrenMale"
                         labelname="Male"
-                        placeHolderText="Select village"
+                        placeHolderText="Select number of children"
                         data={[
                           {
                             name: "1",
@@ -536,7 +564,7 @@ const AddFarmer = () => {
                       <SelectMenu
                         name="childrenFemale"
                         labelname="Female"
-                        placeHolderText="Select district"
+                        placeHolderText="Select number of children"
                         data={[
                           {
                             name: "1",
@@ -636,7 +664,11 @@ const AddFarmer = () => {
                 }}
                 className="bg-primary cursor-pointer text-white px-5 py-2 rounded-[5px]"
               >
-                {farmer_id ? "Update" : "Create"} Profile
+                {addFarmerData.isLoading || editFarmerData.isLoading
+                  ? "Loading..."
+                  : farmer_id
+                  ? "Update Profile"
+                  : "Create Profile"}
               </div>
             </div>
           )}
@@ -713,6 +745,8 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
   const CropList = useSelector((state: any) => state.ListCrop);
+  const AddFarm = useSelector((state: any) => state.AddFarm);
+  const editFarm = useSelector((state: any) => state.EditFarm);
 
   // dropdowns
   const stateDropDown = GetState.response?.data?.map(
@@ -955,7 +989,7 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
             </div>
             <div className="w-[100%]">
               <TextInput
-                label="Gio Location"
+                label="Geo Location"
                 name="geoLocation"
                 placeholder="Type gio location"
                 value={values}
@@ -1001,7 +1035,11 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
                 }}
                 className="px-8 cursor-pointer py-3 rounded-[5px] bg-primary text-white"
               >
-                {is_edit ? "Update" : "Save"}
+                {AddFarm.isLoading || editFarm.isLoading
+                  ? "Loading..."
+                  : is_edit
+                  ? "Update"
+                  : "Save"}
               </div>
             </div>
           )}
