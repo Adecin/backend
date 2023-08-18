@@ -42,7 +42,7 @@ export default function OfficerProfileAdd(props: any) {
 
   return (
     <div className="p-[3rem]">
-      <BreadCrumb lastName="Add Sraff" />
+      <BreadCrumb lastName="Add Staff" />
       <div className="py-[3rem]  flex flex-col gap-y-8">
         <div className="profileInfo">
           <HeaderText text={`Personal info`} />
@@ -259,7 +259,7 @@ export default function OfficerProfileAdd(props: any) {
                     textDecoration: "underline",
                   }}
                 >
-                  Upload Certificate *
+                  Upload Certificate
                   <input
                     hidden
                     accept="image/*"

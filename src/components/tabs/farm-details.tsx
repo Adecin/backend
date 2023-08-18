@@ -98,7 +98,7 @@ const FieldOne = ({ data }: any) => {
           </div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
-          <div className="my-4 text-[#858585] text-[16px]">Geo Location</div>
+          <div className="my-4 text-[#858585] text-[16px]">Gio Location</div>
           <div className="my-4 text-primary underline text-[14px]">
             {data.geoLocation ?? ""}
           </div>

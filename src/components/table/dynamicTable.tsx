@@ -28,7 +28,7 @@ const DynamicTable = ({ data, onClick, backgroundColor,classes }: propsData) => 
                 key == "checkBox" ? (
                   <th className="py-5 pl-5 text-start" key={key}>
                     <div
-                      className={`text-grey capitalize ${
+                      className={`text-grey capitalize text-center ${
                         index === keys.length - 1 ? "" : "border-r-[3px]"
                       } my-0`}
                     >
@@ -43,7 +43,7 @@ const DynamicTable = ({ data, onClick, backgroundColor,classes }: propsData) => 
                 ) : (
                   <th className="py-5 pl-5 text-start" key={key}>
                     <div
-                      className={`text-grey capitalize ${
+                      className={`text-grey capitalize text-center ${
                         index === keys.length - 1 ? "" : "border-r-[3px]"
                       } my-0`}
                     >
@@ -61,9 +61,9 @@ const DynamicTable = ({ data, onClick, backgroundColor,classes }: propsData) => 
                 key={index}
               >
                 {keys.map((key) => (
-                  <td className={`text-start py-1 pl-5` + classes}  key={key}>
+                  <td className={` py-1 pl-5` + classes}  key={key}>
                     <div className="  ">
-                      <div className="text-text font-[500]">{item[key]}</div>
+                      <div className="text-text flex justify-center font-[500]">{item[key]}</div>
                     </div>
                   </td>
                 ))}

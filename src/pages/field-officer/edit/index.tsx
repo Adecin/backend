@@ -16,7 +16,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import PhoneNumber from "@/components/inputComponents/phoneNumber";
 import { oneFieldOfficer } from "@/redux/reducer/fieldOfficer/getOne";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { getState } from "@/redux/reducer/dropdown/get-state";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
@@ -47,6 +47,9 @@ export default function OfficerProfileEdit(props: any) {
   const GetSVillage = useSelector((state: any) => state.ListVillage);
   const unAssignListFarmer = useSelector((store: any) => store.UnassignFarmerListData);
   const assignFarmerListFarmer = useSelector((store: any) => store.AssignFarmerListData);
+  const UpdateOfficer = useSelector((state: any) => state.UpdateFieldOfficerData);
+
+  const pathName = usePathname();
 
   const [filterData, setFilterData] = useState({
     stateFilter: 'all',
