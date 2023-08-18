@@ -1,6 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // utils
 import { axios } from "@/redux/api";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+
+//toast messages
+const FAILED = async (data: string) => {
+  toast.error(data, {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+};
+
+const SUCCESS = async (data: string) => {
+  toast.success(data, {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+};
 
 // api call
 export const updateFieldOfficer: any = createAsyncThunk(
@@ -43,6 +58,9 @@ const UpdateFieldOfficerData: any = createSlice({
       state.response = payload.data?.data;
       state.Message = payload.data.message;
       state.isSuccess = true;
+      window.alert(payload.data.message)
+      SUCCESS(payload.data.message);
+      console.log(`payload`, payload)
     });
 
     builder.addCase(updateFieldOfficer.rejected, (state: any, { payload }: any) => {
@@ -50,6 +68,8 @@ const UpdateFieldOfficerData: any = createSlice({
       state.isSuccess = false;
       state.isError = true;
       state.Message = payload.data ? payload.data.message : payload.message;
+      FAILED(state.Message);
+      console.log(`payload`, payload)
     });
   },
 });

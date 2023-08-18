@@ -73,12 +73,12 @@ const AddFarmer = () => {
   );
   const marriedDropDown = [
     {
-      id: "Married",
-      name: "Married",
+      id: "Single",
+      name: "Single",
     },
     {
-      id: "UnMarried",
-      name: "UnMarried",
+      id: "Married",
+      name: "Married",
     },
     {
       id: "Divorced",
@@ -89,20 +89,20 @@ const AddFarmer = () => {
   //<==================== validations ================================>
 
   const ProfileSchemas = Yup.object().shape({
-    name: Yup.string().required("name is required"),
-    TBGRId: Yup.string().required("TBGRId  is required"),
-    phoneNo: Yup.number().required("phone number is required"),
-    age: Yup.string().required("age is required"),
-    gender: Yup.string().required("age is required"),
-    farmerId: Yup.string().required("farmer id is required"),
+    name: Yup.string().required("Name is required"),
+    TBGRId: Yup.string().required("TBGR Id  is required"),
+    phoneNo: Yup.number().required("Phone Number is required"),
+    age: Yup.string().required("Age is required"),
+    gender: Yup.string().required("Gender is required"),
+    farmerId: Yup.string().required("Farmer id is required"),
     // address
-    address: Yup.string().required("house no or street area is required"),
-    stateId: Yup.string().required("state is required"),
-    districtId: Yup.string().required("district is required"),
-    villageId: Yup.string().required("village is required"),
+    address: Yup.string().required("House No or Street Area is required"),
+    stateId: Yup.string().required("State is required"),
+    districtId: Yup.string().required("District is required"),
+    villageId: Yup.string().required("Village is required"),
     pincode: Yup.number()
-      .typeError("invalid pin code")
-      .required("pincode is required"),
+      .typeError("Invalid pincode")
+      .required("Pincode is required"),
     // family info
     martialStatus: Yup.string().required("Marital status is required"),
 
@@ -500,7 +500,7 @@ const AddFarmer = () => {
                       />
                     </div>
                   </div>
-                  <div className="px-3 text-grey">children</div>
+                  <div className="px-3 text-text font-medium mx-1">Children</div>
                   <div className="flex">
                     <div className="pt-2 w-full">
                       <SelectMenu

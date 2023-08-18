@@ -147,7 +147,7 @@ export default function OfficerProfile(props: any) {
           >
             <p
               style={{ maxWidth: "422px" }}
-            >{`${getOneFieldData.address}, ${getOneFieldData.villageId?.name}, ${getOneFieldData.districtId?.name}, ${getOneFieldData.stateId?.name} - ${getOneFieldData.pincode}`}</p>
+            >{`${getOneFieldData.address ? (getOneFieldData.address + `, `) : ``} ${getOneFieldData.villageId.name ? (getOneFieldData.villageId.name + `, `) : ``} ${getOneFieldData.districtId.name ? (getOneFieldData.districtId.name + `, `) : ``} ${getOneFieldData.stateId.name ? (getOneFieldData.stateId.name + `, `) : ``} ${getOneFieldData.pincode ? (`-` + getOneFieldData.pincode + `, `) : ``}`}</p>
           </div>
         </div>
         <div className="idDocuments my-2">
@@ -157,7 +157,7 @@ export default function OfficerProfile(props: any) {
             className="px-8 py-8 mt-[1rem] w-[228px] rounded-[10px] flex flex-col gap-y-2"
           >
             <LabelText labelName={`Aadhar No`} />
-            <p>{getOneFieldData.aadharNo}</p>
+            <p>{getOneFieldData.user_aadharNo ?? <span className="text-center ml-6">{`--`}</span>}</p>
             <Link
               href={`${getOneFieldData.aadharImage}`}
               target="_blank"
@@ -170,7 +170,7 @@ export default function OfficerProfile(props: any) {
                 lineHeight: "21px",
                 letterSpacing: "0.05em",
                 textAlign: "left",
-                textDecoration:"underline"
+                textDecoration: "underline"
               }}
             >{`${getOneFieldData.name}.pdf`}</Link>
           </div>

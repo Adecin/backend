@@ -19,6 +19,7 @@ import { getState } from "@/redux/reducer/dropdown/get-state";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from '@/redux/reducer/dropdown/get-village';
 import { addFieldOfficer } from "@/redux/reducer/fieldOfficer/addFieldOfficer";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function OfficerProfileAdd(props: any) {
   const [farmerPop, setFarmerPop] = useState(false);
@@ -91,17 +92,17 @@ export default function OfficerProfileAdd(props: any) {
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       'Enter valid email'
     ),
-    dob: Yup.string().required('dob is required'),
-    gender: Yup.string().required("age is required"),
-    address: Yup.string().required('address is required'),
-    pincode: Yup.string().required('pincode is required'),
-    stateId: Yup.string().required("state is required"),
-    districtId: Yup.string().required("district is required"),
-    villageId: Yup.string().required("village is required"),
+    dob: Yup.string().required('Dob is required'),
+    gender: Yup.string().required("Age is required"),
+    address: Yup.string().required('Address is required'),
+    pincode: Yup.string().required('Pincode is required'),
+    stateId: Yup.string().required("State is required"),
+    districtId: Yup.string().required("District is required"),
+    villageId: Yup.string().required("Village is required"),
     joiningDate: Yup.string().required("Joining Date is required"),
-    relievingDate: Yup.string().required("Relieving Date is required"),
+    relievingDate: Yup.string(),
     martialStatus: Yup.string().required("Marital status is required"),
-    educationName: Yup.string().required('educationName is required'),
+    educationName: Yup.string().required('EducationName is required'),
     aadharNo: Yup.string().required("Aadhar Number is required"),
     profileImage: Yup.mixed()
       .test(
@@ -199,6 +200,8 @@ export default function OfficerProfileAdd(props: any) {
     dispatch(addFieldOfficer(apiFormData));
   };
 
+  console.log(`state`,addFieldOffData)
+
   const {
     values,
     handleBlur,
@@ -226,9 +229,11 @@ export default function OfficerProfileAdd(props: any) {
       padding: 10px;
     }
   `;
+  const pathName = usePathname();
+  console.log(`pathName`,pathName)
 
   return (
-    <div className="p-[3rem]">
+    <div className="p-[3rem] mx-[3rem]">
       <BreadCrumb lastName="Add field officer" />
       <div className="py-[3rem]  flex flex-col gap-y-8">
         <div className="profileInfo">
@@ -399,9 +404,9 @@ export default function OfficerProfileAdd(props: any) {
               data={stateDropDown ?? []}
               value={values}
               handleChange={(e: any) => {
-                dispatch(getDistrict("?stateId=" + e.target.value));
-                setFieldValue("stateId", e.target.value);
-              }}
+                 dispatch(getDistrict("?stateId=" + e.target.value));
+                 setFieldValue("stateId", e.target.value);
+               }}
               onblur={handleBlur}
               touched={touched}
               required={true}
@@ -415,9 +420,9 @@ export default function OfficerProfileAdd(props: any) {
               data={districtDropDown ?? []}
               value={values}
               handleChange={(e: any) => {
-                dispatch(getDistrict("?districtId=" + e.target.value));
-                setFieldValue("districtId", e.target.value);
-              }}
+                 dispatch(getDistrict("?districtId=" + e.target.value));
+                 setFieldValue("districtId", e.target.value);
+               }}
               onblur={handleBlur}
               touched={touched}
               required={true}
@@ -450,7 +455,7 @@ export default function OfficerProfileAdd(props: any) {
           </div>
         </div>
         <div className="flex justify-between gap-x-8">
-          <div className="w-[65%]">
+          <div className="w-[100%]">
             <HeaderText text={`Start and relieving date`} />
             <div className="bg-[#F4F8FF] w-full flex mt-[1rem] px-[2rem] py-[1rem]">
               <div className="w-full">
@@ -658,11 +663,11 @@ export default function OfficerProfileAdd(props: any) {
                   onClick={() => {
                     aadhar.current.click();
                   }}
-                  className="text-primary underline cursor-pointer"
+                  className="text-primary underline cursor-pointer ml-8"
                 >
                   Upload Aadhar*{" "}
                 </div>
-                <span className="text-grey  underline-none">
+                <span className="text-grey  underline-none mr-8">
                   &nbsp;(file format pdf,word,image)*
                 </span>
               </div>

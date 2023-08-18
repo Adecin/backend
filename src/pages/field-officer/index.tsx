@@ -91,7 +91,7 @@ export default ListFieldOfficer;
 const FieldOfficerFilter = () => {
   return (
     <>
-      <div className="grid grid-cols-2 ">
+      <div className="grid grid-cols-2 mt-6">
         <div className="w-[350px] px-3">
           <SelectMenu
             name="manager"
