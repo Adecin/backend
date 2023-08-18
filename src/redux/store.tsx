@@ -13,6 +13,9 @@ import ListFieldOfficerData from "./reducer/fieldOfficer/getList";
 import OneFieldOfficerData from "./reducer/fieldOfficer/getOne";
 import AddFieldOfficerData from "./reducer/fieldOfficer/addFieldOfficer";
 import UpdateFieldOfficerData from "./reducer/fieldOfficer/updateFieldOfficer";
+import UnassignFarmerListData from "./reducer/fieldOfficer/unAssignFarmerList";
+import AssignFarmerData from "./reducer/fieldOfficer/addFieldOfficer";
+import AssignFarmerListData from "./reducer/fieldOfficer/assignFarmerList";
 
 // crop
 import ListCrop from "./reducer/crop/get-all-crop";
@@ -43,11 +46,14 @@ export const store = configureStore({
     EditFarmer: EditFarmer,
     EditFarm: EditFarm,
     //fieldOfficer
-    ListFieldOfficerData: ListFieldOfficerData,
-    OneFieldOfficerData: OneFieldOfficerData,
-    AddFieldOfficerData: AddFieldOfficerData,
-    UpdateFieldOfficerData: UpdateFieldOfficerData,
-
+    ListFieldOfficerData:ListFieldOfficerData,
+    OneFieldOfficerData:OneFieldOfficerData,
+    AddFieldOfficerData:AddFieldOfficerData,
+    UpdateFieldOfficerData:UpdateFieldOfficerData,
+    UnassignFarmerListData:UnassignFarmerListData,
+    AssignFarmerData:AssignFarmerData,
+    AssignFarmerListData:AssignFarmerListData,
+    
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware: any) => {
