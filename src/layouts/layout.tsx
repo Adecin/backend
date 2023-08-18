@@ -16,8 +16,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* <div>
           <Heder />
         </div> */}
-      <div className="flex w-[100%] h-[100vh]">
-        <div className="h-[100%] overflow-hidden">
+      <div className="flex w-[100%] h-[100vh]" style={{
+            overflow: "hidden",
+          }}>
+        <div className="min-h-[100%]" style={{
+            overflow: "auto",
+          }}>
           {pathName === `/login` ? "" : <Sidebar />}
         </div>
         <div

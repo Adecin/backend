@@ -21,7 +21,7 @@ export default function Sidebar() {
     <>
       <div className={"h-[100%] flex-row items-center flex  justify-center "}>
         <div
-          className={`bg-primary h-[100vh]  max:w-[300px]  ${
+          className={`bg-primary min-h-[100vh]  max:w-[300px]  ${
             !isExpand ? "xl:w-[100px] w-[50px]" : "xl:w-[300px] w-[180px]"
           }`}
         >
