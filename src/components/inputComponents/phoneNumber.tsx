@@ -38,15 +38,21 @@ const PhoneNumber = (props: InputTypes) => {
   return (
     <>
       <div className={`flex flex-col p-4 ${classes}`}>
-        <label className={`text-grey pb-1 capitalize `}>
+        <label className={`text-grey  capitalize `}>
           {label ?? ""}
           <span className="text-error">{required ? "*" : ""}</span>
         </label>
-        <div className="flex items-center">
+        <div
+          className={`flex items-center rounded-[5px] ${
+            touched && touched[name] && error && error[name]
+              ? " border-2 border-error "
+              : ""
+          }`}
+        >
           <select
             onChange={changeCountryCode}
             name={countryCodeName ?? ""}
-            className="py-4 px-2 bg-[#FBFBFB] rounded-l-[5px]"
+            className={`py-[0.9rem] px-2 bg-[#FBFBFB] rounded-l-[5px] `}
             value={(value && value[countryCodeName]) ?? ""}
           >
             <option value={"+91"}>+91</option>
@@ -54,7 +60,7 @@ const PhoneNumber = (props: InputTypes) => {
           <input
             className={`w-full px-2 py-3 placeholder-gray-400 placeholder-opacity-25  outline-none rounded-r-[5px] ${
               touched && touched[name] && error && error[name]
-                ? "text-error border-2 border-error"
+                ? "text-error "
                 : ""
             }`}
             placeholder={placeholder ?? "Enter text"}
@@ -63,7 +69,7 @@ const PhoneNumber = (props: InputTypes) => {
             type={type}
             value={(value && value[name]) ?? value}
             onChange={handleChange}
-            style={customStyle}
+            style={{ ...customStyle }}
           />
         </div>
         <span className="text-[10px] my-1 text-error">
