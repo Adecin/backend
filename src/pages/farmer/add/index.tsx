@@ -155,7 +155,7 @@ const AddFarmer = () => {
               }
             }
           )
-          .required("aadhar card is required"),
+          .required("Aadhar card is required"),
   });
 
   // <================ field values ===================>
