@@ -194,7 +194,7 @@ const AssignedTask = ({ data, onClick }: any) => {
             <tr className="">
               <th className="text-grey capitalize text-start my-0 pl-5">{`No`}</th>
               {keys.map((key: string, index: number) => (
-                <th className="py-5 pl-5 text-start my-2" key={key}>
+                <th className="py-5 pl-5 text-start my-2" key={key} style={{}}>
                   <div className={`text-grey capitalize text-start my-0`}>
                     {key.split("_").join(" ")}
                   </div>

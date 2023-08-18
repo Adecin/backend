@@ -133,8 +133,11 @@ export default function OfficerProfileEdit(props: any) {
     relievingDate: Yup.string().required("Relieving Date is required"),
     martialStatus: Yup.string().required("Marital status is required"),
     educationName: Yup.string().required('Education is required'),
-    aadharNo: Yup.string().required("Aadhar Number is required"),
-  });
+    adharNumber: Yup.string()
+      .matches(/^[0-9]+$/, "Must be only digis")
+      .min(12, "Invalid aadhar number")
+      .max(12, "Invalid aadhar number")
+      .required("Aadhar card number is required")});
 
   // formik
   const formik = useFormik({
