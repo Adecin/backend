@@ -22,9 +22,8 @@ import { getState } from "@/redux/reducer/dropdown/get-state";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from '@/redux/reducer/dropdown/get-village';
 import { updateFieldOfficer } from "@/redux/reducer/fieldOfficer/updateFieldOfficer";
-import { unassignFarmerList } from "@/redux/reducer/fieldOfficer/unAssignFarmerList";
 import { assignFarmerList } from '@/redux/reducer/fieldOfficer/assignFarmerList';
-
+import {unassignFarmerList} from "@/redux/reducer/fieldOfficer/unassignFarmerList";
 
 export default function OfficerProfileEdit(props: any) {
   const [farmerPop, setFarmerPop] = useState(false);

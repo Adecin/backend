@@ -19,9 +19,9 @@ import { getState } from "@/redux/reducer/dropdown/get-state";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from '@/redux/reducer/dropdown/get-village';
 import { addFieldOfficer } from "@/redux/reducer/fieldOfficer/addFieldOfficer";
-import { unassignFarmerList } from "@/redux/reducer/fieldOfficer/unAssignFarmerList";
 import { assignFarmerList } from '@/redux/reducer/fieldOfficer/assignFarmerList';
 import { useRouter, usePathname } from "next/navigation";
+import {unassignFarmerList} from "@/redux/reducer/fieldOfficer/unassignFarmerList";
 
 export default function OfficerProfileAdd(props: any) {
   const [farmerPop, setFarmerPop] = useState(false);
