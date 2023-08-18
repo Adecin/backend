@@ -90,21 +90,21 @@ const AddFarmer = () => {
   //<==================== validations ================================>
 
   const ProfileSchemas = Yup.object().shape({
-    name: Yup.string().required("name is required"),
+    name: Yup.string().required("Name is required"),
     TBGRId: Yup.string()
-      .matches(/^[0-9]+$/, "invalid TBGRId")
-      .min(8, "invalid TBGRId")
-      .max(8, "invalid TBGRId")
-      .required("TBGRId  is required"),
-    phoneNo: Yup.number().required("phone number is required"),
+      .matches(/^[0-9]+$/, "Invalid TBGR Id")
+      .min(8, "Invalid TBGR Id")
+      .max(8, "Invalid TBGR Id")
+      .required("TBGR Id  is required"),
+    phoneNo: Yup.number().required("Phone Number is required"),
     age: Yup.string()
-      .matches(/^[0-9]+$/, "invalid age")
-      .required("age is required"),
-    gender: Yup.string().required("gender is required"),
+      .matches(/^[0-9]+$/, "Invalid age")
+      .required("Age is required"),
+    gender: Yup.string().required("Gender is required"),
     farmerId: Yup.string()
-      .matches(/^[A-Z]{4}\d{7}/, "invalid farmer id")
-      .max(11, "invalid farmer id")
-      .required("farmer id is required"),
+      .matches(/^[A-Z]{4}\d{7}/, "Invalid farmer id")
+      .max(11, "Invalid farmer id")
+      .required("Farmer id is required"),
     // address
     address: Yup.string().required("House No or Street Area is required"),
     stateId: Yup.string().required("State is required"),
@@ -118,9 +118,9 @@ const AddFarmer = () => {
 
     // government id proof
     adharNumber: Yup.string()
-      .matches(/^[0-9]+$/, "aadhar number")
-      .min(12, "invalid aadhar number")
-      .max(12, "invalid aadhar number")
+      .matches(/^[0-9]+$/, "Must be only digis")
+      .min(12, "Invalid aadhar number")
+      .max(12, "Invalid aadhar number")
       .required("Aadhar card number is required"),
 
     // images

@@ -121,18 +121,22 @@ export default function OfficerProfileAdd(props: any) {
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       'Enter valid email'
     ),
-    dob: Yup.string().required('dob is required'),
-    gender: Yup.string().required("age is required"),
-    address: Yup.string().required('address is required'),
-    pincode: Yup.string().required('pincode is required'),
-    stateId: Yup.string().required("state is required"),
-    districtId: Yup.string().required("district is required"),
-    villageId: Yup.string().required("village is required"),
+    dob: Yup.string().required('Dob is required'),
+    gender: Yup.string().required("Age is required"),
+    address: Yup.string().required('Address is required'),
+    pincode: Yup.string().required('Pincode is required'),
+    stateId: Yup.string().required("State is required"),
+    districtId: Yup.string().required("District is required"),
+    villageId: Yup.string().required("Village is required"),
     joiningDate: Yup.string().required("Joining Date is required"),
     relievingDate: Yup.string(),
     martialStatus: Yup.string().required("Marital status is required"),
-    educationName: Yup.string().required('educationName is required'),
-    aadharNo: Yup.string().required("Aadhar Number is required"),
+    educationName: Yup.string().required('Education Name is required'),
+    adharNumber: Yup.string()
+      .matches(/^[0-9]+$/, "Must be only digis")
+      .min(12, "Invalid aadhar number")
+      .max(12, "Invalid aadhar number")
+      .required("Aadhar card number is required"),
     profileImage: Yup.mixed()
       .test(
         "Profile image required",
@@ -145,7 +149,7 @@ export default function OfficerProfileAdd(props: any) {
           }
         }
       )
-      .required("Profile image  is required"),
+      .required("Profile image is required"),
     aadharImage: Yup.mixed()
       .test(
         "Aadhar image required",

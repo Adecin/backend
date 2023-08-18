@@ -42,6 +42,7 @@ const EditFarm: any = createSlice({
       state.isLoading = false;
       state.response = payload.data?.data;
       state.Message = payload.data.message;
+      window.alert(payload.data.message)
       state.isSuccess = true;
     });
 
