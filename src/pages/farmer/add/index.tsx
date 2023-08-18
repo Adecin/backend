@@ -34,6 +34,7 @@ const AddFarmer = () => {
   const GetSVillage = useSelector((state: any) => state.ListVillage);
   const farmData = useSelector((state: any) => state.listFarm);
   const addFarmerData = useSelector((state: any) => state.AddFarmer);
+  const editFarmerData = useSelector((state: any) => state.EditFarmer);
   const AddFarm = useSelector((state: any) => state.AddFarm);
   const farmerOneData = useSelector((state: any) => state.listOneFarmer);
 
@@ -663,7 +664,11 @@ const AddFarmer = () => {
                 }}
                 className="bg-primary cursor-pointer text-white px-5 py-2 rounded-[5px]"
               >
-                {farmer_id ? "Update" : "Create"} Profile
+                {addFarmerData.isLoading || editFarmerData.isLoading
+                  ? "Loading..."
+                  : farmer_id
+                  ? "Update Profile"
+                  : "Create Profile"}
               </div>
             </div>
           )}
@@ -740,6 +745,8 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
   const CropList = useSelector((state: any) => state.ListCrop);
+  const AddFarm = useSelector((state: any) => state.AddFarm);
+  const editFarm = useSelector((state: any) => state.EditFarm);
 
   // dropdowns
   const stateDropDown = GetState.response?.data?.map(
@@ -1028,7 +1035,11 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
                 }}
                 className="px-8 cursor-pointer py-3 rounded-[5px] bg-primary text-white"
               >
-                {is_edit ? "Update" : "Save"}
+                {AddFarm.isLoading || editFarm.isLoading
+                  ? "Loading..."
+                  : is_edit
+                  ? "Update"
+                  : "Save"}
               </div>
             </div>
           )}

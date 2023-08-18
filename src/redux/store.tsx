@@ -24,6 +24,7 @@ import ListFormer from "./reducer/farmer/list-former";
 import listOneFarmer from "./reducer/farmer/list-one-farmer";
 import listFarm from "./reducer/farmer/list-farm";
 import EditFarmer from "./reducer/farmer/edit-farmer";
+import EditFarm from "./reducer/farmer/edit-farm";
 
 export const store = configureStore({
   reducer: {
@@ -40,12 +41,13 @@ export const store = configureStore({
     listOneFarmer: listOneFarmer,
     listFarm: listFarm,
     EditFarmer: EditFarmer,
+    EditFarm: EditFarm,
     //fieldOfficer
-    ListFieldOfficerData:ListFieldOfficerData,
-    OneFieldOfficerData:OneFieldOfficerData,
-    AddFieldOfficerData:AddFieldOfficerData,
-    UpdateFieldOfficerData:UpdateFieldOfficerData,
-    
+    ListFieldOfficerData: ListFieldOfficerData,
+    OneFieldOfficerData: OneFieldOfficerData,
+    AddFieldOfficerData: AddFieldOfficerData,
+    UpdateFieldOfficerData: UpdateFieldOfficerData,
+
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware: any) => {
