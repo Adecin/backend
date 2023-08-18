@@ -48,6 +48,11 @@ export default function OfficerProfileEdit(props: any) {
   const unAssignListFarmer = useSelector((store: any) => store.UnassignFarmerListData);
   const assignFarmerListFarmer = useSelector((store: any) => store.AssignFarmerListData);
 
+  const [filterData, setFilterData] = useState({
+    stateFilter: 'all',
+    districtFilter: '',
+    villageFillter: ''
+  });
 
   console.log(assignFarmerListFarmer?.response);
   // dropdowns
@@ -87,6 +92,11 @@ export default function OfficerProfileEdit(props: any) {
     dispatch(getDistrict());
     dispatch(unassignFarmerList(""));
   }, [])
+
+  useEffect(() => {
+    const query = `?village=${filterData.villageFillter}`;
+    dispatch(unassignFarmerList(query));
+  }, [filterData, farmerPop])
 
   useEffect(() => {
     dispatch(oneFieldOfficer(fieldOfficer_id))
@@ -687,30 +697,36 @@ export default function OfficerProfileEdit(props: any) {
                   error={errors}
                 />
                 <SelectMenu
-                   classes={`pt-[1rem]`}
-                   name="villageIds"
-                   labelname="Village"
-                   placeHolderText="Select village"
-                   data={villageDropDown ?? []}
-                   value={values}
-                   handleChange={handleChange}
-                   onblur={handleBlur}
-                   touched={touched}
-                   required={true}
-                   error={errors}
+                  name="villageFillter"
+                  labelname="Village"
+                  placeHolderText="Select village"
+                  data={villageDropDown ?? []}
+                  value={filterData}
+                  handleChange={(e: any) => {
+                    setFilterData({
+                      ...filterData,
+                      villageFillter: e.target.value
+                    })
+                    console.log(e.target.value);
+                  }}
+                  onblur={handleBlur}
+                  touched={touched}
+                  required={true}
+                  error={errors}
                 />
               </div>
               <div className="px-[1rem] flex items-center gap-x-8">
                 <div>
                   <LabelText labelName={`Farmer`} />
-                  <div className="flex gap-x-4 pt-3">
-                    {
+                  <div className="gap-x-4 pt-3">
+                    {assignFarmerListFarmer?.response?.length ?
                       assignFarmerListFarmer?.response?.map((item: any, index: number) => {
                         console.log(item);
                         return (
                           <>
                             <Chip
                               style={{
+                                margin: '5px',
                                 background: "#3D7FFA",
                                 padding: "1.5rem",
                                 borderRadius: "10px",
@@ -722,6 +738,8 @@ export default function OfficerProfileEdit(props: any) {
                           </>
                         )
                       })
+                      :
+                      <p>No Assigned Data</p>
                     }
                     {/* <Chip
                       style={{
@@ -783,7 +801,7 @@ export default function OfficerProfileEdit(props: any) {
               </div>
             </div>
           </div>
-          <div className="bg-[#F4F8FF] w-full p-[1rem]">
+          {/* <div className="bg-[#F4F8FF] w-full p-[1rem]">
             <CustomButton
               startIcon={
                 <svg
@@ -808,7 +826,7 @@ export default function OfficerProfileEdit(props: any) {
                 setFarmerPop(true);
               }}
             />
-          </div>
+          </div> */}
           <div className="flex self-center">
             <CustomButton
               buttonName={`Save Changes`}

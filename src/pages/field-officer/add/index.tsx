@@ -37,17 +37,23 @@ export default function OfficerProfileAdd(props: any) {
   const GetSVillage = useSelector((state: any) => state.ListVillage);
   const addFieldOffData = useSelector((state: any) => state.AddFieldOfficerData);
   const unAssignListFarmer = useSelector((store: any) => store.UnassignFarmerListData);
-  const assignFarmerList = useSelector((store:any) => store.AssignFarmerListData);
+  const assignFarmerListFarmer = useSelector((store: any) => store.AssignFarmerListData);
 
+
+  const [filterData, setFilterData] = useState({
+    stateFilter: 'all',
+    districtFilter: '',
+    villageFillter: ''
+  });
   // console.log(addFieldOffData);
   // console.log(unAssignListFarmer);
 
-  useEffect(() => {
-    console.log(addFieldOffData);
-    if (addFieldOffData.response.id) {
+  // useEffect(() => {
+  //   console.log(addFieldOffData);
+  //   if (addFieldOffData.response.id) {
 
-    }
-  }, [addFieldOffData])
+  //   }
+  // }, [addFieldOffData])
 
   // useEffects
   useEffect(() => {
@@ -57,6 +63,15 @@ export default function OfficerProfileAdd(props: any) {
     dispatch(unassignFarmerList(""));
   }, []);
 
+
+  useEffect(() => {
+    const query = `?village=${filterData.villageFillter}`;
+    dispatch(unassignFarmerList(query));
+  }, [filterData, farmerPop])
+
+  useEffect(() => {
+    dispatch(assignFarmerList(`?id=${addFieldOffData.response.id}`))
+  }, [addFieldOffData, farmerPop])
 
   const stateDropDown = GetState.response?.data?.map(
     (e: any, index: number) => {
@@ -717,63 +732,61 @@ export default function OfficerProfileAdd(props: any) {
                   placeHolderText={"Select"}
                 />
                 <SelectMenu
-                  //readOnly={!profileCreated}
-                  labelname={"State name"}
-                  name={""}
-                  data={[]}
-                  handleChange={undefined}
-                  value={undefined}
-                  placeHolderText={"Select"}
+                  name="districtIds"
+                  labelname="District"
+                  placeHolderText="Select district"
+                  data={districtDropDown ?? []}
+                  value={values}
+                  handleChange={handleChange}
+                  onblur={handleBlur}
+                  touched={touched}
+                  required={true}
+                  error={errors}
                 />
                 <SelectMenu
-                  //readOnly={!profileCreated}
-                  labelname={"Village"}
-                  name={""}
-                  data={[]}
-                  handleChange={undefined}
-                  value={undefined}
-                  placeHolderText={"Select"}
+                  name="villageFillter"
+                  labelname="Village"
+                  placeHolderText="Select village"
+                  data={villageDropDown ?? []}
+                  value={filterData}
+                  handleChange={(e: any) => {
+                    setFilterData({
+                      ...filterData,
+                      villageFillter: e.target.value
+                    })
+                    console.log(e.target.value);
+                  }}
+                  onblur={handleBlur}
+                  touched={touched}
+                  required={true}
+                  error={errors}
                 />
               </div>
               <div className="px-[1rem]">
                 <LabelText labelName={`Farmer`} />
-                <div className="flex gap-x-4 pt-3">
-                  <Chip
-                    sx={{
-                      "&.css-50y8m9-MuiButtonBase-root-MuiChip-root .MuiChip-deleteIcon":
-                      {
-                        color: "#ffffff",
-                      },
-                    }}
-                    style={{
-                      background: "#3D7FFA",
-                      padding: "1.5rem",
-                      borderRadius: "10px",
-                      color: "#fff",
-                    }}
-                    label="DTC0001"
-                    onDelete={() => { }}
-                  />
-                  <Chip
-                    style={{
-                      background: "#3D7FFA",
-                      padding: "1.5rem",
-                      borderRadius: "10px",
-                      color: "#fff",
-                    }}
-                    label="DTC0001"
-                    onDelete={() => { }}
-                  />
-                  <Chip
-                    style={{
-                      background: "#3D7FFA",
-                      padding: "1.5rem",
-                      borderRadius: "10px",
-                      color: "#fff",
-                    }}
-                    label="DTC0001"
-                    onDelete={() => { }}
-                  />
+                <div className="gap-x-4 pt-3">
+                  {assignFarmerListFarmer?.response?.length ?
+                    assignFarmerListFarmer?.response?.map((item: any, index: number) => {
+                      console.log(item);
+                      return (
+                        <>
+                          <Chip
+                            style={{
+                              margin: '5px',
+                              background: "#3D7FFA",
+                              padding: "1.5rem",
+                              borderRadius: "10px",
+                              color: "#fff",
+                            }}
+                            label={item.farmerId.farmerId}
+                            onDelete={() => { }}
+                          />
+                        </>
+                      )
+                    })
+                    :
+                    <p>No Assigned Data</p>
+                  }
                 </div>
                 <CustomButton
                   //disable={!profileCreated}
@@ -804,7 +817,7 @@ export default function OfficerProfileAdd(props: any) {
               </div>
             </div>
           </div>
-          <div className="bg-[#F4F8FF] w-full p-[1rem]">
+          {/* <div className="bg-[#F4F8FF] w-full p-[1rem]">
             <CustomButton
               //disable={!profileCreated}
               startIcon={
@@ -830,7 +843,7 @@ export default function OfficerProfileAdd(props: any) {
                 setFarmerPop(true);
               }}
             />
-          </div>
+          </div> */}
         </div>)}
         {addFieldOffData.response.id && (<div className="flex self-center">
           <CustomButton
