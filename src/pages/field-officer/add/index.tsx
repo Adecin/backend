@@ -132,7 +132,7 @@ export default function OfficerProfileAdd(props: any) {
     relievingDate: Yup.string(),
     martialStatus: Yup.string().required("Marital status is required"),
     educationName: Yup.string().required('Education Name is required'),
-    adharNumber: Yup.string()
+    aadharNo: Yup.string()
       .matches(/^[0-9]+$/, "Must be only digis")
       .min(12, "Invalid aadhar number")
       .max(12, "Invalid aadhar number")
