@@ -24,6 +24,10 @@ import ListFormer from "./reducer/farmer/list-former";
 import listOneFarmer from "./reducer/farmer/list-one-farmer";
 import listFarm from "./reducer/farmer/list-farm";
 import EditFarmer from "./reducer/farmer/edit-farmer";
+import UnassignFarmerListData from "./reducer/fieldOfficer/unassignFarmerList";
+import AssignFarmerData from "./reducer/fieldOfficer/addFieldOfficer";
+import AssignFarmerListData from "./reducer/fieldOfficer/assignFarmerList";
+import EditFarm from "./reducer/farmer/edit-farm";
 
 export const store = configureStore({
   reducer: {

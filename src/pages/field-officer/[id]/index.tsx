@@ -147,7 +147,7 @@ export default function OfficerProfile(props: any) {
           >
             <p
               style={{ maxWidth: "422px" }}
-            >{`${getOneFieldData.address ? (getOneFieldData.address + `, `) : ``} ${getOneFieldData.villageId.name ? (getOneFieldData.villageId.name + `, `) : ``} ${getOneFieldData.districtId.name ? (getOneFieldData.districtId.name + `, `) : ``} ${getOneFieldData.stateId.name ? (getOneFieldData.stateId.name + `, `) : ``} ${getOneFieldData.pincode ? (`-` + getOneFieldData.pincode + `, `) : ``}`}</p>
+            >{`${getOneFieldData.address ? (getOneFieldData.address + `, `) : ``} ${getOneFieldData?.villageId?.name ? (getOneFieldData?.villageId?.name + `, `) : ``} ${getOneFieldData?.districtId?.name ? (getOneFieldData?.districtId?.name + `, `) : ``} ${getOneFieldData?.stateId?.name ? (getOneFieldData?.stateId?.name + `, `) : ``} ${getOneFieldData?.pincode ? (`-` + getOneFieldData?.pincode + `, `) : ``}`}</p>
           </div>
         </div>
         <div className="idDocuments my-2">
