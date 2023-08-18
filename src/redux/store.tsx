@@ -44,11 +44,15 @@ export const store = configureStore({
     listOneFarmer: listOneFarmer,
     listFarm: listFarm,
     EditFarmer: EditFarmer,
+    EditFarm: EditFarm,
     //fieldOfficer
     ListFieldOfficerData:ListFieldOfficerData,
     OneFieldOfficerData:OneFieldOfficerData,
     AddFieldOfficerData:AddFieldOfficerData,
     UpdateFieldOfficerData:UpdateFieldOfficerData,
+    UnassignFarmerListData:UnassignFarmerListData,
+    AssignFarmerData:AssignFarmerData,
+    AssignFarmerListData:AssignFarmerListData,
     
     [baseApi.reducerPath]: baseApi.reducer,
   },
