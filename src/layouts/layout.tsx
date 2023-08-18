@@ -11,6 +11,8 @@ const roboto = Roboto({ weight: "400", subsets: ["latin"] });
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathName = usePathname();
 
+  const noSlide = [`/login`, `/farmer/add`,`/field-officer/add`, `/field-officer/edit`]
+
   return (
     <div className={roboto.className}>
       {/* <div>
@@ -18,7 +20,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div> */}
       <div className="flex w-[100%] h-[100vh]">
         <div className="h-[100%] overflow-hidden">
-          {pathName === `/login` ? "" : <Sidebar />}
+          {noSlide.includes(pathName) ? "" : <Sidebar />}
         </div>
         <div
           className="w-[100%]  h-[100vh]"

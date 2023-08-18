@@ -155,7 +155,7 @@ const AddFarmer = () => {
               }
             }
           )
-          .required("aadhar card is required"),
+          .required("Aadhar card is required"),
   });
 
   // <================ field values ===================>
@@ -232,8 +232,8 @@ const AddFarmer = () => {
   }: any = formik;
 
   return (
-    <>
-      <div className="p-5">
+    <div className="flex mx-auto">
+      <div className="p-5 mx-auto">
         <div className="">
           <BreadCrumb lastName={farmer_id ? "Edit" : ""} />
         </div>
@@ -378,7 +378,7 @@ const AddFarmer = () => {
                         id: "MALE",
                       },
                       {
-                        name: "FeMale",
+                        name: "Female",
                         id: "FEMALE",
                       },
                     ]}
@@ -733,7 +733,7 @@ const AddFarmer = () => {
           )}
         </div>
       </div>
-    </>
+      </div>
   );
 };
 export default AddFarmer;

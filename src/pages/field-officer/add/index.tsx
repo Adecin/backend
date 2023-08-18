@@ -92,12 +92,12 @@ export default function OfficerProfileAdd(props: any) {
 
   const marriedDropDown = [
     {
-      id: "Married",
-      name: "Married",
+    id: "Single",
+    name: "Single",
     },
     {
-      id: "UnMarried",
-      name: "UnMarried",
+      id: "Married",
+      name: "Married",
     },
     {
       id: "Divorced",
