@@ -244,7 +244,7 @@ const AddFarmer = () => {
             <div>
               <div className="text-text my-4 text-[16px]">Personal Info</div>
             </div>
-            <div className="max-w-[1200px] bg-lblue  rounded-[10px] flex">
+            <div className="max-w-[1200px] bg-lblue  rounded-[10px] flex p-[2rem]">
               {/* profile */}
               <div className="p-5 relative w-[180px] max-w-[150px] h-[180px]">
                 <div className="text-grey text-[16px] my-2">
@@ -290,7 +290,7 @@ const AddFarmer = () => {
                     />
                   </svg>
                 </div>
-                <div className="p-5 pt-0 text-[10px] text-error">
+                <div className="py-5 px-0 text-[10px] text-error">
                   {touched?.profileImage && errors?.profileImage
                     ? errors?.profileImage ?? ""
                     : ""}

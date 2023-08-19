@@ -47,12 +47,6 @@ export default function SelectMenu(props: propsType) {
     background,
   } = props;
 
-  const ErrorMsgContainer = styled.div`
-    color: red;
-    font-size: 0.9em;
-    padding-left: 0.5rem;
-  `;
-
   const StyledDropdown = muStyled(Select)`
     background:${background ? "var(--light-blue)" : "white"};
     border: none;
@@ -72,7 +66,6 @@ export default function SelectMenu(props: propsType) {
         {labelname ?? ""}{" "}
         {required ? <span className="text-error">*</span> : ""}{" "}
       </label>
-      <FormControl className="w-full">
         {/* <DropdownLabel id="helper-label">{labelname}</DropdownLabel> */}
         <StyledDropdown
           className="outline-none border-none"
@@ -122,15 +115,14 @@ export default function SelectMenu(props: propsType) {
               );
             })}
         </StyledDropdown>
-      </FormControl>
-      <ErrorMsgContainer
+      <div
         style={{
           marginBottom: "1rem",
         }}
-        className="text-error text-[10px]"
+        className="text-error text-[10px] pl-[0.5rem]"
       >
         {touched[name] && error[name] ? error[name] : ""}
-      </ErrorMsgContainer>
+      </div>
     </div>
   );
 }

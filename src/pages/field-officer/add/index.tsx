@@ -249,22 +249,6 @@ export default function OfficerProfileAdd(props: any) {
     setFieldError,
   }: any = formik;
 
-  const PageHeader = styled.p`
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 21px;
-    letter-spacing: 0.05em;
-    text-align: left;
-    &::before {
-      content: "<";
-      color: #3d7ffa;
-      font-size: 22px;
-      padding: 10px;
-    }
-  `;
-  const pathName = usePathname();
-  console.log(`pathName`,pathName)
-
   return (
     <div className="p-[3rem] mx-[3rem]">
       <BreadCrumb lastName="Add field officer" />
@@ -316,7 +300,7 @@ export default function OfficerProfileAdd(props: any) {
                     />
                   </svg>
                 </div>
-                <div className="p-5 pt-0 text-[10px] text-error">
+                <div className="py-5 px-0 text-[10px] text-error">
                   {touched?.profileImage && errors?.profileImage
                     ? errors?.profileImage ?? ""
                     : ""}
