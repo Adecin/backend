@@ -19,7 +19,7 @@ export default function ForegetPasswordComp(props: any) {
 
     const formik = useFormik({
         initialValues: {
-            emailId: "",
+            phoneNo: "",
         },
         validationSchema: SignInSchema,
         onSubmit: (values) => {
