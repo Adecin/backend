@@ -2,17 +2,51 @@ import CustomButton from "@/components/customButton";
 import SelectMenu from "@/components/inputComponents/selectMenu";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { useState } from "react";
+import { assignFarmer } from "@/redux/reducer/fieldOfficer/assignFarmer";
+import { useDispatch, useSelector } from "react-redux";
 
 const selectOptions = [{ id: 1, name: "Select by farmer Id" }];
 
 const Options = [
   { id: 1, name: "Select by farmer Name" },
-  { id: 2, name: "Select by farmer Id" }
+  { id: 2, name: "Select by farmer Id" },
 ];
 
 export default function FarmerList(props: any) {
-  const { onClose, data } = props;
-  //const [selectBy, setSelectBy] = useState(selectOptions[0]);
+  const { onClose, data, fieldOfficerId } = props;
+  // const [selectBy, setSelectBy] = useState(selectOptions[0]);
+  const [dataType, setDataType] = useState("name");
+  const [farmerTypeValue, setFarmerTypeValue] = useState({ farmer: 1 });
+  const [checkedItems, setCheckedItems] = useState(new Set());
+  const dispatch = useDispatch();
+
+  const handleCheckboxChange = (item: any) => {
+    const updatedCheckedItems = new Set(checkedItems);
+
+    if (updatedCheckedItems.has(item)) {
+      updatedCheckedItems.delete(item);
+    } else {
+      updatedCheckedItems.add(item);
+    }
+    setCheckedItems(updatedCheckedItems);
+  };
+
+  const handleSaveClick = () => {
+    const selectedData = data?.filter((item: any, index: any) =>
+      checkedItems.has(index)
+    );
+    const selectedIds = selectedData.map((item: any) => item.id);
+    console.log(selectedIds);
+    const assignData = {
+      technicianId: fieldOfficerId,
+      farmerId: selectedIds,
+    };
+    dispatch(assignFarmer(assignData));
+    onClose();
+  };
+
+  console.log(data);
+  console.log("fieldOfficerId", fieldOfficerId);
 
   return (
     <div className="">
@@ -25,9 +59,12 @@ export default function FarmerList(props: any) {
               color: "white",
               fontSize: "1.1rem",
             }}
-            value={(e: any)=>{e.target.name}}
+            value={farmerTypeValue}
             name="farmer"
-            handleChange={() => {}}
+            handleChange={(e: any) => {
+              setFarmerTypeValue({ farmer: e.target.value });
+              e.target.value === 1 ? setDataType("name") : setDataType("id");
+            }}
             placeHolderText="select by farmer name"
             data={Options}
           />
@@ -53,8 +90,13 @@ export default function FarmerList(props: any) {
             return (
               <FormControlLabel
                 key={index}
-                control={<Checkbox />}
-                label={item.name}
+                control={
+                  <Checkbox
+                    checked={checkedItems.has(index)}
+                    onChange={() => handleCheckboxChange(index)}
+                  />
+                }
+                label={dataType === "name" ? item.name : item.farmerId}
               />
             );
           })}
@@ -70,6 +112,7 @@ export default function FarmerList(props: any) {
             classes={` w-[107px]`}
             buttonName={`Save`}
             customStyle={{ background: "#3D7FFA" }}
+            handleOnClick={handleSaveClick}
           />
         </div>
       </div>
