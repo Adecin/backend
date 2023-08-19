@@ -74,12 +74,12 @@ const AddFarmer = () => {
   );
   const marriedDropDown = [
     {
-      id: "Married",
-      name: "Married",
+      id: "Single",
+      name: "Single",
     },
     {
-      id: "UnMarried",
-      name: "UnMarried",
+      id: "Married",
+      name: "Married",
     },
     {
       id: "Divorced",
@@ -90,37 +90,37 @@ const AddFarmer = () => {
   //<==================== validations ================================>
 
   const ProfileSchemas = Yup.object().shape({
-    name: Yup.string().required("name is required"),
+    name: Yup.string().required("Name is required"),
     TBGRId: Yup.string()
-      .matches(/^[0-9]+$/, "invalid TBGRId")
-      .min(8, "invalid TBGRId")
-      .max(8, "invalid TBGRId")
-      .required("TBGRId  is required"),
-    phoneNo: Yup.number().required("phone number is required"),
+      .matches(/^[0-9]+$/, "Invalid TBGR Id")
+      .min(8, "Invalid TBGR Id")
+      .max(8, "Invalid TBGR Id")
+      .required("TBGR Id  is required"),
+    phoneNo: Yup.number().required("Phone Number is required"),
     age: Yup.string()
-      .matches(/^[0-9]+$/, "invalid age")
-      .required("age is required"),
-    gender: Yup.string().required("gender is required"),
+      .matches(/^[0-9]+$/, "Invalid age")
+      .required("Age is required"),
+    gender: Yup.string().required("Gender is required"),
     farmerId: Yup.string()
-      .matches(/^[A-Z]{4}\d{7}/, "invalid farmer id")
-      .max(11, "invalid farmer id")
-      .required("farmer id is required"),
+      .matches(/^[A-Z]{4}\d{7}/, "Invalid farmer id")
+      .max(11, "Invalid farmer id")
+      .required("Farmer id is required"),
     // address
-    address: Yup.string().required("house no or street area is required"),
-    stateId: Yup.string().required("state is required"),
-    districtId: Yup.string().required("district is required"),
-    villageId: Yup.string().required("village is required"),
+    address: Yup.string().required("House No or Street Area is required"),
+    stateId: Yup.string().required("State is required"),
+    districtId: Yup.string().required("District is required"),
+    villageId: Yup.string().required("Village is required"),
     pincode: Yup.number()
-      .typeError("invalid pin code")
-      .required("pincode is required"),
+      .typeError("Invalid pincode")
+      .required("Pincode is required"),
     // family info
     martialStatus: Yup.string().required("Marital status is required"),
 
     // government id proof
     adharNumber: Yup.string()
-      .matches(/^[0-9]+$/, "aadhar number")
-      .min(12, "invalid aadhar number")
-      .max(12, "invalid aadhar number")
+      .matches(/^[0-9]+$/, "Must be only digis")
+      .min(12, "Invalid aadhar number")
+      .max(12, "Invalid aadhar number")
       .required("Aadhar card number is required"),
 
     // images
@@ -155,7 +155,7 @@ const AddFarmer = () => {
               }
             }
           )
-          .required("aadhar card is required"),
+          .required("Aadhar card is required"),
   });
 
   // <================ field values ===================>
@@ -232,8 +232,8 @@ const AddFarmer = () => {
   }: any = formik;
 
   return (
-    <>
-      <div className="p-5">
+    <div className="flex mx-auto">
+      <div className="p-5 mx-auto">
         <div className="">
           <BreadCrumb lastName={farmer_id ? "Edit" : ""} />
         </div>
@@ -244,7 +244,7 @@ const AddFarmer = () => {
             <div>
               <div className="text-text my-4 text-[16px]">Personal Info</div>
             </div>
-            <div className="max-w-[1200px] bg-lblue  rounded-[10px] flex">
+            <div className="max-w-[1200px] bg-lblue  rounded-[10px] flex p-[2rem]">
               {/* profile */}
               <div className="p-5 relative w-[180px] max-w-[150px] h-[180px]">
                 <div className="text-grey text-[16px] my-2">
@@ -290,7 +290,7 @@ const AddFarmer = () => {
                     />
                   </svg>
                 </div>
-                <div className="p-5 pt-0 text-[10px] text-error">
+                <div className="py-5 px-0 text-[10px] text-error">
                   {touched?.profileImage && errors?.profileImage
                     ? errors?.profileImage ?? ""
                     : ""}
@@ -378,7 +378,7 @@ const AddFarmer = () => {
                         id: "MALE",
                       },
                       {
-                        name: "FeMale",
+                        name: "Female",
                         id: "FEMALE",
                       },
                     ]}
@@ -528,7 +528,7 @@ const AddFarmer = () => {
                       />
                     </div>
                   </div>
-                  <div className="px-3 text-grey">children</div>
+                  <div className="px-3 text-text font-medium mx-1">Children</div>
                   <div className="flex">
                     <div className="pt-2 w-full">
                       <SelectMenu
@@ -733,7 +733,7 @@ const AddFarmer = () => {
           )}
         </div>
       </div>
-    </>
+      </div>
   );
 };
 export default AddFarmer;

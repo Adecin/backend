@@ -259,7 +259,7 @@ const ListFieldOfficer = () => {
         />
       ),
       farmer_id: e.farmerId,
-      Name: e.name,
+      Name:e.name,
       regulation: (
         <div>
           <div className="flex items-center">
@@ -744,7 +744,7 @@ const Dialogs = ({ closePopUp }: any) => {
 const FieldOfficerFilter = () => {
   return (
     <>
-      <div className="grid grid-cols-2 mb-6">
+      <div className="grid grid-cols-2 mb-6 mt-6">
         <div className="w-[350px] px-3">
           <SelectMenu
             name="survey"

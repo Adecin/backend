@@ -19,8 +19,9 @@ import { getState } from "@/redux/reducer/dropdown/get-state";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from '@/redux/reducer/dropdown/get-village';
 import { addFieldOfficer } from "@/redux/reducer/fieldOfficer/addFieldOfficer";
-import { unassignFarmerList } from "@/redux/reducer/fieldOfficer/unAssignFarmerList";
 import { assignFarmerList } from '@/redux/reducer/fieldOfficer/assignFarmerList';
+import { useRouter, usePathname } from "next/navigation";
+import {unassignFarmerList} from "@/redux/reducer/fieldOfficer/unassignFarmerList";
 
 export default function OfficerProfileAdd(props: any) {
   const [farmerPop, setFarmerPop] = useState(false);
@@ -37,17 +38,23 @@ export default function OfficerProfileAdd(props: any) {
   const GetSVillage = useSelector((state: any) => state.ListVillage);
   const addFieldOffData = useSelector((state: any) => state.AddFieldOfficerData);
   const unAssignListFarmer = useSelector((store: any) => store.UnassignFarmerListData);
-  const assignFarmerList = useSelector((store:any) => store.AssignFarmerListData);
+  const assignFarmerListFarmer = useSelector((store: any) => store.AssignFarmerListData);
 
+
+  const [filterData, setFilterData] = useState({
+    stateFilter: 'all',
+    districtFilter: '',
+    villageFillter: ''
+  });
   // console.log(addFieldOffData);
   // console.log(unAssignListFarmer);
 
-  useEffect(() => {
-    console.log(addFieldOffData);
-    if (addFieldOffData.response.id) {
+  // useEffect(() => {
+  //   console.log(addFieldOffData);
+  //   if (addFieldOffData.response.id) {
 
-    }
-  }, [addFieldOffData])
+  //   }
+  // }, [addFieldOffData])
 
   // useEffects
   useEffect(() => {
@@ -57,6 +64,15 @@ export default function OfficerProfileAdd(props: any) {
     dispatch(unassignFarmerList(""));
   }, []);
 
+
+  useEffect(() => {
+    const query = `?village=${filterData.villageFillter}`;
+    dispatch(unassignFarmerList(query));
+  }, [filterData, farmerPop])
+
+  useEffect(() => {
+    dispatch(assignFarmerList(`?id=${addFieldOffData.response.id}`))
+  }, [addFieldOffData, farmerPop])
 
   const stateDropDown = GetState.response?.data?.map(
     (e: any, index: number) => {
@@ -76,12 +92,12 @@ export default function OfficerProfileAdd(props: any) {
 
   const marriedDropDown = [
     {
-      id: "Married",
-      name: "Married",
+    id: "Single",
+    name: "Single",
     },
     {
-      id: "UnMarried",
-      name: "UnMarried",
+      id: "Married",
+      name: "Married",
     },
     {
       id: "Divorced",
@@ -106,17 +122,21 @@ export default function OfficerProfileAdd(props: any) {
       'Enter valid email'
     ),
     dob: Yup.string().required('Dob is required'),
-    gender: Yup.string().required("Gender is required"),
+    gender: Yup.string().required("Age is required"),
     address: Yup.string().required('Address is required'),
     pincode: Yup.string().required('Pincode is required'),
     stateId: Yup.string().required("State is required"),
     districtId: Yup.string().required("District is required"),
     villageId: Yup.string().required("Village is required"),
     joiningDate: Yup.string().required("Joining Date is required"),
-    relievingDate: Yup.string().required("Relieving Date is required"),
+    relievingDate: Yup.string(),
     martialStatus: Yup.string().required("Marital status is required"),
-    educationName: Yup.string().required('Education is required'),
-    aadharNo: Yup.string().required("Aadhar Number is required"),
+    educationName: Yup.string().required('Education Name is required'),
+    aadharNo: Yup.string()
+      .matches(/^[0-9]+$/, "Must be only digis")
+      .min(12, "Invalid aadhar number")
+      .max(12, "Invalid aadhar number")
+      .required("Aadhar card number is required"),
     profileImage: Yup.mixed()
       .test(
         "Profile image required",
@@ -129,7 +149,7 @@ export default function OfficerProfileAdd(props: any) {
           }
         }
       )
-      .required("Profile image  is required"),
+      .required("Profile image is required"),
     aadharImage: Yup.mixed()
       .test(
         "Aadhar image required",
@@ -213,6 +233,8 @@ export default function OfficerProfileAdd(props: any) {
     dispatch(addFieldOfficer(apiFormData));
   };
 
+  console.log(`state`,addFieldOffData)
+
   const {
     values,
     handleBlur,
@@ -227,22 +249,8 @@ export default function OfficerProfileAdd(props: any) {
     setFieldError,
   }: any = formik;
 
-  const PageHeader = styled.p`
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 21px;
-    letter-spacing: 0.05em;
-    text-align: left;
-    &::before {
-      content: "<";
-      color: #3d7ffa;
-      font-size: 22px;
-      padding: 10px;
-    }
-  `;
-
   return (
-    <div className="p-[3rem]">
+    <div className="p-[3rem] mx-[3rem]">
       <BreadCrumb lastName="Add field officer" />
       <div className="py-[3rem]  flex flex-col gap-y-8">
         <div className="profileInfo">
@@ -292,7 +300,7 @@ export default function OfficerProfileAdd(props: any) {
                     />
                   </svg>
                 </div>
-                <div className="p-5 pt-0 text-[10px] text-error">
+                <div className="py-5 px-0 text-[10px] text-error">
                   {touched?.profileImage && errors?.profileImage
                     ? errors?.profileImage ?? ""
                     : ""}
@@ -413,9 +421,9 @@ export default function OfficerProfileAdd(props: any) {
               data={stateDropDown ?? []}
               value={values}
               handleChange={(e: any) => {
-                dispatch(getDistrict("?stateId=" + e.target.value));
-                setFieldValue("stateId", e.target.value);
-              }}
+                 dispatch(getDistrict("?stateId=" + e.target.value));
+                 setFieldValue("stateId", e.target.value);
+               }}
               onblur={handleBlur}
               touched={touched}
               required={true}
@@ -429,9 +437,9 @@ export default function OfficerProfileAdd(props: any) {
               data={districtDropDown ?? []}
               value={values}
               handleChange={(e: any) => {
-                dispatch(getDistrict("?districtId=" + e.target.value));
-                setFieldValue("districtId", e.target.value);
-              }}
+                 dispatch(getDistrict("?districtId=" + e.target.value));
+                 setFieldValue("districtId", e.target.value);
+               }}
               onblur={handleBlur}
               touched={touched}
               required={true}
@@ -464,7 +472,7 @@ export default function OfficerProfileAdd(props: any) {
           </div>
         </div>
         <div className="flex justify-between gap-x-8">
-          <div className="w-[65%]">
+          <div className="w-[100%]">
             <HeaderText text={`Start and relieving date`} />
             <div className="bg-[#F4F8FF] w-full flex mt-[1rem] px-[2rem] py-[1rem]">
               <div className="w-full">
@@ -672,11 +680,11 @@ export default function OfficerProfileAdd(props: any) {
                   onClick={() => {
                     aadhar.current.click();
                   }}
-                  className="text-primary underline cursor-pointer"
+                  className="text-primary underline cursor-pointer ml-8"
                 >
                   Upload Aadhar*{" "}
                 </div>
-                <span className="text-grey  underline-none">
+                <span className="text-grey  underline-none mr-8">
                   &nbsp;(file format pdf,word,image)*
                 </span>
               </div>
@@ -717,63 +725,61 @@ export default function OfficerProfileAdd(props: any) {
                   placeHolderText={"Select"}
                 />
                 <SelectMenu
-                  //readOnly={!profileCreated}
-                  labelname={"State name"}
-                  name={""}
-                  data={[]}
-                  handleChange={undefined}
-                  value={undefined}
-                  placeHolderText={"Select"}
+                  name="districtIds"
+                  labelname="District"
+                  placeHolderText="Select district"
+                  data={districtDropDown ?? []}
+                  value={values}
+                  handleChange={handleChange}
+                  onblur={handleBlur}
+                  touched={touched}
+                  required={true}
+                  error={errors}
                 />
                 <SelectMenu
-                  //readOnly={!profileCreated}
-                  labelname={"Village"}
-                  name={""}
-                  data={[]}
-                  handleChange={undefined}
-                  value={undefined}
-                  placeHolderText={"Select"}
+                  name="villageFillter"
+                  labelname="Village"
+                  placeHolderText="Select village"
+                  data={villageDropDown ?? []}
+                  value={filterData}
+                  handleChange={(e: any) => {
+                    setFilterData({
+                      ...filterData,
+                      villageFillter: e.target.value
+                    })
+                    console.log(e.target.value);
+                  }}
+                  onblur={handleBlur}
+                  touched={touched}
+                  required={true}
+                  error={errors}
                 />
               </div>
               <div className="px-[1rem]">
                 <LabelText labelName={`Farmer`} />
-                <div className="flex gap-x-4 pt-3">
-                  <Chip
-                    sx={{
-                      "&.css-50y8m9-MuiButtonBase-root-MuiChip-root .MuiChip-deleteIcon":
-                      {
-                        color: "#ffffff",
-                      },
-                    }}
-                    style={{
-                      background: "#3D7FFA",
-                      padding: "1.5rem",
-                      borderRadius: "10px",
-                      color: "#fff",
-                    }}
-                    label="DTC0001"
-                    onDelete={() => { }}
-                  />
-                  <Chip
-                    style={{
-                      background: "#3D7FFA",
-                      padding: "1.5rem",
-                      borderRadius: "10px",
-                      color: "#fff",
-                    }}
-                    label="DTC0001"
-                    onDelete={() => { }}
-                  />
-                  <Chip
-                    style={{
-                      background: "#3D7FFA",
-                      padding: "1.5rem",
-                      borderRadius: "10px",
-                      color: "#fff",
-                    }}
-                    label="DTC0001"
-                    onDelete={() => { }}
-                  />
+                <div className="gap-x-4 pt-3">
+                  {assignFarmerListFarmer?.response?.length ?
+                    assignFarmerListFarmer?.response?.map((item: any, index: number) => {
+                      console.log(item);
+                      return (
+                        <>
+                          <Chip
+                            style={{
+                              margin: '5px',
+                              background: "#3D7FFA",
+                              padding: "1.5rem",
+                              borderRadius: "10px",
+                              color: "#fff",
+                            }}
+                            label={item.farmerId.farmerId}
+                            onDelete={() => { }}
+                          />
+                        </>
+                      )
+                    })
+                    :
+                    <p>No Assigned Data</p>
+                  }
                 </div>
                 <CustomButton
                   //disable={!profileCreated}
@@ -804,7 +810,7 @@ export default function OfficerProfileAdd(props: any) {
               </div>
             </div>
           </div>
-          <div className="bg-[#F4F8FF] w-full p-[1rem]">
+          {/* <div className="bg-[#F4F8FF] w-full p-[1rem]">
             <CustomButton
               //disable={!profileCreated}
               startIcon={
@@ -830,7 +836,7 @@ export default function OfficerProfileAdd(props: any) {
                 setFarmerPop(true);
               }}
             />
-          </div>
+          </div> */}
         </div>)}
         {addFieldOffData.response.id && (<div className="flex self-center">
           <CustomButton

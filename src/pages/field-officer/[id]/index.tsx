@@ -147,7 +147,7 @@ export default function OfficerProfile(props: any) {
           >
             <p
               style={{ maxWidth: "422px" }}
-            >{`${getOneFieldData.address}, ${getOneFieldData.villageId?.name}, ${getOneFieldData.districtId?.name}, ${getOneFieldData.stateId?.name} - ${getOneFieldData.pincode}`}</p>
+            >{`${getOneFieldData.address ? (getOneFieldData.address + `, `) : ``} ${getOneFieldData?.villageId?.name ? (getOneFieldData?.villageId?.name + `, `) : ``} ${getOneFieldData?.districtId?.name ? (getOneFieldData?.districtId?.name + `, `) : ``} ${getOneFieldData?.stateId?.name ? (getOneFieldData?.stateId?.name + `, `) : ``} ${getOneFieldData?.pincode ? (`-` + getOneFieldData?.pincode + `, `) : ``}`}</p>
           </div>
         </div>
         <div className="idDocuments my-2">
@@ -157,7 +157,7 @@ export default function OfficerProfile(props: any) {
             className="px-8 py-8 mt-[1rem] w-[228px] rounded-[10px] flex flex-col gap-y-2"
           >
             <LabelText labelName={`Aadhar No`} />
-            <p>{getOneFieldData.aadharNo}</p>
+            <p>{getOneFieldData.user_aadharNo ?? <span className="text-center font-normal ml-6">{`--`}</span>}</p>
             <Link
               href={`${getOneFieldData.aadharImage}`}
               target="_blank"
@@ -170,7 +170,7 @@ export default function OfficerProfile(props: any) {
                 lineHeight: "21px",
                 letterSpacing: "0.05em",
                 textAlign: "left",
-                textDecoration:"underline"
+                textDecoration: "underline"
               }}
             >{`${getOneFieldData.name}.pdf`}</Link>
           </div>
@@ -194,7 +194,7 @@ const AssignedTask = ({ data, onClick }: any) => {
             <tr className="">
               <th className="text-grey capitalize text-start my-0 pl-5">{`No`}</th>
               {keys.map((key: string, index: number) => (
-                <th className="py-5 pl-5 text-start my-2" key={key}>
+                <th className="py-5 pl-5 text-start my-2" key={key} style={{}}>
                   <div className={`text-grey capitalize text-start my-0`}>
                     {key.split("_").join(" ")}
                   </div>
@@ -212,11 +212,11 @@ const AssignedTask = ({ data, onClick }: any) => {
 
                   const taskStatus = () => {
                     let status = ``;
-                    if (key == `status` && item[key] == `completed`) {
-                      status = `completed`;
+                    if (key == `status` && item[key] == `Completed`) {
+                      status = `Completed`;
                       return status;
-                    } else if (key == `status` && item[key] == `pending`) {
-                      status = `pending`;
+                    } else if (key == `status` && item[key] == `Pending`) {
+                      status = `Pending`;
                       return status;
                     }
                   };
@@ -226,7 +226,7 @@ const AssignedTask = ({ data, onClick }: any) => {
                         <div
                           className="text-text font-[500]"
                           style={
-                            taskStatus() == `completed`
+                            taskStatus() == `Completed`
                               ? { color: `#70B10E` }
                               : taskStatus() == `pending`
                                 ? { color: "red" }
@@ -332,7 +332,7 @@ const SurveyComponent = (props: any) => {
           <div className="w-full">
             <SelectMenu
               fieldStyle={{ background: "#F4F8FF" }}
-              labelname={"Farmer Id"}
+              labelname={"Farmer ID"}
               name={""}
               data={[]}
               handleChange={undefined}

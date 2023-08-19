@@ -42,6 +42,7 @@ const AddFarmer: any = createSlice({
       state.response = payload.data?.data;
       state.Message = payload.data.message;
       state.isSuccess = true;
+      window.alert(payload.data.message)
     });
 
     builder.addCase(addFarmer.rejected, (state: any, { payload }: any) => {

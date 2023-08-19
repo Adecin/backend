@@ -1,5 +1,5 @@
 import { Tabs, Tab, styled, Box } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import TextInput from "@/components/inputComponents/textInput";
 import * as Yup from 'yup';
 import { Formik, useFormik } from 'formik';
@@ -9,6 +9,9 @@ import CustomButton from "@/components/customButton";
 import BreadCrumb from "@/components/table/bread-crumb";
 import Filter from "@/components/table/filter";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { getCrop } from "@/redux/reducer/crop/get-all-crop";
+import { useDispatch, useSelector } from "react-redux";
+
 
 const cropData = [
     { id: "01", cropName: "Burley", year: "2002" },
@@ -62,10 +65,52 @@ export default function CropManagement(props: any) {
 
     const [value, setValue] = React.useState(0);
     const [searchValue, setSearchValue] = React.useState("");
+    const dispatch = useDispatch();
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
+    const CropResponse = useSelector((state: any) => state.ListCrop.response);
+    const CropList = CropResponse.data;
+    console.log(`CropListData`, CropList);
+
+
+    const SignInSchema = Yup.object().shape({
+        crop_name: Yup.string()
+            .matches(/^[aA-zZ]+$/, 'Must be only alphabets')
+            .required('Please enter a valid crop name'),
+        crop_year: Yup.string()
+            .required('Please enter a valid crop year')
+            .matches(/^[0-9]+$/, 'Must be only digits')
+    });
+
+    const formik = useFormik({
+        initialValues: {
+            crop_name: '',
+            crop_year: '',
+        },
+        validationSchema: SignInSchema,
+        onSubmit: (values: any) => {
+        },
+    });
+
+
+    const {
+        values,
+        handleBlur,
+        handleChange,
+        handleSubmit,
+        touched,
+        setFieldValue,
+        resetForm,
+        errors,
+    } = formik;
+
+
+    useEffect(() => {
+        dispatch(getCrop());
+    }, []);
 
     return (
         <div>
@@ -93,17 +138,20 @@ export default function CropManagement(props: any) {
                     }
                 }}
                 value={value}
-                onChange={handleChange}
+                onChange={handleTabChange}
                 aria-label="scrollable force tabs example">
                 <StyledTab label={`FCV type`} className="mx-6 px-6" />
                 <StyledTab label={`Non FCV type`} className="mx-6 px-6" />
             </Tabs>
             <CustomTabPanel value={value} index={0}>
-                {cropData.map((item: any, index: any) => {
-                    console.log(`item`,item)
+                {CropList?.filter((item: any) => {
+                    if(item.cropType == `FCV`){
+                        return item
+                    }
+                }).map((filteredItem: any, index: any) => {
+                    console.log(`filteredItem`, filteredItem)
                     return (
-                        <TypeElement key={index} crop_year={item.year} crop_name={item.cropName}/>
-                    )
+                        <TypeElement key={index} crop_year={filteredItem.cropYear} crop_name={filteredItem.name} handleChange={handleChange} touched={touched} />)
                 })}
                 <CustomButton
                     classes={`text-primary `}
@@ -119,10 +167,14 @@ export default function CropManagement(props: any) {
                 />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                {cropData.map((item: any, index: any) => {
+            {CropList?.filter((item: any) => {
+                    if(item.cropType == `NONFCV`){
+                        return item
+                    }
+                }).map((filteredItem: any, index: any) => {
+                    console.log(`filteredItem`, filteredItem)
                     return (
-                        <TypeElement key={index} crop_year={item.year} crop_name={item.cropName}/>
-                    )
+                        <TypeElement key={index} crop_year={filteredItem.cropYear} crop_name={filteredItem.name} handleChange={handleChange} touched={touched} />)
                 })}
                 <CustomButton
                     classes={`text-primary `}
@@ -144,41 +196,10 @@ export default function CropManagement(props: any) {
 
 const TypeElement = (props: any) => {
     const [editCrop, setEditCrop] = useState(true);
-    const {crop_year, crop_name} = props;
+    const { crop_year, crop_name, handleChange, touched, error } = props;
 
-    console.log(`crop_year`,crop_year),
-    console.log(`crop_name`,crop_name);
-
-    const SignInSchema = Yup.object().shape({
-        crop_name: Yup.string()
-            .matches(/^[aA-zZ]+$/, 'Must be only alphabets')
-            .required('Please enter a valid email address.'),
-        crop_year: Yup.string()
-            .required('Please enter a valid password.')
-            .matches(/^[0-9]+$/, 'Must be only digits')
-    });
-
-    const formik = useFormik({
-        initialValues: {
-            crop_name: '',
-            crop_year: '',
-        },
-        validationSchema: SignInSchema,
-        onSubmit: (values: any) => {
-        },
-    });
-
-
-    const {
-        values,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        touched,
-        setFieldValue,
-        resetForm,
-        errors,
-    } = formik;
+    console.log(`crop_year`, crop_year),
+        console.log(`crop_name`, crop_name);
 
     const handleEdit = () => {
         setEditCrop(!editCrop)
@@ -193,10 +214,9 @@ const TypeElement = (props: any) => {
                     label={""}
                     name="crop_name"
                     value={crop_name}
-                    onblur={handleBlur}
-                    touched={touched}
+                    //touched={touched}
                     handleChange={handleChange}
-                    error={errors}
+                    //error={errors}
                     placeholder="Type crop name here"
                     customStyle={{
                         color: "#858585",
@@ -211,10 +231,9 @@ const TypeElement = (props: any) => {
                     label={""}
                     name="crop_year"
                     value={crop_year}
-                    onblur={handleBlur}
-                    touched={touched}
+                    //touched={touched}
                     handleChange={handleChange}
-                    error={errors}
+                    //error={errors}
                     placeholder="Type year here"
                     customStyle={{
                         color: "#858585",
