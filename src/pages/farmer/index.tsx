@@ -24,7 +24,7 @@ const ListFieldOfficer = () => {
   const [searchValue, setSearchValue] = useState("");
   const [allSelect, setSelect] = useState(false);
   const [manageOpen, setManageOpen] = useState(false);
-  const [checkedData, setCheckData] = useState<any>([3]);
+  const [checkedData, setCheckData] = useState<any>([]);
   const router = useRouter();
   const dispatch = useDispatch();
   const ListFarmer = useSelector((store: any) => store.ListFormer);

@@ -257,7 +257,7 @@ const FarmerList = () => {
           </div>
         </div>
         {/* farmer details */}
-        <div className="text-text my-4 text-[16px]">Farmer Details</div>
+        <div className="text-text my-4 text-[16px]">Farm Details</div>
         {/* tabs */}
         {farmData?.response?.data?.length != 0 ? <Tabs data={farmData} /> : ""}
 
