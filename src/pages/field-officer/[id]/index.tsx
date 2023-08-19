@@ -157,7 +157,7 @@ export default function OfficerProfile(props: any) {
             className="px-8 py-8 mt-[1rem] w-[228px] rounded-[10px] flex flex-col gap-y-2"
           >
             <LabelText labelName={`Aadhar No`} />
-            <p>{getOneFieldData.user_aadharNo ?? <span className="text-center font-normal ml-6">{`--`}</span>}</p>
+            <p>{getOneFieldData.aadharNo ?? <span className="text-center font-normal ml-6">{`--`}</span>}</p>
             <Link
               href={`${getOneFieldData.aadharImage}`}
               target="_blank"
