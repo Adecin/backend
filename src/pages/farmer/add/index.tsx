@@ -528,7 +528,9 @@ const AddFarmer = () => {
                       />
                     </div>
                   </div>
-                  <div className="px-3 text-text font-medium mx-1">Children</div>
+                  <div className="px-3 text-text font-medium mx-1">
+                    Children
+                  </div>
                   <div className="flex">
                     <div className="pt-2 w-full">
                       <SelectMenu
@@ -733,7 +735,7 @@ const AddFarmer = () => {
           )}
         </div>
       </div>
-      </div>
+    </div>
   );
 };
 export default AddFarmer;
@@ -746,7 +748,7 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
   const GetSVillage = useSelector((state: any) => state.ListVillage);
   const CropList = useSelector((state: any) => state.ListCrop);
   const AddFarm = useSelector((state: any) => state.AddFarm);
-  const editFarm = useSelector((state: any) => state.EditFarm);
+  const EditFarm = useSelector((state: any) => state.EditFarm);
 
   // dropdowns
   const stateDropDown = GetState.response?.data?.map(
@@ -1035,7 +1037,7 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
                 }}
                 className="px-8 cursor-pointer py-3 rounded-[5px] bg-primary text-white"
               >
-                {AddFarm.isLoading || editFarm.isLoading
+                {AddFarm.isLoading || EditFarm.isLoading
                   ? "Loading..."
                   : is_edit
                   ? "Update"
