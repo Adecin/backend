@@ -79,8 +79,8 @@ export default function OfficerProfileEdit(props: any) {
       name: "Married",
     },
     {
-      id: "UnMarried",
-      name: "UnMarried",
+      id: "Single",
+      name: "Single",
     },
     {
       id: "Divorced",
@@ -630,7 +630,7 @@ export default function OfficerProfileEdit(props: any) {
                   touched={touched}
                   error={errors}
                 />
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mx-4">
                   <input
                     ref={aadhar}
                     type="file"
