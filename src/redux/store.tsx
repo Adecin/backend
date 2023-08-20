@@ -28,6 +28,7 @@ import UnassignFarmerListData from "./reducer/fieldOfficer/unassignFarmerList";
 import AssignFarmerData from "./reducer/fieldOfficer/addFieldOfficer";
 import AssignFarmerListData from "./reducer/fieldOfficer/assignFarmerList";
 import EditFarm from "./reducer/farmer/edit-farm";
+import ApproveFarmerData from "./reducer/farmer/approve-farmer";
 
 export const store = configureStore({
   reducer: {
@@ -53,6 +54,7 @@ export const store = configureStore({
     UnassignFarmerListData:UnassignFarmerListData,
     AssignFarmerData:AssignFarmerData,
     AssignFarmerListData:AssignFarmerListData,
+    ApproveFarmerData:ApproveFarmerData,
     
     [baseApi.reducerPath]: baseApi.reducer,
   },
