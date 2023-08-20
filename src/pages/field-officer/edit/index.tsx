@@ -823,6 +823,7 @@ export default function OfficerProfileEdit(props: any) {
             setFarmerPop(false);
           }}
           data={unAssignListFarmer.response.data}
+          assignVillageId={filterData?.villageFillter}
           fieldOfficerId={fieldOfficer_id}
         />
       </Dialog>

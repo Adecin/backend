@@ -13,7 +13,7 @@ const Options = [
 ];
 
 export default function FarmerList(props: any) {
-  const { onClose, data, fieldOfficerId } = props;
+  const { onClose, data, fieldOfficerId, assignVillageId } = props;
   // const [selectBy, setSelectBy] = useState(selectOptions[0]);
   const [dataType, setDataType] = useState("name");
   const [farmerTypeValue, setFarmerTypeValue] = useState({ farmer: 1 });
@@ -40,6 +40,7 @@ export default function FarmerList(props: any) {
     const assignData = {
       technicianId: fieldOfficerId,
       farmerId: selectedIds,
+      villageId: assignVillageId
     };
     dispatch(assignFarmer(assignData));
     onClose();
@@ -102,7 +103,7 @@ export default function FarmerList(props: any) {
                   />
                 );
               })
-              : <p style={{textAlign:'center', margin:'1rem', fontWeight:600}}>No Data Found</p>
+              : <p style={{ textAlign: 'center', margin: '1rem', fontWeight: 600 }}>No Data Found</p>
           }
         </FormGroup>
         <div className="flex justify-center gap-x-12 my-3">

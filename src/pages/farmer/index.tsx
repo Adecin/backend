@@ -436,7 +436,7 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
               <TextArea
                 label={"Reason"}
                 name="reason"
-                value={values}
+                value={(e:any)=> e.target.value}
                 placeholder="Enter Reason"
                 handleChange={(e: any) => {
                   setReason(e.target.value);
