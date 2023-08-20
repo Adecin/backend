@@ -23,7 +23,7 @@ import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from '@/redux/reducer/dropdown/get-village';
 import { updateFieldOfficer } from "@/redux/reducer/fieldOfficer/updateFieldOfficer";
 import { assignFarmerList } from '@/redux/reducer/fieldOfficer/assignFarmerList';
-import {unassignFarmerList} from "@/redux/reducer/fieldOfficer/unassignFarmerList";
+import { unassignFarmerList } from "@/redux/reducer/fieldOfficer/unassignFarmerList";
 
 export default function OfficerProfileEdit(props: any) {
   const [farmerPop, setFarmerPop] = useState(false);
@@ -137,7 +137,8 @@ export default function OfficerProfileEdit(props: any) {
       .matches(/^[0-9]+$/, "Must be only digis")
       .min(12, "Invalid aadhar number")
       .max(12, "Invalid aadhar number")
-      .required("Aadhar card number is required")});
+      .required("Aadhar card number is required")
+  });
 
   // formik
   const formik = useFormik({
@@ -720,65 +721,36 @@ export default function OfficerProfileEdit(props: any) {
                   error={errors}
                 />
               </div>
-              <div className="px-[1rem] flex items-center gap-x-8">
-                <div>
-                  <LabelText labelName={`Farmer`} />
-                  <div className="gap-x-4 pt-3">
-                    {assignFarmerListFarmer?.response?.length ?
-                      assignFarmerListFarmer?.response?.map((item: any, index: number) => {
-                        console.log(item);
-                        return (
-                          <>
-                            <Chip
-                              style={{
-                                margin: '5px',
-                                background: "#3D7FFA",
-                                padding: "1.5rem",
-                                borderRadius: "10px",
-                                color: "#fff",
-                              }}
-                              label={item.farmerId.farmerId}
-                              onDelete={() => { }}
-                            />
-                          </>
-                        )
-                      })
-                      :
-                      <p>No Assigned Data</p>
-                    }
-                    {/* <Chip
-                      style={{
-                        background: "#3D7FFA",
-                        padding: "1.5rem",
-                        borderRadius: "10px",
-                        color: "#fff",
-                      }}
-                      label="DTC0001"
-                      onDelete={() => { }}
-                    />
-                    <Chip
-                      style={{
-                        background: "#3D7FFA",
-                        padding: "1.5rem",
-                        borderRadius: "10px",
-                        color: "#fff",
-                      }}
-                      label="DTC0001"
-                      onDelete={() => { }}
-                    />
-                    <Chip
-                      style={{
-                        background: "#3D7FFA",
-                        padding: "1.5rem",
-                        borderRadius: "10px",
-                        color: "#fff",
-                      }}
-                      label="DTC0001"
-                      onDelete={() => { }}
-                    /> */}
-                  </div>
+              <div className="px-[1rem]">
+
+                <LabelText labelName={`Farmer`} />
+                <div className="gap-x-4 pt-3">
+                  {assignFarmerListFarmer?.response?.length ?
+                    assignFarmerListFarmer?.response?.map((item: any, index: number) => {
+                      console.log(item);
+                      return (
+                        <>
+                          <Chip
+                            style={{
+                              margin: '5px',
+                              background: "#3D7FFA",
+                              padding: "1.5rem",
+                              borderRadius: "10px",
+                              color: "#fff",
+                            }}
+                            label={item.farmerId.farmerId}
+                            onDelete={() => { }}
+                          />
+                        </>
+                      )
+                    })
+                    :
+                    <p>No Assigned Data</p>
+                  }
                 </div>
-                <CustomButton
+                {
+                  filterData.villageFillter ?
+                  <CustomButton
                   startIcon={
                     <svg
                       width="20"
@@ -802,7 +774,9 @@ export default function OfficerProfileEdit(props: any) {
                   handleOnClick={() => {
                     setFarmerPop(true);
                   }}
-                />
+                /> :
+                <p style={{fontSize:'13px', marginTop: "1.65rem"}}>Select Filter to Assign Farmer</p>
+                }
               </div>
             </div>
           </div>

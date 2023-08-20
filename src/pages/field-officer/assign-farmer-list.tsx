@@ -86,20 +86,24 @@ export default function FarmerList(props: any) {
       </div>
       <div className="py-3 px-[2rem] m-[1rem]">
         <FormGroup>
-          {data?.map((item: any, index: any) => {
-            return (
-              <FormControlLabel
-                key={index}
-                control={
-                  <Checkbox
-                    checked={checkedItems.has(index)}
-                    onChange={() => handleCheckboxChange(index)}
+          {
+            data?.length ?
+              data?.map((item: any, index: any) => {
+                return (
+                  <FormControlLabel
+                    key={index}
+                    control={
+                      <Checkbox
+                        checked={checkedItems.has(index)}
+                        onChange={() => handleCheckboxChange(index)}
+                      />
+                    }
+                    label={dataType === "name" ? item.name : item.farmerId}
                   />
-                }
-                label={dataType === "name" ? item.name : item.farmerId}
-              />
-            );
-          })}
+                );
+              })
+              : <p style={{textAlign:'center', margin:'1rem', fontWeight:600}}>No Data Found</p>
+          }
         </FormGroup>
         <div className="flex justify-center gap-x-12 my-3">
           <CustomButton
