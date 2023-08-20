@@ -18,11 +18,11 @@ const SUCCESS = async (data: string) => {
 };
 
 // api call
-export const addFieldOfficer: any = createAsyncThunk(
-  "addFieldOfficer/add",
+export const addCrop: any = createAsyncThunk(
+  "addCrop/addCropType",
   async (value: any, { rejectWithValue }) => {
     try {
-      const data: any = await axios.post(`api/technician/create`, value, {
+      const data: any = await axios.post(`api/crops`, value, {
         withCredentials: true,
       });
 
@@ -39,8 +39,8 @@ export const addFieldOfficer: any = createAsyncThunk(
 
 // state
 
-const AddFieldOfficerData: any = createSlice({
-  name: "AddFieldOfficerData",
+const AddCrop: any = createSlice({
+  name: "AddCrop",
   initialState: {
     isLoading: false,
     isSuccess: false,
@@ -49,29 +49,27 @@ const AddFieldOfficerData: any = createSlice({
   },
   reducers: {},
   extraReducers: (builder: any) => {
-    builder.addCase(addFieldOfficer.pending, (state: any, { payload }: any) => {
+    builder.addCase(addCrop.pending, (state: any, { payload }: any) => {
       state.isLoading = true;
     });
-    builder.addCase(addFieldOfficer.fulfilled, (state: any, { payload }: any) => {
+    builder.addCase(addCrop.fulfilled, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.response = payload.data?.data;
       state.Message = payload.data.message;
       state.isSuccess = true;
+      window.location.reload();
       window.alert(payload.data.message)
       SUCCESS(payload.data.message);
-      console.log(`payload`,payload)
     });
 
-    builder.addCase(addFieldOfficer.rejected, (state: any, { payload }: any) => {
+    builder.addCase(addCrop.rejected, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = true;
       state.Message = payload.data ? payload.data.message : payload.message;
-      FAILED(payload.message);
-      console.log(`payload`,payload)
     });
   },
 });
 
 // Reducer
-export default AddFieldOfficerData.reducer;
+export default AddCrop.reducer;

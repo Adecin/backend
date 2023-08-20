@@ -130,7 +130,7 @@ export default function OfficerProfileEdit(props: any) {
     districtId: Yup.string().required("District is required"),
     villageId: Yup.string().required("Village is required"),
     joiningDate: Yup.string().required("Joining Date is required"),
-    relievingDate: Yup.string().required("Relieving Date is required"),
+    relievingDate: Yup.string(),
     martialStatus: Yup.string().required("Marital status is required"),
     educationName: Yup.string().required('Education is required'),
     adharNumber: Yup.string()
