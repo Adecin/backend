@@ -16,6 +16,8 @@ import UpdateFieldOfficerData from "./reducer/fieldOfficer/updateFieldOfficer";
 
 // crop
 import ListCrop from "./reducer/crop/get-all-crop";
+import AddCrop from "./reducer/crop/add-croptype";
+import UpdateCrop from "./reducer/crop/update-crop";
 
 // farmer
 import AddFarmer from "./reducer/farmer/add-farmer";
@@ -37,6 +39,8 @@ export const store = configureStore({
     ListVillage: ListVillage,
     // crop
     ListCrop: ListCrop,
+    AddCrop: AddCrop,
+    UpdateCrop: UpdateCrop,
     //  farmer
     AddFarmer: AddFarmer,
     AddFarm: AddFarm,
