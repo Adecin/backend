@@ -21,7 +21,7 @@ import { getVillage } from '@/redux/reducer/dropdown/get-village';
 import { addFieldOfficer } from "@/redux/reducer/fieldOfficer/addFieldOfficer";
 import { assignFarmerList } from '@/redux/reducer/fieldOfficer/assignFarmerList';
 import { useRouter, usePathname } from "next/navigation";
-import {unassignFarmerList} from "@/redux/reducer/fieldOfficer/unassignFarmerList";
+import { unassignFarmerList } from "@/redux/reducer/fieldOfficer/unassignFarmerList";
 
 export default function OfficerProfileAdd(props: any) {
   const [farmerPop, setFarmerPop] = useState(false);
@@ -92,8 +92,8 @@ export default function OfficerProfileAdd(props: any) {
 
   const marriedDropDown = [
     {
-    id: "Single",
-    name: "Single",
+      id: "Single",
+      name: "Single",
     },
     {
       id: "Married",
@@ -233,7 +233,7 @@ export default function OfficerProfileAdd(props: any) {
     dispatch(addFieldOfficer(apiFormData));
   };
 
-  console.log(`state`,addFieldOffData)
+  console.log(`state`, addFieldOffData)
 
   const {
     values,
@@ -421,9 +421,9 @@ export default function OfficerProfileAdd(props: any) {
               data={stateDropDown ?? []}
               value={values}
               handleChange={(e: any) => {
-                 dispatch(getDistrict("?stateId=" + e.target.value));
-                 setFieldValue("stateId", e.target.value);
-               }}
+                dispatch(getDistrict("?stateId=" + e.target.value));
+                setFieldValue("stateId", e.target.value);
+              }}
               onblur={handleBlur}
               touched={touched}
               required={true}
@@ -437,9 +437,9 @@ export default function OfficerProfileAdd(props: any) {
               data={districtDropDown ?? []}
               value={values}
               handleChange={(e: any) => {
-                 dispatch(getDistrict("?districtId=" + e.target.value));
-                 setFieldValue("districtId", e.target.value);
-               }}
+                dispatch(getDistrict("?districtId=" + e.target.value));
+                setFieldValue("districtId", e.target.value);
+              }}
               onblur={handleBlur}
               touched={touched}
               required={true}
@@ -781,32 +781,36 @@ export default function OfficerProfileAdd(props: any) {
                     <p>No Assigned Data</p>
                   }
                 </div>
-                <CustomButton
-                  //disable={!profileCreated}
-                  startIcon={
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M10 0C7.35774 0.0318782 4.83268 1.09568 2.96418 2.96418C1.09568 4.83268 0.0318782 7.35774 0 10C0.0318782 12.6423 1.09568 15.1673 2.96418 17.0358C4.83268 18.9043 7.35774 19.9681 10 20C12.6423 19.9681 15.1673 18.9043 17.0358 17.0358C18.9043 15.1673 19.9681 12.6423 20 10C19.9681 7.35774 18.9043 4.83268 17.0358 2.96418C15.1673 1.09568 12.6423 0.0318782 10 0ZM15.7143 10.7143H10.7143V15.7143H9.28571V10.7143H4.28571V9.28571H9.28571V4.28571H10.7143V9.28571H15.7143V10.7143Z"
-                        fill="#3D7FFA"
-                      />
-                    </svg>
-                  }
-                  buttonName={`Add farmer`}
-                  customStyle={{
-                    background: "none",
-                    color: "#3D7FFA",
-                    margin: "0.5rem",
-                  }}
-                  handleOnClick={() => {
-                    setFarmerPop(true);
-                  }}
-                />
+                {
+                  filterData.villageFillter ?
+                    <CustomButton
+                      //disable={!profileCreated}
+                      startIcon={
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M10 0C7.35774 0.0318782 4.83268 1.09568 2.96418 2.96418C1.09568 4.83268 0.0318782 7.35774 0 10C0.0318782 12.6423 1.09568 15.1673 2.96418 17.0358C4.83268 18.9043 7.35774 19.9681 10 20C12.6423 19.9681 15.1673 18.9043 17.0358 17.0358C18.9043 15.1673 19.9681 12.6423 20 10C19.9681 7.35774 18.9043 4.83268 17.0358 2.96418C15.1673 1.09568 12.6423 0.0318782 10 0ZM15.7143 10.7143H10.7143V15.7143H9.28571V10.7143H4.28571V9.28571H9.28571V4.28571H10.7143V9.28571H15.7143V10.7143Z"
+                            fill="#3D7FFA"
+                          />
+                        </svg>
+                      }
+                      buttonName={`Add farmer`}
+                      customStyle={{
+                        background: "none",
+                        color: "#3D7FFA",
+                        margin: "0.5rem",
+                      }}
+                      handleOnClick={() => {
+                        setFarmerPop(true);
+                      }}
+                    /> :
+                    <p style={{ fontSize: '13px', marginTop: "1.65rem" }}>Select Filter to Assign Farmer</p>
+                }
               </div>
             </div>
           </div>
@@ -853,6 +857,7 @@ export default function OfficerProfileAdd(props: any) {
             setFarmerPop(false);
           }}
           fieldOfficerId={addFieldOffData.response.id}
+          assignVillageId={filterData?.villageFillter}
           data={unAssignListFarmer.response.data}
         />
       </Dialog>
