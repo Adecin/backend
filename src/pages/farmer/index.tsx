@@ -17,7 +17,9 @@ import TextInput from "@/components/inputComponents/textInput";
 import TextArea from "@/components/inputComponents/texArea";
 import { useDispatch, useSelector } from "react-redux";
 import { listFarmers } from "@/redux/reducer/farmer/list-former";
+import { listFieldOfficer } from "@/redux/reducer/fieldOfficer/getList";
 import { styled, Tab, Box, Tabs } from "@mui/material";
+import { approveFarmer } from "@/redux/reducer/farmer/approve-farmer";
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
 const ListFieldOfficer = () => {
@@ -28,204 +30,21 @@ const ListFieldOfficer = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const ListFarmer = useSelector((store: any) => store.ListFormer);
+  const ApproveResponse = useSelector((store: any) => store.ApproveFarmerData);
+
 
   // console.log("datasss", ListFarmer);
+
+  useEffect(() => {
+    dispatch(listFarmers(""));
+    setCheckData([]);
+  }, [ApproveResponse])
 
   // useEffect
 
   useEffect(() => {
     dispatch(listFarmers(""));
   }, []);
-
-  // table data
-  // const data = [
-  //   {
-  //     checkBox: <Checkbox />,
-  //     photo: (
-  //       <img
-  //         onClick={() => {
-  //           router.push("/farmer/1");
-  //         }}
-  //         className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
-  //         alt="photo"
-  //         src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
-  //       />
-  //     ),
-  //     farmer_id: "EMP001",
-  //     Name: "John Doe",
-  //     regulation: (
-  //       <div>
-  //         <div className="flex items-center">
-  //           <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
-  //         </div>{" "}
-  //         <div className="flex my-[10px] items-center">
-  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
-  //           monitoring
-  //         </div>
-  //       </div>
-  //     ),
-  //     approved_status: (
-  //       <div>
-  //         <div className="text-[#F75656]">Pending</div>
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     checkBox: <Checkbox />,
-  //     photo: (
-  //       <img
-  //         onClick={() => {
-  //           router.push("/farmer/1");
-  //         }}
-  //         className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
-  //         alt="photo"
-  //         src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
-  //       />
-  //     ),
-  //     farmer_id: "EMP001",
-  //     Name: "John Doe",
-  //     regulation: (
-  //       <div>
-  //         <div className="flex items-center">
-  //           <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
-  //         </div>{" "}
-  //         <div className="flex my-[10px] items-center">
-  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
-  //           monitoring
-  //         </div>
-  //       </div>
-  //     ),
-  //     approved_status: (
-  //       <div>
-  //         <div className="text-[#70B10E]">Approved</div>
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     checkBox: <Checkbox />,
-  //     photo: (
-  //       <img
-  //         onClick={() => {
-  //           router.push("/farmer/1");
-  //         }}
-  //         className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
-  //         alt="photo"
-  //         src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
-  //       />
-  //     ),
-  //     farmer_id: "EMP001",
-  //     Name: "John Doe",
-  //     regulation: (
-  //       <div>
-  //         <div className="flex items-center">
-  //           <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
-  //         </div>{" "}
-  //         <div className="flex my-[10px] items-center">
-  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F8B34C]" /> Crop
-  //           monitoring
-  //         </div>
-  //       </div>
-  //     ),
-  //     approved_status: (
-  //       <div>
-  //         <div className="text-[#F75656]">Pending</div>
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     checkBox: <Checkbox />,
-  //     photo: (
-  //       <img
-  //         onClick={() => {
-  //           router.push("/farmer/1");
-  //         }}
-  //         className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
-  //         alt="photo"
-  //         src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
-  //       />
-  //     ),
-  //     farmer_id: "EMP001",
-  //     Name: "John Doe",
-  //     regulation: (
-  //       <div>
-  //         <div className="flex items-center">
-  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F8B34C]" /> STP
-  //         </div>{" "}
-  //         <div className="flex my-[10px] items-center">
-  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
-  //           monitoring
-  //         </div>
-  //       </div>
-  //     ),
-  //     approved_status: (
-  //       <div>
-  //         <div className="text-[#70B10E]">Approved</div>
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     checkBox: <Checkbox />,
-  //     photo: (
-  //       <img
-  //         onClick={() => {
-  //           router.push("/farmer/1");
-  //         }}
-  //         className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
-  //         alt="photo"
-  //         src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
-  //       />
-  //     ),
-  //     farmer_id: "EMP001",
-  //     Name: "John Doe",
-  //     regulation: (
-  //       <div>
-  //         <div className="flex items-center">
-  //           <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
-  //         </div>{" "}
-  //         <div className="flex my-[10px] items-center">
-  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
-  //           monitoring
-  //         </div>
-  //       </div>
-  //     ),
-  //     approved_status: (
-  //       <div>
-  //         <div className="text-[#F75656]">Pending</div>
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     checkBox: <Checkbox />,
-  //     photo: (
-  //       <img
-  //         onClick={() => {
-  //           router.push("/farmer/1");
-  //         }}
-  //         className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
-  //         alt="photo"
-  //         src="https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
-  //       />
-  //     ),
-  //     farmer_id: "EMP001",
-  //     Name: "John Doe",
-  //     regulation: (
-  //       <div>
-  //         <div className="flex items-center">
-  //           <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
-  //         </div>{" "}
-  //         <div className="flex my-[10px] items-center">
-  //           <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
-  //           monitoring
-  //         </div>
-  //       </div>
-  //     ),
-  //     approved_status: (
-  //       <div>
-  //         <div className="text-[#70B10E]">Approved</div>
-  //       </div>
-  //     ),
-  //   },
-  // ];
 
   const filterData = ListFarmer.response.data?.map((e: any, index: number) => {
     return {
@@ -259,7 +78,7 @@ const ListFieldOfficer = () => {
         />
       ),
       farmer_id: e.farmerId,
-      Name:e.name,
+      Name: e.name,
       regulation: (
         <div>
           <div className="flex items-center">
@@ -369,6 +188,7 @@ const ListFieldOfficer = () => {
               closePopUp={() => {
                 setManageOpen(false);
               }}
+              farmersList={checkedData}
             />
           </div>
         </Dialog>
@@ -379,7 +199,7 @@ const ListFieldOfficer = () => {
             <BreadCrumb classes={` font-bold text-[#43424D]`} />
             <Filter
               value={searchValue}
-              applyFilter={() => {}}
+              applyFilter={() => { }}
               onSearch={(e: string) => {
                 setSearchValue(e);
               }}
@@ -520,14 +340,36 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
-const Dialogs = ({ closePopUp }: any) => {
+const Dialogs = ({ closePopUp, farmersList }: any) => {
   const [is_approve, setApprove] = useState("true");
+  const [reason, setReason] = useState('')
 
   const [value, setValue] = React.useState(0);
-
+  const ListFieldOfficer = useSelector((store: any) => store.ListFieldOfficerData);
+  const dispatch = useDispatch();
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  console.log(farmersList);
+
+  console.log(ListFieldOfficer);
+
+  useEffect(() => {
+    dispatch(listFieldOfficer(""))
+  }, [])
+
+  const handleApprove = () => {
+    closePopUp();
+    console.log(is_approve);
+    const data = {
+      is_approve: is_approve,
+      id: farmersList,
+      reason: reason
+    }
+    console.log(data)
+    dispatch(approveFarmer(data))
+  }
 
   return (
     <>
@@ -594,10 +436,10 @@ const Dialogs = ({ closePopUp }: any) => {
               <TextArea
                 label={"Reason"}
                 name="reason"
-                value={``}
+                value={values}
                 placeholder="Enter Reason"
                 handleChange={(e: any) => {
-                  console.log(e.target.value);
+                  setReason(e.target.value);
                 }}
               />
             </div>
@@ -613,9 +455,7 @@ const Dialogs = ({ closePopUp }: any) => {
             Cancel
           </div>
           <div
-            onClick={() => {
-              closePopUp();
-            }}
+            onClick={handleApprove}
             className="bg-primary cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
           >
             Save
@@ -635,37 +475,13 @@ const Dialogs = ({ closePopUp }: any) => {
           >
             Select
           </p>
-          <SelectMenu
-            name="manager"
-            handleChange={() => {}}
-            placeHolderText="Employee ID"
-            data={[
-              {
-                name: "vijay",
-                id: "09",
-              },
-              {
-                name: "vijay",
-                id: "09",
-              },
-            ]}
-          />
         </div>
         <div className="w-[400px] ">
           <SelectMenu
             name="manager"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Name of Field Officer"
-            data={[
-              {
-                name: "vijay",
-                id: "09",
-              },
-              {
-                name: "vijay",
-                id: "09",
-              },
-            ]}
+            data={ListFieldOfficer?.response?.data}
           />
         </div>
         <div className="flex justify-center mr-5">
@@ -702,7 +518,7 @@ const Dialogs = ({ closePopUp }: any) => {
         <div className="w-[400px] ">
           <SelectMenu
             name="manager"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Select survey name"
             data={[
               {
@@ -748,7 +564,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3">
           <SelectMenu
             name="survey"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Survey"
             data={[
               {
@@ -765,7 +581,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3">
           <SelectMenu
             name="manager"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Select district"
             data={[
               {
@@ -782,7 +598,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
             name="village"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Select Village"
             data={[
               {
@@ -799,7 +615,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
             name="officer"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Select Field Officer"
             data={[
               {
