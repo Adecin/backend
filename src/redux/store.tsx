@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { baseApi } from "@/redux/baseapi";
-
+import  UserLogin  from "./reducer/login/login";
 // stores
 
 // dropdown
@@ -31,6 +31,12 @@ import AssignFarmerData from "./reducer/fieldOfficer/addFieldOfficer";
 import AssignFarmerListData from "./reducer/fieldOfficer/assignFarmerList";
 import EditFarm from "./reducer/farmer/edit-farm";
 import ApproveFarmerData from "./reducer/farmer/approve-farmer";
+//regulation
+import AddNewRegulation from "./reducer/regulation/add-regulation";
+import ListAllRegulation from "./reducer/regulation/listAllRegulation";
+
+//survey
+import AddNewSurvey from "./reducer/survey/add-survey";
 
 export const store = configureStore({
   reducer: {
@@ -38,6 +44,8 @@ export const store = configureStore({
     ListState: ListState,
     ListDistrict: ListDistrict,
     ListVillage: ListVillage,
+    UserLogin: UserLogin,
+
     // crop
     ListCrop: ListCrop,
     AddCrop: AddCrop,
@@ -59,6 +67,12 @@ export const store = configureStore({
     AssignFarmerData:AssignFarmerData,
     AssignFarmerListData:AssignFarmerListData,
     ApproveFarmerData:ApproveFarmerData,
+    //regulation
+    AddNewRegulation: AddNewRegulation,
+    ListAllRegulation: ListAllRegulation,
+
+    //survey
+    AddNewSurvey: AddNewSurvey,
     
     [baseApi.reducerPath]: baseApi.reducer,
   },

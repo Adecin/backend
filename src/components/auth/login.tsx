@@ -11,20 +11,21 @@ import styled from '@emotion/styled';
 import { Button, Checkbox, FormControlLabel, Link } from '@mui/material';
 import { styled as muIstyle } from '@mui/material';
 import * as Yup from 'yup';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useRouter } from 'next/router';
 import CustomButton from '../customButton';
 import TextInput from '../inputComponents/textInput';
-
+import { userLogin } from '@/redux/reducer/login/login';
 
 export default function AppLogin(props: any) {
     const { forgrtLink } = props;
+    const dispatch = useDispatch();
 
     const SignInSchema = Yup.object().shape({
-        email: Yup.string()
+        emailId: Yup.string()
             .required('Please enter a valid email address.')
             .email('Email is invalid'),
         password: Yup.string()
@@ -35,14 +36,19 @@ export default function AppLogin(props: any) {
 
     const formik = useFormik({
         initialValues: {
-            email: '',
+            emailId: '',
             password: '',
         },
         validationSchema: SignInSchema,
         onSubmit: (values: any) => {
+            console.log(`values`, values)
+            loginSubmit(values)
         },
     });
 
+    const loginSubmit=(values: any)=>{
+            dispatch(userLogin(values));
+    }
 
     useEffect(() => {
         document.addEventListener('keypress', keyPress, true);
@@ -68,10 +74,6 @@ export default function AppLogin(props: any) {
         }
     };
 
-    const submit = async (value: any) => {
-        console.log(value);
-    };
-
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -90,7 +92,7 @@ export default function AppLogin(props: any) {
                 <svg width="535" height="10" viewBox="0 0 535 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="535" height="10" rx="5" fill="#426CFF" />
                 </svg>
-                <div className="loginDiv bg-[#EBEFF8] rounded-[5px] w-[514px]  py-4" style={{boxShadow: "2px 2px 5px #0000003d"}}>
+                <div className="loginDiv bg-[#EBEFF8] rounded-[5px] w-[514px]  py-4" style={{ boxShadow: "2px 2px 5px #0000003d" }}>
                     <h2 className='text-primary text-[24px] font-medium pt-4 mt-3 pb-2' style={{
                         lineHeight: "28px",
                         letterSpacing: "0.1em",
@@ -102,8 +104,8 @@ export default function AppLogin(props: any) {
                                 classes={` py-0 pt-2`}
                                 required
                                 label={"Email"}
-                                labelStyle={{fontWeight:600, color:"#43424D"}}
-                                name="email"
+                                labelStyle={{ fontWeight: 600, color: "#43424D" }}
+                                name="emailId"
                                 value={values}
                                 onblur={handleBlur}
                                 touched={touched}
@@ -116,7 +118,7 @@ export default function AppLogin(props: any) {
                             <TextInput
                                 classes={` py-0 pt-2`}
                                 label={`Password`}
-                                labelStyle={{fontWeight:600, color:"#43424D"}}
+                                labelStyle={{ fontWeight: 600, color: "#43424D" }}
                                 type={showPassword ? 'text' : 'password'}
                                 name="password"
                                 value={values}
@@ -157,7 +159,7 @@ export default function AppLogin(props: any) {
                         <div className='w-full pt-4'>
                             <CustomButton
                                 classes={` w-full py-3`}
-                                handleOnClick={() => { handleSubmit(); }}
+                                handleOnClick={()=>{handleSubmit()}}
                                 buttonName={`Sign In`}
                             />
                         </div>
