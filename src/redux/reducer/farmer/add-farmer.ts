@@ -6,8 +6,12 @@ import { axios } from "@/redux/api";
 export const addFarmer: any = createAsyncThunk(
   "addFormer/addFarmer",
   async (value: any, { rejectWithValue }) => {
+    const token = localStorage.getItem(`token`);
     try {
       const data: any = await axios.post(`api/farmer`, value, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         withCredentials: true,
       });
 

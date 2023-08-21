@@ -46,6 +46,8 @@ export default function OfficerProfileAdd(props: any) {
     districtFilter: '',
     villageFillter: ''
   });
+
+  const router = useRouter();
   // console.log(addFieldOffData);
   // console.log(unAssignListFarmer);
 
@@ -844,9 +846,12 @@ export default function OfficerProfileAdd(props: any) {
         </div>)}
         {addFieldOffData.response.id && (<div className="flex self-center">
           <CustomButton
-            buttonName={`Create Assign`}
+            buttonName={`Save`}
             customStyle={{
               padding: "1rem 3rem",
+            }}
+            handleOnClick={() => {
+              router.push("/field-officer");
             }}
           />
         </div>)}

@@ -94,7 +94,7 @@ const ListFieldOfficer = () => {
         <div>
           <div
             className={
-              e.status == "Reject" || e.status == "Pending"
+              e.status == "Rejected" || e.status == "Pending"
                 ? "text-error"
                 : "text-[#70B10E]"
             }
@@ -362,8 +362,10 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
   const handleApprove = () => {
     closePopUp();
     console.log(is_approve);
-    const data = {
+    const data = is_approve == 'true' ? {
       is_approve: is_approve,
+      id: farmersList,
+    } : {
       id: farmersList,
       reason: reason
     }
@@ -436,7 +438,7 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
               <TextArea
                 label={"Reason"}
                 name="reason"
-                value={(e:any)=> e.target.value}
+                value={reason}
                 placeholder="Enter Reason"
                 handleChange={(e: any) => {
                   setReason(e.target.value);

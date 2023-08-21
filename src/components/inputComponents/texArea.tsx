@@ -56,7 +56,7 @@ export default function TextArea(props: propsType) {
           onBlur={onblur}
           name={name}
           onChange={handleChange}
-          value={value[name] ?? ""}
+          value={(value && value[name]) ?? value}
         />
         <span className="text-[10px] my-1 text-error">
           {(touched && touched[name] && error && error[name]) ?? ""}

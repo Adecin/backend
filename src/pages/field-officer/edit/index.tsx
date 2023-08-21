@@ -813,6 +813,9 @@ export default function OfficerProfileEdit(props: any) {
                 background: "#3D7FFA",
                 padding: "1rem 3rem",
               }}
+              handleOnClick={() => {
+                router.back();
+              }}
             />
           </div>
         </div>
