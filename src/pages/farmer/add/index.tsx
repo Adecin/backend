@@ -18,6 +18,7 @@ import { addFarm } from "@/redux/reducer/farmer/add-farm";
 import { listOneFarmer } from "@/redux/reducer/farmer/list-one-farmer";
 import { editFarmer } from "@/redux/reducer/farmer/edit-farmer";
 import { editFarm } from "@/redux/reducer/farmer/edit-farm";
+import HeaderText from "@/components/textComponents/headerText";
 
 const AddFarmer = () => {
   // other data
@@ -235,14 +236,14 @@ const AddFarmer = () => {
     <div className="flex mx-auto">
       <div className="p-5 mx-auto">
         <div className="">
-          <BreadCrumb lastName={farmer_id ? "Edit" : ""} />
+          <BreadCrumb lastName={farmer_id ? "Edit Farmer" : ""} />
         </div>
         <div className="px-5">
           {/* add persional details */}
           <div className="">
             {/* title */}
-            <div>
-              <div className="text-text my-4 text-[16px]">Personal Info</div>
+            <div className="my-4">
+              <HeaderText text={`Personal info`} />
             </div>
             <div className="max-w-[1200px] bg-lblue  rounded-[10px] flex p-[2rem]">
               {/* profile */}
@@ -412,8 +413,8 @@ const AddFarmer = () => {
           {/* Address */}
           <div className="">
             {/* title */}
-            <div>
-              <div className="text-text my-4 text-[16px]">Address</div>
+            <div className="my-4">
+              <HeaderText text={`Address`} required={true} />
             </div>
             <div className="max-w-[1200px] rounded-[10px] bg-lblue flex">
               <div className="grid grid-cols-2 w-full lg:grid-cols-3">
@@ -498,8 +499,8 @@ const AddFarmer = () => {
             {/* Family info */}
             <div className="">
               {/* title */}
-              <div>
-                <div className="text-text my-4 text-[16px]">Family Info</div>
+              <div className="my-4">
+                <HeaderText text={`Family Info`} />
               </div>
               <div className="lg:w-[700px] bg-lblue rounded-[10px] flex">
                 <div className=" w-full ">
@@ -603,8 +604,8 @@ const AddFarmer = () => {
             <div className="lg:ml-10">
               {/* title */}
               <div>
-                <div className="text-text my-4 text-[16px]">
-                  Government ID Proof
+                <div className="my-4">
+                <HeaderText text={`Government ID Proof`} />
                 </div>
               </div>
               <div className="max-w-[400px] rounded-[10px] bg-lblue ">
@@ -848,7 +849,7 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
     <>
       <div className="">
         <div className="max-w-[1200px] bg-lblue rounded-[10px] p-3">
-          <div className="mx-4 text-primary">Form {index + 1}</div>
+          <div className="mx-4 text-primary">Farm {index + 1}</div>
           <div className="grid grid-cols-2 w-full lg:grid-cols-3">
             <div className="pt-5">
               <SelectMenu
@@ -916,7 +917,7 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
               <TextInput
                 label="Acreage"
                 name="acres"
-                placeholder="Type in here"
+                placeholder="Type in numbers"
                 value={values}
                 handleChange={handleChange}
                 onblur={handleBlur}
@@ -929,7 +930,7 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
               <TextInput
                 label="Soil Type"
                 name="soilType"
-                placeholder="Type her"
+                placeholder="Type here"
                 value={values}
                 handleChange={handleChange}
                 onblur={handleBlur}
@@ -942,7 +943,7 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
               <TextInput
                 label="Irrigation Type"
                 name="irrigationType"
-                placeholder="Type her"
+                placeholder="Type here"
                 value={values}
                 handleChange={handleChange}
                 onblur={handleBlur}
@@ -996,7 +997,7 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
               <TextInput
                 label="Geo Location"
                 name="geoLocation"
-                placeholder="Type gio location"
+                placeholder="Type geo location"
                 value={values}
                 handleChange={handleChange}
                 onblur={handleBlur}

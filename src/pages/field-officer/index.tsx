@@ -48,7 +48,7 @@ const ListFieldOfficer = () => {
       employee_id: e.employeeId,
       Name: e.name,
       phone_number: e.phoneNo,
-      task_status: "8/157",
+      task_status: <span className="text-[#70B10E]">8/157</span>,
     }
   });
 
