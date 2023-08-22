@@ -69,7 +69,7 @@ const ListFieldOfficer = () => {
           onClick={() => {
             router.push("/farmer/" + e.farmer_id);
           }}
-          className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
+          className="w-[68px] cursor-pointer h-[56px] rounded-[5px] hover:shadow-lg shadow-cyan-500/50"
           alt="photo"
           src={
             e.farmer_profileImage ??
@@ -77,7 +77,7 @@ const ListFieldOfficer = () => {
           }
         />
       ),
-      farmer_id: e.farmer_farmerId,
+      farmer_ID: e.farmer_farmerId,
       Name: e.farmer_name,
       regulation: (
         <div>
