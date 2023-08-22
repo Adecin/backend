@@ -129,34 +129,34 @@ const AddFarmer = () => {
       ? Yup.string().notRequired()
       : Yup.mixed()
 
-        .test(
-          "profile image required",
-          "profile image required",
-          (value: any) => {
-            if (value.type) {
-              return true;
-            } else {
-              return false;
+          .test(
+            "profile image required",
+            "profile image required",
+            (value: any) => {
+              if (value.type) {
+                return true;
+              } else {
+                return false;
+              }
             }
-          }
-        )
-        .required("Profile image  is required"),
+          )
+          .required("Profile image  is required"),
 
     adharImage: farmerOneData.response?.id
       ? Yup.string().notRequired()
       : Yup.mixed()
-        .test(
-          "aadhar card is required",
-          "aadhar card is required",
-          (value: any) => {
-            if (value.type) {
-              return true;
-            } else {
-              return false;
+          .test(
+            "aadhar card is required",
+            "aadhar card is required",
+            (value: any) => {
+              if (value.type) {
+                return true;
+              } else {
+                return false;
+              }
             }
-          }
-        )
-        .required("Aadhar card is required"),
+          )
+          .required("Aadhar card is required"),
   });
 
   // <================ field values ===================>
@@ -605,7 +605,7 @@ const AddFarmer = () => {
               {/* title */}
               <div>
                 <div className="my-4">
-                <HeaderText text={`Government ID Proof`} />
+                  <HeaderText text={`Government ID Proof`} />
                 </div>
               </div>
               <div className="max-w-[400px] rounded-[10px] bg-lblue ">
@@ -673,8 +673,8 @@ const AddFarmer = () => {
                 {addFarmerData.isLoading || editFarmerData.isLoading
                   ? "Loading..."
                   : farmer_id
-                    ? "Update Profile"
-                    : "Create Profile"}
+                  ? "Update Profile"
+                  : "Create Profile"}
               </div>
             </div>
           )}
@@ -808,9 +808,9 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
   const formik = useFormik({
     initialValues: {
       farmerId: formerId ?? "",
-      state: data?.state ?? "",
-      district: data?.district ?? "",
-      village: data?.village ?? "",
+      state: data?.state?.id ?? "",
+      district: data?.district?.id ?? "",
+      village: data?.village?.id ?? "",
       cropTypeId: data?.cropTypeId?.id ?? "",
       acres: data?.acres ?? "",
       soilType: data?.soilType ?? "",
@@ -1044,8 +1044,8 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
                 {AddFarm.isLoading || EditFarm.isLoading
                   ? "Loading..."
                   : is_edit
-                    ? "Update"
-                    : "Save"}
+                  ? "Update"
+                  : "Save"}
               </div>
             </div>
           )}

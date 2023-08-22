@@ -59,11 +59,11 @@ export default function OfficerProfile(props: any) {
 
   const dispatch = useDispatch();
   const getOneField = useSelector((store: any) => store.OneFieldOfficerData);
-  const getOneFieldData = getOneField.response
+  const getOneFieldData = getOneField.response;
 
   useEffect(() => {
-    dispatch(oneFieldOfficer(fieldOfficer_id))
-  }, [fieldOfficer_id])
+    dispatch(oneFieldOfficer(fieldOfficer_id));
+  }, [fieldOfficer_id]);
 
   return (
     <div className="flex flex-col my-[5rem] m-[3rem] gap-y-6">
@@ -102,16 +102,12 @@ export default function OfficerProfile(props: any) {
         <HeaderText text={`Education details`} />
         <table className="w-[60%] my-4">
           <tbody className="flex flex-col gap-y-4">
-            <div
-              className="flex bg-[#F4F8FF] py-4 px-6 rounded-[8px] gap-x-8"
-            >
+            <div className="flex bg-[#F4F8FF] py-4 px-6 rounded-[8px] gap-x-8">
               <span className="w-[3rem]">1</span>
               <tr className="w-full flex justify-between">
                 <td className="text-start py-1 pr-5 ">
                   <div className="  ">
-                    <div
-                      className="text-base leading-[24px] font-normal tracking-wider"
-                    >
+                    <div className="text-base leading-[24px] font-normal tracking-wider">
                       {getOneFieldData.educationName}
                     </div>
                   </div>
@@ -128,7 +124,7 @@ export default function OfficerProfile(props: any) {
                         textDecoration: "underline",
                       }}
                     >
-                      {'Certificate'}
+                      {"Certificate"}
                     </Link>
                   </div>
                 </td>
@@ -145,9 +141,25 @@ export default function OfficerProfile(props: any) {
             style={addressStyle}
             className="px-8 py-8 mt-[1rem] rounded-[10px] text-text"
           >
-            <p
-              style={{ maxWidth: "422px" }}
-            >{`${getOneFieldData.address ? (getOneFieldData.address + `, `) : ``} ${getOneFieldData?.villageId?.name ? (getOneFieldData?.villageId?.name + `, `) : ``} ${getOneFieldData?.districtId?.name ? (getOneFieldData?.districtId?.name + `, `) : ``} ${getOneFieldData?.stateId?.name ? (getOneFieldData?.stateId?.name + `, `) : ``} ${getOneFieldData?.pincode ? (`-` + getOneFieldData?.pincode + `, `) : ``}`}</p>
+            <p style={{ maxWidth: "422px" }}>{`${
+              getOneFieldData.address ? getOneFieldData.address + `, ` : ``
+            } ${
+              getOneFieldData?.villageId?.name
+                ? getOneFieldData?.villageId?.name + `, `
+                : ``
+            } ${
+              getOneFieldData?.districtId?.name
+                ? getOneFieldData?.districtId?.name + `, `
+                : ``
+            } ${
+              getOneFieldData?.stateId?.name
+                ? getOneFieldData?.stateId?.name + `, `
+                : ``
+            } ${
+              getOneFieldData?.pincode
+                ? `-` + getOneFieldData?.pincode + `, `
+                : ``
+            }`}</p>
           </div>
         </div>
         <div className="idDocuments my-2">
@@ -157,7 +169,11 @@ export default function OfficerProfile(props: any) {
             className="px-8 py-8 mt-[1rem] w-[228px] rounded-[10px] flex flex-col gap-y-2"
           >
             <LabelText labelName={`Aadhar No`} />
-            <p>{getOneFieldData.aadharNo ?? <span className="text-center font-normal ml-6">{`--`}</span>}</p>
+            <p>
+              {getOneFieldData.aadharNo ?? (
+                <span className="text-center font-normal ml-6">{`--`}</span>
+              )}
+            </p>
             <Link
               href={`${getOneFieldData.aadharImage}`}
               target="_blank"
@@ -170,7 +186,7 @@ export default function OfficerProfile(props: any) {
                 lineHeight: "21px",
                 letterSpacing: "0.05em",
                 textAlign: "left",
-                textDecoration: "underline"
+                textDecoration: "underline",
               }}
             >{`${getOneFieldData.name}.pdf`}</Link>
           </div>
@@ -229,8 +245,8 @@ const AssignedTask = ({ data, onClick }: any) => {
                             taskStatus() == `Completed`
                               ? { color: `#70B10E` }
                               : taskStatus() == `pending`
-                                ? { color: "red" }
-                                : { color: "grey" }
+                              ? { color: "red" }
+                              : { color: "grey" }
                           }
                         >
                           {item[key]}
@@ -280,11 +296,11 @@ const PersonalDetailCard = ({ data }: any) => {
         <div className="w-full flex justify-around p-[1rem] mx-[1rem]">
           <div className=" flex flex-col gap-y-6 mr-[3rem]">
             <DatakeyValue label={`Name`} value={data.name} />
-            <DatakeyValue label={`Phone number`} value={`+91 ${data.phoneNo}`} />
             <DatakeyValue
-              label={`Personal mail ID`}
-              value={data.emailId}
+              label={`Phone number`}
+              value={`+91 ${data.phoneNo}`}
             />
+            <DatakeyValue label={`Personal mail ID`} value={data.emailId} />
             <DatakeyValue
               label={`Company mail ID`}
               value={data.companyEmailId}
