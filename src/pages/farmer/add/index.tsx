@@ -128,34 +128,34 @@ const AddFarmer = () => {
       ? Yup.string().notRequired()
       : Yup.mixed()
 
-          .test(
-            "profile image required",
-            "profile image required",
-            (value: any) => {
-              if (value.type) {
-                return true;
-              } else {
-                return false;
-              }
+        .test(
+          "profile image required",
+          "profile image required",
+          (value: any) => {
+            if (value.type) {
+              return true;
+            } else {
+              return false;
             }
-          )
-          .required("Profile image  is required"),
+          }
+        )
+        .required("Profile image  is required"),
 
     adharImage: farmerOneData.response?.id
       ? Yup.string().notRequired()
       : Yup.mixed()
-          .test(
-            "aadhar card is required",
-            "aadhar card is required",
-            (value: any) => {
-              if (value.type) {
-                return true;
-              } else {
-                return false;
-              }
+        .test(
+          "aadhar card is required",
+          "aadhar card is required",
+          (value: any) => {
+            if (value.type) {
+              return true;
+            } else {
+              return false;
             }
-          )
-          .required("Aadhar card is required"),
+          }
+        )
+        .required("Aadhar card is required"),
   });
 
   // <================ field values ===================>
@@ -254,7 +254,7 @@ const AddFarmer = () => {
                   src={
                     previewImage ??
                     values.profileImage ??
-                    "https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+                    `/sampleProfileAvatar.svg`
                   }
                   alt="profile"
                   className="rounded-[50%] w-[100px] h-[100px]"
@@ -289,6 +289,9 @@ const AddFarmer = () => {
                       fill="white"
                     />
                   </svg>
+                </div>
+                <div className="py-3 text-grey text-center w-[100px] text-[10px] underline-none">
+                  &nbsp;Supported file format <br /> pdf,jpg,png,jpeg.
                 </div>
                 <div className="py-5 px-0 text-[10px] text-error">
                   {touched?.profileImage && errors?.profileImage
@@ -669,8 +672,8 @@ const AddFarmer = () => {
                 {addFarmerData.isLoading || editFarmerData.isLoading
                   ? "Loading..."
                   : farmer_id
-                  ? "Update Profile"
-                  : "Create Profile"}
+                    ? "Update Profile"
+                    : "Create Profile"}
               </div>
             </div>
           )}
@@ -1040,8 +1043,8 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
                 {AddFarm.isLoading || EditFarm.isLoading
                   ? "Loading..."
                   : is_edit
-                  ? "Update"
-                  : "Save"}
+                    ? "Update"
+                    : "Save"}
               </div>
             </div>
           )}

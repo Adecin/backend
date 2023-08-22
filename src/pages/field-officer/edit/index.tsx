@@ -233,7 +233,7 @@ export default function OfficerProfileEdit(props: any) {
                   <img
                     src={
                       previewImage ?? values.profileImage ??
-                      "https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+                      `/sampleProfileAvatar.svg`
                     }
                     alt="profile"
                     className="rounded-[50%] w-[100px] h-[100px]"
@@ -269,6 +269,9 @@ export default function OfficerProfileEdit(props: any) {
                       />
                     </svg>
                   </div>
+                  <div className="py-3 text-grey text-center w-[100px] text-[10px] underline-none">
+                  &nbsp;Supported file format <br /> pdf,jpg,png,jpeg.
+                </div>
                   <div className="p-5 pt-0 text-[10px] text-error">
                     {touched?.profileImage && errors?.profileImage
                       ? errors?.profileImage ?? ""

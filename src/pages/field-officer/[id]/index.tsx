@@ -29,25 +29,25 @@ const surveyData = [
     survey: "DTE 2023",
     field_officer: "KK001",
     location: "Dakshina Kannada,Karapakam, 600 061",
-    farmer_id: "KK001",
+    farmer_ID: "KK001",
   },
   {
     survey: "DTE 2023",
     field_officer: "KK001",
     location: "Dakshina Kannada,Karapakam, 600 061",
-    farmer_id: "KK001",
+    farmer_ID: "KK001",
   },
   {
     survey: "DTE 2023",
     field_officer: "KK001",
     location: "Dakshina Kannada,Karapakam, 600 061",
-    farmer_id: "KK001",
+    farmer_ID: "KK001",
   },
   {
     survey: "DTE 2023",
     field_officer: "KK001",
     location: "Dakshina Kannada,Karapakam, 600 061",
-    farmer_id: "KK002",
+    farmer_ID: "KK002",
   },
 ];
 
@@ -321,7 +321,7 @@ const SurveyComponent = (props: any) => {
           <div className="w-full">
             <SelectMenu
               fieldStyle={{ background: "#F4F8FF" }}
-              labelname={"Survey"}
+              //labelname={"Survey"}
               name={""}
               data={[]}
               handleChange={undefined}
@@ -332,7 +332,7 @@ const SurveyComponent = (props: any) => {
           <div className="w-full">
             <SelectMenu
               fieldStyle={{ background: "#F4F8FF" }}
-              labelname={"Farmer ID"}
+              //labelname={"Farmer ID"}
               name={""}
               data={[]}
               handleChange={undefined}
@@ -343,7 +343,7 @@ const SurveyComponent = (props: any) => {
           <div className="w-full">
             <SelectMenu
               fieldStyle={{ background: "#F4F8FF" }}
-              labelname={"Location"}
+              //labelname={"Location"}
               name={""}
               data={[]}
               handleChange={undefined}

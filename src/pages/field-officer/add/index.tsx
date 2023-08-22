@@ -266,7 +266,7 @@ export default function OfficerProfileAdd(props: any) {
                 <img
                   src={
                     previewImage ??
-                    "https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
+                    `/sampleProfileAvatar.svg`
                   }
                   alt="profile"
                   className="rounded-[50%] w-[100px] h-[100px]"
@@ -301,6 +301,9 @@ export default function OfficerProfileAdd(props: any) {
                       fill="white"
                     />
                   </svg>
+                </div>
+                <div className="py-3 text-grey text-center w-[100px] text-[10px] underline-none">
+                  &nbsp;Supported file format <br /> pdf,jpg,png,jpeg.
                 </div>
                 <div className="py-5 px-0 text-[10px] text-error">
                   {touched?.profileImage && errors?.profileImage
@@ -564,6 +567,7 @@ export default function OfficerProfileAdd(props: any) {
             <div className="bg-[#F4F8FF] w-full mt-[1rem] p-[2rem]">
               <div className="grid grid-cols-2 w-full">
                 <SelectMenu
+                  required
                   name="martialStatus"
                   labelname="Marital Status"
                   placeHolderText="Select status"
