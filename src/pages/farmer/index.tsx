@@ -50,16 +50,16 @@ const ListFieldOfficer = () => {
     return {
       checkBox: (
         <Checkbox
-          checked={allSelect ? true : checkedData.includes(e.id)}
+          checked={allSelect ? true : checkedData.includes(e.farmer_id)}
           onChange={() => {
             console.log(checkedData);
-            if (checkedData.includes(e.id)) {
-              const findIndex = checkedData.indexOf(e.id);
+            if (checkedData.includes(e.farmer_id)) {
+              const findIndex = checkedData.indexOf(e.farmer_id);
               const cloneData = [...checkedData];
               cloneData.splice(findIndex, 1);
               setCheckData(cloneData);
             } else {
-              setCheckData([...checkedData, e.id]);
+              setCheckData([...checkedData, e.farmer_id]);
             }
           }}
         />
@@ -67,7 +67,7 @@ const ListFieldOfficer = () => {
       photo: (
         <img
           onClick={() => {
-            router.push("/farmer/" + e.id);
+            router.push("/farmer/" + e.farmer_id);
           }}
           className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
           alt="photo"
@@ -77,8 +77,8 @@ const ListFieldOfficer = () => {
           }
         />
       ),
-      farmer_id: e.farmerId,
-      Name: e.name,
+      farmer_id: e.farmer_farmerId,
+      Name: e.farmer_name,
       regulation: (
         <div>
           <div className="flex items-center">
@@ -94,12 +94,12 @@ const ListFieldOfficer = () => {
         <div>
           <div
             className={
-              e.status == "Rejected" || e.status == "Pending"
+              e.farmer_status == "Rejected" || e.farmer_status == "Pending"
                 ? "text-error"
                 : "text-[#70B10E]"
             }
           >
-            {e.status}
+            {e.farmer_status}
           </div>
         </div>
       ),
