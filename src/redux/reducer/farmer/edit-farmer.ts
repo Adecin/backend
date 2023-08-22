@@ -38,6 +38,7 @@ const EditFarmer: any = createSlice({
       state.isLoading = true;
     });
     builder.addCase(editFarmer.fulfilled, (state: any, { payload }: any) => {
+      alert(payload.data.message);
       state.isLoading = false;
       state.response = payload.data?.data;
       state.Message = payload.data.message;
