@@ -72,7 +72,7 @@ const ListFieldOfficer = () => {
           className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
           alt="photo"
           src={
-            e.profileImage ??
+            e.farmer_profileImage ??
             "https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
           }
         />
