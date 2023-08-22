@@ -4,6 +4,7 @@ import SelectMenu from "@/components/inputComponents/selectMenu";
 import BreadCrumb from "@/components/table/bread-crumb";
 import DynamicTable from "@/components/table/dynamicTable";
 import Tabs from "@/components/tabs/farm-details";
+import HeaderText from "@/components/textComponents/headerText";
 import { listFarm } from "@/redux/reducer/farmer/list-farm";
 import { listOneFarmer } from "@/redux/reducer/farmer/list-one-farmer";
 import {
@@ -44,7 +45,7 @@ const FarmerList = () => {
         </>
       ),
 
-      downloads: (
+      download: (
         <svg
           className="cursor-pointer"
           width="22"
@@ -110,8 +111,9 @@ const FarmerList = () => {
         {/* personal details */}
         <div className="px-4 max-w-[900px]">
           {/* title */}
-          <div className="text-text my-4 text-[16px]">Personal detail</div>
-          {/* content */}
+          <div className="my-4">
+            <HeaderText text={`Personal info`} />
+          </div>          {/* content */}
           <div className="bg-lblue my-2 p-5 rounded-[10px] flex items-center">
             <div>
               <img
@@ -129,27 +131,27 @@ const FarmerList = () => {
                 <span className="text-text font-[400]">
                   Name &nbsp; - &nbsp;
                 </span>
-                {farmerData.response.name ?? ""}
+                <span className="font-bold">{farmerData.response.name ?? ""}</span>
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   Phone Number &nbsp; - &nbsp;
                 </span>
-                {(farmerData.response.countryCode ?? "") +
+                <span className="font-bold">{(farmerData.response.countryCode ?? "") +
                   ` ` +
-                  (farmerData.response.phoneNo ?? "")}
+                  (farmerData.response.phoneNo ?? "")}</span>
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   Gender &nbsp; - &nbsp;
                 </span>
-                {farmerData.response.gender ?? ""}
+                <span className="font-bold">{farmerData.response.gender ?? ""}</span>
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   Education &nbsp; - &nbsp;
                 </span>
-                {farmerData.response.education ?? ""}
+                <span className="font-bold">{farmerData.response.education ?? ""}</span>
               </div>
             </div>
             {/* second line */}
@@ -158,13 +160,14 @@ const FarmerList = () => {
                 <span className="text-text font-[400]">
                   Farmer ID &nbsp; - &nbsp;
                 </span>
-                {farmerData.response.farmerId}
+                <span className="font-bold">{farmerData.response.farmerId ?? ''}</span>
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   TBGR ID &nbsp; - &nbsp;
                 </span>
-                {farmerData.response.TBGRId ?? ""}
+                <span className="font-bold">{farmerData.response.TBGRId ?? ""}</span>
+                
               </div>
               {/* <div className="my-4">
                 <span className="text-text font-[400]">
@@ -176,7 +179,8 @@ const FarmerList = () => {
                 <span className="text-text font-[400]">
                   Age &nbsp; - &nbsp;
                 </span>
-                {farmerData.response.age ?? ""}
+                <span className="font-bold">{farmerData.response.age ?? ""}</span>
+
               </div>
             </div>
           </div>
@@ -185,7 +189,9 @@ const FarmerList = () => {
         <div className="px-4 grid grid-cols-1 xl:flex">
           <div className="max-w-[500px]">
             {/* title */}
-            <div className="text-text my-4 text-[16px]">Address Details</div>
+            <div className="my-4">
+              <HeaderText text={`Address`} />
+            </div>
             {/* content */}
             <div className="bg-lblue  w-auto my-2 p-5 rounded-[10px] flex items-center">
               <div className="px-5 ">
@@ -203,8 +209,8 @@ const FarmerList = () => {
           {/* Government id proof */}
           <div className="w-[400px] xl:ml-[100px]">
             {/* title */}
-            <div className="text-text my-4 text-[16px]">
-              Government ID Proof
+            <div className="my-4">
+              <HeaderText text={`Government ID Proof`} />
             </div>
             {/* content */}
             <div className="bg-lblue w-auto my-2 p-5 rounded-[10px] flex items-center">
@@ -226,8 +232,9 @@ const FarmerList = () => {
         {/* family */}
         <div className="">
           {/* title */}
-          <div className="text-text my-4 text-[16px]">Family Info Details</div>
-          {/* content */}
+          <div className="my-4">
+            <HeaderText text={`Family Info`} />
+          </div>          {/* content */}
           <div className="bg-lblue  w-[650px] justify-between my-2 p-5 rounded-[10px] flex ">
             <div className="px-5 ">
               <div className="my-4 text-[#858585] text-[16px]">
@@ -239,7 +246,7 @@ const FarmerList = () => {
             </div>{" "}
             <div className="px-5 ">
               <div className="my-4 text-[#858585] text-[16px]">
-                Spouse Name No
+                Spouse Name
               </div>
               <div className="my-4 text-text text-[14px]">
                 {farmerData.response.spouseName ?? ""}
@@ -248,19 +255,22 @@ const FarmerList = () => {
             <div className="px-5 ">
               <div className="my-4 text-[#858585] text-[16px]">Children</div>
               <div className="my-4 text-text text-[14px]">
-                Male-{farmerData.response.childrenFemale ?? " 0 "}
+                {`Male - ${farmerData.response.childrenFemale ?? 0} `}
               </div>
               <div className="my-4 text-text text-[14px]">
-                Female-{farmerData.response.childrenMale ?? " 0 "}
+                {`Female - ${farmerData.response.childrenMale ?? 0} `}
               </div>
             </div>
           </div>
         </div>
         {/* farmer details */}
-        <div className="text-text my-4 text-[16px]">Farm Details</div>
-        {/* tabs */}
-        {farmData?.response?.data?.length != 0 ? <Tabs data={farmData} /> : ""}
-
+        {farmData?.response?.data?.length != 0 && <div>
+          <div className="my-4">
+            <HeaderText text={`Farm Details`} />
+          </div>
+          {/* tabs */}
+          <Tabs data={farmData} />
+        </div>}
         {/* second phase */}
         {/* survey details */}
         {/* <div>

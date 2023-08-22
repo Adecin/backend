@@ -544,7 +544,8 @@ export default function OfficerProfileAdd(props: any) {
                   }}
                   className="text-primary underline cursor-pointer"
                 >
-                  Upload Certificate*{" "}
+                  <span>{`Upload Certificate`}</span>
+                  <span style={{ color: "red", padding: "0" }}>{` * `}</span>
                 </div>
                 <span className="text-grey  underline-none">
                   &nbsp;(file format pdf,word,image)*
@@ -688,7 +689,8 @@ export default function OfficerProfileAdd(props: any) {
                   }}
                   className="text-primary underline cursor-pointer ml-8"
                 >
-                  Upload Aadhar*{" "}
+                  <span>{`Upload Certificate`}</span>
+                  <span style={{ color: "red" }}>{` * `}</span>
                 </div>
                 <span className="text-grey  underline-none mr-8">
                   &nbsp;(file format pdf,word,image)*
