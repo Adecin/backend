@@ -133,11 +133,6 @@ export default function OfficerProfileEdit(props: any) {
     relievingDate: Yup.string(),
     martialStatus: Yup.string().required("Marital status is required"),
     educationName: Yup.string().required('Education is required'),
-    adharNumber: Yup.string()
-      .matches(/^[0-9]+$/, "Must be only digis")
-      .min(12, "Invalid aadhar number")
-      .max(12, "Invalid aadhar number")
-      .required("Aadhar card number is required")
   });
 
   // formik
@@ -201,6 +196,8 @@ export default function OfficerProfileEdit(props: any) {
     errors,
     setFieldError,
   }: any = formik;
+
+  console.log(errors);
 
   const PageHeader = styled.p`
     font-size: 18px;
@@ -676,9 +673,7 @@ export default function OfficerProfileEdit(props: any) {
               customStyle={{
                 padding: "1rem 3rem",
               }}
-              handleOnClick={() => {
-                handleSubmit();
-              }}
+              handleOnClick={handleSubmit}
             />
           </div>
           <div className="w-full">
