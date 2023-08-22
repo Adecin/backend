@@ -69,7 +69,7 @@ export default function ForegetPasswordComp(props: any) {
                 </p>
                 <div className="px-5 my-1 w-full">
                     <div className="w-full py-2">
-                        <LabelText customStyle={{ textAlign: "center" }} labelName={`Please enter your register mobile number`} />
+                        <LabelText customStyle={{ textAlign: "center" }} labelName={`Please enter your registered mobile number`} />
                         <TextInput
                             value={values}
                             name="phoneNo"
