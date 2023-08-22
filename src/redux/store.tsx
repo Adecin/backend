@@ -31,6 +31,8 @@ import AssignFarmerData from "./reducer/fieldOfficer/addFieldOfficer";
 import AssignFarmerListData from "./reducer/fieldOfficer/assignFarmerList";
 import EditFarm from "./reducer/farmer/edit-farm";
 import ApproveFarmerData from "./reducer/farmer/approve-farmer";
+import AssignedFarmersCountData from "./reducer/fieldOfficer/assignFarmersCounts";
+import updateAssignFarmerData from "./reducer/fieldOfficer/updateAssignFarmer";
 //regulation
 import AddNewRegulation from "./reducer/regulation/add-regulation";
 import ListAllRegulation from "./reducer/regulation/listAllRegulation";
@@ -67,6 +69,8 @@ export const store = configureStore({
     AssignFarmerData:AssignFarmerData,
     AssignFarmerListData:AssignFarmerListData,
     ApproveFarmerData:ApproveFarmerData,
+    AssignedFarmersCountData:AssignedFarmersCountData,
+    updateAssignFarmerData:updateAssignFarmerData,
     //regulation
     AddNewRegulation: AddNewRegulation,
     ListAllRegulation: ListAllRegulation,
