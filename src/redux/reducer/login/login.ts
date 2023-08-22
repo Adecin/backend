@@ -52,29 +52,28 @@ const UserLogin: any = createSlice({
     extraReducers: (builder: any) => {
         builder.addCase(userLogin.pending, (state: any, { payload }: any) => {
             state.isLoading = true;
-            window.alert(payload.data.message)
         });
         builder.addCase(userLogin.fulfilled, (state: any, { payload }: any) => {
             state.isLoading = false;
             state.response = payload.data?.data;
-            state.Message = payload.data.message;
+            state.Message = payload.data?.message;
             state.isSuccess = true;
             localStorage.setItem('token', payload.data.token);
-            window.alert(payload.data.message)
-            const decodedToken: any = jwtDecode(payload.data.token);
+            window.alert(payload?.data?.message)
+            const decodedToken: any = jwtDecode(payload?.data?.token);
             if (decodedToken?.data?.role === 'admin'){
                 window.location.pathname = '/dashboard';
             }          
-            SUCCESS(payload.data.message);
+            SUCCESS(payload?.data?.message);
         });
 
         builder.addCase(userLogin.rejected, (state: any, { payload }: any) => {
             state.isLoading = false;
             state.isSuccess = false;
             state.isError = true;
-            state.Message = payload.data ? payload.data.message : payload.message;
-            FAILED(payload.message);
-            window.alert(payload.data.message)
+            state.Message = payload?.data ? payload?.data?.message : payload?.message;
+            FAILED(payload?.message);
+            window.alert(payload?.data?.message)
         });
     },
 });
