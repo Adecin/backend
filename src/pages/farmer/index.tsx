@@ -32,13 +32,12 @@ const ListFieldOfficer = () => {
   const ListFarmer = useSelector((store: any) => store.ListFormer);
   const ApproveResponse = useSelector((store: any) => store.ApproveFarmerData);
 
-
   // console.log("datasss", ListFarmer);
 
   useEffect(() => {
     dispatch(listFarmers(""));
     setCheckData([]);
-  }, [ApproveResponse])
+  }, [ApproveResponse]);
 
   // useEffect
 
@@ -72,7 +71,7 @@ const ListFieldOfficer = () => {
           className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
           alt="photo"
           src={
-            e.farmer_profileImage ??
+            e.profileImage ??
             "https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
           }
         />
@@ -199,7 +198,7 @@ const ListFieldOfficer = () => {
             <BreadCrumb classes={` font-bold text-[#43424D]`} />
             <Filter
               value={searchValue}
-              applyFilter={() => { }}
+              applyFilter={() => {}}
               onSearch={(e: string) => {
                 setSearchValue(e);
               }}
@@ -342,10 +341,12 @@ function CustomTabPanel(props: TabPanelProps) {
 
 const Dialogs = ({ closePopUp, farmersList }: any) => {
   const [is_approve, setApprove] = useState("true");
-  const [reason, setReason] = useState('')
+  const [reason, setReason] = useState("");
 
   const [value, setValue] = React.useState(0);
-  const ListFieldOfficer = useSelector((store: any) => store.ListFieldOfficerData);
+  const ListFieldOfficer = useSelector(
+    (store: any) => store.ListFieldOfficerData
+  );
   const dispatch = useDispatch();
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -356,22 +357,25 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
   console.log(ListFieldOfficer);
 
   useEffect(() => {
-    dispatch(listFieldOfficer(""))
-  }, [])
+    dispatch(listFieldOfficer(""));
+  }, []);
 
   const handleApprove = () => {
     closePopUp();
     console.log(is_approve);
-    const data = is_approve == 'true' ? {
-      is_approve: is_approve,
-      id: farmersList,
-    } : {
-      id: farmersList,
-      reason: reason
-    }
-    console.log(data)
-    dispatch(approveFarmer(data))
-  }
+    const data =
+      is_approve == "true"
+        ? {
+            is_approve: is_approve,
+            id: farmersList,
+          }
+        : {
+            id: farmersList,
+            reason: reason,
+          };
+    console.log(data);
+    dispatch(approveFarmer(data));
+  };
 
   return (
     <>
@@ -481,7 +485,7 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
         <div className="w-[400px] ">
           <SelectMenu
             name="manager"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Name of Field Officer"
             data={ListFieldOfficer?.response?.data}
           />
@@ -520,7 +524,7 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
         <div className="w-[400px] ">
           <SelectMenu
             name="manager"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Select survey name"
             data={[
               {
@@ -566,7 +570,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3">
           <SelectMenu
             name="survey"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Survey"
             data={[
               {
@@ -583,7 +587,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3">
           <SelectMenu
             name="manager"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Select district"
             data={[
               {
@@ -600,7 +604,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
             name="village"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Select Village"
             data={[
               {
@@ -617,7 +621,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
             name="officer"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Select Field Officer"
             data={[
               {
