@@ -48,7 +48,7 @@ const ListFieldOfficer = () => {
       employee_ID: e.employeeId,
       Name: e.name,
       phone_number: e.phoneNo,
-      task_status: <span className="text-[#70B10E]">{`${e.completedCount}/${e.farmerCount}`}</span>,
+      task_status: <><span className="text-[#70B10E]">{`${e.completedCount}`}</span><span className="text-[#858585]">{`/${e.farmerCount}`}</span></>,
     }
   });
 

@@ -12,9 +12,13 @@ import LabelText from "@/components/labelText";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { oneFieldOfficer } from "@/redux/reducer/fieldOfficer/getOne";
-import { useEffect } from "react";
+import { useEffect, useState, lazy } from "react";
 import { listFarmers } from "@/redux/reducer/farmer/list-former";
+import { getDistrict } from "@/redux/reducer/dropdown/get-district";
+import { getVillage } from '@/redux/reducer/dropdown/get-village';
+import DownloadIcon from '@mui/icons-material/Download';
 
+const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
 const dataTable = [
   {
@@ -66,12 +70,57 @@ export default function OfficerProfile(props: any) {
   const ListFarmer = useSelector((store: any) => store.ListFormer);
   console.log(ListFarmer);
 
+  const GetState = useSelector((state: any) => state.ListState);
+  const GetDistrict = useSelector((state: any) => state.ListDistrict);
+  const GetSVillage = useSelector((state: any) => state.ListVillage);
+
   useEffect(() => {
-    const query =`?technicianId=2`
+    const query = `?technicianId=2`
     dispatch(oneFieldOfficer(fieldOfficer_id))
     dispatch(listFarmers(query));
   }, [fieldOfficer_id])
 
+  const districtDropDown = GetDistrict.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
+  const villageDropDown = GetSVillage.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
+
+  const [filterData, setFilterData] = useState({
+    districtFilter: '',
+    villageFillter: ''
+  });
+
+  useEffect(() => {
+    dispatch(getVillage());
+    dispatch(getDistrict());
+  }, []);
+
+  const FilterDataList = ListFarmer.response.data?.map((e: any, index: number) => {
+    return {
+      No: index + 1,
+      Assigned_Date: e?.assign_farmer?.[0]?.createdDate.split('T')[0],
+      Farmer_Id: e?.farmer_farmerId,
+      Name: e?.farmer_name,
+      Location: (
+        <p>{e.farmer_address},<br>
+        </br>{e.village_name},<br>
+          </br>{e.state_name}<br>
+          </br>{e.farmer_pincode}</p>
+      ),
+      Status:(
+        <p style={{color:'#F75656'}}>Pending</p>
+      ),
+      Download: (
+        <DownloadIcon sx={{ color: '#3D7FFA', fontSize:35 }}/>
+      )
+    }
+  })
 
 
   return (
@@ -150,25 +199,20 @@ export default function OfficerProfile(props: any) {
             style={addressStyle}
             className="px-8 py-8 mt-[1rem] rounded-[10px] text-text"
           >
-            <p style={{ maxWidth: "422px" }}>{`${
-              getOneFieldData.address ? getOneFieldData.address + `, ` : ``
-            } ${
-              getOneFieldData?.villageId?.name
+            <p style={{ maxWidth: "422px" }}>{`${getOneFieldData.address ? getOneFieldData.address + `, ` : ``
+              } ${getOneFieldData?.villageId?.name
                 ? getOneFieldData?.villageId?.name + `, `
                 : ``
-            } ${
-              getOneFieldData?.districtId?.name
+              } ${getOneFieldData?.districtId?.name
                 ? getOneFieldData?.districtId?.name + `, `
                 : ``
-            } ${
-              getOneFieldData?.stateId?.name
+              } ${getOneFieldData?.stateId?.name
                 ? getOneFieldData?.stateId?.name + `, `
                 : ``
-            } ${
-              getOneFieldData?.pincode
+              } ${getOneFieldData?.pincode
                 ? `-` + getOneFieldData?.pincode + `, `
                 : ``
-            }`}</p>
+              }`}</p>
           </div>
         </div>
         <div className="idDocuments my-2">
@@ -201,71 +245,70 @@ export default function OfficerProfile(props: any) {
           </div>
         </div>
       </div>
-      <AssignedTask data={dataTable} />
+      <AssignedTask
+        data={FilterDataList}
+        districtDrop={districtDropDown}
+        villageDrop={villageDropDown}
+      />
       <SurveyComponent data={surveyData} />
     </div>
   );
 }
 
-const AssignedTask = ({ data, onClick }: any) => {
-  const keys = Object.keys(data[0]);
+const AssignedTask = (props: any) => {
+  const { data, districtDrop, villageDrop } = props;
+
+  const LabelText = styled.p`
+    width: 100px;
+    ::after {
+      content: " : ";
+      padding: 0 0.25rem;
+    }
+  `;
 
   return (
     <div className="my-2">
       <HeaderText text={`Assigned Task`} />
-      <div className="bg-[#F4F8FF] p-[2rem] mt-[1rem] pt-2">
-        <table className="w-full">
-          <thead>
-            <tr className="">
-              <th className="text-grey capitalize text-start my-0 pl-5">{`No`}</th>
-              {keys.map((key: string, index: number) => (
-                <th className="py-5 pl-5 text-start my-2" key={key} style={{}}>
-                  <div className={`text-grey capitalize text-start my-0`}>
-                    {key.split("_").join(" ")}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="divide-y-[20px] divide-[#F4F8FF] p-[1rem]">
-            {data.map((item: any, index: number) => (
-              <tr className="bg-white my-2" key={index}>
-                <td className="text-start py-5 pl-5 ">{index + 1}</td>
-                {keys.map((key: any) => {
-
-                  const taskStatus = () => {
-                    let status = ``;
-                    if (key == `status` && item[key] == `Completed`) {
-                      status = `Completed`;
-                      return status;
-                    } else if (key == `status` && item[key] == `Pending`) {
-                      status = `Pending`;
-                      return status;
-                    }
-                  };
-                  return (
-                    <td className="text-start py-5 pl-5" key={key}>
-                      <div className="  ">
-                        <div
-                          className="text-text font-[500]"
-                          style={
-                            taskStatus() == `Completed`
-                              ? { color: `#70B10E` }
-                              : taskStatus() == `pending`
-                              ? { color: "red" }
-                              : { color: "grey" }
-                          }
-                        >
-                          {item[key]}
-                        </div>
-                      </div>
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="filters flex items-center mt-[1rem]">
+        <LabelText className="">{`Filter by`}</LabelText>
+        <div className="flex w-[100%] justify-around">
+          <div className="w-full">
+            <SelectMenu
+              fieldStyle={{ background: "#F4F8FF" }}
+              //labelname={"Farmer ID"}
+              name={""}
+              data={[]}
+              handleChange={undefined}
+              value={undefined}
+              placeHolderText={"Farmer ID"}
+            />
+          </div>
+          <div className="w-full">
+            <SelectMenu
+              fieldStyle={{ background: "#F4F8FF" }}
+              //labelname={"Survey"}
+              name={""}
+              data={districtDrop ?? []}
+              handleChange={undefined}
+              value={undefined}
+              placeHolderText={"District"}
+            />
+          </div>
+          <div className="w-full">
+            <SelectMenu
+              fieldStyle={{ background: "#F4F8FF" }}
+              //labelname={"Location"}
+              name={""}
+              data={villageDrop ?? []}
+              handleChange={undefined}
+              value={undefined}
+              placeHolderText={"Village"}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="Surveytable">
+        <DynamicTable data={data} />
       </div>
     </div>
   );
