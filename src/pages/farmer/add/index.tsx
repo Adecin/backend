@@ -97,7 +97,11 @@ const AddFarmer = () => {
       .min(8, "Invalid TBGR Id")
       .max(8, "Invalid TBGR Id")
       .required("TBGR Id  is required"),
-    phoneNo: Yup.number().required("Phone Number is required"),
+    phoneNo: Yup.string()
+      .matches(/^[0-9]+$/, 'Must be only digits')
+      .min(10, 'Must be exactly 10 digits')
+      .max(10, 'Must be exactly 10 digits')
+      .required('Contact number is required'),
     age: Yup.string()
       .matches(/^[0-9]+$/, "Invalid age")
       .required("Age is required"),

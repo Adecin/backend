@@ -102,6 +102,8 @@ export default function OfficerProfile(props: any) {
   }, []);
 
   const FilterDataList = ListFarmer.response.data?.map((e: any, index: number) => {
+    const hasPendingRegulation = e.regulation.some((e: any) => e.status === "Pending");
+
     return {
       No: index + 1,
       Assigned_Date: e?.assign_farmer?.[0]?.createdDate.split('T')[0],
@@ -113,11 +115,13 @@ export default function OfficerProfile(props: any) {
           </br>{e.state_name}<br>
           </br>{e.farmer_pincode}</p>
       ),
-      Status:(
-        <p style={{color:'#F75656'}}>Pending</p>
+      Status: (
+        <p style={{ color: hasPendingRegulation ? '#F75656' : '#70B10E' }}>
+          {hasPendingRegulation ? 'Pending' : 'Completed'}
+        </p>
       ),
       Download: (
-        <DownloadIcon sx={{ color: '#3D7FFA', fontSize:35 }}/>
+        <DownloadIcon sx={{ color: '#3D7FFA', fontSize: 35 }} />
       )
     }
   })
