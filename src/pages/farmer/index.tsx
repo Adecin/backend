@@ -20,6 +20,7 @@ import { listFarmers } from "@/redux/reducer/farmer/list-former";
 import { listFieldOfficer } from "@/redux/reducer/fieldOfficer/getList";
 import { styled, Tab, Box, Tabs } from "@mui/material";
 import { approveFarmer } from "@/redux/reducer/farmer/approve-farmer";
+import { updateAssignFarmer } from "@/redux/reducer/fieldOfficer/updateAssignFarmer";
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
 const ListFieldOfficer = () => {
@@ -68,7 +69,7 @@ const ListFieldOfficer = () => {
           onClick={() => {
             router.push("/farmer/" + e.farmer_id);
           }}
-          className="w-[68px] cursor-pointer h-[56px] rounded-[5px] "
+          className="w-[68px] cursor-pointer h-[56px] rounded-[5px] hover:shadow-lg shadow-cyan-500/50"
           alt="photo"
           src={
             e.profileImage ??
@@ -76,7 +77,7 @@ const ListFieldOfficer = () => {
           }
         />
       ),
-      farmer_id: e.farmer_farmerId,
+      farmer_ID: e.farmer_farmerId,
       Name: e.farmer_name,
       regulation: (
         <div>
@@ -343,6 +344,10 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
   const [is_approve, setApprove] = useState("true");
   const [reason, setReason] = useState("");
 
+  const [selectedTechnicain, setSelectedTechnicain] = useState({
+    tech: "",
+  });
+
   const [value, setValue] = React.useState(0);
   const ListFieldOfficer = useSelector(
     (store: any) => store.ListFieldOfficerData
@@ -484,8 +489,14 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
         </div>
         <div className="w-[400px] ">
           <SelectMenu
-            name="manager"
-            handleChange={() => {}}
+            name="tech"
+            handleChange={(e: any) => {
+              setSelectedTechnicain({
+                ...selectedTechnicain,
+                tech: e.target.value,
+              });
+            }}
+            value={selectedTechnicain}
             placeHolderText="Name of Field Officer"
             data={ListFieldOfficer?.response?.data}
           />
@@ -501,6 +512,11 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
           </div>
           <div
             onClick={() => {
+              const data = {
+                technicianId: selectedTechnicain.tech,
+                farmerId: farmersList,
+              };
+              dispatch(updateAssignFarmer(data));
               closePopUp();
             }}
             className="bg-primary cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"

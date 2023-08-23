@@ -267,8 +267,8 @@ export default function OfficerProfileEdit(props: any) {
                     </svg>
                   </div>
                   <div className="py-3 text-grey text-center w-[100px] text-[10px] underline-none">
-                  &nbsp;Supported file format <br /> pdf,jpg,png,jpeg.
-                </div>
+                    &nbsp;Supported file format <br /> pdf,jpg,png,jpeg.
+                  </div>
                   <div className="p-5 pt-0 text-[10px] text-error">
                     {touched?.profileImage && errors?.profileImage
                       ? errors?.profileImage ?? ""
@@ -507,7 +507,8 @@ export default function OfficerProfileEdit(props: any) {
                     }}
                     className="text-primary underline cursor-pointer"
                   >
-                    Upload Certificate*{" "}
+                    <span>{`Upload Certificate`}</span>
+                    <span style={{ color: "red" }}>{` * `}</span>
                   </div>
                   <span className="text-grey  underline-none">
                     &nbsp;(file format pdf,word,image)*
@@ -650,7 +651,8 @@ export default function OfficerProfileEdit(props: any) {
                     }}
                     className="text-primary underline cursor-pointer"
                   >
-                    Upload Aadhar*{" "}
+                  <span>{`Upload Aadhar`}</span>
+                  <span style={{ color: "red" }}>{` * `}</span>                
                   </div>
                   <span className="text-grey  underline-none">
                     &nbsp;(file format pdf,word,image)*
@@ -748,32 +750,32 @@ export default function OfficerProfileEdit(props: any) {
                 </div>
                 {
                   filterData.villageFillter ?
-                  <CustomButton
-                  startIcon={
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M10 0C7.35774 0.0318782 4.83268 1.09568 2.96418 2.96418C1.09568 4.83268 0.0318782 7.35774 0 10C0.0318782 12.6423 1.09568 15.1673 2.96418 17.0358C4.83268 18.9043 7.35774 19.9681 10 20C12.6423 19.9681 15.1673 18.9043 17.0358 17.0358C18.9043 15.1673 19.9681 12.6423 20 10C19.9681 7.35774 18.9043 4.83268 17.0358 2.96418C15.1673 1.09568 12.6423 0.0318782 10 0ZM15.7143 10.7143H10.7143V15.7143H9.28571V10.7143H4.28571V9.28571H9.28571V4.28571H10.7143V9.28571H15.7143V10.7143Z"
-                        fill="#3D7FFA"
-                      />
-                    </svg>
-                  }
-                  buttonName={`Assign farmer`}
-                  customStyle={{
-                    background: "none",
-                    color: "#3D7FFA",
-                    marginTop: "1.65rem",
-                  }}
-                  handleOnClick={() => {
-                    setFarmerPop(true);
-                  }}
-                /> :
-                <p style={{fontSize:'13px', marginTop: "1.65rem"}}>Select Filter to Assign Farmer</p>
+                    <CustomButton
+                      startIcon={
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M10 0C7.35774 0.0318782 4.83268 1.09568 2.96418 2.96418C1.09568 4.83268 0.0318782 7.35774 0 10C0.0318782 12.6423 1.09568 15.1673 2.96418 17.0358C4.83268 18.9043 7.35774 19.9681 10 20C12.6423 19.9681 15.1673 18.9043 17.0358 17.0358C18.9043 15.1673 19.9681 12.6423 20 10C19.9681 7.35774 18.9043 4.83268 17.0358 2.96418C15.1673 1.09568 12.6423 0.0318782 10 0ZM15.7143 10.7143H10.7143V15.7143H9.28571V10.7143H4.28571V9.28571H9.28571V4.28571H10.7143V9.28571H15.7143V10.7143Z"
+                            fill="#3D7FFA"
+                          />
+                        </svg>
+                      }
+                      buttonName={`Assign farmer`}
+                      customStyle={{
+                        background: "none",
+                        color: "#3D7FFA",
+                        marginTop: "1.65rem",
+                      }}
+                      handleOnClick={() => {
+                        setFarmerPop(true);
+                      }}
+                    /> :
+                    <p style={{ fontSize: '13px', marginTop: "1.65rem" }}>Select Filter to Assign Farmer</p>
                 }
               </div>
             </div>

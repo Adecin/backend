@@ -13,6 +13,8 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { oneFieldOfficer } from "@/redux/reducer/fieldOfficer/getOne";
 import { useEffect } from "react";
+import { listFarmers } from "@/redux/reducer/farmer/list-former";
+
 
 const dataTable = [
   {
@@ -61,9 +63,16 @@ export default function OfficerProfile(props: any) {
   const getOneField = useSelector((store: any) => store.OneFieldOfficerData);
   const getOneFieldData = getOneField.response;
 
+  const ListFarmer = useSelector((store: any) => store.ListFormer);
+  console.log(ListFarmer);
+
   useEffect(() => {
-    dispatch(oneFieldOfficer(fieldOfficer_id));
-  }, [fieldOfficer_id]);
+    const query =`?technicianId=2`
+    dispatch(oneFieldOfficer(fieldOfficer_id))
+    dispatch(listFarmers(query));
+  }, [fieldOfficer_id])
+
+
 
   return (
     <div className="flex flex-col my-[5rem] m-[3rem] gap-y-6">

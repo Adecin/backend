@@ -129,34 +129,34 @@ const AddFarmer = () => {
       ? Yup.string().notRequired()
       : Yup.mixed()
 
-          .test(
-            "profile image required",
-            "profile image required",
-            (value: any) => {
-              if (value.type) {
-                return true;
-              } else {
-                return false;
-              }
+        .test(
+          "profile image required",
+          "profile image required",
+          (value: any) => {
+            if (value.type) {
+              return true;
+            } else {
+              return false;
             }
-          )
-          .required("Profile image  is required"),
+          }
+        )
+        .required("Profile image  is required"),
 
     adharImage: farmerOneData.response?.id
       ? Yup.string().notRequired()
       : Yup.mixed()
-          .test(
-            "aadhar card is required",
-            "aadhar card is required",
-            (value: any) => {
-              if (value.type) {
-                return true;
-              } else {
-                return false;
-              }
+        .test(
+          "aadhar card is required",
+          "aadhar card is required",
+          (value: any) => {
+            if (value.type) {
+              return true;
+            } else {
+              return false;
             }
-          )
-          .required("Aadhar card is required"),
+          }
+        )
+        .required("Aadhar card is required"),
   });
 
   // <================ field values ===================>
@@ -642,8 +642,9 @@ const AddFarmer = () => {
                     }}
                     className="text-primary underline cursor-pointer"
                   >
-                    Upload Aadhar*{" "}
-                  </div>
+
+                    <span>{`Upload Aadhar`}</span>
+                    <span style={{ color: "red" }}>{` * `}</span>                  </div>
                   <span className="text-grey  underline-none">
                     &nbsp;(file format pdf,word,image)*
                   </span>
@@ -673,8 +674,8 @@ const AddFarmer = () => {
                 {addFarmerData.isLoading || editFarmerData.isLoading
                   ? "Loading..."
                   : farmer_id
-                  ? "Update Profile"
-                  : "Create Profile"}
+                    ? "Update Profile"
+                    : "Create Profile"}
               </div>
             </div>
           )}
@@ -1044,8 +1045,8 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
                 {AddFarm.isLoading || EditFarm.isLoading
                   ? "Loading..."
                   : is_edit
-                  ? "Update"
-                  : "Save"}
+                    ? "Update"
+                    : "Save"}
               </div>
             </div>
           )}

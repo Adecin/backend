@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html style={{overflow:'hidden', height:'100vh'}} lang="en">
       <Head />
       <body>
         <Main />
