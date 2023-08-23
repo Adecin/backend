@@ -689,7 +689,7 @@ export default function OfficerProfileAdd(props: any) {
                   }}
                   className="text-primary underline cursor-pointer ml-8"
                 >
-                  <span>{`Upload Certificate`}</span>
+                  <span>{`Upload Aadhar`}</span>
                   <span style={{ color: "red" }}>{` * `}</span>
                 </div>
                 <span className="text-grey  underline-none mr-8">

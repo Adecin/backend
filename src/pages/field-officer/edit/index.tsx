@@ -106,7 +106,7 @@ export default function OfficerProfileEdit(props: any) {
   useEffect(() => {
     dispatch(oneFieldOfficer(fieldOfficer_id))
     dispatch(assignFarmerList(`?id=${fieldOfficer_id}`))
-  }, [fieldOfficer_id, farmerPop, assignFarmer.isSuccess])
+  }, [fieldOfficer_id, farmerPop, assignFarmer])
 
   console.log(`assign response 1`, assignFarmer)
 
