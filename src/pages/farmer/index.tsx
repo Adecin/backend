@@ -20,6 +20,9 @@ import { listFarmers } from "@/redux/reducer/farmer/list-former";
 import { listFieldOfficer } from "@/redux/reducer/fieldOfficer/getList";
 import { styled, Tab, Box, Tabs } from "@mui/material";
 import { approveFarmer } from "@/redux/reducer/farmer/approve-farmer";
+import { getDistrict } from "@/redux/reducer/dropdown/get-district";
+import { getVillage } from "@/redux/reducer/dropdown/get-village";
+
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
 const ListFieldOfficer = () => {
@@ -80,14 +83,16 @@ const ListFieldOfficer = () => {
       farmer_ID: e.farmer_farmerId,
       Name: e.farmer_name,
       regulation: (
-        <div>
-          <div className="flex items-center">
-            <div className="w-[15px] mr-3 h-[15px] bg-[#70B10E]" /> STP
-          </div>{" "}
-          <div className="flex my-[10px] items-center">
-            <div className="w-[15px] mr-3 h-[15px] bg-[#F75656]" /> Crop
-            monitoring
-          </div>
+        <div className="flex flex-col gap-y-3">
+          {e.regulation?.map((item: any, index: any) => {
+            const statusColor = item.status == 'Pending' ? `#F75656` : item.status === `Completed` ? `#70B10E` : `#F8B34C`;
+            return (
+              <div key={index} className="flex my-[10px] items-center">
+                <div className={`w-[15px] mr-3 h-[15px] bg-[${statusColor}]`} />
+                {item.name}
+              </div>
+            )
+          })}
         </div>
       ),
       approved_status: (
@@ -560,6 +565,44 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
 // filter values
 
 const FieldOfficerFilter = () => {
+
+  const [filterState, setFilterState] = useState({
+    status: "",
+    // "regulation":{
+    //      "status":"Pending"
+    //  },
+    technicianId: 1,
+    districtId: 1,
+    villageId: 1
+  })
+
+  const GetDistrict = useSelector((state: any) => state.ListDistrict);
+  const GetSVillage = useSelector((state: any) => state.ListVillage);
+  const ListFieldOfficer = useSelector((store: any) => store.ListFieldOfficerData);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(listFieldOfficer(""))
+
+  }, []);
+
+  const districtDropDown = GetDistrict.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
+  const villageDropDown = GetSVillage.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
+  const technicianDropDown = ListFieldOfficer.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
+
   return (
     <>
       <div className="grid grid-cols-2 mb-6 mt-6">
@@ -582,53 +625,37 @@ const FieldOfficerFilter = () => {
         </div>
         <div className="w-[350px] px-3">
           <SelectMenu
-            name="manager"
-            handleChange={() => { }}
+            name="district"
             placeHolderText="Select district"
-            data={[
-              {
-                name: "vijay",
-                id: "09",
-              },
-              {
-                name: "vijay",
-                id: "09",
-              },
-            ]}
+            data={districtDropDown ?? []}
+            value={``}
+            handleChange={(e: any) => {
+              dispatch(getDistrict(`1`));
+              console.log(`e.target.value`, e.target.value)
+            }}
           />
         </div>
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
             name="village"
-            handleChange={() => { }}
             placeHolderText="Select Village"
-            data={[
-              {
-                name: "vijay",
-                id: "09",
-              },
-              {
-                name: "vijay",
-                id: "09",
-              },
-            ]}
+            data={villageDropDown ?? []}
+            value={``}
+            handleChange={(e: any) => {
+              dispatch(getVillage(`1`));
+              console.log(`e.target.value`, e.target.value)
+            }}
           />
         </div>
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
             name="officer"
-            handleChange={() => { }}
             placeHolderText="Select Field Officer"
-            data={[
-              {
-                name: "vijay",
-                id: "09",
-              },
-              {
-                name: "vijay",
-                id: "09",
-              },
-            ]}
+            value={``}
+            handleChange={(e: any) => {
+              console.log(`e.target.value`, e.target.value)
+            }}
+            data={technicianDropDown ?? []}
           />
         </div>
         <div className="w-[350px] px-7 mt-8">

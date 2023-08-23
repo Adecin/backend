@@ -686,7 +686,9 @@ const AddFarmer = () => {
           ) : (
             <>
               <div>
-                <div className="text-text my-4 text-[16px]">Farm Details</div>
+                <div className="my-4">
+                  <HeaderText text={`Family Info`} />
+                </div>
                 {farmData.response.data?.map((e: any, index: number) => {
                   return (
                     <>
