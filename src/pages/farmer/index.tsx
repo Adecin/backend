@@ -191,7 +191,7 @@ const ListFieldOfficer = () => {
             </svg>
           </div>
           <div className="px-7 pb-7  bg-[#F9FAFB]">
-            <div className="mb-5 text-[20px]">Manage</div>
+            <div className="mb-5 text-[20px] font-semibold">Manage</div>
             <Dialogs
               closePopUp={() => {
                 setManageOpen(false);
@@ -225,7 +225,7 @@ const ListFieldOfficer = () => {
               onClick={() => {
                 setManageOpen(true);
               }}
-              className="mx-4 text-[18px] underline cursor-pointer text-grey"
+              className="mx-4 text-[18px] underline cursor-pointer text-grey font-semibold"
             >
               Manage
             </div>
@@ -683,7 +683,7 @@ const FieldOfficerFilter = () => {
         </div>
         <div className="w-[350px] px-7 mt-8">
           <FormControl>
-            <label>STP Status</label>
+            <label className="font-semibold">STP Status</label>
             <RadioGroup
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
@@ -704,7 +704,7 @@ const FieldOfficerFilter = () => {
         </div>
         <div className="w-[350px] px-8 mt-8">
           <FormControl>
-            <label>CM Status</label>
+            <label className="font-semibold">CM Status</label>
             <RadioGroup
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
@@ -725,7 +725,7 @@ const FieldOfficerFilter = () => {
         </div>
         <div className="w-[350px] px-7 mt-5">
           <div className="">
-            <label> Approved Status</label>
+            <label className="font-semibold"> Approved Status</label>
             <Checkbox />
           </div>
         </div>
