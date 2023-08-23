@@ -57,17 +57,17 @@ const FieldOne = ({ data }: any) => {
       <div className="bg-lblue  max-w-[1400px]  my-2 p-5 rounded-[10px] grid grid-cols-5 ">
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Acreage</div>
-          <div className="my-4 text-text text-[14px]">{data.acres ?? ""}</div>
+          <div className="my-4 text-text font-semibold text-[14px]">{data.acres ?? ""}</div>
         </div>{" "}
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Soil Type</div>
-          <div className="my-4 text-text text-[14px]">
+          <div className="my-4 text-text font-semibold text-[14px]">
             {data.soilType ?? ""}
           </div>
         </div>{" "}
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Crop Type</div>
-          <div className="my-4 text-text text-[14px]">
+          <div className="my-4 text-text font-semibold text-[14px]">
             {data.cropTypeId?.name ?? ""}
           </div>
         </div>{" "}
@@ -75,37 +75,37 @@ const FieldOne = ({ data }: any) => {
           <div className="my-4 text-[#858585] text-[16px]">
             Irrigation Type{" "}
           </div>
-          <div className="my-4 text-text text-[14px]">
+          <div className="my-4 font-semibold text-text text-[14px]">
             {data.irrigationType ?? ""}
           </div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">OwnerShip</div>
-          <div className="my-4 text-text text-[14px]">
+          <div className="my-4 font-semibold text-text text-[14px]">
             {data.ownership ?? ""}
           </div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Farm ID</div>
-          <div className="my-4 text-text text-[14px]">{data.farmId}</div>
+          <div className="my-4 font-semibold text-text text-[14px]">{data.farmId}</div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">
             Registration Number
           </div>
-          <div className="my-4 text-text text-[14px]">
+          <div className="my-4 font-semibold text-text text-[14px]">
             {data.registrationNumber ?? ""}
           </div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Geo Location</div>
-          <div className="my-4 text-primary underline text-[14px]">
+          <div className="my-4 font-semibold text-primary underline text-[14px]">
             {data.geoLocation ?? ""}
           </div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Plot Map</div>
-          <div className="my-4 text-primary  underline text-[14px]">
+          <div className="my-4 font-semibold text-primary  underline text-[14px]">
             {data.plotMap ?? ""}
           </div>
         </div>
