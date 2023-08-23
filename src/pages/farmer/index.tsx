@@ -38,6 +38,13 @@ const ListFieldOfficer = () => {
 
   // console.log("datasss", ListFarmer);
 
+  // const [farmerFilter, setFarmerFilter] = useState({
+  //   status: "Pending",
+  //   districtId: 0,
+  //   villageId: 0,
+  //   technicianId: 0,
+  // });
+  // const query = `?status=${farmerFilter.status}&districtId=${farmerFilter.districtId}&villageId=${farmerFilter.villageId}&technicianId=${farmerFilter.technicianId}`;
   useEffect(() => {
     dispatch(listFarmers(""));
     setCheckData([]);
@@ -211,7 +218,12 @@ const ListFieldOfficer = () => {
 
         <div className="px-4">
           {/* bread crumb and filters */}
-          <div className="absolute top-0 sticky bg-white flex justify-between">
+          <div
+            style={{
+              zIndex: 3,
+            }}
+            className="absolute top-0 sticky bg-white flex justify-between"
+          >
             <BreadCrumb classes={` font-bold text-[#43424D]`} />
             <Filter
               value={searchValue}
