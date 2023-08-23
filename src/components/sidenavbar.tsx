@@ -28,7 +28,7 @@ export default function Sidebar() {
         >
           {/* title */}
           <div className="mx-2">
-            <div className="mt-[50px] pb-[10px] border-b border-white w-[100%] text-white text-center text-[30px]">
+            <div className="mt-[20px] pb-[10px] border-b border-white w-[100%] text-white text-center text-[30px]">
               DTE
             </div>
           </div>
@@ -57,7 +57,7 @@ export default function Sidebar() {
           </div> */}
 
           {/* side menu */}
-          <div className="mt-8">
+          <div className="mt-4">
             {sideMenu.map((e: any, index: number) => {
               return (
                 <>
@@ -90,7 +90,7 @@ export default function Sidebar() {
                         }  ${
                           !isExpand
                             ? "justify-center xl:py-3 "
-                            : "pl-6 xl:py-4 py-2"
+                            : "pl-6 xl:py-3 py-2"
                         } ${
                           pathname?.split("/")[1] == e.url.split("/")[1]
                             ? "bg-secondary"
