@@ -22,7 +22,7 @@ const ListFieldOfficer = () => {
   const dispatch = useDispatch();
   const ListFieldOfficer = useSelector((store: any) => store.ListFieldOfficerData);
   // const ListOfficerData = ListFieldOfficer.response.data
-  // console.log(ListOfficerData)
+  console.log(ListFieldOfficer)
 
   useEffect(() => {
     dispatch(listFieldOfficer(""))
@@ -30,7 +30,7 @@ const ListFieldOfficer = () => {
 
 
   const filterData = ListFieldOfficer.response.data?.map((e: any, index: number) => {
-    console.log(e.profileImage)
+    console.log(e.farmerCount)
     return {
       photo: (
         <img
@@ -48,7 +48,7 @@ const ListFieldOfficer = () => {
       employee_ID: e.employeeId,
       Name: e.name,
       phone_number: e.phoneNo,
-      task_status: <span className="text-[#70B10E]">8/157</span>,
+      task_status: <span className="text-[#70B10E]">{`${e.completedCount}/${e.farmerCount}`}</span>,
     }
   });
 

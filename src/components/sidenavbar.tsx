@@ -21,13 +21,14 @@ export default function Sidebar() {
     <>
       <div className={"h-[100%] flex-row items-center flex  justify-center "}>
         <div
-          className={`bg-primary h-[100vh]  max:w-[300px]  ${
+        style={{overflow:'auto', scrollbarWidth:'none'}}
+          className={`bg-primary h-[100vh] max:w-[300px]  ${
             !isExpand ? "xl:w-[100px] w-[50px]" : "xl:w-[300px] w-[180px]"
           }`}
         >
           {/* title */}
           <div className="mx-2">
-            <div className="mt-[50px]  pb-[10px] border-b border-white w-[100%] text-white text-center text-[30px]">
+            <div className="mt-[50px] pb-[10px] border-b border-white w-[100%] text-white text-center text-[30px]">
               DTE
             </div>
           </div>
