@@ -75,7 +75,7 @@ const ListFieldOfficer = () => {
           className="w-[68px] cursor-pointer h-[56px] rounded-[5px] hover:shadow-lg shadow-cyan-500/50"
           alt="photo"
           src={
-            e.profileImage ??
+            e.farmer_profileImage ??
             "https://media.istockphoto.com/id/1092520698/photo/indian-farmer-at-onion-field.webp?b=1&s=170667a&w=0&k=20&c=pGCpSylCt1jR82BrJxM-9aEwklSsVzK2MvXNfCic1EA="
           }
         />
@@ -85,16 +85,24 @@ const ListFieldOfficer = () => {
       regulation: (
         <div className="flex flex-col gap-y-2">
           {e.regulation?.map((item: any, index: any) => {
-            let statusColor = item.status === 'Pending' ? `#F75656` : item.status === `Completed` ? `#70B10E` : `#F8B34C`;
-            console.log(`statusColor`, statusColor)
+            let statusColor =
+              item.status === "Pending"
+                ? `#F75656`
+                : item.status === `Completed`
+                ? `#70B10E`
+                : `#F8B34C`;
+            console.log(`statusColor`, statusColor);
             return (
               <div key={index} className="flex my-[10px] items-center">
-                <div style={{
-                  background: statusColor
-                }} className={`w-[15px] mr-3 h-[15px] bg-[${statusColor}]`} />
+                <div
+                  style={{
+                    background: statusColor,
+                  }}
+                  className={`w-[15px] mr-3 h-[15px] bg-[${statusColor}]`}
+                />
                 {item.name}
               </div>
-            )
+            );
           })}
         </div>
       ),
@@ -207,7 +215,7 @@ const ListFieldOfficer = () => {
             <BreadCrumb classes={` font-bold text-[#43424D]`} />
             <Filter
               value={searchValue}
-              applyFilter={() => { }}
+              applyFilter={() => {}}
               onSearch={(e: string) => {
                 setSearchValue(e);
               }}
@@ -379,13 +387,13 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
     const data =
       is_approve == "true"
         ? {
-          is_approve: is_approve,
-          id: farmersList,
-        }
+            is_approve: is_approve,
+            id: farmersList,
+          }
         : {
-          id: farmersList,
-          reason: reason,
-        };
+            id: farmersList,
+            reason: reason,
+          };
     console.log(data);
     dispatch(approveFarmer(data));
   };
@@ -548,7 +556,7 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
         <div className="w-[400px] ">
           <SelectMenu
             name="manager"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Select survey name"
             data={[
               {
@@ -588,7 +596,6 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
 // filter values
 
 const FieldOfficerFilter = () => {
-
   const [filterState, setFilterState] = useState({
     status: "",
     // "regulation":{
@@ -596,18 +603,21 @@ const FieldOfficerFilter = () => {
     //  },
     technicianId: 1,
     districtId: 1,
-    villageId: 1
-  })
+    villageId: 1,
+  });
 
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
-  const ListFieldOfficer = useSelector((store: any) => store.ListFieldOfficerData);
+  const ListFieldOfficer = useSelector(
+    (store: any) => store.ListFieldOfficerData
+  );
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(listFieldOfficer(""))
-
+    dispatch(listFieldOfficer(""));
+    dispatch(getVillage());
+    dispatch(getDistrict());
   }, []);
 
   const districtDropDown = GetDistrict.response?.data?.map(
@@ -632,7 +642,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3">
           <SelectMenu
             name="survey"
-            handleChange={() => { }}
+            handleChange={() => {}}
             placeHolderText="Survey"
             data={[
               {
@@ -653,8 +663,7 @@ const FieldOfficerFilter = () => {
             data={districtDropDown ?? []}
             value={``}
             handleChange={(e: any) => {
-              dispatch(getDistrict(`1`));
-              console.log(`e.target.value`, e.target.value)
+              console.log(`e.target.value`, e.target.value);
             }}
           />
         </div>
@@ -665,8 +674,7 @@ const FieldOfficerFilter = () => {
             data={villageDropDown ?? []}
             value={``}
             handleChange={(e: any) => {
-              dispatch(getVillage(`1`));
-              console.log(`e.target.value`, e.target.value)
+              console.log(`e.target.value`, e.target.value);
             }}
           />
         </div>
@@ -676,7 +684,7 @@ const FieldOfficerFilter = () => {
             placeHolderText="Select Field Officer"
             value={``}
             handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value)
+              console.log(`e.target.value`, e.target.value);
             }}
             data={technicianDropDown ?? []}
           />
