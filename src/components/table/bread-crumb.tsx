@@ -24,6 +24,9 @@ const BreadCrumb = ({ lastName, classes }: { lastName?: string, classes?: any })
             return (
               <>
                 <div
+                  style={{
+                    textDecoration: "underline"
+                  }}
                   key={index}
                   onClick={() => {
                     const getRoutingPath = pathName
@@ -31,11 +34,11 @@ const BreadCrumb = ({ lastName, classes }: { lastName?: string, classes?: any })
                       .join("/");
                     router.push(getRoutingPath);
                   }}
-                  className={`text-[18px] text-text cursor-pointer capitalize font-[500]`+ classes}
+                  className={`text-[18px] text-text cursor-pointer capitalize font-semibold ` + classes}
                 >
                   {breadCrumb.split("-").join(" ")}
                 </div>
-                <div className={`text-[18px] text-text `} >
+                <div className={`text-[18px] text-text`} >
                   {pathName.length - 1 === index || index === 0 ? (
                     ""
                   ) : (

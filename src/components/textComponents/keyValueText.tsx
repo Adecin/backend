@@ -11,7 +11,7 @@ const DatakeyValue = (props: any) => {
     return (
         <div className="text-base leading-[19px] tracking-wider">
             <DataKeyText>{label}</DataKeyText>
-            <span className="font-bold">{value}</span>
+            <span className="font-semibold">{value}</span>
         </div>
 
     )
