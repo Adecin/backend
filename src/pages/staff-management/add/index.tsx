@@ -269,7 +269,7 @@ export default function OfficerProfileAdd(props: any) {
                 </Button>
                 <LabelText
                   customStyle={{ width: "200px", fontSize: "11px" }}
-                  labelName={`(file format pdf,word,image) *`}
+                  labelName={`(file format pdf,word,image)`}
                 />
               </div>
             </div>
@@ -360,7 +360,7 @@ export default function OfficerProfileAdd(props: any) {
                 </Button>
                 <LabelText
                   customStyle={{ width: "200px", fontSize: "11px" }}
-                  labelName={`(file format pdf,word,image) *`}
+                  labelName={`(file format pdf,word,image)`}
                 />
               </div>
             </div>
