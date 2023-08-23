@@ -131,13 +131,13 @@ const FarmerList = () => {
                 <span className="text-text font-[400]">
                   Name &nbsp; - &nbsp;
                 </span>
-                <span className="font-bold">{farmerData.response.name ?? ""}</span>
+                <span className="font-semibold">{farmerData.response.name ?? ""}</span>
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   Phone Number &nbsp; - &nbsp;
                 </span>
-                <span className="font-bold">{(farmerData.response.countryCode ?? "") +
+                <span className="font-semibold">{(farmerData.response.countryCode ?? "") +
                   ` ` +
                   (farmerData.response.phoneNo ?? "")}</span>
               </div>
@@ -145,13 +145,13 @@ const FarmerList = () => {
                 <span className="text-text font-[400]">
                   Gender &nbsp; - &nbsp;
                 </span>
-                <span className="font-bold">{farmerData.response.gender ?? ""}</span>
+                <span className="font-semibold">{farmerData.response.gender ?? ""}</span>
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   Education &nbsp; - &nbsp;
                 </span>
-                <span className="font-bold">{farmerData.response.education ?? ""}</span>
+                <span className="font-semibold">{farmerData.response.education ?? ""}</span>
               </div>
             </div>
             {/* second line */}
@@ -160,13 +160,13 @@ const FarmerList = () => {
                 <span className="text-text font-[400]">
                   Farmer ID &nbsp; - &nbsp;
                 </span>
-                <span className="font-bold">{farmerData.response.farmerId ?? ''}</span>
+                <span className="font-semibold">{farmerData.response.farmerId ?? ''}</span>
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   TBGR ID &nbsp; - &nbsp;
                 </span>
-                <span className="font-bold">{farmerData.response.TBGRId ?? ""}</span>
+                <span className="font-semibold">{farmerData.response.TBGRId ?? ""}</span>
                 
               </div>
               {/* <div className="my-4">
@@ -179,7 +179,7 @@ const FarmerList = () => {
                 <span className="text-text font-[400]">
                   Age &nbsp; - &nbsp;
                 </span>
-                <span className="font-bold">{farmerData.response.age ?? ""}</span>
+                <span className="font-semibold">{farmerData.response.age ?? ""}</span>
 
               </div>
             </div>
