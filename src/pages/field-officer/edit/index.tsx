@@ -267,7 +267,7 @@ export default function OfficerProfileEdit(props: any) {
                     </svg>
                   </div>
                   <div className="py-3 text-grey text-center w-[100px] text-[10px] underline-none">
-                    &nbsp;Supported file format <br /> pdf,jpg,png,jpeg.
+                    &nbsp;Supported file format <br /> jpg,png,jpeg.
                   </div>
                   <div className="p-5 pt-0 text-[10px] text-error">
                     {touched?.profileImage && errors?.profileImage
@@ -511,7 +511,7 @@ export default function OfficerProfileEdit(props: any) {
                     <span style={{ color: "red" }}>{` * `}</span>
                   </div>
                   <span className="text-grey  underline-none">
-                    &nbsp;(file format pdf,word,image)*
+                    &nbsp;(file format pdf,word,image)
                   </span>
                 </div>
                 <div className="p-5 pt-0 text-[10px] text-error">
@@ -532,6 +532,7 @@ export default function OfficerProfileEdit(props: any) {
                 <div className="grid grid-cols-2 w-full">
                   <SelectMenu
                     name="martialStatus"
+                    required
                     labelname="Marital Status"
                     placeHolderText="Select status"
                     data={marriedDropDown}
@@ -655,7 +656,7 @@ export default function OfficerProfileEdit(props: any) {
                   <span style={{ color: "red" }}>{` * `}</span>                
                   </div>
                   <span className="text-grey  underline-none">
-                    &nbsp;(file format pdf,word,image)*
+                    &nbsp;(file format pdf,word,image)
                   </span>
                 </div>
                 <div className="p-5 pt-0 text-[10px] text-error">

@@ -292,7 +292,7 @@ const AddFarmer = () => {
                   </svg>
                 </div>
                 <div className="py-3 text-grey text-center w-[100px] text-[10px] underline-none">
-                  &nbsp;Supported file format <br /> pdf,jpg,png,jpeg.
+                  &nbsp;Supported file format <br /> jpg,png,jpeg.
                 </div>
                 <div className="py-5 px-0 text-[10px] text-error">
                   {touched?.profileImage && errors?.profileImage
@@ -644,9 +644,10 @@ const AddFarmer = () => {
                   >
 
                     <span>{`Upload Aadhar`}</span>
-                    <span style={{ color: "red" }}>{` * `}</span>                  </div>
+                    <span style={{ color: "red" }}>{` * `}</span>
+                  </div>
                   <span className="text-grey  underline-none">
-                    &nbsp;(file format pdf,word,image)*
+                    &nbsp;(file format pdf,word,image)
                   </span>
                 </div>
                 <div className="p-5 pt-0 text-[10px] text-error">

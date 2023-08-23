@@ -124,7 +124,7 @@ export default function OfficerProfileAdd(props: any) {
       'Enter valid email'
     ),
     dob: Yup.string().required('Dob is required'),
-    gender: Yup.string().required("Age is required"),
+    gender: Yup.string().required("Gender is required"),
     address: Yup.string().required('Address is required'),
     pincode: Yup.string().required('Pincode is required'),
     stateId: Yup.string().required("State is required"),
@@ -303,7 +303,7 @@ export default function OfficerProfileAdd(props: any) {
                   </svg>
                 </div>
                 <div className="py-3 text-grey text-center w-[100px] text-[10px] underline-none">
-                  &nbsp;Supported file format <br /> pdf,jpg,png,jpeg.
+                  &nbsp;Supported file format <br /> jpg,png,jpeg.
                 </div>
                 <div className="py-5 px-0 text-[10px] text-error">
                   {touched?.profileImage && errors?.profileImage
@@ -548,7 +548,7 @@ export default function OfficerProfileAdd(props: any) {
                   <span style={{ color: "red", padding: "0" }}>{` * `}</span>
                 </div>
                 <span className="text-grey  underline-none">
-                  &nbsp;(file format pdf,word,image)*
+                  &nbsp;(file format pdf,word,image)
                 </span>
               </div>
               <div className="p-5 pt-0 text-[10px] text-error">
@@ -693,7 +693,7 @@ export default function OfficerProfileAdd(props: any) {
                   <span style={{ color: "red" }}>{` * `}</span>
                 </div>
                 <span className="text-grey  underline-none mr-8">
-                  &nbsp;(file format pdf,word,image)*
+                  &nbsp;(file format pdf,word,image)
                 </span>
               </div>
               <div className="p-5 pt-0 text-[10px] text-error">
