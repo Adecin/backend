@@ -83,12 +83,15 @@ const ListFieldOfficer = () => {
       farmer_ID: e.farmer_farmerId,
       Name: e.farmer_name,
       regulation: (
-        <div className="flex flex-col gap-y-3">
+        <div className="flex flex-col gap-y-2">
           {e.regulation?.map((item: any, index: any) => {
-            const statusColor = item.status == 'Pending' ? `#F75656` : item.status === `Completed` ? `#70B10E` : `#F8B34C`;
+            let statusColor = item.status === 'Pending' ? `#F75656` : item.status === `Completed` ? `#70B10E` : `#F8B34C`;
+            console.log(`statusColor`, statusColor)
             return (
               <div key={index} className="flex my-[10px] items-center">
-                <div className={`w-[15px] mr-3 h-[15px] bg-[${statusColor}]`} />
+                <div style={{
+                  background: statusColor
+                }} className={`w-[15px] mr-3 h-[15px] bg-[${statusColor}]`} />
                 {item.name}
               </div>
             )
@@ -204,7 +207,7 @@ const ListFieldOfficer = () => {
             <BreadCrumb classes={` font-bold text-[#43424D]`} />
             <Filter
               value={searchValue}
-              applyFilter={() => {}}
+              applyFilter={() => { }}
               onSearch={(e: string) => {
                 setSearchValue(e);
               }}
@@ -376,13 +379,13 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
     const data =
       is_approve == "true"
         ? {
-            is_approve: is_approve,
-            id: farmersList,
-          }
+          is_approve: is_approve,
+          id: farmersList,
+        }
         : {
-            id: farmersList,
-            reason: reason,
-          };
+          id: farmersList,
+          reason: reason,
+        };
     console.log(data);
     dispatch(approveFarmer(data));
   };
@@ -545,7 +548,7 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
         <div className="w-[400px] ">
           <SelectMenu
             name="manager"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Select survey name"
             data={[
               {
@@ -629,7 +632,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3">
           <SelectMenu
             name="survey"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Survey"
             data={[
               {

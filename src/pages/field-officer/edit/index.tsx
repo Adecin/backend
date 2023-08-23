@@ -46,6 +46,7 @@ export default function OfficerProfileEdit(props: any) {
   const GetSVillage = useSelector((state: any) => state.ListVillage);
   const unAssignListFarmer = useSelector((store: any) => store.UnassignFarmerListData);
   const assignFarmerListFarmer = useSelector((store: any) => store.AssignFarmerListData);
+  const assignFarmer = useSelector((store: any) => store.AssignFarmerData);
   const UpdateOfficer = useSelector((state: any) => state.UpdateFieldOfficerData);
 
   const pathName = usePathname();
@@ -56,7 +57,6 @@ export default function OfficerProfileEdit(props: any) {
     villageFillter: ''
   });
 
-  console.log(assignFarmerListFarmer?.response);
   // dropdowns
   const stateDropDown = GetState.response?.data?.map(
     (e: any, index: number) => {
@@ -100,11 +100,15 @@ export default function OfficerProfileEdit(props: any) {
     dispatch(unassignFarmerList(query));
   }, [filterData, farmerPop])
 
+  console.log(`assign response`, assignFarmer.response)
+
+
   useEffect(() => {
     dispatch(oneFieldOfficer(fieldOfficer_id))
     dispatch(assignFarmerList(`?id=${fieldOfficer_id}`))
-  }, [fieldOfficer_id, farmerPop])
+  }, [fieldOfficer_id, farmerPop, assignFarmer.isSuccess])
 
+  console.log(`assign response 1`, assignFarmer)
 
   const fieldProfileSchema = Yup.object().shape({
     employeeId: Yup.string().required('Employee Id is required'),
@@ -728,9 +732,8 @@ export default function OfficerProfileEdit(props: any) {
                 <div className="gap-x-4 pt-3">
                   {assignFarmerListFarmer?.response?.length ?
                     assignFarmerListFarmer?.response?.map((item: any, index: number) => {
-                      console.log(item);
                       return (
-                        <>
+                        <div key={index}>
                           <Chip
                             style={{
                               margin: '5px',
@@ -742,7 +745,7 @@ export default function OfficerProfileEdit(props: any) {
                             label={item.farmerId.farmerId}
                             onDelete={() => { }}
                           />
-                        </>
+                        </div>
                       )
                     })
                     :

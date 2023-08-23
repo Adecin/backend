@@ -232,8 +232,6 @@ const AssignedTask = ({ data, onClick }: any) => {
               <tr className="bg-white my-2" key={index}>
                 <td className="text-start py-5 pl-5 ">{index + 1}</td>
                 {keys.map((key: any) => {
-                  console.log(`kwy`, key);
-                  console.log(`item`, item[key]);
 
                   const taskStatus = () => {
                     let status = ``;
