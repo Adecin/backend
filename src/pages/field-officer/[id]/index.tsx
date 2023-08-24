@@ -15,8 +15,8 @@ import { oneFieldOfficer } from "@/redux/reducer/fieldOfficer/getOne";
 import { useEffect, useState, lazy } from "react";
 import { listFarmers } from "@/redux/reducer/farmer/list-former";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
-import { getVillage } from '@/redux/reducer/dropdown/get-village';
-import DownloadIcon from '@mui/icons-material/Download';
+import { getVillage } from "@/redux/reducer/dropdown/get-village";
+import DownloadIcon from "@mui/icons-material/Download";
 
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
@@ -68,7 +68,6 @@ export default function OfficerProfile(props: any) {
   const getOneFieldData = getOneField.response;
 
   const ListFarmer = useSelector((store: any) => store.ListFormer);
-  console.log(ListFarmer);
 
   const GetState = useSelector((state: any) => state.ListState);
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
@@ -78,7 +77,7 @@ export default function OfficerProfile(props: any) {
     const query = `?technicianId=${fieldOfficer_id}`;
     dispatch(oneFieldOfficer(fieldOfficer_id));
     dispatch(listFarmers(query));
-  }, [fieldOfficer_id])
+  }, [fieldOfficer_id]);
 
   const districtDropDown = GetDistrict.response?.data?.map(
     (e: any, index: number) => {
@@ -92,40 +91,43 @@ export default function OfficerProfile(props: any) {
   );
 
   const [filterData, setFilterData] = useState({
-    districtFilter: '',
-    villageFillter: ''
+    districtFilter: "",
+    villageFillter: "",
   });
 
   useEffect(() => {
     dispatch(getVillage());
     dispatch(getDistrict());
   }, []);
+  const FilterDataList = ListFarmer.response.data?.map(
+    (e: any, index: number) => {
+      const hasPendingRegulation = e.regulation.some(
+        (e: any) => e.status === "Pending"
+      );
 
-  const FilterDataList = ListFarmer.response.data?.map((e: any, index: number) => {
-    const hasPendingRegulation = e.regulation.some((e: any) => e.status === "Pending");
-
-    return {
-      No: index + 1,
-      Assigned_Date: e?.assign_farmer?.[0]?.createdDate.split('T')[0],
-      Farmer_Id: e?.farmer_farmerId,
-      Name: e?.farmer_name,
-      Location: (
-        <p>{e.farmer_address},<br>
-        </br>{e.village_name},<br>
-          </br>{e.state_name}<br>
-          </br>{e.farmer_pincode}</p>
-      ),
-      Status: (
-        <p style={{ color: hasPendingRegulation ? '#F75656' : '#70B10E' }}>
-          {hasPendingRegulation ? 'Pending' : 'Completed'}
-        </p>
-      ),
-      Download: (
-        <DownloadIcon sx={{ color: '#3D7FFA', fontSize: 35 }} />
-      )
+      return {
+        No: index + 1,
+        Assigned_Date: e?.assign_farmer?.[0]?.createdDate.split("T")[0],
+        Farmer_Id: e?.farmer_farmerId,
+        Name: e?.farmer_name,
+        Location: (
+          <p>
+            {e.farmer_address},<br></br>
+            {e.village_name},<br></br>
+            {e.state_name}
+            <br></br>
+            {e.farmer_pincode}
+          </p>
+        ),
+        Status: (
+          <p style={{ color: hasPendingRegulation ? "#F75656" : "#70B10E" }}>
+            {hasPendingRegulation ? "Pending" : "Completed"}
+          </p>
+        ),
+        Download: <DownloadIcon sx={{ color: "#3D7FFA", fontSize: 35 }} />,
+      };
     }
-  })
-
+  );
 
   return (
     <div className="flex flex-col my-[5rem] m-[3rem] gap-y-6">
@@ -197,26 +199,28 @@ export default function OfficerProfile(props: any) {
       </div>
       {/* <AddressComponent /> */}
       <div className="flex justify-start gap-x-12">
-        <div className="addressDeatails my-2">
+        <div className="addressDeatails my-2 ">
           <HeaderText text={`Address details`} />
           <div
-            style={addressStyle}
-            className="px-8 py-8 mt-[1rem] rounded-[10px] text-text"
+            style={{ ...addressStyle, width: "480px" }}
+            className="px-8 py-4 mt-[1rem] rounded-[10px] text-text max-w-[500px]"
           >
-            <p style={{ maxWidth: "422px" }}>{`${getOneFieldData.address ? getOneFieldData.address + `, ` : ``
-              } ${getOneFieldData?.villageId?.name
+            {`${getOneFieldData.address ? getOneFieldData.address + `, ` : ``}`}
+            <br />
+            {`${
+              getOneFieldData?.villageId?.name
                 ? getOneFieldData?.villageId?.name + `, `
                 : ``
-              } ${getOneFieldData?.districtId?.name
-                ? getOneFieldData?.districtId?.name + `, `
-                : ``
-              } ${getOneFieldData?.stateId?.name
-                ? getOneFieldData?.stateId?.name + `, `
-                : ``
-              } ${getOneFieldData?.pincode
-                ? `-` + getOneFieldData?.pincode + `, `
-                : ``
-              }`}</p>
+            }`}
+            <br />
+            {getOneFieldData?.districtId?.name
+              ? getOneFieldData?.districtId?.name + `, `
+              : ``}
+            <br />
+            {getOneFieldData?.stateId?.name
+              ? getOneFieldData?.stateId?.name + ` - `
+              : ``}
+            {getOneFieldData?.pincode ?? ``}
           </div>
         </div>
         <div className="idDocuments my-2">
@@ -312,7 +316,7 @@ const AssignedTask = (props: any) => {
         </div>
       </div>
       <div className="Surveytable">
-        <DynamicTable data={data} />
+        <DynamicTable data={data} count={data?.length} />
       </div>
     </div>
   );
@@ -321,7 +325,7 @@ const AssignedTask = (props: any) => {
 const addressStyle = {
   height: "130px",
   background: "#F4F8FF",
-  padding: "2rem",
+  padding: "1rem 2rem",
 };
 
 const PersonalDetailCard = ({ data }: any) => {

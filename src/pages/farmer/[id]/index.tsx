@@ -113,7 +113,8 @@ const FarmerList = () => {
           {/* title */}
           <div className="my-4">
             <HeaderText text={`Personal info`} />
-          </div>          {/* content */}
+          </div>{" "}
+          {/* content */}
           <div className="bg-lblue my-2 p-5 rounded-[10px] flex items-center">
             <div>
               <img
@@ -131,27 +132,35 @@ const FarmerList = () => {
                 <span className="text-text font-[400]">
                   Name &nbsp; - &nbsp;
                 </span>
-                <span className="font-semibold">{farmerData.response.name ?? ""}</span>
+                <span className="font-semibold">
+                  {farmerData.response.name ?? ""}
+                </span>
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   Phone Number &nbsp; - &nbsp;
                 </span>
-                <span className="font-semibold">{(farmerData.response.countryCode ?? "") +
-                  ` ` +
-                  (farmerData.response.phoneNo ?? "")}</span>
+                <span className="font-semibold">
+                  {(farmerData.response.countryCode ?? "") +
+                    ` ` +
+                    (farmerData.response.phoneNo ?? "")}
+                </span>
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   Gender &nbsp; - &nbsp;
                 </span>
-                <span className="font-semibold">{farmerData.response.gender ?? ""}</span>
+                <span className="font-semibold">
+                  {farmerData.response.gender ?? ""}
+                </span>
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   Education &nbsp; - &nbsp;
                 </span>
-                <span className="font-semibold">{farmerData.response.education ?? ""}</span>
+                <span className="font-semibold">
+                  {farmerData.response.education ?? ""}
+                </span>
               </div>
             </div>
             {/* second line */}
@@ -160,14 +169,17 @@ const FarmerList = () => {
                 <span className="text-text font-[400]">
                   Farmer ID &nbsp; - &nbsp;
                 </span>
-                <span className="font-semibold">{farmerData.response.farmerId ?? ''}</span>
+                <span className="font-semibold">
+                  {farmerData.response.farmerId ?? ""}
+                </span>
               </div>
               <div className="my-4">
                 <span className="text-text font-[400]">
                   TBGR ID &nbsp; - &nbsp;
                 </span>
-                <span className="font-semibold">{farmerData.response.TBGRId ?? ""}</span>
-                
+                <span className="font-semibold">
+                  {farmerData.response.TBGRId ?? ""}
+                </span>
               </div>
               {/* <div className="my-4">
                 <span className="text-text font-[400]">
@@ -179,8 +191,9 @@ const FarmerList = () => {
                 <span className="text-text font-[400]">
                   Age &nbsp; - &nbsp;
                 </span>
-                <span className="font-semibold">{farmerData.response.age ?? ""}</span>
-
+                <span className="font-semibold">
+                  {farmerData.response.age ?? ""}
+                </span>
               </div>
             </div>
           </div>
@@ -234,7 +247,8 @@ const FarmerList = () => {
           {/* title */}
           <div className="my-4">
             <HeaderText text={`Family Info`} />
-          </div>          {/* content */}
+          </div>{" "}
+          {/* content */}
           <div className="bg-lblue  w-[650px] justify-between my-2 p-5 rounded-[10px] flex ">
             <div className="px-5 ">
               <div className="my-4 text-[#858585] text-[16px]">
@@ -245,9 +259,7 @@ const FarmerList = () => {
               </div>
             </div>{" "}
             <div className="px-5 ">
-              <div className="my-4 text-[#858585] text-[16px]">
-                Spouse Name
-              </div>
+              <div className="my-4 text-[#858585] text-[16px]">Spouse Name</div>
               <div className="my-4 text-text text-[14px]">
                 {farmerData.response.spouseName ?? ""}
               </div>
@@ -264,13 +276,15 @@ const FarmerList = () => {
           </div>
         </div>
         {/* farmer details */}
-        {farmData?.response?.data?.length != 0 && <div>
-          <div className="my-4">
-            <HeaderText text={`Farm Details`} />
+        {farmData?.response?.data?.length != 0 && (
+          <div>
+            <div className="my-4">
+              <HeaderText text={`Farm Details`} />
+            </div>
+            {/* tabs */}
+            <Tabs data={farmData} />
           </div>
-          {/* tabs */}
-          <Tabs data={farmData} />
-        </div>}
+        )}
         {/* second phase */}
         {/* survey details */}
         {/* <div>

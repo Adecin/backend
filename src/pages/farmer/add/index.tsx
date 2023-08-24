@@ -98,10 +98,10 @@ const AddFarmer = () => {
       .max(8, "Invalid TBGR Id")
       .required("TBGR Id  is required"),
     phoneNo: Yup.string()
-      .matches(/^[0-9]+$/, 'Must be only digits')
-      .min(10, 'Must be exactly 10 digits')
-      .max(10, 'Must be exactly 10 digits')
-      .required('Contact number is required'),
+      .matches(/^[0-9]+$/, "Must be only digits")
+      .min(10, "Must be exactly 10 digits")
+      .max(10, "Must be exactly 10 digits")
+      .required("Contact number is required"),
     age: Yup.string()
       .matches(/^[0-9]+$/, "Invalid age")
       .required("Age is required"),
@@ -117,6 +117,8 @@ const AddFarmer = () => {
     villageId: Yup.string().required("Village is required"),
     pincode: Yup.number()
       .typeError("Invalid pincode")
+      .min(10, "Must be exactly 6 digits")
+      .max(10, "Must be exactly 6 digits")
       .required("Pincode is required"),
     // family info
     martialStatus: Yup.string().required("Marital status is required"),
@@ -133,34 +135,34 @@ const AddFarmer = () => {
       ? Yup.string().notRequired()
       : Yup.mixed()
 
-        .test(
-          "profile image required",
-          "profile image required",
-          (value: any) => {
-            if (value.type) {
-              return true;
-            } else {
-              return false;
+          .test(
+            "profile image required",
+            "profile image required",
+            (value: any) => {
+              if (value.type) {
+                return true;
+              } else {
+                return false;
+              }
             }
-          }
-        )
-        .required("Profile image  is required"),
+          )
+          .required("Profile image  is required"),
 
     adharImage: farmerOneData.response?.id
       ? Yup.string().notRequired()
       : Yup.mixed()
-        .test(
-          "aadhar card is required",
-          "aadhar card is required",
-          (value: any) => {
-            if (value.type) {
-              return true;
-            } else {
-              return false;
+          .test(
+            "aadhar card is required",
+            "aadhar card is required",
+            (value: any) => {
+              if (value.type) {
+                return true;
+              } else {
+                return false;
+              }
             }
-          }
-        )
-        .required("Aadhar card is required"),
+          )
+          .required("Aadhar card is required"),
   });
 
   // <================ field values ===================>
@@ -646,7 +648,6 @@ const AddFarmer = () => {
                     }}
                     className="text-primary underline cursor-pointer"
                   >
-
                     <span>{`Upload Aadhar`}</span>
                     <span style={{ color: "red" }}>{` * `}</span>
                   </div>
@@ -679,8 +680,8 @@ const AddFarmer = () => {
                 {addFarmerData.isLoading || editFarmerData.isLoading
                   ? "Loading..."
                   : farmer_id
-                    ? "Update Profile"
-                    : "Create Profile"}
+                  ? "Update Profile"
+                  : "Create Profile"}
               </div>
             </div>
           )}
@@ -1052,8 +1053,8 @@ const FormDetails = ({ data, index, formerId, closeFarm, is_edit }: any) => {
                 {AddFarm.isLoading || EditFarm.isLoading
                   ? "Loading..."
                   : is_edit
-                    ? "Update"
-                    : "Save"}
+                  ? "Update"
+                  : "Save"}
               </div>
             </div>
           )}
