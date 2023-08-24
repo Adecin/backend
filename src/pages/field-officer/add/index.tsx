@@ -12,14 +12,14 @@ import { useEffect, useRef, useState } from "react";
 import FarmerList from "../assign-farmer-list";
 import PhoneNumber from "@/components/inputComponents/phoneNumber";
 import BreadCrumb from "@/components/table/bread-crumb";
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
+import * as Yup from "yup";
+import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { getState } from "@/redux/reducer/dropdown/get-state";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
-import { getVillage } from '@/redux/reducer/dropdown/get-village';
+import { getVillage } from "@/redux/reducer/dropdown/get-village";
 import { addFieldOfficer } from "@/redux/reducer/fieldOfficer/addFieldOfficer";
-import { assignFarmerList } from '@/redux/reducer/fieldOfficer/assignFarmerList';
+import { assignFarmerList } from "@/redux/reducer/fieldOfficer/assignFarmerList";
 import { useRouter, usePathname } from "next/navigation";
 import { unassignFarmerList } from "@/redux/reducer/fieldOfficer/unassignFarmerList";
 
@@ -36,15 +36,20 @@ export default function OfficerProfileAdd(props: any) {
   const GetState = useSelector((state: any) => state.ListState);
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
-  const addFieldOffData = useSelector((state: any) => state.AddFieldOfficerData);
-  const unAssignListFarmer = useSelector((store: any) => store.UnassignFarmerListData);
-  const assignFarmerListFarmer = useSelector((store: any) => store.AssignFarmerListData);
-
+  const addFieldOffData = useSelector(
+    (state: any) => state.AddFieldOfficerData
+  );
+  const unAssignListFarmer = useSelector(
+    (store: any) => store.UnassignFarmerListData
+  );
+  const assignFarmerListFarmer = useSelector(
+    (store: any) => store.AssignFarmerListData
+  );
 
   const [filterData, setFilterData] = useState({
-    stateFilter: 'all',
-    districtFilter: '',
-    villageFillter: ''
+    stateFilter: "all",
+    districtFilter: "",
+    villageFillter: "",
   });
 
   const router = useRouter();
@@ -66,15 +71,14 @@ export default function OfficerProfileAdd(props: any) {
     dispatch(unassignFarmerList(""));
   }, []);
 
-
   useEffect(() => {
     const query = `?village=${filterData.villageFillter}`;
     dispatch(unassignFarmerList(query));
-  }, [filterData, farmerPop])
+  }, [filterData, farmerPop]);
 
   useEffect(() => {
-    dispatch(assignFarmerList(`?id=${addFieldOffData.response.id}`))
-  }, [addFieldOffData, farmerPop])
+    dispatch(assignFarmerList(`?id=${addFieldOffData.response.id}`));
+  }, [addFieldOffData, farmerPop]);
 
   const stateDropDown = GetState.response?.data?.map(
     (e: any, index: number) => {
@@ -108,32 +112,36 @@ export default function OfficerProfileAdd(props: any) {
   ];
 
   const fieldProfileSchema = Yup.object().shape({
-    employeeId: Yup.string().required('Employee Id is required'),
-    name: Yup.string().required('Name is required'),
+    employeeId: Yup.string().required("Employee Id is required"),
+    name: Yup.string().required("Name is required"),
     phoneNo: Yup.string()
-      .matches(/^[0-9]+$/, 'Must be only digits')
-      .min(10, 'Must be exactly 10 digits')
-      .max(10, 'Must be exactly 10 digits')
-      .required('Contact number is required'),
-    emailId: Yup.string().required('Email is required').matches(
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      'Enter valid email'
-    ),
-    companyEmailId: Yup.string().required('Company Email is required').matches(
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      'Enter valid email'
-    ),
-    dob: Yup.string().required('Dob is required'),
+      .matches(/^[0-9]+$/, "Must be only digits")
+      .min(10, "Must be exactly 10 digits")
+      .max(10, "Must be exactly 10 digits")
+      .required("Contact number is required"),
+    emailId: Yup.string()
+      .required("Email is required")
+      .matches(
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        "Enter valid email"
+      ),
+    companyEmailId: Yup.string()
+      .required("Company Email is required")
+      .matches(
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        "Enter valid email"
+      ),
+    dob: Yup.string().required("Dob is required"),
     gender: Yup.string().required("Gender is required"),
-    address: Yup.string().required('Address is required'),
-    pincode: Yup.string().required('Pincode is required'),
+    address: Yup.string().required("Address is required"),
+    pincode: Yup.string().required("Pincode is required"),
     stateId: Yup.string().required("State is required"),
     districtId: Yup.string().required("District is required"),
     villageId: Yup.string().required("Village is required"),
     joiningDate: Yup.string().required("Joining Date is required"),
     relievingDate: Yup.string(),
     martialStatus: Yup.string().required("Marital status is required"),
-    educationName: Yup.string().required('Education Name is required'),
+    educationName: Yup.string().required("Education Name is required"),
     aadharNo: Yup.string()
       .matches(/^[0-9]+$/, "Must be only digis")
       .min(12, "Invalid aadhar number")
@@ -153,30 +161,22 @@ export default function OfficerProfileAdd(props: any) {
       )
       .required("Profile image is required"),
     aadharImage: Yup.mixed()
-      .test(
-        "Aadhar image required",
-        "Aadhar image required",
-        (value: any) => {
-          if (value.type) {
-            return true;
-          } else {
-            return false;
-          }
+      .test("Aadhar image required", "Aadhar image required", (value: any) => {
+        if (value.type) {
+          return true;
+        } else {
+          return false;
         }
-      )
+      })
       .required("Aadhar image  is required"),
     educationCertificate: Yup.mixed()
-      .test(
-        "Certificate required",
-        "Certificate required",
-        (value: any) => {
-          if (value.type) {
-            return true;
-          } else {
-            return false;
-          }
+      .test("Certificate required", "Certificate required", (value: any) => {
+        if (value.type) {
+          return true;
+        } else {
+          return false;
         }
-      )
+      })
       .required("Certificate is required"),
   });
 
@@ -184,30 +184,29 @@ export default function OfficerProfileAdd(props: any) {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      employeeId: '',
-      name: '',
-      phoneNo: '',
-      emailId: '',
-      companyEmailId: '',
-      dob: '',
-      gender: '',
-      address: '',
-      stateId: '',
-      districtId: '',
-      villageId: '',
-      pincode: '',
-      joiningDate: '',
-      relievingDate: '',
-      educationName: '',
+      employeeId: "",
+      name: "",
+      phoneNo: "",
+      emailId: "",
+      companyEmailId: "",
+      dob: "",
+      gender: "",
+      address: "",
+      stateId: "",
+      districtId: "",
+      villageId: "",
+      pincode: "",
+      joiningDate: "",
+      relievingDate: "",
+      educationName: "",
       educationCertificate: "",
       martialStatus: "",
       spouseName: "",
       childrenMale: "",
       childrenFemale: "",
-      aadharNo: '',
+      aadharNo: "",
       aadharImage: "",
       profileImage: "",
-
     },
     validationSchema: fieldProfileSchema,
     onSubmit: (values: any) => {
@@ -235,7 +234,7 @@ export default function OfficerProfileAdd(props: any) {
     dispatch(addFieldOfficer(apiFormData));
   };
 
-  console.log(`state`, addFieldOffData)
+  console.log(`state`, addFieldOffData);
 
   const {
     values,
@@ -251,6 +250,8 @@ export default function OfficerProfileAdd(props: any) {
     setFieldError,
   }: any = formik;
 
+  const todayDate = new Date();
+
   return (
     <div className="p-[3rem] mx-[3rem]">
       <BreadCrumb lastName="Add field officer" />
@@ -264,10 +265,7 @@ export default function OfficerProfileAdd(props: any) {
                   Profile Photo <span className="text-error">*</span>
                 </div>
                 <img
-                  src={
-                    previewImage ??
-                    `/sampleProfileAvatar.svg`
-                  }
+                  src={previewImage ?? `/sampleProfileAvatar.svg`}
                   alt="profile"
                   className="rounded-[50%] w-[100px] h-[100px]"
                 />
@@ -373,6 +371,13 @@ export default function OfficerProfileAdd(props: any) {
                 label={"Date of birth"}
                 name="dob"
                 type="date"
+                max={
+                  todayDate.getFullYear() +
+                  "-" +
+                  ("0" + (todayDate.getMonth() + 1)).slice(-2) +
+                  "-" +
+                  ("0" + todayDate.getDate()).slice(-2)
+                }
                 onblur={handleBlur}
                 handleChange={handleChange}
                 touched={touched}
@@ -392,7 +397,7 @@ export default function OfficerProfileAdd(props: any) {
                   {
                     name: "Female",
                     id: "FEMALE",
-                  }
+                  },
                 ]}
                 value={values}
                 handleChange={handleChange}
@@ -580,7 +585,7 @@ export default function OfficerProfileAdd(props: any) {
                   error={errors}
                 />
                 <TextInput
-                  classes={'pt-0'}
+                  classes={"pt-0"}
                   label="Spouse Name"
                   placeholder="Type name here"
                   name="spouseName"
@@ -707,90 +712,94 @@ export default function OfficerProfileAdd(props: any) {
             </div>
           </div>
         </div>
-        {!addFieldOffData.response.id && (<div className="flex self-center">
-          <CustomButton
-            buttonName={`Create Profile`}
-            customStyle={{
-              padding: "1rem 3rem",
-            }}
-            handleOnClick={() => {
-              handleSubmit();
-            }}
-          />
-        </div>)}
-        {addFieldOffData.response.id && (<div>
-          <div className="w-full">
-            <HeaderText text={`Assign Farmer`} />
-            <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]">
-              <div className="grid grid-cols-3">
-                <SelectMenu
-                  //readOnly={!profileCreated}
-                  labelname={"Crop type"}
-                  name={""}
-                  data={[]}
-                  handleChange={undefined}
-                  value={undefined}
-                  placeHolderText={"Select"}
-                />
-                <SelectMenu
-                  name="districtIds"
-                  labelname="District"
-                  placeHolderText="Select district"
-                  data={districtDropDown ?? []}
-                  value={values}
-                  handleChange={handleChange}
-                  onblur={handleBlur}
-                  touched={touched}
-                  required={true}
-                  error={errors}
-                />
-                <SelectMenu
-                  name="villageFillter"
-                  labelname="Village"
-                  placeHolderText="Select village"
-                  data={villageDropDown ?? []}
-                  value={filterData}
-                  handleChange={(e: any) => {
-                    setFilterData({
-                      ...filterData,
-                      villageFillter: e.target.value
-                    })
-                    console.log(e.target.value);
-                  }}
-                  onblur={handleBlur}
-                  touched={touched}
-                  required={true}
-                  error={errors}
-                />
-              </div>
-              <div className="px-[1rem]">
-                <LabelText labelName={`Farmer`} />
-                <div className="gap-x-4 pt-3">
-                  {assignFarmerListFarmer?.response?.length ?
-                    assignFarmerListFarmer?.response?.map((item: any, index: number) => {
-                      console.log(item);
-                      return (
-                        <>
-                          <Chip
-                            style={{
-                              margin: '5px',
-                              background: "#3D7FFA",
-                              padding: "1.5rem",
-                              borderRadius: "10px",
-                              color: "#fff",
-                            }}
-                            label={item.farmerId.farmerId}
-                            onDelete={() => { }}
-                          />
-                        </>
-                      )
-                    })
-                    :
-                    <p>No Assigned Data</p>
-                  }
+        {!addFieldOffData.response.id && (
+          <div className="flex self-center">
+            <CustomButton
+              buttonName={`Create Profile`}
+              customStyle={{
+                padding: "1rem 3rem",
+              }}
+              handleOnClick={() => {
+                handleSubmit();
+              }}
+            />
+          </div>
+        )}
+        {addFieldOffData.response.id && (
+          <div>
+            <div className="w-full">
+              <HeaderText text={`Assign Farmer`} />
+              <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]">
+                <div className="grid grid-cols-3">
+                  <SelectMenu
+                    //readOnly={!profileCreated}
+                    labelname={"Crop type"}
+                    name={""}
+                    data={[]}
+                    handleChange={undefined}
+                    value={undefined}
+                    placeHolderText={"Select"}
+                  />
+                  <SelectMenu
+                    name="districtIds"
+                    labelname="District"
+                    placeHolderText="Select district"
+                    data={districtDropDown ?? []}
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    required={true}
+                    error={errors}
+                  />
+                  <SelectMenu
+                    name="villageFillter"
+                    labelname="Village"
+                    placeHolderText="Select village"
+                    data={villageDropDown ?? []}
+                    value={filterData}
+                    handleChange={(e: any) => {
+                      setFilterData({
+                        ...filterData,
+                        villageFillter: e.target.value,
+                      });
+                      console.log(e.target.value);
+                    }}
+                    onblur={handleBlur}
+                    touched={touched}
+                    required={true}
+                    error={errors}
+                  />
                 </div>
-                {
-                  filterData.villageFillter ?
+                <div className="px-[1rem]">
+                  <LabelText labelName={`Farmer`} />
+                  <div className="gap-x-4 pt-3">
+                    {assignFarmerListFarmer?.response?.length ? (
+                      assignFarmerListFarmer?.response?.map(
+                        (item: any, index: number) => {
+                          console.log(item);
+                          return (
+                            <>
+                              <Chip
+                                style={{
+                                  margin: "5px",
+                                  background: "#3D7FFA",
+                                  padding: "1.5rem",
+                                  borderRadius: "10px",
+                                  color: "#fff",
+                                }}
+                                label={item.farmerId.farmerId}
+                                onDelete={() => {}}
+                              />
+                            </>
+                          );
+                        }
+                      )
+                    ) : (
+                      <p>No Assigned Data</p>
+                    )}
+                  </div>
+                  {filterData.villageFillter ? (
                     <CustomButton
                       //disable={!profileCreated}
                       startIcon={
@@ -816,13 +825,16 @@ export default function OfficerProfileAdd(props: any) {
                       handleOnClick={() => {
                         setFarmerPop(true);
                       }}
-                    /> :
-                    <p style={{ fontSize: '13px', marginTop: "1.65rem" }}>Select Filter to Assign Farmer</p>
-                }
+                    />
+                  ) : (
+                    <p style={{ fontSize: "13px", marginTop: "1.65rem" }}>
+                      Select Filter to Assign Farmer
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          {/* <div className="bg-[#F4F8FF] w-full p-[1rem]">
+            {/* <div className="bg-[#F4F8FF] w-full p-[1rem]">
             <CustomButton
               //disable={!profileCreated}
               startIcon={
@@ -849,18 +861,21 @@ export default function OfficerProfileAdd(props: any) {
               }}
             />
           </div> */}
-        </div>)}
-        {addFieldOffData.response.id && (<div className="flex self-center">
-          <CustomButton
-            buttonName={`Save`}
-            customStyle={{
-              padding: "1rem 3rem",
-            }}
-            handleOnClick={() => {
-              router.push("/field-officer");
-            }}
-          />
-        </div>)}
+          </div>
+        )}
+        {addFieldOffData.response.id && (
+          <div className="flex self-center">
+            <CustomButton
+              buttonName={`Save`}
+              customStyle={{
+                padding: "1rem 3rem",
+              }}
+              handleOnClick={() => {
+                router.push("/field-officer");
+              }}
+            />
+          </div>
+        )}
       </div>
       <Dialog open={farmerPop} maxWidth={`xs`} fullWidth={true}>
         <FarmerList

@@ -71,6 +71,7 @@ const Filter = ({ onSearch, value, addUrl, filter, applyFilter }: Filter) => {
                 onClick={() => {
                   setOpenFilter(false);
                   applyFilter(true);
+                  applyFilter();
                 }}
                 className="bg-primary rounded-[30px] justify-center cursor-pointer flex items-center px-4 py-2 text-white"
                 style={{
@@ -84,34 +85,36 @@ const Filter = ({ onSearch, value, addUrl, filter, applyFilter }: Filter) => {
         )}
 
         {/* add  */}
-        {addUrl && <div className="px-2">
-          <div
-            onClick={() => {
-              router.push(addUrl);
-            }}
-            className="bg-primary rounded-[30px] cursor-pointer flex items-center px-4 py-2 text-white"
-            style={{
-              boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-            }}
-          >
-            <div>
-              <svg
-                className="mx-2"
-                width="21"
-                height="17"
-                viewBox="0 0 21 17"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M13.3636 10.625C10.815 10.625 5.72727 12.0381 5.72727 14.875V17H21V14.875C21 12.0381 15.9123 10.625 13.3636 10.625ZM4.77273 6.375V3.1875H2.86364V6.375H0V8.5H2.86364V11.6875H4.77273V8.5H7.63636V6.375M13.3636 8.5C14.3763 8.5 15.3474 8.05223 16.0635 7.2552C16.7795 6.45817 17.1818 5.37717 17.1818 4.25C17.1818 3.12283 16.7795 2.04183 16.0635 1.2448C15.3474 0.447766 14.3763 0 13.3636 0C12.351 0 11.3798 0.447766 10.6638 1.2448C9.94773 2.04183 9.54545 3.12283 9.54545 4.25C9.54545 5.37717 9.94773 6.45817 10.6638 7.2552C11.3798 8.05223 12.351 8.5 13.3636 8.5Z"
-                  fill="white"
-                />
-              </svg>
+        {addUrl && (
+          <div className="px-2">
+            <div
+              onClick={() => {
+                router.push(addUrl);
+              }}
+              className="bg-primary rounded-[30px] cursor-pointer flex items-center px-4 py-2 text-white"
+              style={{
+                boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+              }}
+            >
+              <div>
+                <svg
+                  className="mx-2"
+                  width="21"
+                  height="17"
+                  viewBox="0 0 21 17"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13.3636 10.625C10.815 10.625 5.72727 12.0381 5.72727 14.875V17H21V14.875C21 12.0381 15.9123 10.625 13.3636 10.625ZM4.77273 6.375V3.1875H2.86364V6.375H0V8.5H2.86364V11.6875H4.77273V8.5H7.63636V6.375M13.3636 8.5C14.3763 8.5 15.3474 8.05223 16.0635 7.2552C16.7795 6.45817 17.1818 5.37717 17.1818 4.25C17.1818 3.12283 16.7795 2.04183 16.0635 1.2448C15.3474 0.447766 14.3763 0 13.3636 0C12.351 0 11.3798 0.447766 10.6638 1.2448C9.94773 2.04183 9.54545 3.12283 9.54545 4.25C9.54545 5.37717 9.94773 6.45817 10.6638 7.2552C11.3798 8.05223 12.351 8.5 13.3636 8.5Z"
+                    fill="white"
+                  />
+                </svg>
+              </div>
+              add
             </div>
-            add
           </div>
-        </div> }
+        )}
       </div>
     </>
   );
