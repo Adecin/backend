@@ -12,17 +12,17 @@ import { useEffect, useRef, useState } from "react";
 import FarmerList from "../assign-farmer-list";
 import BreadCrumb from "@/components/table/bread-crumb";
 import LabelText from "@/components/labelText";
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
+import * as Yup from "yup";
+import { useFormik } from "formik";
 import PhoneNumber from "@/components/inputComponents/phoneNumber";
 import { oneFieldOfficer } from "@/redux/reducer/fieldOfficer/getOne";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { getState } from "@/redux/reducer/dropdown/get-state";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
-import { getVillage } from '@/redux/reducer/dropdown/get-village';
+import { getVillage } from "@/redux/reducer/dropdown/get-village";
 import { updateFieldOfficer } from "@/redux/reducer/fieldOfficer/updateFieldOfficer";
-import { assignFarmerList } from '@/redux/reducer/fieldOfficer/assignFarmerList';
+import { assignFarmerList } from "@/redux/reducer/fieldOfficer/assignFarmerList";
 import { unassignFarmerList } from "@/redux/reducer/fieldOfficer/unassignFarmerList";
 
 export default function OfficerProfileEdit(props: any) {
@@ -37,24 +37,30 @@ export default function OfficerProfileEdit(props: any) {
 
   const dispatch = useDispatch();
   const getOneField = useSelector((store: any) => store.OneFieldOfficerData);
-  const getOneFieldData = getOneField.response
+  const getOneFieldData = getOneField.response;
   console.log(getOneFieldData);
 
   // api data
   const GetState = useSelector((state: any) => state.ListState);
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
-  const unAssignListFarmer = useSelector((store: any) => store.UnassignFarmerListData);
-  const assignFarmerListFarmer = useSelector((store: any) => store.AssignFarmerListData);
+  const unAssignListFarmer = useSelector(
+    (store: any) => store.UnassignFarmerListData
+  );
+  const assignFarmerListFarmer = useSelector(
+    (store: any) => store.AssignFarmerListData
+  );
   const assignFarmer = useSelector((store: any) => store.AssignFarmerData);
-  const UpdateOfficer = useSelector((state: any) => state.UpdateFieldOfficerData);
+  const UpdateOfficer = useSelector(
+    (state: any) => state.UpdateFieldOfficerData
+  );
 
   const pathName = usePathname();
 
   const [filterData, setFilterData] = useState({
-    stateFilter: 'all',
-    districtFilter: '',
-    villageFillter: ''
+    stateFilter: "all",
+    districtFilter: "",
+    villageFillter: "",
   });
 
   // dropdowns
@@ -93,80 +99,78 @@ export default function OfficerProfileEdit(props: any) {
     dispatch(getVillage());
     dispatch(getDistrict());
     dispatch(unassignFarmerList(""));
-  }, [])
+  }, []);
 
   useEffect(() => {
     const query = `?village=${filterData.villageFillter}`;
     dispatch(unassignFarmerList(query));
-  }, [filterData, farmerPop])
-
-  console.log(`assign response`, assignFarmer.response)
-
+  }, [filterData, farmerPop]);
 
   useEffect(() => {
-    dispatch(oneFieldOfficer(fieldOfficer_id))
-    dispatch(assignFarmerList(`?id=${fieldOfficer_id}`))
-  }, [fieldOfficer_id, farmerPop, assignFarmer])
-
-  console.log(`assign response 1`, assignFarmer)
+    dispatch(oneFieldOfficer(fieldOfficer_id));
+    dispatch(assignFarmerList(`?id=${fieldOfficer_id}`));
+  }, [fieldOfficer_id, farmerPop, assignFarmer]);
 
   const fieldProfileSchema = Yup.object().shape({
-    employeeId: Yup.string().required('Employee Id is required'),
-    name: Yup.string().required('Name is required'),
+    employeeId: Yup.string().required("Employee Id is required"),
+    name: Yup.string().required("Name is required"),
     phoneNo: Yup.string()
-      .matches(/^[0-9]+$/, 'Must be only digits')
-      .min(10, 'Must be exactly 10 digits')
-      .max(10, 'Must be exactly 10 digits')
-      .required('Contact number is required'),
-    emailId: Yup.string().required('Email is required').matches(
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      'Enter valid email'
-    ),
-    companyEmailId: Yup.string().required('Company Email is required').matches(
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      'Enter valid email'
-    ),
-    dob: Yup.string().required('Dob is required'),
+      .matches(/^[0-9]+$/, "Must be only digits")
+      .min(10, "Must be exactly 10 digits")
+      .max(10, "Must be exactly 10 digits")
+      .required("Contact number is required"),
+    emailId: Yup.string()
+      .required("Email is required")
+      .matches(
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        "Enter valid email"
+      ),
+    companyEmailId: Yup.string()
+      .required("Company Email is required")
+      .matches(
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        "Enter valid email"
+      ),
+    dob: Yup.string().required("Dob is required"),
     gender: Yup.string().required("Gender is required"),
-    address: Yup.string().required('Address is required'),
-    pincode: Yup.string().required('Pincode is required'),
+    address: Yup.string().required("Address is required"),
+    pincode: Yup.string().required("Pincode is required"),
     stateId: Yup.string().required("State is required"),
     districtId: Yup.string().required("District is required"),
     villageId: Yup.string().required("Village is required"),
     joiningDate: Yup.string().required("Joining Date is required"),
     relievingDate: Yup.string(),
     martialStatus: Yup.string().required("Marital status is required"),
-    educationName: Yup.string().required('Education is required'),
+    educationName: Yup.string().required("Education is required"),
   });
 
   // formik
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      employeeId: getOneFieldData?.employeeId ?? '',
-      name: getOneFieldData?.name ?? '',
-      phoneNo: getOneFieldData?.phoneNo ?? '',
-      emailId: getOneFieldData?.emailId ?? '',
-      companyEmailId: getOneFieldData?.companyEmailId ?? '',
-      dob: getOneFieldData?.dob ?? '',
-      gender: getOneFieldData?.gender ?? '',
-      address: getOneFieldData?.address ?? '',
-      stateId: getOneFieldData?.stateId?.id ?? '',
-      districtId: getOneFieldData?.districtId?.id ?? '',
-      villageId: getOneFieldData?.villageId?.id ?? '',
-      pincode: getOneFieldData?.pincode ?? '',
-      joiningDate: getOneFieldData?.joiningDate ?? '',
-      relievingDate: getOneFieldData?.relievingDate ?? '',
-      educationName: getOneFieldData?.educationName ?? '',
+      employeeId: getOneFieldData?.employeeId ?? "",
+      name: getOneFieldData?.name ?? "",
+      phoneNo: getOneFieldData?.phoneNo ?? "",
+      emailId: getOneFieldData?.emailId ?? "",
+      companyEmailId: getOneFieldData?.companyEmailId ?? "",
+      dob: getOneFieldData?.dob ?? "",
+      gender: getOneFieldData?.gender ?? "",
+      address: getOneFieldData?.address ?? "",
+      stateId: getOneFieldData?.stateId?.id ?? "",
+      districtId: getOneFieldData?.districtId?.id ?? "",
+      villageId: getOneFieldData?.villageId?.id ?? "",
+      pincode: getOneFieldData?.pincode ?? "",
+      joiningDate: getOneFieldData?.joiningDate ?? "",
+      relievingDate: getOneFieldData?.relievingDate ?? "",
+      educationName: getOneFieldData?.educationName ?? "",
       educationCertificate: getOneFieldData?.educationCertificate ?? "",
       martialStatus: getOneFieldData?.martialStatus ?? "",
       spouseName: getOneFieldData?.spouseName ?? "",
       childrenMale: getOneFieldData?.childrenMale ?? "",
       childrenFemale: getOneFieldData?.childrenFemale ?? "",
-      aadharNo: getOneFieldData?.aadharNo ?? '',
+      aadharNo: getOneFieldData?.aadharNo ?? "",
       aadharImage: getOneFieldData?.aadharImage ?? "",
       profileImage: getOneFieldData?.profileImage ?? "",
-
     },
     validationSchema: fieldProfileSchema,
     onSubmit: (values: any) => {
@@ -182,7 +186,7 @@ export default function OfficerProfileEdit(props: any) {
     for (let key in data) {
       apiFormData.append(key, data[key]);
     }
-    apiFormData.append('id', fieldOfficer_id);
+    apiFormData.append("id", fieldOfficer_id);
     apiFormData.append("status", "Approved");
     dispatch(updateFieldOfficer(apiFormData));
   };
@@ -216,6 +220,7 @@ export default function OfficerProfileEdit(props: any) {
       padding: 10px;
     }
   `;
+  const todayDate = new Date();
 
   return (
     <>
@@ -233,7 +238,8 @@ export default function OfficerProfileEdit(props: any) {
                   </div>
                   <img
                     src={
-                      previewImage ?? values.profileImage ??
+                      previewImage ??
+                      values.profileImage ??
                       `/sampleProfileAvatar.svg`
                     }
                     alt="profile"
@@ -341,6 +347,13 @@ export default function OfficerProfileEdit(props: any) {
                   label={"Date of birth"}
                   name="dob"
                   type="date"
+                  max={
+                    todayDate.getFullYear() +
+                    "-" +
+                    ("0" + (todayDate.getMonth() + 1)).slice(-2) +
+                    "-" +
+                    ("0" + todayDate.getDate()).slice(-2)
+                  }
                   onblur={handleBlur}
                   handleChange={handleChange}
                   touched={touched}
@@ -360,7 +373,7 @@ export default function OfficerProfileEdit(props: any) {
                     {
                       name: "Female",
                       id: "FEMALE",
-                    }
+                    },
                   ]}
                   value={values}
                   handleChange={handleChange}
@@ -547,7 +560,7 @@ export default function OfficerProfileEdit(props: any) {
                     error={errors}
                   />
                   <TextInput
-                    classes={'pt-0'}
+                    classes={"pt-0"}
                     label="Spouse Name"
                     placeholder="Type name here"
                     name="spouseName"
@@ -656,8 +669,8 @@ export default function OfficerProfileEdit(props: any) {
                     }}
                     className="text-primary underline cursor-pointer"
                   >
-                  <span>{`Upload Aadhar`}</span>
-                  <span style={{ color: "red" }}>{` * `}</span>                
+                    <span>{`Upload Aadhar`}</span>
+                    <span style={{ color: "red" }}>{` * `}</span>
                   </div>
                   <span className="text-grey  underline-none">
                     &nbsp;(file format pdf,word,image)
@@ -716,8 +729,8 @@ export default function OfficerProfileEdit(props: any) {
                   handleChange={(e: any) => {
                     setFilterData({
                       ...filterData,
-                      villageFillter: e.target.value
-                    })
+                      villageFillter: e.target.value,
+                    });
                     console.log(e.target.value);
                   }}
                   onblur={handleBlur}
@@ -727,60 +740,63 @@ export default function OfficerProfileEdit(props: any) {
                 />
               </div>
               <div className="px-[1rem]">
-
                 <LabelText labelName={`Farmer`} />
                 <div className="gap-x-4 pt-3">
-                  {assignFarmerListFarmer?.response?.length ?
-                    assignFarmerListFarmer?.response?.map((item: any, index: number) => {
-                      return (
-                        <div key={index}>
-                          <Chip
-                            style={{
-                              margin: '5px',
-                              background: "#3D7FFA",
-                              padding: "1.5rem",
-                              borderRadius: "10px",
-                              color: "#fff",
-                            }}
-                            label={item.farmerId.farmerId}
-                            onDelete={() => { }}
-                          />
-                        </div>
-                      )
-                    })
-                    :
-                    <p>No Assigned Data</p>
-                  }
-                </div>
-                {
-                  filterData.villageFillter ?
-                    <CustomButton
-                      startIcon={
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M10 0C7.35774 0.0318782 4.83268 1.09568 2.96418 2.96418C1.09568 4.83268 0.0318782 7.35774 0 10C0.0318782 12.6423 1.09568 15.1673 2.96418 17.0358C4.83268 18.9043 7.35774 19.9681 10 20C12.6423 19.9681 15.1673 18.9043 17.0358 17.0358C18.9043 15.1673 19.9681 12.6423 20 10C19.9681 7.35774 18.9043 4.83268 17.0358 2.96418C15.1673 1.09568 12.6423 0.0318782 10 0ZM15.7143 10.7143H10.7143V15.7143H9.28571V10.7143H4.28571V9.28571H9.28571V4.28571H10.7143V9.28571H15.7143V10.7143Z"
-                            fill="#3D7FFA"
-                          />
-                        </svg>
+                  {assignFarmerListFarmer?.response?.length ? (
+                    assignFarmerListFarmer?.response?.map(
+                      (item: any, index: number) => {
+                        return (
+                          <div key={index}>
+                            <Chip
+                              style={{
+                                margin: "5px",
+                                background: "#3D7FFA",
+                                padding: "1.5rem",
+                                borderRadius: "10px",
+                                color: "#fff",
+                              }}
+                              label={item.farmerId.farmerId}
+                              onDelete={() => {}}
+                            />
+                          </div>
+                        );
                       }
-                      buttonName={`Assign farmer`}
-                      customStyle={{
-                        background: "none",
-                        color: "#3D7FFA",
-                        marginTop: "1.65rem",
-                      }}
-                      handleOnClick={() => {
-                        setFarmerPop(true);
-                      }}
-                    /> :
-                    <p style={{ fontSize: '13px', marginTop: "1.65rem" }}>Select Filter to Assign Farmer</p>
-                }
+                    )
+                  ) : (
+                    <p>No Assigned Data</p>
+                  )}
+                </div>
+                {filterData.villageFillter ? (
+                  <CustomButton
+                    startIcon={
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10 0C7.35774 0.0318782 4.83268 1.09568 2.96418 2.96418C1.09568 4.83268 0.0318782 7.35774 0 10C0.0318782 12.6423 1.09568 15.1673 2.96418 17.0358C4.83268 18.9043 7.35774 19.9681 10 20C12.6423 19.9681 15.1673 18.9043 17.0358 17.0358C18.9043 15.1673 19.9681 12.6423 20 10C19.9681 7.35774 18.9043 4.83268 17.0358 2.96418C15.1673 1.09568 12.6423 0.0318782 10 0ZM15.7143 10.7143H10.7143V15.7143H9.28571V10.7143H4.28571V9.28571H9.28571V4.28571H10.7143V9.28571H15.7143V10.7143Z"
+                          fill="#3D7FFA"
+                        />
+                      </svg>
+                    }
+                    buttonName={`Assign farmer`}
+                    customStyle={{
+                      background: "none",
+                      color: "#3D7FFA",
+                      marginTop: "1.65rem",
+                    }}
+                    handleOnClick={() => {
+                      setFarmerPop(true);
+                    }}
+                  />
+                ) : (
+                  <p style={{ fontSize: "13px", marginTop: "1.65rem" }}>
+                    Select Filter to Assign Farmer
+                  </p>
+                )}
               </div>
             </div>
           </div>

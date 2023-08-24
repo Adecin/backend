@@ -31,6 +31,7 @@ const ListFieldOfficer = () => {
   const [allSelect, setSelect] = useState(false);
   const [manageOpen, setManageOpen] = useState(false);
   const [checkedData, setCheckData] = useState<any>([]);
+
   const router = useRouter();
   const dispatch = useDispatch();
   const ListFarmer = useSelector((store: any) => store.ListFormer);
@@ -38,13 +39,32 @@ const ListFieldOfficer = () => {
 
   // console.log("datasss", ListFarmer);
 
-  // const [farmerFilter, setFarmerFilter] = useState({
-  //   status: "Pending",
-  //   districtId: 0,
-  //   villageId: 0,
-  //   technicianId: 0,
-  // });
-  // const query = `?status=${farmerFilter.status}&districtId=${farmerFilter.districtId}&villageId=${farmerFilter.villageId}&technicianId=${farmerFilter.technicianId}`;
+  const [farmerFilter, setFarmerFilter] = useState<any>({
+    status: "",
+    districtId: "",
+    villageId: "",
+    technicianId: "",
+  });
+  const initialValues = {
+    status: "",
+    districtId: "",
+    villageId: "",
+    technicianId: "",
+  };
+
+  const handleSelectFilter = (name: any, value: any) => {
+    farmerFilter[`${name}`] = value;
+    setFarmerFilter({ ...farmerFilter });
+  };
+
+  const query = `?status=${farmerFilter.status}&districtId=${farmerFilter.districtId}&villageId=${farmerFilter.villageId}&technicianId=${farmerFilter.technicianId}`;
+
+  const applyFetchFilter = () => {
+    dispatch(listFarmers(query));
+    setCheckData([]);
+    setFarmerFilter(initialValues);
+  };
+
   useEffect(() => {
     dispatch(listFarmers(""));
     setCheckData([]);
@@ -98,7 +118,6 @@ const ListFieldOfficer = () => {
                 : item.status === `Completed`
                 ? `#70B10E`
                 : `#F8B34C`;
-            console.log(`statusColor`, statusColor);
             return (
               <div key={index} className="flex my-[10px] items-center">
                 <div
@@ -128,7 +147,6 @@ const ListFieldOfficer = () => {
       ),
     };
   });
-
   return (
     <>
       <div className="p-5">
@@ -227,13 +245,19 @@ const ListFieldOfficer = () => {
             <BreadCrumb classes={` font-bold text-[#43424D]`} />
             <Filter
               value={searchValue}
-              applyFilter={() => {}}
+              applyFilter={() => {
+                applyFetchFilter();
+              }}
               onSearch={(e: string) => {
                 setSearchValue(e);
               }}
               filter={
                 <div>
-                  <FieldOfficerFilter />
+                  <FieldOfficerFilter
+                    values={farmerFilter}
+                    selectFilter={handleSelectFilter}
+                    //applyFilter={}
+                  />
                 </div>
               }
               addUrl={"/farmer/add"}
@@ -325,6 +349,7 @@ const ListFieldOfficer = () => {
               setSelect(e);
             }}
             data={filterData ?? []}
+            count={ListFarmer?.response?.count}
           />
         </div>
       </div>
@@ -607,16 +632,8 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
 
 // filter values
 
-const FieldOfficerFilter = () => {
-  const [filterState, setFilterState] = useState({
-    status: "",
-    // "regulation":{
-    //      "status":"Pending"
-    //  },
-    technicianId: 1,
-    districtId: 1,
-    villageId: 1,
-  });
+const FieldOfficerFilter = (props: any) => {
+  const { selectFilter, values } = props;
 
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
@@ -653,7 +670,8 @@ const FieldOfficerFilter = () => {
       <div className="grid grid-cols-2 mb-6 mt-6">
         <div className="w-[350px] px-3">
           <SelectMenu
-            name="survey"
+            value={``}
+            name=""
             handleChange={() => {}}
             placeHolderText="Survey"
             data={[
@@ -670,33 +688,36 @@ const FieldOfficerFilter = () => {
         </div>
         <div className="w-[350px] px-3">
           <SelectMenu
-            name="manager"
+            name="districtId"
             placeHolderText="Select district"
             data={districtDropDown ?? []}
-            value={``}
+            value={values}
             handleChange={(e: any) => {
               console.log(`e.target.value`, e.target.value);
+              selectFilter(`districtId`, e.target.value);
             }}
           />
         </div>
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
-            name="village"
+            name="villageId"
             placeHolderText="Select Village"
             data={villageDropDown ?? []}
-            value={``}
+            value={values}
             handleChange={(e: any) => {
               console.log(`e.target.value`, e.target.value);
+              selectFilter(`villageId`, e.target.value);
             }}
           />
         </div>
         <div className="w-[350px] px-3 mt-4">
           <SelectMenu
-            name="officer"
+            name="technicianId"
             placeHolderText="Select Field Officer"
-            value={``}
+            value={values}
             handleChange={(e: any) => {
               console.log(`e.target.value`, e.target.value);
+              selectFilter(`technicianId`, e.target.value);
             }}
             data={technicianDropDown ?? []}
           />
@@ -708,6 +729,7 @@ const FieldOfficerFilter = () => {
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
+              onChange={(e: any) => {}}
             >
               <FormControlLabel
                 value="pending"
@@ -746,7 +768,12 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-7 mt-5">
           <div className="">
             <label className="font-semibold"> Approved Status</label>
-            <Checkbox />
+            <Checkbox
+              onChange={(e: any) => {
+                //console.log(`e.target.value`, e.target.value);
+                //selectFilter(`status`, `Pending`);
+              }}
+            />
           </div>
         </div>
       </div>
