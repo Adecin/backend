@@ -75,8 +75,8 @@ export default function OfficerProfile(props: any) {
   const GetSVillage = useSelector((state: any) => state.ListVillage);
 
   useEffect(() => {
-    const query = `?technicianId=2`
-    dispatch(oneFieldOfficer(fieldOfficer_id))
+    const query = `?technicianId=${fieldOfficer_id}`;
+    dispatch(oneFieldOfficer(fieldOfficer_id));
     dispatch(listFarmers(query));
   }, [fieldOfficer_id])
 

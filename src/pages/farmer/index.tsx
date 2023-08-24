@@ -96,8 +96,8 @@ const ListFieldOfficer = () => {
               item.status === "Pending"
                 ? `#F75656`
                 : item.status === `Completed`
-                ? `#70B10E`
-                : `#F8B34C`;
+                  ? `#70B10E`
+                  : `#F8B34C`;
             console.log(`statusColor`, statusColor);
             return (
               <div key={index} className="flex my-[10px] items-center">
@@ -206,13 +206,15 @@ const ListFieldOfficer = () => {
             </svg>
           </div>
           <div className="px-7 pb-7  bg-[#F9FAFB]">
-            <div className="mb-5 text-[20px] font-semibold">Manage</div>
-            <Dialogs
+            {checkedData.length > 0 && <div className="mb-5 text-[20px] font-semibold">Manage</div>}
+            {checkedData.length ? <Dialogs
               closePopUp={() => {
                 setManageOpen(false);
               }}
               farmersList={checkedData}
-            />
+            /> :
+              <div style={{ fontSize: '18px' }}> Please select the farmers</div>
+            }
           </div>
         </Dialog>
 
@@ -227,7 +229,7 @@ const ListFieldOfficer = () => {
             <BreadCrumb classes={` font-bold text-[#43424D]`} />
             <Filter
               value={searchValue}
-              applyFilter={() => {}}
+              applyFilter={() => { }}
               onSearch={(e: string) => {
                 setSearchValue(e);
               }}
@@ -399,13 +401,13 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
     const data =
       is_approve == "true"
         ? {
-            is_approve: is_approve,
-            id: farmersList,
-          }
+          is_approve: is_approve,
+          id: farmersList,
+        }
         : {
-            id: farmersList,
-            reason: reason,
-          };
+          id: farmersList,
+          reason: reason,
+        };
     console.log(data);
     dispatch(approveFarmer(data));
   };
@@ -568,7 +570,7 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
         <div className="w-[400px] ">
           <SelectMenu
             name="manager"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Select survey name"
             data={[
               {
@@ -654,7 +656,7 @@ const FieldOfficerFilter = () => {
         <div className="w-[350px] px-3">
           <SelectMenu
             name="survey"
-            handleChange={() => {}}
+            handleChange={() => { }}
             placeHolderText="Survey"
             data={[
               {
