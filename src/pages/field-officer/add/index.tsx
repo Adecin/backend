@@ -134,7 +134,11 @@ export default function OfficerProfileAdd(props: any) {
     dob: Yup.string().required("Dob is required"),
     gender: Yup.string().required("Gender is required"),
     address: Yup.string().required("Address is required"),
-    pincode: Yup.string().required("Pincode is required"),
+    pincode: Yup.number()
+      .typeError("Invalid pincode")
+      .min(10, "Must be exactly 6 digits")
+      .max(10, "Must be exactly 6 digits")
+      .required("Pincode is required"),
     stateId: Yup.string().required("State is required"),
     districtId: Yup.string().required("District is required"),
     villageId: Yup.string().required("Village is required"),

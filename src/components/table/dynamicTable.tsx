@@ -1,14 +1,23 @@
 import Checkbox from "@mui/material/Checkbox";
+import { TablePagination } from "@mui/material";
+import { useState } from "react";
 
 // type declaration
 interface propsData {
   data: any;
   onClick?: any;
   backgroundColor?: string;
-  classes?:any;
+  classes?: any;
+  count?: any;
 }
 
-const DynamicTable = ({ data, onClick, backgroundColor,classes }: propsData) => {
+const DynamicTable = ({
+  data,
+  onClick,
+  backgroundColor,
+  classes,
+  count,
+}: propsData) => {
   if (!data || data.length === 0) {
     return (
       <>
@@ -16,8 +25,30 @@ const DynamicTable = ({ data, onClick, backgroundColor,classes }: propsData) => 
       </>
     );
   }
+  const [paginateData, setData] = useState({
+    page: 0,
+    limit: 10,
+  });
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0);
 
   const keys = Object.keys(data[0]);
+
+  const handleChangePage = (event: any, newPage: any) => {
+    setData({ ...paginateData, page: newPage });
+    setPage(newPage);
+
+    // props.paginateData({
+    //   page: 0,
+    //   rowsPerPage: event.target.value,
+    // });
+  };
+
+  const handleChangeRowsPerPage = (event: any) => {
+    setData({ ...paginateData, limit: event.target.value });
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
   return (
     <>
       <div className="w-full p-3 mb-[50px] ">
@@ -57,13 +88,17 @@ const DynamicTable = ({ data, onClick, backgroundColor,classes }: propsData) => 
           <tbody className="divide-y-[10px] divide-white">
             {data.map((item: any, index: number) => (
               <tr
-                className={`bg-${backgroundColor ?? "gray-100"}  py-4`}
+                className={`bg-${
+                  backgroundColor ?? "gray-100"
+                }  py-4 hover:bg-[#d2d2d2d9]`}
                 key={index}
               >
                 {keys.map((key) => (
-                  <td className={` py-1 pl-5` + classes}  key={key}>
+                  <td className={` py-1 pl-5 ` + classes} key={key}>
                     <div className="  ">
-                      <div className="text-text flex justify-center font-[500]">{item[key]}</div>
+                      <div className="text-text flex justify-center font-[500]">
+                        {item[key]}
+                      </div>
                     </div>
                   </td>
                 ))}
@@ -71,6 +106,15 @@ const DynamicTable = ({ data, onClick, backgroundColor,classes }: propsData) => 
             ))}
           </tbody>
         </table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={count}
+          rowsPerPage={paginateData.limit}
+          page={paginateData.page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </div>
     </>
   );
