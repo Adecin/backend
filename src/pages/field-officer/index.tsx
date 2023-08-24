@@ -22,7 +22,7 @@ const ListFieldOfficer = () => {
   const router = useRouter();
 
   const [technicianFilter, setTechnicianFilter] = useState<any>({
-    districtId: 1,
+    districtId: "",
     villageId: "",
   });
 
@@ -111,7 +111,10 @@ const ListFieldOfficer = () => {
             }}
             filter={
               <div>
-                <FieldOfficerFilter selectFilter={handleSelectFilter} />
+                <FieldOfficerFilter
+                  values={technicianFilter}
+                  selectFilter={handleSelectFilter}
+                />
               </div>
             }
             addUrl={"/field-officer/add"}
@@ -129,7 +132,7 @@ const ListFieldOfficer = () => {
 export default ListFieldOfficer;
 
 const FieldOfficerFilter = (props: any) => {
-  const { selectFilter } = props;
+  const { selectFilter, values } = props;
 
   const dispatch = useDispatch();
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
@@ -166,7 +169,8 @@ const FieldOfficerFilter = (props: any) => {
         </div>
         <div className="w-[350px] px-3">
           <SelectMenu
-            name="manager"
+            name="districtId"
+            value={values}
             placeHolderText="Select District"
             data={districtDropDown ?? []}
             handleChange={(e: any) => {
@@ -177,7 +181,8 @@ const FieldOfficerFilter = (props: any) => {
         </div>
         <div className="w-[350px] px-3">
           <SelectMenu
-            name="manager"
+            name="villageId"
+            value={values}
             placeHolderText="Select Village"
             data={villageDropDown ?? []}
             handleChange={(e: any) => {
