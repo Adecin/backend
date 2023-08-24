@@ -224,13 +224,19 @@ const ListFieldOfficer = () => {
             </svg>
           </div>
           <div className="px-7 pb-7  bg-[#F9FAFB]">
-            <div className="mb-5 text-[20px] font-semibold">Manage</div>
-            <Dialogs
-              closePopUp={() => {
-                setManageOpen(false);
-              }}
-              farmersList={checkedData}
-            />
+            {checkedData.length > 0 && (
+              <div className="mb-5 text-[20px] font-semibold">Manage</div>
+            )}
+            {checkedData.length ? (
+              <Dialogs
+                closePopUp={() => {
+                  setManageOpen(false);
+                }}
+                farmersList={checkedData}
+              />
+            ) : (
+              <div style={{ fontSize: "18px" }}> Please select the farmers</div>
+            )}
           </div>
         </Dialog>
 
