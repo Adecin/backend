@@ -18,6 +18,13 @@ const DynamicTable = ({
   classes,
   count,
 }: propsData) => {
+  const [paginateData, setData] = useState({
+    page: 0,
+    limit: 10,
+  });
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0);
+
   if (!data || data.length === 0) {
     return (
       <>
@@ -25,12 +32,6 @@ const DynamicTable = ({
       </>
     );
   }
-  const [paginateData, setData] = useState({
-    page: 0,
-    limit: 10,
-  });
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [page, setPage] = useState(0);
 
   const keys = Object.keys(data[0]);
 
