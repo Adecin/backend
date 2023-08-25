@@ -16,6 +16,7 @@ interface InputTypes {
   value?: any;
   readOnly?: any;
   max?: any;
+  min?: any;
 }
 
 const TextInput = (props: InputTypes) => {
@@ -35,6 +36,7 @@ const TextInput = (props: InputTypes) => {
     labelStyle,
     readOnly,
     max,
+    min,
   } = props;
   return (
     <>
@@ -58,6 +60,7 @@ const TextInput = (props: InputTypes) => {
           style={customStyle}
           value={value[name] ?? value}
           max={max}
+          min={min}
         />
         <span className="text-[10px] my-1 text-error">
           {(touched && touched[name] && error && error[name]) ?? ""}

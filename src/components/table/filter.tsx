@@ -111,7 +111,7 @@ const Filter = ({ onSearch, value, addUrl, filter, applyFilter }: Filter) => {
                   />
                 </svg>
               </div>
-              add
+              Add
             </div>
           </div>
         )}

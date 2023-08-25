@@ -112,7 +112,7 @@ const FarmerList = () => {
         <div className="px-4 max-w-[900px]">
           {/* title */}
           <div className="my-4">
-            <HeaderText text={`Personal info`} />
+            <HeaderText text={`Personal details`} />
           </div>{" "}
           {/* content */}
           <div className="bg-lblue my-2 p-5 rounded-[10px] flex items-center">
@@ -203,7 +203,7 @@ const FarmerList = () => {
           <div className="max-w-[500px]">
             {/* title */}
             <div className="my-4">
-              <HeaderText text={`Address`} />
+              <HeaderText text={`Address details`} />
             </div>
             {/* content */}
             <div className="bg-lblue  w-auto my-2 p-5 rounded-[10px] flex items-center">

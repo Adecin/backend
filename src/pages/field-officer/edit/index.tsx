@@ -484,6 +484,7 @@ export default function OfficerProfileEdit(props: any) {
                     label={"Relieving date"}
                     name="relievingDate"
                     type="date"
+                    min={values.joiningDate}
                     onblur={handleBlur}
                     handleChange={handleChange}
                     touched={touched}
