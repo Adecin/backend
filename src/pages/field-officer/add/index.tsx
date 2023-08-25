@@ -53,11 +53,8 @@ export default function OfficerProfileAdd(props: any) {
   });
 
   const router = useRouter();
-  // console.log(addFieldOffData);
-  // console.log(unAssignListFarmer);
 
   // useEffect(() => {
-  //   console.log(addFieldOffData);
   //   if (addFieldOffData.response.id) {
 
   //   }
@@ -222,7 +219,6 @@ export default function OfficerProfileAdd(props: any) {
       // formData.append('contact_number', values.contact_number);
       // formData.append('state', values.state);
       // formData.append('city', values.city);
-      console.log(values);
       submit(values);
     },
   });
@@ -237,8 +233,6 @@ export default function OfficerProfileAdd(props: any) {
     apiFormData.append("status", "Approved");
     dispatch(addFieldOfficer(apiFormData));
   };
-
-  console.log(`state`, addFieldOffData);
 
   const {
     values,
@@ -506,6 +500,7 @@ export default function OfficerProfileAdd(props: any) {
                 <TextInput
                   value={values}
                   label={"Relieving date"}
+                  min={values.joiningDate}
                   name="relievingDate"
                   type="date"
                   onblur={handleBlur}
@@ -767,7 +762,6 @@ export default function OfficerProfileAdd(props: any) {
                         ...filterData,
                         villageFillter: e.target.value,
                       });
-                      console.log(e.target.value);
                     }}
                     onblur={handleBlur}
                     touched={touched}
@@ -781,7 +775,6 @@ export default function OfficerProfileAdd(props: any) {
                     {assignFarmerListFarmer?.response?.length ? (
                       assignFarmerListFarmer?.response?.map(
                         (item: any, index: number) => {
-                          console.log(item);
                           return (
                             <>
                               <Chip

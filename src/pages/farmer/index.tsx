@@ -109,7 +109,7 @@ const ListFieldOfficer = () => {
       ),
       farmer_ID: e.farmer_farmerId,
       Name: e.farmer_name,
-      regulation: (
+      regulations: (
         <div className="flex flex-col gap-y-2">
           {e.regulation?.map((item: any, index: any) => {
             let statusColor =

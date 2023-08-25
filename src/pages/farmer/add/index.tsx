@@ -742,7 +742,11 @@ const AddFarmer = () => {
                     fill="#3D7FFA"
                   />
                 </svg>
-                <div className="text-primary ">Add another farm details</div>
+                <div className="text-primary ">
+                  {farmData.response.data?.length == 0
+                    ? `Add farm details`
+                    : `Add another farm details`}
+                </div>
               </div>
             </>
           )}
