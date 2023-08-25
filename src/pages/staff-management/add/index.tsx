@@ -15,6 +15,8 @@ import { useState } from "react";
 import PhoneNumber from "@/components/inputComponents/phoneNumber";
 import BreadCrumb from "@/components/table/bread-crumb";
 import LabelText from "@/components/labelText";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 export default function OfficerProfileAdd(props: any) {
   const [farmerPop, setFarmerPop] = useState(false);
@@ -34,11 +36,44 @@ export default function OfficerProfileAdd(props: any) {
     }
   `;
 
-  const gender =[
-    {name:"Male", id:"male"},
-    {name:"Female", id:"female"},
-    {name:"Others", id:"others"},
-  ]
+  const gender = [
+    { name: "Male", id: "male" },
+    { name: "Female", id: "female" },
+    { name: "Others", id: "others" },
+  ];
+
+  const SignInSchema = Yup.object().shape({
+    name: Yup.string()
+      .matches(/^[aA-zZ]+$/, "Must be only alphabets")
+      .required("Please enter a valid regulation name"),
+    employee_id: Yup.string()
+      .matches(/^[aA-zZ]+$/, "Must be only alphabets")
+      .required("Please enter a valid regulation name"),
+  });
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      name: "",
+      employee_id: "",
+    },
+    validationSchema: SignInSchema,
+    onSubmit: (values: any) => {
+      console.log(`values reg`, values);
+    },
+  });
+
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    touched,
+    setFieldValue,
+    setFieldTouched,
+    resetForm,
+    errors,
+  } = formik;
 
   return (
     <div className="p-[3rem]">
@@ -87,6 +122,7 @@ export default function OfficerProfileAdd(props: any) {
               <TextInput
                 label={"Employee ID"}
                 name="employee_id"
+                value={values}
                 required
                 placeholder="Type ID in exact format"
                 handleChange={(e: any) => {
@@ -96,6 +132,7 @@ export default function OfficerProfileAdd(props: any) {
               <TextInput
                 label={"Name"}
                 name="employee_id"
+                value={values}
                 required
                 placeholder="Type name"
                 handleChange={(e: any) => {
@@ -109,10 +146,12 @@ export default function OfficerProfileAdd(props: any) {
                 required
                 handleChange={(e: any) => {
                   console.log(e.target.value);
-                }}              />
+                }}
+              />
               <TextInput
                 label={"Personal mail ID"}
                 name="employee_id"
+                value={values}
                 required
                 placeholder="Type mail ID"
                 handleChange={(e: any) => {
@@ -122,6 +161,7 @@ export default function OfficerProfileAdd(props: any) {
               <TextInput
                 label={"Company mail ID"}
                 name="employee_id"
+                value={values}
                 placeholder="Type mail ID"
                 required
                 handleChange={(e: any) => {
@@ -131,6 +171,7 @@ export default function OfficerProfileAdd(props: any) {
               <TextInput
                 label={"Date of birth"}
                 name="employee_id"
+                value={values}
                 required
                 type="date"
                 handleChange={(e: any) => {
@@ -144,7 +185,7 @@ export default function OfficerProfileAdd(props: any) {
                 name={""}
                 data={gender}
                 handleChange={undefined}
-                value={(e: any) => (e.target.value)}
+                value={(e: any) => e.target.value}
                 placeHolderText={"Select"}
               />
             </div>
@@ -156,6 +197,7 @@ export default function OfficerProfileAdd(props: any) {
             <TextInput
               label={"House No, street, area"}
               name="employee_id"
+              value={values}
               required
               placeholder="Type here"
               handleChange={(e: any) => {
@@ -196,6 +238,7 @@ export default function OfficerProfileAdd(props: any) {
               label={"Pin code"}
               required
               name="employee_id"
+              value={values}
               placeholder="Type pin code"
               handleChange={(e: any) => {
                 console.log(e.target.value);
@@ -212,6 +255,7 @@ export default function OfficerProfileAdd(props: any) {
                   label={"Joining date"}
                   required={true}
                   name="employee_id"
+                  value={values}
                   type="date"
                   handleChange={(e: any) => {
                     console.log(e.target.value);
@@ -222,6 +266,7 @@ export default function OfficerProfileAdd(props: any) {
                 <TextInput
                   label={"Relieving date"}
                   name="employee_id"
+                  value={values}
                   type="date"
                   handleChange={(e: any) => {
                     console.log(e.target.value);
@@ -238,6 +283,7 @@ export default function OfficerProfileAdd(props: any) {
                   label={"Education"}
                   required
                   name="employee_id"
+                  value={values}
                   placeholder="Type education (ex: 12th, B.com etc)"
                   customStyle={{
                     width: "100%",
@@ -292,6 +338,7 @@ export default function OfficerProfileAdd(props: any) {
                 <TextInput
                   label={"Spouse name"}
                   name="employee_id"
+                  value={values}
                   type="date"
                   classes={`pt-0`}
                   placeholder="Type name here"
@@ -333,6 +380,7 @@ export default function OfficerProfileAdd(props: any) {
                 label={"Aadhar no"}
                 required
                 name="employee_id"
+                value={values}
                 placeholder="Type Aadhar number here"
                 handleChange={(e: any) => {
                   console.log(e.target.value);
@@ -373,7 +421,7 @@ export default function OfficerProfileAdd(props: any) {
             }
           }
         >
-          <HeaderText text={`Job Role`} required/>
+          <HeaderText text={`Job Role`} required />
           <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem] w-[70%]">
             <div className="flex  w-full">
               <SelectMenu
@@ -396,8 +444,8 @@ export default function OfficerProfileAdd(props: any) {
                 value={undefined}
                 placeHolderText={"Select"}
               />
-            </div >
-            <LabelText labelName={`Assigned`} classes={` m-4`}/>
+            </div>
+            <LabelText labelName={`Assigned`} classes={` m-4`} />
             <div className="flex w-full">
               <SelectMenu
                 classes={` w-full`}
@@ -433,4 +481,4 @@ export default function OfficerProfileAdd(props: any) {
       </div>
     </div>
   );
-};
+}
