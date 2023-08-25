@@ -14,7 +14,8 @@ interface InputTypes {
   classes?: any;
   required?: boolean;
   value?: any;
-  readOnly?:any
+  readOnly?: any;
+  max?: any;
 }
 
 const TextInput = (props: InputTypes) => {
@@ -32,7 +33,8 @@ const TextInput = (props: InputTypes) => {
     classes,
     required,
     labelStyle,
-    readOnly
+    readOnly,
+    max,
   } = props;
   return (
     <>
@@ -54,7 +56,8 @@ const TextInput = (props: InputTypes) => {
           type={type}
           onChange={handleChange}
           style={customStyle}
-          value={(value && value[name]) ?? value}
+          value={value[name] ?? value}
+          max={max}
         />
         <span className="text-[10px] my-1 text-error">
           {(touched && touched[name] && error && error[name]) ?? ""}
