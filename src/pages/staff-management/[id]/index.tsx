@@ -93,9 +93,7 @@ export default function OfficerProfile(props: any) {
       <PersonalDetailCard />
       <div className="idDocuments my-2">
         <HeaderText text={`Job Role`} />
-        <div
-          className="bg-[#F4F8FF] px-3 py-3 mt-[1rem] flex justify-between w-full rounded-[10px]"
-        >
+        <div className="bg-[#F4F8FF] px-3 py-3 mt-[1rem] flex justify-between w-full rounded-[10px]">
           <div className="flex flex-col m-3 p-3 gap-4">
             <LabelText labelName={`Job Title`} />
             <p>{`Regional manager`}</p>
@@ -127,7 +125,6 @@ export default function OfficerProfile(props: any) {
                 <span className="w-[3rem]">{index + 1}</span>
                 <tr className="w-full flex justify-between">
                   {educationDetails.map((key) => {
-                    console.log(`key`, key);
                     return (
                       <td className="text-start py-1 pr-5 " key={key}>
                         <div className="  ">
@@ -136,9 +133,9 @@ export default function OfficerProfile(props: any) {
                             style={
                               key == "certificate"
                                 ? {
-                                  color: "#3D7FFA",
-                                  textDecoration: "underline",
-                                }
+                                    color: "#3D7FFA",
+                                    textDecoration: "underline",
+                                  }
                                 : {}
                             }
                           >
@@ -159,7 +156,8 @@ export default function OfficerProfile(props: any) {
           <HeaderText text={`Address details`} />
           <div
             style={addressStyle}
-            className="px-8 py-8 mt-[1rem] rounded-[10px]">
+            className="px-8 py-8 mt-[1rem] rounded-[10px]"
+          >
             <p
               style={{ maxWidth: "340px" }}
             >{`G8,248/250, Ln Complex, G8,248/250, lncplx, oldtaragupetB53, Lal Build, Old Taragupet, Bangalore - 560053`}</p>
@@ -190,9 +188,7 @@ export default function OfficerProfile(props: any) {
       </div>
       <div className="idDocuments my-2">
         <HeaderText text={`Family info`} />
-        <div
-          className="bg-[#F4F8FF] px-3 py-3 mt-[1rem] flex justify-between w-[70%] rounded-[10px]"
-        >
+        <div className="bg-[#F4F8FF] px-3 py-3 mt-[1rem] flex justify-between w-[70%] rounded-[10px]">
           <div className="flex flex-col m-3 p-3 gap-4">
             <LabelText labelName={`Marital Status`} />
             <p>{`Married`}</p>
@@ -204,15 +200,15 @@ export default function OfficerProfile(props: any) {
           <div className="children m-3 p-3 gap-4">
             <LabelText labelName={`Children`} />
             <p className="flex gap-x-4 my-4">
-            <span>{`Male - 02`}</span>
-            <span>{`Female - 01`}</span>
+              <span>{`Male - 02`}</span>
+              <span>{`Female - 01`}</span>
             </p>
           </div>
         </div>
       </div>
     </div>
   );
-};
+}
 
 const addressStyle = {
   height: "130px",
@@ -253,8 +249,14 @@ const PersonalDetailCard = () => {
           <div className="flex flex-col gap-y-6">
             <DatakeyValue label={`Employee ID`} value={`DTE001`} />
             <DatakeyValue label={`Date of birth`} value={`23/56/1994`} />
-            <DatakeyValue label={`Personal mail ID`} value={`mohammed@gmail.com`} />
-            <DatakeyValue label={`Company mail ID`} value={`mohammed@dte.com`} />
+            <DatakeyValue
+              label={`Personal mail ID`}
+              value={`mohammed@gmail.com`}
+            />
+            <DatakeyValue
+              label={`Company mail ID`}
+              value={`mohammed@dte.com`}
+            />
           </div>
         </div>
       </div>
