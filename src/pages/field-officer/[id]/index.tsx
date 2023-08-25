@@ -63,6 +63,23 @@ export default function OfficerProfile(props: any) {
   const params = useSearchParams();
   const fieldOfficer_id: any = params?.get("id");
 
+  const [taskFilter, setTaskFilter] = useState<any>({
+    farmer: "",
+    districtId: "",
+    villageId: "",
+  });
+
+  const initialValues = {
+    farmer: "",
+    districtId: "",
+    villageId: "",
+  };
+
+  const handleTaskFilter = (name: any, value: any) => {
+    taskFilter[`${name}`] = value;
+    setTaskFilter({ ...taskFilter });
+  };
+
   const dispatch = useDispatch();
   const getOneField = useSelector((store: any) => store.OneFieldOfficerData);
   const getOneFieldData = getOneField.response;
@@ -79,6 +96,12 @@ export default function OfficerProfile(props: any) {
     dispatch(listFarmers(query));
   }, [fieldOfficer_id]);
 
+  const assignTaskQuery = `?technicianId=${fieldOfficer_id}&farmer=${taskFilter.farmer}&districtId=${taskFilter.districtId}&villageId=${taskFilter.villageId}`;
+
+  useEffect(() => {
+    dispatch(listFarmers(assignTaskQuery));
+  }, [assignTaskQuery]);
+
   const districtDropDown = GetDistrict.response?.data?.map(
     (e: any, index: number) => {
       return { id: e.id, name: e.name };
@@ -87,6 +110,11 @@ export default function OfficerProfile(props: any) {
   const villageDropDown = GetSVillage.response?.data?.map(
     (e: any, index: number) => {
       return { id: e.id, name: e.name };
+    }
+  );
+  const farmerDropDown = ListFarmer.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.farmer_farmerId, name: e.farmer_name };
     }
   );
 
@@ -99,6 +127,7 @@ export default function OfficerProfile(props: any) {
     dispatch(getVillage());
     dispatch(getDistrict());
   }, []);
+
   const FilterDataList = ListFarmer.response.data?.map(
     (e: any, index: number) => {
       const hasPendingRegulation = e.regulation.some(
@@ -254,9 +283,12 @@ export default function OfficerProfile(props: any) {
         </div>
       </div>
       <AssignedTask
+        values={taskFilter}
         data={FilterDataList}
+        farmerDrop={farmerDropDown}
         districtDrop={districtDropDown}
         villageDrop={villageDropDown}
+        handleChange={handleTaskFilter}
       />
       <SurveyComponent data={surveyData} />
     </div>
@@ -264,7 +296,8 @@ export default function OfficerProfile(props: any) {
 }
 
 const AssignedTask = (props: any) => {
-  const { data, districtDrop, villageDrop } = props;
+  const { data, farmerDrop, districtDrop, villageDrop, handleChange, values } =
+    props;
 
   const LabelText = styled.p`
     width: 100px;
@@ -284,10 +317,13 @@ const AssignedTask = (props: any) => {
             <SelectMenu
               fieldStyle={{ background: "#F4F8FF" }}
               //labelname={"Farmer ID"}
-              name={""}
-              data={[]}
-              handleChange={undefined}
-              value={undefined}
+              name={"farmer"}
+              data={farmerDrop ?? []}
+              handleChange={(e: any) => {
+                console.log(`e.target.value`, e.target.value);
+                handleChange(`farmer`, e.target.value);
+              }}
+              value={values}
               placeHolderText={"Farmer ID"}
             />
           </div>
@@ -295,10 +331,13 @@ const AssignedTask = (props: any) => {
             <SelectMenu
               fieldStyle={{ background: "#F4F8FF" }}
               //labelname={"Survey"}
-              name={""}
+              name={"districtId"}
               data={districtDrop ?? []}
-              handleChange={undefined}
-              value={undefined}
+              handleChange={(e: any) => {
+                console.log(`e.target.value`, e.target.value);
+                handleChange(`districtId`, e.target.value);
+              }}
+              value={values}
               placeHolderText={"District"}
             />
           </div>
@@ -306,10 +345,13 @@ const AssignedTask = (props: any) => {
             <SelectMenu
               fieldStyle={{ background: "#F4F8FF" }}
               //labelname={"Location"}
-              name={""}
+              name={"villageId"}
               data={villageDrop ?? []}
-              handleChange={undefined}
-              value={undefined}
+              handleChange={(e: any) => {
+                console.log(`e.target.value`, e.target.value);
+                handleChange(`villageId`, e.target.value);
+              }}
+              value={values}
               placeHolderText={"Village"}
             />
           </div>
