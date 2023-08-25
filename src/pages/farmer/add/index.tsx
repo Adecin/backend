@@ -115,17 +115,17 @@ const AddFarmer = () => {
     stateId: Yup.string().required("State is required"),
     districtId: Yup.string().required("District is required"),
     villageId: Yup.string().required("Village is required"),
-    pincode: Yup.number()
-      .typeError("Invalid pincode")
-      .min(10, "Must be exactly 6 digits")
-      .max(10, "Must be exactly 6 digits")
+    pincode: Yup.string()
+      .matches(/^[0-9]+$/, "Invalid pincode")
+      .min(6, "Must be exactly 6 digits")
+      .max(6, "Must be exactly 6 digits")
       .required("Pincode is required"),
     // family info
     martialStatus: Yup.string().required("Marital status is required"),
 
     // government id proof
     adharNumber: Yup.string()
-      .matches(/^[0-9]+$/, "Must be only digis")
+      .matches(/^[0-9]+$/, "Must be only digits")
       .min(12, "Invalid aadhar number")
       .max(12, "Invalid aadhar number")
       .required("Aadhar card number is required"),
