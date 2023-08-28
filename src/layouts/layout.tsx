@@ -5,13 +5,20 @@ import { useLayoutEffect } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { store } from "@/redux/store";
 import { useRouter, usePathname } from "next/navigation";
+import { Toaster } from "react-hot-toast";
+import { ToastContainer } from "react-toastify";
 
 const roboto = Roboto({ weight: "400", subsets: ["latin"] });
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathName = usePathname();
 
-  const noSlide = [`/login`, `/farmer/add`,`/field-officer/add`, `/field-officer/edit`]
+  const noSlide = [
+    `/login`,
+    `/farmer/add`,
+    `/field-officer/add`,
+    `/field-officer/edit`,
+  ];
 
   return (
     <div className={roboto.className}>
@@ -28,6 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             overflow: "auto",
           }}
         >
+          <ToastContainer />
           <ReduxProvider store={store}>{children}</ReduxProvider>
         </div>
       </div>

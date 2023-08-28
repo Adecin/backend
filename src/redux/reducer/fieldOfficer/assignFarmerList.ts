@@ -1,6 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // utils
 import { axios } from "@/redux/api";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
+//toast
+const FAILED = async (data: string) => {
+  toast.error(data, {
+      position: toast.POSITION.TOP_RIGHT,
+  });
+};
+
+const SUCCESS = async (data: string) => {
+  toast.success(data, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+  });
+};
 
 // api call
 export const assignFarmerList: any = createAsyncThunk(
@@ -45,6 +60,7 @@ const AssignFarmerListData: any = createSlice({
       Village.response = payload.data?.data;
       Village.Message = payload.data.message;
       Village.isSuccess = true;
+      SUCCESS(payload?.data?.message);
     });
 
     builder.addCase(assignFarmerList.rejected, (Village: any, { payload }: any) => {
@@ -52,6 +68,7 @@ const AssignFarmerListData: any = createSlice({
       Village.isSuccess = false;
       Village.isError = true;
       Village.Message = payload.data ? payload.data.message : payload.message;
+      FAILED(Village.Message);
     });
   },
 });

@@ -117,8 +117,8 @@ const DynamicTable = ({
           rowsPerPageOptions={[10, 25, 50, 100]}
           component="div"
           count={count}
-          rowsPerPage={paginateData.limit}
-          page={paginateData.page}
+          rowsPerPage={paginateData?.limit}
+          page={paginateData?.page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
