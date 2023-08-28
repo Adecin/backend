@@ -58,9 +58,7 @@ const updateAssignFarmerData: any = createSlice({
       state.response = payload.data?.data;
       state.Message = payload.data.message;
       state.isSuccess = true;
-      window.alert(payload.data.message)
       SUCCESS(payload.data.message);
-      console.log(`payload`, payload)
     });
 
     builder.addCase(updateAssignFarmer.rejected, (state: any, { payload }: any) => {
@@ -69,7 +67,6 @@ const updateAssignFarmerData: any = createSlice({
       state.isError = true;
       state.Message = payload.data ? payload.data.message : payload.message;
       FAILED(state.Message);
-      console.log(`payload`, payload)
     });
   },
 });

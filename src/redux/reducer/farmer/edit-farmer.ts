@@ -66,7 +66,7 @@ const EditFarmer: any = createSlice({
       state.isSuccess = false;
       state.isError = true;
       state.Message = payload.data ? payload.data.message : payload.message;
-      FAILED(payload?.data?.message);
+      FAILED(state.Message);
     });
   },
 });

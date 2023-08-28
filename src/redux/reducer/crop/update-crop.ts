@@ -67,6 +67,7 @@ const UpdateCrop: any = createSlice({
       state.isSuccess = false;
       state.isError = true;
       state.Message = payload.data ? payload.data.message : payload.message;
+      FAILED(state.Message);
     });
   },
 });
