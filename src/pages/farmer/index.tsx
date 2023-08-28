@@ -44,8 +44,6 @@ const ListFieldOfficer = () => {
     districtId: "",
     villageId: "",
     technicianId: "",
-    page: "",
-    limit: "10",
   });
 
   const [paginateData, setData] = useState<any>({
