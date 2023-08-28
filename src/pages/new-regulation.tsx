@@ -23,12 +23,15 @@ import styled from "@emotion/styled";
 import DoNotDisturbOnIcon from "@mui/icons-material/DoNotDisturbOn";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CustomButton from "@/components/customButton";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewRegulation } from "@/redux/reducer/regulation/add-regulation";
 
 const CreateSurvey = () => {
   const [searchValue, setSearchValue] = useState("");
   const [allSelect, setSelect] = useState(false);
   const [manageOpen, setManageOpen] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const SeperaterText = styled.p`
     font-size: 16px;
@@ -64,24 +67,35 @@ const CreateSurvey = () => {
   //     setPillars([...pillars, { name: "", description: "" }]);
   //   };
 
+  const AddCropState = useSelector((state: any) => state.AddCrop);
+
   const SignInSchema = Yup.object().shape({
-    name: Yup.string().required("Please enter a valid crop name"),
-    description: Yup.string().required("Please enter a valid crop name"),
-    surveyId: Yup.string()
-      .required("Please enter a valid crop year")
-      .matches(/^[0-9]+$/, "Must be only digits"),
-    pillars: Yup.array(),
+    name: Yup.string()
+      .required("Regulation name is required")
+      .matches(/^[aA-zZ0-9]+$/, "Please enter a valid regulation name"),
+    description: Yup.string().required("Description is required"),
+    pillars: Yup.array().of(
+      Yup.object().shape({
+        name: Yup.string()
+          .required("Category name is required")
+          .matches(/^[aA-zZ0-9]+$/, "Please enter a valid category name"),
+        description: Yup.string().required("Description is required"),
+      })
+    ),
   });
 
   const formik = useFormik({
     initialValues: {
       name: "",
       description: "",
-      surveyId: "",
       pillars: [{ name: "", description: "" }],
     },
+
     validationSchema: SignInSchema,
-    onSubmit: (values: any) => {},
+    onSubmit: (values: any) => {
+      console.log(values);
+      dispatch(addNewRegulation(values));
+    },
   });
 
   const {
@@ -228,7 +242,7 @@ const CreateSurvey = () => {
               padding: "1rem 3rem",
             }}
             handleOnClick={() => {
-              //handleSubmit();
+              handleSubmit();
             }}
           />
         </div>
