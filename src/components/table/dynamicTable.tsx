@@ -9,6 +9,7 @@ interface propsData {
   backgroundColor?: string;
   classes?: any;
   count?: any;
+  paginateData?: any;
 }
 
 const DynamicTable = ({
@@ -17,11 +18,12 @@ const DynamicTable = ({
   backgroundColor,
   classes,
   count,
+  paginateData,
 }: propsData) => {
-  const [paginateData, setData] = useState({
-    page: 0,
-    limit: 10,
-  });
+  // const [paginateData, setData] = useState({
+  //   page: 0,
+  //   limit: 10,
+  // });
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
 
@@ -36,20 +38,24 @@ const DynamicTable = ({
   const keys = Object.keys(data[0]);
 
   const handleChangePage = (event: any, newPage: any) => {
-    setData({ ...paginateData, page: newPage });
+    console.log(`page change`, newPage);
     setPage(newPage);
-
-    // props.paginateData({
-    //   page: 0,
-    //   rowsPerPage: event.target.value,
-    // });
+    paginateData({
+      page: newPage,
+      rowsPerPage: rowsPerPage,
+    });
   };
 
   const handleChangeRowsPerPage = (event: any) => {
-    setData({ ...paginateData, limit: event.target.value });
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+
+    paginateData({
+      page: 0,
+      rowsPerPage: event.target.value,
+    });
   };
+
   return (
     <>
       <div className="w-full p-3 mb-[50px] ">
@@ -108,7 +114,7 @@ const DynamicTable = ({
           </tbody>
         </table>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10, 25, 50, 100]}
           component="div"
           count={count}
           rowsPerPage={paginateData.limit}

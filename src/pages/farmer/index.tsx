@@ -44,6 +44,13 @@ const ListFieldOfficer = () => {
     districtId: "",
     villageId: "",
     technicianId: "",
+    page: "",
+    limit: "10",
+  });
+
+  const [paginateData, setData] = useState<any>({
+    page: "",
+    limit: "10",
   });
   const initialValues = {
     status: "",
@@ -57,13 +64,18 @@ const ListFieldOfficer = () => {
     setFarmerFilter({ ...farmerFilter });
   };
 
-  const query = `?status=${farmerFilter.status}&districtId=${farmerFilter.districtId}&villageId=${farmerFilter.villageId}&technicianId=${farmerFilter.technicianId}`;
+  const query = `?limit=${paginateData.limit}&status=${farmerFilter.status}&districtId=${farmerFilter.districtId}&villageId=${farmerFilter.villageId}&technicianId=${farmerFilter.technicianId}`;
 
   const applyFetchFilter = () => {
     dispatch(listFarmers(query));
     setCheckData([]);
     setFarmerFilter(initialValues);
   };
+
+  useEffect(() => {
+    dispatch(listFarmers(query));
+    setCheckData([]);
+  }, [query]);
 
   useEffect(() => {
     dispatch(listFarmers(""));
@@ -356,6 +368,12 @@ const ListFieldOfficer = () => {
             }}
             data={filterData ?? []}
             count={ListFarmer?.response?.count}
+            paginateData={(e: any) => {
+              setData({
+                page: e.page,
+                limit: e.rowsPerPage,
+              });
+            }}
           />
         </div>
       </div>
