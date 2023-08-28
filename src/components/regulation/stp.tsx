@@ -4,9 +4,12 @@ import CustomButton from "@/components/customButton";
 import LabelText from "@/components/labelText";
 import BreadCrumb from "@/components/table/bread-crumb";
 import { Tabs, Tab, styled, Box } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import QuestionaireComp from "@/components/questionaireTab";
 import TabPanel from "@mui/lab/TabPanel/TabPanel";
+import { useSearchParams } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { listRegulationOne } from "@/redux/reducer/regulation/list-one-regulation";
 
 const StyledTab = styled((props: any) => <Tab {...props} />)(({ theme }) => ({
   fontWeight: 500,
@@ -45,6 +48,15 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export default function StpQuestionary() {
   const [value, setValue] = React.useState(0);
+  const dispatch = useDispatch();
+  const params = useSearchParams();
+  const regulationId: any = params?.get("id");
+  const RegulationData = useSelector((state: any) => state.ListRegulationOne);
+
+  // useEffect
+  useEffect(() => {
+    dispatch(listRegulationOne(regulationId));
+  }, [regulationId]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -131,7 +143,7 @@ export default function StpQuestionary() {
   return (
     <div className="flex flex-col my-[5rem] mx-[3rem] gap-y-6">
       <div className="flex ml-[-20px] justify-between font-medium text-lg tracking-wider flex items-center">
-        <BreadCrumb />
+        <BreadCrumb lastName={RegulationData.response.name ?? ""} />
         <CustomButton
           classes={` flex self-end`}
           buttonName={`Edit`}
@@ -155,7 +167,9 @@ export default function StpQuestionary() {
             fontSize: "14px",
             maxWidth: "710px",
           }}
-        >{`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`}</p>
+        >
+          {RegulationData.response.description ?? ""}
+        </p>
       </div>
       <div className="stpContainer">
         <Tabs

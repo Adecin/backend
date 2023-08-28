@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { baseApi } from "@/redux/baseapi";
-import  UserLogin  from "./reducer/login/login";
+import UserLogin from "./reducer/login/login";
 // stores
 
 // dropdown
@@ -36,6 +36,7 @@ import updateAssignFarmerData from "./reducer/fieldOfficer/updateAssignFarmer";
 //regulation
 import AddNewRegulation from "./reducer/regulation/add-regulation";
 import ListAllRegulation from "./reducer/regulation/listAllRegulation";
+import ListRegulationOne from "./reducer/regulation/list-one-regulation";
 
 //survey
 import AddNewSurvey from "./reducer/survey/add-survey";
@@ -61,23 +62,24 @@ export const store = configureStore({
     EditFarmer: EditFarmer,
     EditFarm: EditFarm,
     //fieldOfficer
-    ListFieldOfficerData:ListFieldOfficerData,
-    OneFieldOfficerData:OneFieldOfficerData,
-    AddFieldOfficerData:AddFieldOfficerData,
-    UpdateFieldOfficerData:UpdateFieldOfficerData,
-    UnassignFarmerListData:UnassignFarmerListData,
-    AssignFarmerData:AssignFarmerData,
-    AssignFarmerListData:AssignFarmerListData,
-    ApproveFarmerData:ApproveFarmerData,
-    AssignedFarmersCountData:AssignedFarmersCountData,
-    updateAssignFarmerData:updateAssignFarmerData,
+    ListFieldOfficerData: ListFieldOfficerData,
+    OneFieldOfficerData: OneFieldOfficerData,
+    AddFieldOfficerData: AddFieldOfficerData,
+    UpdateFieldOfficerData: UpdateFieldOfficerData,
+    UnassignFarmerListData: UnassignFarmerListData,
+    AssignFarmerData: AssignFarmerData,
+    AssignFarmerListData: AssignFarmerListData,
+    ApproveFarmerData: ApproveFarmerData,
+    AssignedFarmersCountData: AssignedFarmersCountData,
+    updateAssignFarmerData: updateAssignFarmerData,
     //regulation
     AddNewRegulation: AddNewRegulation,
     ListAllRegulation: ListAllRegulation,
+    ListRegulationOne: ListRegulationOne,
 
     //survey
     AddNewSurvey: AddNewSurvey,
-    
+
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware: any) => {
