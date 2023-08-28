@@ -15,34 +15,34 @@ import FormLabel from "@mui/material/FormLabel";
 import { useRouter } from "next/navigation";
 import TextInput from "@/components/inputComponents/textInput";
 import TextArea from "@/components/inputComponents/texArea";
-import { useFormik } from "formik";
-import * as Yup from 'yup';
+import { FieldArray, useFormik } from "formik";
+import * as Yup from "yup";
 import HeaderText from "@/components/textComponents/headerText";
 import LabelText from "@/components/labelText";
 import styled from "@emotion/styled";
-import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DoNotDisturbOnIcon from "@mui/icons-material/DoNotDisturbOn";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CustomButton from "@/components/customButton";
 
 const CreateSurvey = () => {
-    const [searchValue, setSearchValue] = useState("");
-    const [allSelect, setSelect] = useState(false);
-    const [manageOpen, setManageOpen] = useState(false);
-    const router = useRouter();
+  const [searchValue, setSearchValue] = useState("");
+  const [allSelect, setSelect] = useState(false);
+  const [manageOpen, setManageOpen] = useState(false);
+  const router = useRouter();
 
-    const SeperaterText = styled.p`
+  const SeperaterText = styled.p`
     font-size: 16px;
     line-height: 24px;
-    font-weight:500;
+    font-weight: 500;
     display: flex;
     justify-content: center;
     align-items: center;
     &::before,
     ::after {
-      content: '';
+      content: "";
       height: 2.25px;
       width: 15rem;
-      background-color: #3D7FFA;
+      background-color: #3d7ffa;
       display: block;
     }
     &::before {
@@ -53,156 +53,188 @@ const CreateSurvey = () => {
     }
   `;
 
-    const blueText = {
-        fontSize: "14px",
-        fontWeight: 400,
-        lineHeight: "16px",
-        letterSpacing: "0.05em",
-    }
+  //   const [pillars, setPillars] = useState([
+  //     {
+  //       name: "",
+  //       description: "",
+  //     },
+  //   ]);
 
-    const SignInSchema = Yup.object().shape({
-        email: Yup.string()
-            .required('Please enter a valid email address.')
-            .email('Email is invalid'),
+  //   const handleAddPillars = () => {
+  //     setPillars([...pillars, { name: "", description: "" }]);
+  //   };
 
-    });
+  const SignInSchema = Yup.object().shape({
+    name: Yup.string().required("Please enter a valid crop name"),
+    description: Yup.string().required("Please enter a valid crop name"),
+    surveyId: Yup.string()
+      .required("Please enter a valid crop year")
+      .matches(/^[0-9]+$/, "Must be only digits"),
+    pillars: Yup.array(),
+  });
 
-    const formik = useFormik({
-        initialValues: {
-            email: '',
-        },
-        validationSchema: SignInSchema,
-        onSubmit: (values: any) => {
-        },
-    });
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      description: "",
+      surveyId: "",
+      pillars: [{ name: "", description: "" }],
+    },
+    validationSchema: SignInSchema,
+    onSubmit: (values: any) => {},
+  });
 
-    const {
-        values,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        touched,
-        setFieldValue,
-        resetForm,
-        errors,
-    } = formik;
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    touched,
+    setFieldValue,
+    resetForm,
+    errors,
+  } = formik;
 
-    return (
-        <>
-            <div className="p-5">
-                <div className="px-4">
-                    <div className="flex justify-between">
-                        <BreadCrumb classes={` font-bold text-[#43424D]`} />
-                    </div>
-                    <div className="flex justify-between ">
-                        <div className='w-full'>
-                            <TextInput
-                                classes={` py-0 pt-2`}
-                                required
-                                label={"Regulation name"}
-                                name="email"
-                                value={values}
-                                onblur={handleBlur}
-                                touched={touched}
-                                handleChange={handleChange}
-                                error={errors}
-                                placeholder="Type regulation name here"
-                                customStyle={{
-                                    background: "#F7F7F7",
-                                }}
-                            />
-                        </div>
-                        <div className='w-full'>
-                            <TextArea
-                                classes={` py-0 pt-2`}
-                                customStyle={{
-                                    background: "#F7F7F7",
-                                }}
-                                required
-                                label={"Regulation description"}
-                                name="email"
-                                value={values}
-                                onblur={handleBlur}
-                                touched={touched}
-                                handleChange={handleChange}
-                                error={errors}
-                                placeholder="Type regulation description here"
-                            />
-                        </div>
-                    </div>
-                    <div className="py-5" style={{
-                        borderBottom: "2px solid #D9D9D9"
-                    }}>
-                        <SeperaterText className="text-primary my-12" >{`Sub category`}</SeperaterText>
+  console.log(`values`, values);
 
-                        <div className="flex justify-between ">
-                            <div className='w-full'>
-                                <TextInput
-                                    classes={` py-0 pt-2`}
-                                    required
-                                    label={"Category name"}
-                                    name="email"
-                                    value={values}
-                                    onblur={handleBlur}
-                                    touched={touched}
-                                    handleChange={handleChange}
-                                    error={errors}
-                                    placeholder="Type category name here"
-                                    customStyle={{
-                                        background: "#F7F7F7",
-                                    }}
-                                />
-                            </div>
-                            <div className='w-full'>
-                                <TextArea
-                                    classes={` py-0 pt-2`}
-                                    customStyle={{
-                                        background: "#F7F7F7",
-                                    }}
-                                    required
-                                    label={"Category description"}
-                                    name="email"
-                                    value={values}
-                                    onblur={handleBlur}
-                                    touched={touched}
-                                    handleChange={handleChange}
-                                    error={errors}
-                                    placeholder="Type category description here"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="py-3" style={{
-                        borderBottom: "2px solid #D9D9D9"
-                    }}>
-                        <CustomButton
-                            classes={`text-primary `}
-                            buttonName={`Add sub category`}
-                            startIcon={<AddCircleIcon className="text-primary" />}
-                            customStyle={{
-                                background: "none",
-                                padding: "1rem 3rem",
-                                color: "#3D7FFA",
-                            }}
-                            handleOnClick={() => {
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="flex justify-center my-[3rem] p-[2rem]">
-                    <CustomButton
-                        buttonName={`Create regulations `}
-                        customStyle={{
-                            padding: "1rem 3rem"
-                        }}
-                        handleOnClick={() => {
-                            handleSubmit();
-                        }}
-                    />
-                </div>
+  return (
+    <>
+      <div className="p-5">
+        <div className="px-4">
+          <div className="flex justify-between">
+            <BreadCrumb classes={` font-bold text-[#43424D]`} />
+          </div>
+          <div className="flex justify-between ">
+            <div className="w-full">
+              <TextInput
+                classes={` py-0 pt-2`}
+                required
+                label={"Regulation name"}
+                name="name"
+                value={values}
+                onblur={handleBlur}
+                touched={touched}
+                handleChange={handleChange}
+                error={errors}
+                placeholder="Type regulation name here"
+                customStyle={{
+                  background: "#F7F7F7",
+                }}
+              />
             </div>
-        </>
-    );
+            <div className="w-full">
+              <TextArea
+                classes={` py-0 pt-2`}
+                customStyle={{
+                  background: "#F7F7F7",
+                }}
+                required
+                label={"Regulation description"}
+                name="description"
+                value={values}
+                onblur={handleBlur}
+                touched={touched}
+                handleChange={handleChange}
+                error={errors}
+                placeholder="Type regulation description here"
+              />
+            </div>
+          </div>
+          <div
+            className="py-5"
+            style={{
+              borderBottom: "2px solid #D9D9D9",
+            }}
+          >
+            <SeperaterText className="text-primary my-12">{`Sub category`}</SeperaterText>
+            <div className="pillars">
+              {values.pillars.map((pillar: any, index: any) => (
+                <div key={pillar.id} className="flex justify-between ">
+                  <div className="w-full">
+                    <TextInput
+                      classes={` py-0 pt-2`}
+                      required
+                      label={"Category name"}
+                      name={pillar.name}
+                      value={values.pillars[index].name}
+                      onblur={handleBlur}
+                      touched={touched}
+                      handleChange={(e: any) => {
+                        setFieldValue(`pillars[${index}].name`, e.target.value);
+                      }}
+                      error={errors}
+                      placeholder="Type category name here"
+                      customStyle={{
+                        background: "#F7F7F7",
+                      }}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <TextArea
+                      classes={` py-0 pt-2`}
+                      customStyle={{
+                        background: "#F7F7F7",
+                      }}
+                      required
+                      label={"Category description"}
+                      name={pillar.description}
+                      value={values.pillars[index].description}
+                      onblur={handleBlur}
+                      touched={touched}
+                      handleChange={(e: any) => {
+                        setFieldValue(
+                          `pillars[${index}].description`,
+                          e.target.value
+                        );
+                      }}
+                      error={errors}
+                      placeholder="Type category description here"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div
+            className="py-3"
+            style={{
+              borderBottom: "2px solid #D9D9D9",
+            }}
+          >
+            <CustomButton
+              classes={`text-primary `}
+              buttonName={`Add sub category`}
+              startIcon={<AddCircleIcon className="text-primary" />}
+              customStyle={{
+                background: "none",
+                padding: "1rem 3rem",
+                color: "#3D7FFA",
+              }}
+              handleOnClick={() => {
+                //push({name:"", decription:""})
+                //handleAddPillars();
+                setFieldValue(`pillars`, [
+                  ...values.pillars,
+                  { name: "", description: "" },
+                ]);
+              }}
+            />
+          </div>
+        </div>
+        <div className="flex justify-center my-[3rem] p-[2rem]">
+          <CustomButton
+            buttonName={`Create regulations `}
+            customStyle={{
+              padding: "1rem 3rem",
+            }}
+            handleOnClick={() => {
+              //handleSubmit();
+            }}
+          />
+        </div>
+      </div>
+    </>
+  );
 };
 export default CreateSurvey;
 
