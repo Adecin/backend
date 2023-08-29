@@ -19,6 +19,8 @@ const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
 const ListFieldOfficer = () => {
   const [searchValue, setSearchValue] = useState("");
+  const [filterEmpty, setfilterEmpty] = useState(false);
+
   const router = useRouter();
 
   const [technicianFilter, setTechnicianFilter] = useState<any>({
@@ -41,10 +43,24 @@ const ListFieldOfficer = () => {
     setTechnicianFilter({ ...technicianFilter });
   };
 
-  const query = `?districtId=${technicianFilter.districtId}&villageId=${technicianFilter.villageId}`;
+  const query = `?page=${paginateData.page}&limit=${paginateData.limit}&districtId=${technicianFilter.districtId}&villageId=${technicianFilter.villageId}`;
 
   const applyFetchFilter = () => {
-    dispatch(listFieldOfficer(query));
+    const isEmpty =
+      technicianFilter.districtId == false &&
+      technicianFilter.villageId == false
+        ? true
+        : false;
+
+    if (isEmpty) {
+      setfilterEmpty(true);
+    } else {
+      dispatch(listFieldOfficer(query));
+      setTechnicianFilter(initialValues);
+    }
+  };
+
+  const handleClearFilter = () => {
     setTechnicianFilter(initialValues);
   };
 
@@ -110,8 +126,12 @@ const ListFieldOfficer = () => {
             applyFilter={() => {
               applyFetchFilter();
             }}
+            isEmpty={filterEmpty}
             onSearch={(e: string) => {
               setSearchValue(e);
+            }}
+            clearFilter={() => {
+              handleClearFilter();
             }}
             filter={
               <div>
