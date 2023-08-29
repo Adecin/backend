@@ -26,6 +26,11 @@ const ListFieldOfficer = () => {
     villageId: "",
   });
 
+  const [paginateData, setData] = useState<any>({
+    page: 0,
+    limit: 10,
+  });
+
   const initialValues = {
     districtId: "",
     villageId: "",
@@ -55,7 +60,6 @@ const ListFieldOfficer = () => {
 
   const filterData = ListFieldOfficer.response.data?.map(
     (e: any, index: number) => {
-      console.log(e.farmerCount);
       return {
         photo: (
           <img
@@ -123,6 +127,12 @@ const ListFieldOfficer = () => {
         <DynamicTable
           data={filterData ?? []}
           count={ListFieldOfficer.response.count}
+          paginateData={(e: any) => {
+            setData({
+              page: e.page,
+              limit: e.rowsPerPage,
+            });
+          }}
         />
       </div>
       {/* <DynamicTable data={data} /> */}
@@ -162,9 +172,7 @@ const FieldOfficerFilter = (props: any) => {
             name="manager"
             placeHolderText="Select Manager"
             data={[]}
-            handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
-            }}
+            handleChange={(e: any) => {}}
           />
         </div>
         <div className="w-[350px] px-3">
@@ -174,7 +182,6 @@ const FieldOfficerFilter = (props: any) => {
             placeHolderText="Select District"
             data={districtDropDown ?? []}
             handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
               selectFilter(`districtId`, e.target.value);
             }}
           />
@@ -186,7 +193,6 @@ const FieldOfficerFilter = (props: any) => {
             placeHolderText="Select Village"
             data={villageDropDown ?? []}
             handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
               selectFilter(`villageId`, e.target.value);
             }}
           />
@@ -194,9 +200,7 @@ const FieldOfficerFilter = (props: any) => {
         <div className="w-[350px] px-3">
           <SelectMenu
             name="manager"
-            handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
-            }}
+            handleChange={(e: any) => {}}
             placeHolderText="Survey"
             data={[]}
           />

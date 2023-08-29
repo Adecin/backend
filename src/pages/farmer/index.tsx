@@ -37,8 +37,6 @@ const ListFieldOfficer = () => {
   const ListFarmer = useSelector((store: any) => store.ListFormer);
   const ApproveResponse = useSelector((store: any) => store.ApproveFarmerData);
 
-  // console.log("datasss", ListFarmer);
-
   const [farmerFilter, setFarmerFilter] = useState<any>({
     status: "",
     districtId: "",
@@ -56,18 +54,28 @@ const ListFieldOfficer = () => {
     districtId: "",
     villageId: "",
     technicianId: "",
+    regulation: [],
   };
 
   const handleSelectFilter = (name: any, value: any) => {
     farmerFilter[`${name}`] = value;
     setFarmerFilter({ ...farmerFilter });
   };
-
-  const handleClearFilter = (name: any, value: any) => {
-    setFarmerFilter(initialValues);
+  const handleCheckbox = (selected: any) => {
+    const status = selected !== true ? `Approved` : `hf`;
+    console.log(`status in`, status);
+    handleSelectFilter(`status`, status);
   };
 
-  const query = `?page=${paginateData.page}&limit=${paginateData.limit}&status=${farmerFilter.status}&districtId=${farmerFilter.districtId}&villageId=${farmerFilter.villageId}&technicianId=${farmerFilter.technicianId}`;
+  const handleAddRegulationFilter = (name: any, value: any) => {};
+
+  const query = `?page=${paginateData.page}&limit=${
+    paginateData.limit
+  }&status=${farmerFilter.status}&districtId=${
+    farmerFilter.districtId
+  }&villageId=${farmerFilter.villageId}&technicianId=${
+    farmerFilter.technicianId
+  }&regulation=${1}`;
 
   const applyFetchFilter = () => {
     dispatch(listFarmers(query));
@@ -77,7 +85,7 @@ const ListFieldOfficer = () => {
   useEffect(() => {
     dispatch(listFarmers(query));
     setCheckData([]);
-  }, [query]);
+  }, [paginateData]);
 
   useEffect(() => {
     dispatch(listFarmers(""));
@@ -96,7 +104,6 @@ const ListFieldOfficer = () => {
         <Checkbox
           checked={allSelect ? true : checkedData.includes(e.farmer_id)}
           onChange={() => {
-            console.log(checkedData);
             if (checkedData.includes(e.farmer_id)) {
               const findIndex = checkedData.indexOf(e.farmer_id);
               const cloneData = [...checkedData];
@@ -283,6 +290,7 @@ const ListFieldOfficer = () => {
                   <FieldOfficerFilter
                     values={farmerFilter}
                     selectFilter={handleSelectFilter}
+                    handleCheckbox={handleCheckbox}
                   />
                 </div>
               }
@@ -381,7 +389,6 @@ const ListFieldOfficer = () => {
                 page: e.page,
                 limit: e.rowsPerPage,
               });
-              console.log(`limit`, paginateData.limit);
             }}
           />
         </div>
@@ -443,17 +450,12 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
     setValue(newValue);
   };
 
-  console.log(farmersList);
-
-  console.log(ListFieldOfficer);
-
   useEffect(() => {
     dispatch(listFieldOfficer(""));
   }, []);
 
   const handleApprove = () => {
     closePopUp();
-    console.log(is_approve);
     const data =
       is_approve == "true"
         ? {
@@ -464,7 +466,6 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
             id: farmersList,
             reason: reason,
           };
-    console.log(data);
     dispatch(approveFarmer(data));
   };
 
@@ -666,7 +667,8 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
 // filter values
 
 const FieldOfficerFilter = (props: any) => {
-  const { selectFilter, values } = props;
+  const { selectFilter, values, handleCheckbox } = props;
+  const [selected, setSelected] = useState(false);
 
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
@@ -726,7 +728,6 @@ const FieldOfficerFilter = (props: any) => {
             data={districtDropDown ?? []}
             value={values}
             handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
               selectFilter(`districtId`, e.target.value);
             }}
           />
@@ -738,7 +739,6 @@ const FieldOfficerFilter = (props: any) => {
             data={villageDropDown ?? []}
             value={values}
             handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
               selectFilter(`villageId`, e.target.value);
             }}
           />
@@ -749,7 +749,6 @@ const FieldOfficerFilter = (props: any) => {
             placeHolderText="Select Field Officer"
             value={values}
             handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
               selectFilter(`technicianId`, e.target.value);
             }}
             data={technicianDropDown ?? []}
@@ -803,9 +802,11 @@ const FieldOfficerFilter = (props: any) => {
             <label className="font-semibold"> Approved Status</label>
             <Checkbox
               onChange={(e: any) => {
-                console.log(`e.target.value`, e.target.value);
-                selectFilter(`status`, `Pending`);
+                setSelected(!selected);
+                handleCheckbox(selected);
+                console.log(`selected`, selected);
               }}
+              checked={selected}
             />
           </div>
         </div>
