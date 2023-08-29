@@ -67,6 +67,10 @@ const ListFieldOfficer = () => {
     handleSelectFilter(`status`, status);
   };
 
+  const handleClearFilter = () => {
+    setFarmerFilter(initialValues);
+  };
+
   const handleAddRegulationFilter = (name: any, value: any) => {};
 
   const query = `?page=${paginateData.page}&limit=${
@@ -282,8 +286,8 @@ const ListFieldOfficer = () => {
               onSearch={(e: string) => {
                 setSearchValue(e);
               }}
-              clearFilter={(e: any) => {
-                //handleClearFilter();
+              clearFilter={() => {
+                handleClearFilter();
               }}
               filter={
                 <div>

@@ -704,6 +704,12 @@ export default function OfficerProfileEdit(props: any) {
           <div className="w-full">
             <HeaderText text={`Assign Farmer`} required={true} />
             <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]">
+              <p
+                className="font-semibold mb-8 ml-3"
+                style={{ fontSize: "16px", marginTop: "1.65rem" }}
+              >
+                Select Filter to Assign Farmer
+              </p>
               <div className="grid grid-cols-3">
                 <SelectMenu
                   labelname={"Crop type"}
@@ -802,9 +808,7 @@ export default function OfficerProfileEdit(props: any) {
                     }}
                   />
                 ) : (
-                  <p style={{ fontSize: "13px", marginTop: "1.65rem" }}>
-                    Select Filter to Assign Farmer
-                  </p>
+                  <p style={{ fontSize: "13px", marginTop: "1.65rem" }}></p>
                 )}
               </div>
             </div>

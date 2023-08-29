@@ -57,8 +57,6 @@ const AddCrop: any = createSlice({
       state.response = payload.data?.data;
       state.Message = payload.data.message;
       state.isSuccess = true;
-      window.location.reload();
-      window.alert(payload.data.message)
       SUCCESS(payload.data.message);
     });
 
