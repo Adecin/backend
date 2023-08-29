@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 
   const SUCCESS = async (data: string) => {
       toast.success(data, {
-          position: toast.POSITION.BOTTOM_RIGHT,
+          position: toast.POSITION.TOP_RIGHT,
       });
   };
 
