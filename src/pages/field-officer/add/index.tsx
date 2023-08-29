@@ -728,6 +728,12 @@ export default function OfficerProfileAdd(props: any) {
           <div>
             <div className="w-full">
               <HeaderText text={`Assign Farmer`} />
+              <p
+                className="font-semibold mb-8 ml-3"
+                style={{ fontSize: "16px", marginTop: "1.65rem" }}
+              >
+                Select Filter to Assign Farmer
+              </p>
               <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]">
                 <div className="grid grid-cols-3">
                   <SelectMenu
@@ -824,9 +830,7 @@ export default function OfficerProfileAdd(props: any) {
                       }}
                     />
                   ) : (
-                    <p style={{ fontSize: "13px", marginTop: "1.65rem" }}>
-                      Select Filter to Assign Farmer
-                    </p>
+                    <p style={{ fontSize: "13px", marginTop: "1.65rem" }}></p>
                   )}
                 </div>
               </div>

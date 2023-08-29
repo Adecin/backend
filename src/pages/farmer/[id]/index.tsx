@@ -267,10 +267,10 @@ const FarmerList = () => {
             <div className="px-5 ">
               <div className="my-4 text-[#858585] text-[16px]">Children</div>
               <div className="my-4 text-text text-[14px]">
-                {`Male - ${farmerData.response.childrenFemale ?? 0} `}
+                {`Male - ${farmerData.response.childrenMale ?? 0} `}
               </div>
               <div className="my-4 text-text text-[14px]">
-                {`Female - ${farmerData.response.childrenMale ?? 0} `}
+                {`Female - ${farmerData.response.childrenFemale ?? 0} `}
               </div>
             </div>
           </div>
