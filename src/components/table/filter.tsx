@@ -9,9 +9,17 @@ interface Filter {
   addUrl?: string;
   filter: any;
   applyFilter: any;
+  clearFilter?: any;
 }
 
-const Filter = ({ onSearch, value, addUrl, filter, applyFilter }: Filter) => {
+const Filter = ({
+  onSearch,
+  value,
+  addUrl,
+  filter,
+  applyFilter,
+  clearFilter,
+}: Filter) => {
   const [openFilter, setOpenFilter] = useState(false);
   const router = useRouter();
   return (
@@ -66,7 +74,18 @@ const Filter = ({ onSearch, value, addUrl, filter, applyFilter }: Filter) => {
         {openFilter && (
           <div className="absolute z-[99] bg-[#F4F8FF] px-3 py-5 rounded-[10px] right-[30px]  top-[70px]">
             {filter ?? ""}
-            <div className="ml-auto w-[100px] mr-[20px] ">
+            <div className="flex flex gap-x-[2rem] l w-[100px] ml-auto mr-[5rem] ">
+              <div
+                onClick={() => {
+                  clearFilter();
+                }}
+                className="bg-grey rounded-[30px] justify-center cursor-pointer flex items-center px-4 py-2 text-white"
+                style={{
+                  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+                }}
+              >
+                Clear
+              </div>
               <div
                 onClick={() => {
                   setOpenFilter(false);
