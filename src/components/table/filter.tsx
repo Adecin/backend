@@ -10,6 +10,7 @@ interface Filter {
   filter: any;
   applyFilter: any;
   clearFilter?: any;
+  isEmpty?: boolean;
 }
 
 const Filter = ({
@@ -19,9 +20,13 @@ const Filter = ({
   filter,
   applyFilter,
   clearFilter,
+  isEmpty,
 }: Filter) => {
   const [openFilter, setOpenFilter] = useState(false);
+  const [warnMessage, setMessage] = useState(false);
+
   const router = useRouter();
+
   return (
     <>
       <div className="flex items-center my-3 px-3">
@@ -74,9 +79,13 @@ const Filter = ({
         {openFilter && (
           <div className="absolute z-[99] bg-[#F4F8FF] px-3 py-5 rounded-[10px] right-[30px]  top-[70px]">
             {filter ?? ""}
+            {/* {warnMessage && (
+              <div className="flex justify-end my-[1rem] mx-[4rem] text-[18px] text-[red]">{`select any fil`}</div>
+            )} */}
             <div className="flex flex gap-x-[2rem] l w-[100px] ml-auto mr-[5rem] ">
               <div
                 onClick={() => {
+                  console.log(`clearFilter`, clearFilter);
                   clearFilter();
                 }}
                 className="bg-grey rounded-[30px] justify-center cursor-pointer flex items-center px-4 py-2 text-white"
@@ -88,9 +97,14 @@ const Filter = ({
               </div>
               <div
                 onClick={() => {
+                  console.log(`isEmpty`, isEmpty);
+                  //if (!isEmpty) {
                   setOpenFilter(false);
                   applyFilter(true);
                   applyFilter();
+                  //} else {
+                  //setMessage(true);
+                  //}
                 }}
                 className="bg-primary rounded-[30px] justify-center cursor-pointer flex items-center px-4 py-2 text-white"
                 style={{

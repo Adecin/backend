@@ -1,6 +1,8 @@
 import Checkbox from "@mui/material/Checkbox";
 import { TablePagination } from "@mui/material";
 import { useEffect, useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 // type declaration
 interface propsData {
@@ -12,6 +14,12 @@ interface propsData {
   paginateData?: any;
   clearPage?: any;
 }
+
+const Info = async (data: string) => {
+  toast.info(data, {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+};
 
 const DynamicTable = ({
   data,
@@ -30,9 +38,12 @@ const DynamicTable = ({
   const [page, setPage] = useState(0);
 
   if (!data || data.length === 0) {
+    //Info(`No Data Found`);
     return (
       <>
-        <div className="w-full">No Data Found</div>
+        <div className="w-full text-center text-[18px font-bold]">
+          No Data Found
+        </div>
       </>
     );
   }

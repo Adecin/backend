@@ -32,7 +32,6 @@ export const assignFarmer: any = createAsyncThunk(
 
       if (data.data.status) {
         console.log(`data`,data)
-        window.location.reload()
         return data;
       } else {
         return rejectWithValue(data);
