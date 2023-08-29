@@ -1,6 +1,6 @@
 import Checkbox from "@mui/material/Checkbox";
 import { TablePagination } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // type declaration
 interface propsData {
@@ -9,6 +9,8 @@ interface propsData {
   backgroundColor?: string;
   classes?: any;
   count?: any;
+  paginateData?: any;
+  clearPage?: any;
 }
 
 const DynamicTable = ({
@@ -17,8 +19,10 @@ const DynamicTable = ({
   backgroundColor,
   classes,
   count,
+  paginateData,
+  clearPage,
 }: propsData) => {
-  const [paginateData, setData] = useState({
+  const [paginateDatas, setData] = useState({
     page: 0,
     limit: 10,
   });
@@ -28,28 +32,31 @@ const DynamicTable = ({
   if (!data || data.length === 0) {
     return (
       <>
-        <div>No Data Found</div>
+        <div className="w-full">No Data Found</div>
       </>
     );
   }
-
   const keys = Object.keys(data[0]);
 
   const handleChangePage = (event: any, newPage: any) => {
-    setData({ ...paginateData, page: newPage });
+    console.log(`page change`, newPage);
+    console.log(`rowsPerPage`, rowsPerPage);
     setPage(newPage);
-
-    // props.paginateData({
-    //   page: 0,
-    //   rowsPerPage: event.target.value,
-    // });
+    paginateData({
+      page: newPage,
+      rowsPerPage: rowsPerPage,
+    });
   };
 
   const handleChangeRowsPerPage = (event: any) => {
-    setData({ ...paginateData, limit: event.target.value });
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+    paginateData({
+      page: 0,
+      rowsPerPage: event.target.value,
+    });
   };
+
   return (
     <>
       <div className="w-full p-3 mb-[50px] ">
@@ -108,11 +115,11 @@ const DynamicTable = ({
           </tbody>
         </table>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10, 25, 50, 100]}
           component="div"
           count={count}
-          rowsPerPage={paginateData.limit}
-          page={paginateData.page}
+          rowsPerPage={rowsPerPage}
+          page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
