@@ -44,11 +44,12 @@ const ListFieldOfficer = () => {
     districtId: "",
     villageId: "",
     technicianId: "",
+    regulation: [],
   });
 
   const [paginateData, setData] = useState<any>({
-    page: "",
-    limit: "10",
+    page: 0,
+    limit: 10,
   });
   const initialValues = {
     status: "",
@@ -62,12 +63,15 @@ const ListFieldOfficer = () => {
     setFarmerFilter({ ...farmerFilter });
   };
 
-  const query = `?limit=${paginateData.limit}&status=${farmerFilter.status}&districtId=${farmerFilter.districtId}&villageId=${farmerFilter.villageId}&technicianId=${farmerFilter.technicianId}`;
+  const handleClearFilter = (name: any, value: any) => {
+    setFarmerFilter(initialValues);
+  };
+
+  const query = `?page=${paginateData.page}&limit=${paginateData.limit}&status=${farmerFilter.status}&districtId=${farmerFilter.districtId}&villageId=${farmerFilter.villageId}&technicianId=${farmerFilter.technicianId}`;
 
   const applyFetchFilter = () => {
     dispatch(listFarmers(query));
     setCheckData([]);
-    setFarmerFilter(initialValues);
   };
 
   useEffect(() => {
@@ -130,13 +134,17 @@ const ListFieldOfficer = () => {
                 : `#F8B34C`;
             return (
               <div key={index} className="flex my-[10px] items-center">
-                <div
-                  style={{
-                    background: statusColor,
-                  }}
-                  className={`w-[15px] mr-3 h-[15px] bg-[${statusColor}]`}
-                />
-                {item.name}
+                <div>
+                  <abbr style={{ textDecoration: "none" }} title={item.status}>
+                    <div
+                      style={{
+                        background: statusColor,
+                      }}
+                      className={`w-[15px] mr-3 h-[15px] bg-[${statusColor}]`}
+                    />
+                  </abbr>
+                </div>
+                <div>{item.name}</div>
               </div>
             );
           })}
@@ -267,12 +275,14 @@ const ListFieldOfficer = () => {
               onSearch={(e: string) => {
                 setSearchValue(e);
               }}
+              clearFilter={(e: any) => {
+                //handleClearFilter();
+              }}
               filter={
                 <div>
                   <FieldOfficerFilter
                     values={farmerFilter}
                     selectFilter={handleSelectFilter}
-                    //applyFilter={}
                   />
                 </div>
               }
@@ -371,6 +381,7 @@ const ListFieldOfficer = () => {
                 page: e.page,
                 limit: e.rowsPerPage,
               });
+              console.log(`limit`, paginateData.limit);
             }}
           />
         </div>
@@ -792,8 +803,8 @@ const FieldOfficerFilter = (props: any) => {
             <label className="font-semibold"> Approved Status</label>
             <Checkbox
               onChange={(e: any) => {
-                //console.log(`e.target.value`, e.target.value);
-                //selectFilter(`status`, `Pending`);
+                console.log(`e.target.value`, e.target.value);
+                selectFilter(`status`, `Pending`);
               }}
             />
           </div>

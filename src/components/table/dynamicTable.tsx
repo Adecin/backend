@@ -1,6 +1,6 @@
 import Checkbox from "@mui/material/Checkbox";
 import { TablePagination } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // type declaration
 interface propsData {
@@ -10,6 +10,7 @@ interface propsData {
   classes?: any;
   count?: any;
   paginateData?: any;
+  clearPage?: any;
 }
 
 const DynamicTable = ({
@@ -19,6 +20,7 @@ const DynamicTable = ({
   classes,
   count,
   paginateData,
+  clearPage,
 }: propsData) => {
   // const [paginateData, setData] = useState({
   //   page: 0,
@@ -30,15 +32,17 @@ const DynamicTable = ({
   if (!data || data.length === 0) {
     return (
       <>
-        <div>No Data Found</div>
+        <div className="w-full">No Data Found</div>
       </>
     );
   }
+  console.log(`paginateData`, paginateData);
 
   const keys = Object.keys(data[0]);
 
   const handleChangePage = (event: any, newPage: any) => {
     console.log(`page change`, newPage);
+    console.log(`rowsPerPage`, rowsPerPage);
     setPage(newPage);
     paginateData({
       page: newPage,
@@ -46,10 +50,17 @@ const DynamicTable = ({
     });
   };
 
+  // useEffect(() => {
+  //   if (clearPage) {
+  //     setPage(clearPage.page);
+  //     setRowsPerPage(clearPage.limit);
+  //   }
+  // }, [clearPage]);
+
   const handleChangeRowsPerPage = (event: any) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-
+    console.log(`limit qwr`, event.target.value);
     paginateData({
       page: 0,
       rowsPerPage: event.target.value,

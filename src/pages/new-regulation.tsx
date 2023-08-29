@@ -93,7 +93,6 @@ const CreateSurvey = () => {
 
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
-      console.log(values);
       dispatch(addNewRegulation(values));
     },
   });
@@ -108,8 +107,6 @@ const CreateSurvey = () => {
     resetForm,
     errors,
   } = formik;
-
-  console.log(`values`, values);
 
   return (
     <>
