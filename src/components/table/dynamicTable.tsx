@@ -22,10 +22,10 @@ const DynamicTable = ({
   paginateData,
   clearPage,
 }: propsData) => {
-  // const [paginateData, setData] = useState({
-  //   page: 0,
-  //   limit: 10,
-  // });
+  const [paginateDatas, setData] = useState({
+    page: 0,
+    limit: 10,
+  });
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
 
@@ -36,8 +36,6 @@ const DynamicTable = ({
       </>
     );
   }
-  console.log(`paginateData`, paginateData);
-
   const keys = Object.keys(data[0]);
 
   const handleChangePage = (event: any, newPage: any) => {
@@ -50,17 +48,9 @@ const DynamicTable = ({
     });
   };
 
-  // useEffect(() => {
-  //   if (clearPage) {
-  //     setPage(clearPage.page);
-  //     setRowsPerPage(clearPage.limit);
-  //   }
-  // }, [clearPage]);
-
   const handleChangeRowsPerPage = (event: any) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-    console.log(`limit qwr`, event.target.value);
     paginateData({
       page: 0,
       rowsPerPage: event.target.value,
@@ -128,8 +118,8 @@ const DynamicTable = ({
           rowsPerPageOptions={[10, 25, 50, 100]}
           component="div"
           count={count}
-          rowsPerPage={paginateData?.limit}
-          page={paginateData?.page}
+          rowsPerPage={rowsPerPage}
+          page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
