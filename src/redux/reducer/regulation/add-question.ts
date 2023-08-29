@@ -2,12 +2,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // utils
 import { axios } from "@/redux/api";
 
-// api call
-export const listAllPillar: any = createAsyncThunk(
-  "listAllPillar/ListAllPillar",
+// api c
+export const addQuestion: any = createAsyncThunk(
+  "addQuestion/addQuestion",
   async (value: any, { rejectWithValue }) => {
     try {
-      const data: any = await axios.get(`/api/survey/Pillar` + (value ?? ""), {
+      const data: any = await axios.post(`/api/survey/question`, value, {
         withCredentials: true,
       });
 
@@ -24,27 +24,32 @@ export const listAllPillar: any = createAsyncThunk(
 
 // state
 
-const ListAllPillar: any = createSlice({
-  name: "ListAllPillar",
+const AddQuestion: any = createSlice({
+  name: "addQuestion",
   initialState: {
     isLoading: false,
     isSuccess: false,
     isError: false,
     response: {},
+    Message: "",
   },
-  reducers: {},
+  reducers: {
+    add_question_is_success: (state, payload) => {
+      state.isSuccess = false;
+    },
+  },
   extraReducers: (builder: any) => {
-    builder.addCase(listAllPillar.pending, (state: any, { payload }: any) => {
+    builder.addCase(addQuestion.pending, (state: any, { payload }: any) => {
       state.isLoading = true;
     });
-    builder.addCase(listAllPillar.fulfilled, (state: any, { payload }: any) => {
+    builder.addCase(addQuestion.fulfilled, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.response = payload.data?.data;
       state.Message = payload.data.message;
       state.isSuccess = true;
     });
 
-    builder.addCase(listAllPillar.rejected, (state: any, { payload }: any) => {
+    builder.addCase(addQuestion.rejected, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = true;
@@ -54,4 +59,5 @@ const ListAllPillar: any = createSlice({
 });
 
 // Reducer
-export default ListAllPillar.reducer;
+export default AddQuestion.reducer;
+export const { add_question_is_success } = AddQuestion.actions;

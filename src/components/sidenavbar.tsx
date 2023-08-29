@@ -133,6 +133,8 @@ export default function Sidebar() {
             {regulationList.isSuccess &&
               regulationList.response.map((e: any, index: number) => {
                 const url = "/regulation/" + e.id;
+
+                console.log(url, pathname);
                 return (
                   <>
                     {e.name == "border" ? (
@@ -154,22 +156,12 @@ export default function Sidebar() {
                             }
                           }}
                           className={`flex xl:px-5 px-2 items-center cursor-pointer  my-2 w-[100%]  ${
-                            !e.children
-                              ? pathname === url
-                                ? "bg-primary"
-                                : ""
-                              : getUrl?.[2] === url.split("/")[2]
-                              ? "bg-primary"
-                              : ""
+                            pathname === url ? "bg-primary" : ""
                           }  ${
                             !isExpand
                               ? "justify-center xl:py-3 "
                               : "pl-6 xl:py-3 py-2"
-                          } ${
-                            pathname?.split("/")[1] == url.split("/")[1]
-                              ? "bg-secondary"
-                              : ""
-                          }`}
+                          } ${pathname == url ? "bg-secondary" : ""}`}
                         >
                           <div className="w-[20px]">{e.icon ?? ""}</div>
                           {isExpand ? (

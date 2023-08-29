@@ -3,13 +3,16 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { axios } from "@/redux/api";
 
 // api call
-export const listAllPillar: any = createAsyncThunk(
-  "listAllPillar/ListAllPillar",
+export const deleteQuestion: any = createAsyncThunk(
+  "deleteQuestion/deleteQuestion",
   async (value: any, { rejectWithValue }) => {
     try {
-      const data: any = await axios.get(`/api/survey/Pillar` + (value ?? ""), {
-        withCredentials: true,
-      });
+      const data: any = await axios.delete(
+        `/api/survey/question` + (value ?? ""),
+        {
+          withCredentials: true,
+        }
+      );
 
       if (data.data.status) {
         return data;
@@ -24,8 +27,8 @@ export const listAllPillar: any = createAsyncThunk(
 
 // state
 
-const ListAllPillar: any = createSlice({
-  name: "ListAllPillar",
+const DeleteQuestion: any = createSlice({
+  name: "deleteQuestion",
   initialState: {
     isLoading: false,
     isSuccess: false,
@@ -34,17 +37,20 @@ const ListAllPillar: any = createSlice({
   },
   reducers: {},
   extraReducers: (builder: any) => {
-    builder.addCase(listAllPillar.pending, (state: any, { payload }: any) => {
+    builder.addCase(deleteQuestion.pending, (state: any, { payload }: any) => {
       state.isLoading = true;
     });
-    builder.addCase(listAllPillar.fulfilled, (state: any, { payload }: any) => {
-      state.isLoading = false;
-      state.response = payload.data?.data;
-      state.Message = payload.data.message;
-      state.isSuccess = true;
-    });
+    builder.addCase(
+      deleteQuestion.fulfilled,
+      (state: any, { payload }: any) => {
+        state.isLoading = false;
+        state.response = payload.data?.data;
+        state.Message = payload.data.message;
+        state.isSuccess = true;
+      }
+    );
 
-    builder.addCase(listAllPillar.rejected, (state: any, { payload }: any) => {
+    builder.addCase(deleteQuestion.rejected, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = true;
@@ -54,4 +60,4 @@ const ListAllPillar: any = createSlice({
 });
 
 // Reducer
-export default ListAllPillar.reducer;
+export default DeleteQuestion.reducer;

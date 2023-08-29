@@ -5,11 +5,12 @@ import LabelText from "@/components/labelText";
 import BreadCrumb from "@/components/table/bread-crumb";
 import { Tabs, Tab, styled, Box } from "@mui/material";
 import React, { useEffect } from "react";
-import QuestionaireComp from "@/components/questionaireTab";
+import QuestionaireComp from "@/components/regulation/questionaireTab";
 import TabPanel from "@mui/lab/TabPanel/TabPanel";
 import { useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { listRegulationOne } from "@/redux/reducer/regulation/list-one-regulation";
+import { listAllPillar } from "@/redux/reducer/regulation/list-pillar";
 
 const StyledTab = styled((props: any) => <Tab {...props} />)(({ theme }) => ({
   fontWeight: 500,
@@ -31,7 +32,7 @@ interface TabPanelProps {
 }
 
 function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, ...other }: any = props;
 
   return (
     <div
@@ -52,26 +53,18 @@ export default function StpQuestionary() {
   const params = useSearchParams();
   const regulationId: any = params?.get("id");
   const RegulationData = useSelector((state: any) => state.ListRegulationOne);
+  const PillarData = useSelector((state: any) => state.ListAllPillar);
 
   // useEffect
   useEffect(() => {
     dispatch(listRegulationOne(regulationId));
+    dispatch(listAllPillar("?regulationId=" + regulationId));
   }, [regulationId]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const questionaireHeaders = [
-    { name: "Nursery", id: "" },
-    { name: "Mainfield", id: "" },
-    { name: "Nutrient management", id: "" },
-    { name: "Soil", id: "" },
-    { name: "Bio diversity", id: "" },
-    { name: "CPA Safety", id: "" },
-    { name: "Curing", id: "" },
-    { name: "NTRM Bale search", id: "" },
-  ];
   const STPTabs = [
     {
       name: "Nursery",
@@ -201,23 +194,30 @@ export default function StpQuestionary() {
           allowScrollButtonsMobile
           aria-label="scrollable force tabs example"
         >
-          {questionaireHeaders.map((tabItem: any) => {
+          {Array.isArray(PillarData.response) &&
+            PillarData.response?.map((tabItem: any) => {
+              return (
+                <StyledTab
+                  key={tabItem.id}
+                  label={tabItem.name}
+                  className="mx-5 px-5"
+                />
+              );
+            })}
+        </Tabs>
+
+        {Array.isArray(PillarData.response) &&
+          PillarData.response?.map((item: any, index: any) => {
             return (
-              <StyledTab
-                key={tabItem.id}
-                label={tabItem.name}
-                className="mx-5 px-5"
-              />
+              <CustomTabPanel key={index} value={value} index={index}>
+                <QuestionaireComp
+                  pillarId={item.id}
+                  regulationId={regulationId}
+                  data={item?.questData}
+                />
+              </CustomTabPanel>
             );
           })}
-        </Tabs>
-        {STPTabs.map((item: any, index: any) => {
-          return (
-            <CustomTabPanel key={index} value={value} index={index}>
-              <QuestionaireComp data={item?.questData} />
-            </CustomTabPanel>
-          );
-        })}
       </div>
     </div>
   );

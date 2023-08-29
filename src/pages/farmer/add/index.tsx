@@ -693,7 +693,7 @@ const AddFarmer = () => {
             <>
               <div>
                 <div className="my-4">
-                  <HeaderText text={`Family Info`} />
+                  <HeaderText text={`Farm Details`} />
                 </div>
                 {farmData.response.data?.map((e: any, index: number) => {
                   return (
