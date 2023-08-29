@@ -74,6 +74,10 @@ const ListFieldOfficer = () => {
     dispatch(listFieldOfficer(""));
   }, []);
 
+  useEffect(() => {
+    dispatch(listFieldOfficer(query));
+  }, [paginateData]);
+
   const filterData = ListFieldOfficer.response.data?.map(
     (e: any, index: number) => {
       return {
