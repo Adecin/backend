@@ -714,12 +714,17 @@ export default function OfficerProfileEdit(props: any) {
                   placeHolderText={"Select"}
                 />
                 <SelectMenu
-                  name="districtIds"
+                  name="districtFilter"
                   labelname="District"
                   placeHolderText="Select district"
                   data={districtDropDown ?? []}
-                  value={values}
-                  handleChange={handleChange}
+                  value={filterData}
+                  handleChange={(e: any) => {
+                    setFilterData({
+                      ...filterData,
+                      districtFilter: e.target.value,
+                    });
+                  }}
                   onblur={handleBlur}
                   touched={touched}
                   required={true}
@@ -736,7 +741,6 @@ export default function OfficerProfileEdit(props: any) {
                       ...filterData,
                       villageFillter: e.target.value,
                     });
-                    console.log(e.target.value);
                   }}
                   onblur={handleBlur}
                   touched={touched}

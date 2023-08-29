@@ -1,6 +1,6 @@
 "use client";
 
-import React, { lazy, Suspense, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import { Metadata } from "next";
 import BreadCrumb from "@/components/table/bread-crumb";
@@ -23,12 +23,34 @@ import styled from "@emotion/styled";
 import DoNotDisturbOnIcon from "@mui/icons-material/DoNotDisturbOn";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CustomButton from "@/components/customButton";
+import { getCrop } from "@/redux/reducer/crop/get-all-crop";
+import { useDispatch, useSelector } from "react-redux";
+import { listAllRegulation } from "@/redux/reducer/regulation/listAllRegulation";
 
 const CreateSurvey = () => {
-  const [searchValue, setSearchValue] = useState("");
   const [allSelect, setSelect] = useState(false);
-  const [manageOpen, setManageOpen] = useState(false);
+
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const CropResponse = useSelector((state: any) => state.ListCrop.response);
+  const CropList = CropResponse.data;
+
+  const RegulationData = useSelector(
+    (state: any) => state.ListAllRegulation.response
+  );
+
+  const fcvData = CropList?.filter((item: any) => {
+    if (item.cropType == `FCV`) {
+      return item;
+    }
+  });
+
+  const nonFcvData = CropList?.filter((item: any) => {
+    if (item.cropType == `NONFCV`) {
+      return item;
+    }
+  });
 
   const SeperaterText = styled.p`
     font-size: 16px;
@@ -53,25 +75,32 @@ const CreateSurvey = () => {
     }
   `;
 
-  const blueText = {
-    fontSize: "14px",
-    fontWeight: 400,
-    lineHeight: "16px",
-    letterSpacing: "0.05em",
-  };
-
   const SignInSchema = Yup.object().shape({
-    email: Yup.string()
-      .required("Please enter a valid email address.")
-      .email("Email is invalid"),
+    name: Yup.string()
+      .matches(/^[aA-zZ]+$/, "Must be only alphabets")
+      .required("Survey name is required"),
+    description: Yup.string()
+      .required("Survey description is required")
+      .matches(/^[aA-zZ0-9]+$/, "Please enter a valid description"),
+    startDate: Yup.string().required("StartDate is required"),
+    endDate: Yup.string().required("EndDate is required"),
+    cropIds: Yup.array().required(),
+    regulationIds: Yup.array().required(),
   });
 
   const formik = useFormik({
     initialValues: {
-      email: "",
+      name: "",
+      description: "",
+      startDate: "",
+      endDate: "",
+      cropIds: [],
+      regulationIds: [],
     },
     validationSchema: SignInSchema,
-    onSubmit: (values: any) => {},
+    onSubmit: (values: any) => {
+      console.log(values);
+    },
   });
 
   const {
@@ -84,6 +113,19 @@ const CreateSurvey = () => {
     resetForm,
     errors,
   } = formik;
+
+  useEffect(() => {
+    dispatch(getCrop());
+    dispatch(listAllRegulation());
+  }, []);
+
+  const handleAddRegulation = (selected: any) => {
+    values.regulationIds.push(selected);
+  };
+
+  const handleAddCrop = (selected: any) => {
+    values.cropIds.push(selected);
+  };
 
   return (
     <>
@@ -98,13 +140,13 @@ const CreateSurvey = () => {
                 classes={` py-0 pt-2`}
                 required
                 label={"Survey name"}
-                name="email"
+                name="name"
                 value={values}
                 onblur={handleBlur}
                 touched={touched}
                 handleChange={handleChange}
                 error={errors}
-                placeholder=""
+                placeholder="Type regulation name here"
                 customStyle={{
                   background: "#F7F7F7",
                 }}
@@ -122,7 +164,7 @@ const CreateSurvey = () => {
                 }}
                 required
                 label={"Survey description"}
-                name="email"
+                name="description"
                 value={values}
                 onblur={handleBlur}
                 touched={touched}
@@ -141,23 +183,25 @@ const CreateSurvey = () => {
               <div className="w-full">
                 <TextInput
                   label={""}
-                  name="joiningDate"
+                  name="startDate"
                   type="date"
                   value={values}
-                  handleChange={(e: any) => {
-                    console.log(e.target.value);
-                  }}
+                  onblur={handleBlur}
+                  handleChange={handleChange}
+                  touched={touched}
+                  error={errors}
                 />
               </div>
               <div className="w-full">
                 <TextInput
                   label={""}
-                  name="relievingDate"
+                  name="endDate"
                   type="date"
                   value={values}
-                  handleChange={(e: any) => {
-                    console.log(e.target.value);
-                  }}
+                  onblur={handleBlur}
+                  handleChange={handleChange}
+                  touched={touched}
+                  error={errors}
                 />
               </div>
             </div>
@@ -167,7 +211,7 @@ const CreateSurvey = () => {
             style={{
               borderBottom: "2px solid #D9D9D9",
             }}
-            className="flex justify-start gap-x-16 "
+            className="flex justify-start items-center gap-x-16 "
           >
             <div
               className=" bg-grey w-[376px] flex flex-col my-[2rem] p-[1rem] relative"
@@ -187,8 +231,10 @@ const CreateSurvey = () => {
                 }}
                 labelname={"Regulation 1"}
                 name={""}
-                data={[]}
-                handleChange={undefined}
+                data={RegulationData ?? []}
+                handleChange={(e: any) => {
+                  handleAddRegulation(e.target.value);
+                }}
                 value={values}
                 placeHolderText={"Crop Type"}
               />
@@ -199,7 +245,8 @@ const CreateSurvey = () => {
               startIcon={<AddCircleIcon className="text-primary" />}
               customStyle={{
                 background: "none",
-                padding: "1rem 3rem",
+                height: "3rem",
+                padding: "1rem",
                 color: "#3D7FFA",
               }}
               handleOnClick={() => {
@@ -213,7 +260,7 @@ const CreateSurvey = () => {
               borderBottom: "2px solid #D9D9D9",
             }}
           >
-            <div className="flex justify-start gap-x-16 my-[2rem]">
+            <div className="flex justify-start items-center gap-x-16 my-[2rem]">
               <div
                 className=" bg-grey w-[406px] flex flex-col mt-[1rem] px-[1rem] py-[1rem] relative"
                 style={{
@@ -232,8 +279,10 @@ const CreateSurvey = () => {
                   }}
                   labelname={"FCV"}
                   name={""}
-                  data={[]}
-                  handleChange={undefined}
+                  data={fcvData ?? []}
+                  handleChange={(e: any) => {
+                    handleAddCrop(e.target.value);
+                  }}
                   value={values}
                   placeHolderText={"Burley"}
                 />
@@ -244,7 +293,8 @@ const CreateSurvey = () => {
                 startIcon={<AddCircleIcon className="text-primary" />}
                 customStyle={{
                   background: "none",
-                  padding: "1rem 3rem",
+                  height: "3rem",
+                  padding: "1rem",
                   color: "#3D7FFA",
                 }}
                 handleOnClick={() => {
@@ -252,7 +302,7 @@ const CreateSurvey = () => {
                 }}
               />
             </div>
-            <div className="flex justify-start gap-x-16 my-[2rem]">
+            <div className="flex justify-start items-center gap-x-16 my-[2rem]">
               <div
                 className=" bg-grey w-[406px] flex flex-col my-[1rem] px-[1rem] py-[1rem] relative"
                 style={{
@@ -271,8 +321,10 @@ const CreateSurvey = () => {
                   }}
                   labelname={"Non-FCV"}
                   name={""}
-                  data={[]}
-                  handleChange={undefined}
+                  data={nonFcvData ?? []}
+                  handleChange={(e: any) => {
+                    handleAddCrop(e.target.value);
+                  }}
                   value={values}
                   placeHolderText={"STP 2.0"}
                 />
@@ -283,7 +335,8 @@ const CreateSurvey = () => {
                 startIcon={<AddCircleIcon className="text-primary" />}
                 customStyle={{
                   background: "none",
-                  padding: "1rem 3rem",
+                  height: "3rem",
+                  padding: "1rem",
                   color: "#3D7FFA",
                 }}
                 handleOnClick={() => {

@@ -60,7 +60,6 @@ const AssignFarmerListData: any = createSlice({
       Village.response = payload.data?.data;
       Village.Message = payload.data.message;
       Village.isSuccess = true;
-      SUCCESS(payload?.data?.message);
     });
 
     builder.addCase(assignFarmerList.rejected, (Village: any, { payload }: any) => {
@@ -68,7 +67,6 @@ const AssignFarmerListData: any = createSlice({
       Village.isSuccess = false;
       Village.isError = true;
       Village.Message = payload.data ? payload.data.message : payload.message;
-      FAILED(Village.Message);
     });
   },
 });
