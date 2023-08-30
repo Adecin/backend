@@ -21,11 +21,14 @@ const BreadCrumb = ({
     filterPath.push(lastName);
   }
 
+  console.log(`filterPath`, filterPath);
+
   return (
     <>
       <div className="py-5 px-4 bg-white">
         <div className="flex items-center">
           {filterPath?.map((breadCrumb: any, index: number) => {
+            console.log(`breadCrumb`, breadCrumb);
             return (
               <>
                 <div
@@ -37,17 +40,19 @@ const BreadCrumb = ({
                     router.push(getRoutingPath);
                   }}
                   className={
-                    `text-[18px] text-red cursor-pointer capitalize font-semibold hover:underline hover:text-[#3D7FFA]` +
+                    `text-[18px] text-red cursor-pointer capitalize font-semibold hover:underline ` +
                     classes
                   }
                 >
-                  {breadCrumb.split("-").join(" ")}
+                  <span className={`hover:text-[#3D7FFA]`}>
+                    {breadCrumb.split("-").join(" ")}
+                  </span>
                 </div>
-                <div className={`text-[18px] text-text`}>
+                <div className={`text-[18px] text-text hover:text-[#3D7FFA]`}>
                   {pathName.length - 1 === index || index === 0 ? (
                     ""
                   ) : (
-                    <span>
+                    <span className="hover:text-[#3D7FFA]">
                       <span>&nbsp;</span> {">"} <span>&nbsp;</span>{" "}
                     </span>
                   )}

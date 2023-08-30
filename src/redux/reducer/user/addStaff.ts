@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // utils
 import { axios } from "@/redux/api";
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 //toast messages
 const FAILED = async (data: string) => {
@@ -18,16 +18,13 @@ const SUCCESS = async (data: string) => {
 };
 
 // api call
-export const deleteQuestion: any = createAsyncThunk(
-  "deleteQuestion/deleteQuestion",
+export const addUserStaff: any = createAsyncThunk(
+  "addUserStaff/add",
   async (value: any, { rejectWithValue }) => {
     try {
-      const data: any = await axios.delete(
-        `/api/survey/question` + (value ?? ""),
-        {
-          withCredentials: true,
-        }
-      );
+      const data: any = await axios.post(`/api/user/create`, value, {
+        withCredentials: true,
+      });
 
       if (data.data.status) {
         return data;
@@ -42,8 +39,8 @@ export const deleteQuestion: any = createAsyncThunk(
 
 // state
 
-const DeleteQuestion: any = createSlice({
-  name: "deleteQuestion",
+const AddUserState: any = createSlice({
+  name: "AddUserState",
   initialState: {
     isLoading: false,
     isSuccess: false,
@@ -52,21 +49,18 @@ const DeleteQuestion: any = createSlice({
   },
   reducers: {},
   extraReducers: (builder: any) => {
-    builder.addCase(deleteQuestion.pending, (state: any, { payload }: any) => {
+    builder.addCase(addUserStaff.pending, (state: any, { payload }: any) => {
       state.isLoading = true;
     });
-    builder.addCase(
-      deleteQuestion.fulfilled,
-      (state: any, { payload }: any) => {
-        state.isLoading = false;
-        state.response = payload.data?.data;
-        state.Message = payload.data.message;
-        state.isSuccess = true;
-        SUCCESS(payload.data.message);
-      }
-    );
+    builder.addCase(addUserStaff.fulfilled, (state: any, { payload }: any) => {
+      state.isLoading = false;
+      state.response = payload.data?.data;
+      state.Message = payload.data.message;
+      state.isSuccess = true;
+      SUCCESS(payload.data.message);
+    });
 
-    builder.addCase(deleteQuestion.rejected, (state: any, { payload }: any) => {
+    builder.addCase(addUserStaff.rejected, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = true;
@@ -77,4 +71,4 @@ const DeleteQuestion: any = createSlice({
 });
 
 // Reducer
-export default DeleteQuestion.reducer;
+export default AddUserState.reducer;

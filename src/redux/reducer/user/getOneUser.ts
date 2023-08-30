@@ -2,28 +2,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // utils
 import { axios } from "@/redux/api";
 
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
-
-//toast messages
-const FAILED = async (data: string) => {
-  toast.error(data, {
-    position: toast.POSITION.TOP_RIGHT,
-  });
-};
-
-const SUCCESS = async (data: string) => {
-  toast.success(data, {
-    position: toast.POSITION.TOP_RIGHT,
-  });
-};
-
 // api call
-export const listAllPillar: any = createAsyncThunk(
-  "listAllPillar/ListAllPillar",
+export const oneUserInfo: any = createAsyncThunk(
+  "oneUserInfo/oneUser",
   async (value: any, { rejectWithValue }) => {
     try {
-      const data: any = await axios.get(`/api/survey/Pillar` + (value ?? ""), {
+      console.log('rediux', value);
+      const data: any = await axios.get(`/api/user/list/` + value, {
         withCredentials: true,
       });
 
@@ -40,8 +25,8 @@ export const listAllPillar: any = createAsyncThunk(
 
 // state
 
-const ListAllPillar: any = createSlice({
-  name: "ListAllPillar",
+const OneUserState: any = createSlice({
+  name: "OneUserState",
   initialState: {
     isLoading: false,
     isSuccess: false,
@@ -50,25 +35,24 @@ const ListAllPillar: any = createSlice({
   },
   reducers: {},
   extraReducers: (builder: any) => {
-    builder.addCase(listAllPillar.pending, (state: any, { payload }: any) => {
+    builder.addCase(oneUserInfo.pending, (state: any, { payload }: any) => {
       state.isLoading = true;
     });
-    builder.addCase(listAllPillar.fulfilled, (state: any, { payload }: any) => {
+    builder.addCase(oneUserInfo.fulfilled, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.response = payload.data?.data;
       state.Message = payload.data.message;
       state.isSuccess = true;
     });
 
-    builder.addCase(listAllPillar.rejected, (state: any, { payload }: any) => {
+    builder.addCase(oneUserInfo.rejected, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = true;
       state.Message = payload.data ? payload.data.message : payload.message;
-      //   FAILED(state.Message);
     });
   },
 });
 
 // Reducer
-export default ListAllPillar.reducer;
+export default OneUserState.reducer;

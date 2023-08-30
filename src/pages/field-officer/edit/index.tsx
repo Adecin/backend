@@ -588,6 +588,10 @@ export default function OfficerProfileEdit(props: any) {
                       placeHolderText="Select Male"
                       data={[
                         {
+                          name: "0",
+                          id: "0",
+                        },
+                        {
                           name: "1",
                           id: "1",
                         },
@@ -615,6 +619,10 @@ export default function OfficerProfileEdit(props: any) {
                       labelname="Female"
                       placeHolderText="Select Female"
                       data={[
+                        {
+                          name: "0",
+                          id: "0",
+                        },
                         {
                           name: "1",
                           id: "1",

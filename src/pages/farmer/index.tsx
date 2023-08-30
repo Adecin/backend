@@ -23,7 +23,14 @@ import { approveFarmer } from "@/redux/reducer/farmer/approve-farmer";
 import { updateAssignFarmer } from "@/redux/reducer/fieldOfficer/updateAssignFarmer";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from "@/redux/reducer/dropdown/get-village";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
+const Info = async (data: string) => {
+  toast.info(data, {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+};
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
 const ListFieldOfficer = () => {
@@ -31,6 +38,7 @@ const ListFieldOfficer = () => {
   const [allSelect, setSelect] = useState(false);
   const [manageOpen, setManageOpen] = useState(false);
   const [checkedData, setCheckData] = useState<any>([]);
+  const [counter, setCounter] = useState(0);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -89,18 +97,20 @@ const ListFieldOfficer = () => {
   useEffect(() => {
     dispatch(listFarmers(query));
     setCheckData([]);
-  }, [paginateData]);
+    console.log(`filterData 1`, ListFarmer.response.data);
+  }, [paginateData, ApproveResponse]);
 
   useEffect(() => {
-    dispatch(listFarmers(""));
-    setCheckData([]);
-  }, [ApproveResponse]);
+    if (counter == 2) {
+      console.log(`filterData 11`, ListFarmer.response.data);
+      if (!ListFarmer.response.data || ListFarmer.response.data.length === 0) {
+        console.log(`filterData in`, ListFarmer.response.data);
 
-  // useEffect
-
-  useEffect(() => {
-    dispatch(listFarmers(""));
-  }, []);
+        Info(`No Data Found`);
+      }
+    }
+    setCounter(counter + 1);
+  }, [ListFarmer.response.data]);
 
   const filterData = ListFarmer.response.data?.map((e: any, index: number) => {
     return {

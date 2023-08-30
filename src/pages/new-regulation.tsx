@@ -56,29 +56,18 @@ const CreateSurvey = () => {
     }
   `;
 
-  //   const [pillars, setPillars] = useState([
-  //     {
-  //       name: "",
-  //       description: "",
-  //     },
-  //   ]);
-
-  //   const handleAddPillars = () => {
-  //     setPillars([...pillars, { name: "", description: "" }]);
-  //   };
-
   const AddCropState = useSelector((state: any) => state.AddCrop);
 
   const SignInSchema = Yup.object().shape({
     name: Yup.string()
       .required("Regulation name is required")
-      .matches(/^[aA-zZ0-9]+$/, "Please enter a valid regulation name"),
+      .matches(/^[aA-zZ0-9\s]+$/, "Please enter a valid regulation name"),
     description: Yup.string().required("Description is required"),
     pillars: Yup.array().of(
       Yup.object().shape({
         name: Yup.string()
           .required("Category name is required")
-          .matches(/^[aA-zZ0-9]+$/, "Please enter a valid category name"),
+          .matches(/^[aA-zZ0-9\s]+$/, "Please enter a valid category name"),
         description: Yup.string().required("Description is required"),
       })
     ),

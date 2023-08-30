@@ -305,7 +305,7 @@ const Questing = ({ item, index, pillarId, regulationId }: any) => {
         </div>
 
         {/* button */}
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col gap-[10px] justify-center">
           <CustomButton
             classes={` w-[107px] rounded-[30px]`}
             buttonName={is_edit ? `Save` : `Edit`}
@@ -323,7 +323,7 @@ const Questing = ({ item, index, pillarId, regulationId }: any) => {
             }}
           />
           <CustomButton
-            classes={` bg-[#BEBEBE] w-[107px] mt-5 rounded-[30px]`}
+            classes={` bg-[#BEBEBE] w-[107px]  rounded-[30px]`}
             customStyle={{
               background: "#BEBEBE",
               borderRadius: "30px",
@@ -513,7 +513,7 @@ const AddQuesting = ({ length, pillarId, regulationId, onClose }: any) => {
         </div>
 
         {/* button */}
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col gap-[10px] justify-center">
           <CustomButton
             classes={` w-[107px] rounded-[30px]`}
             buttonName={`Save`}
@@ -527,7 +527,7 @@ const AddQuesting = ({ length, pillarId, regulationId, onClose }: any) => {
             }}
           />
           <CustomButton
-            classes={` bg-[#BEBEBE] w-[107px] mt-5 rounded-[30px]`}
+            classes={` bg-[#BEBEBE] w-[107px]  rounded-[30px]`}
             customStyle={{
               background: "#BEBEBE",
               borderRadius: "30px",

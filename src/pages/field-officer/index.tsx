@@ -14,12 +14,20 @@ import { listFieldOfficer } from "@/redux/reducer/fieldOfficer/getList";
 import { useDispatch, useSelector } from "react-redux";
 import { getVillage } from "@/redux/reducer/dropdown/get-village";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
+const Info = async (data: string) => {
+  toast.info(data, {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+};
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
 const ListFieldOfficer = () => {
   const [searchValue, setSearchValue] = useState("");
   const [filterEmpty, setfilterEmpty] = useState(false);
+  const [counter, setCounter] = useState(0);
 
   const router = useRouter();
 
@@ -71,12 +79,23 @@ const ListFieldOfficer = () => {
   // const ListOfficerData = ListFieldOfficer.response.data
 
   useEffect(() => {
-    dispatch(listFieldOfficer(""));
-  }, []);
-
-  useEffect(() => {
     dispatch(listFieldOfficer(query));
   }, [paginateData]);
+
+  useEffect(() => {
+    if (counter == 2) {
+      console.log(`filterData 11`, ListFieldOfficer.response.data);
+      if (
+        !ListFieldOfficer.response.data ||
+        ListFieldOfficer.response.data.length === 0
+      ) {
+        console.log(`filterData in`, ListFieldOfficer.response.data);
+
+        Info(`No Data Found`);
+      }
+    }
+    setCounter(counter + 1);
+  }, [ListFieldOfficer.response.data]);
 
   const filterData = ListFieldOfficer.response.data?.map(
     (e: any, index: number) => {

@@ -22,13 +22,12 @@ export default function Sidebar() {
 
   // datas
   const regulationList = useSelector((state: any) => state.ListAllRegulation);
+  const AddNewRegulation = useSelector((state: any) => state.AddNewRegulation);
 
   // useEffect
   useEffect(() => {
     dispatch(listAllRegulation());
-  }, []);
-
-  console.log(regulationList);
+  }, [AddNewRegulation]);
 
   return (
     <>

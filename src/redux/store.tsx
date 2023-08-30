@@ -42,9 +42,15 @@ import listQuestion from "./reducer/regulation/list-question";
 import UpdateQuestion from "./reducer/regulation/update-question";
 import AddQuestion from "./reducer/regulation/add-question";
 import DeleteQuestion from "./reducer/regulation/delete-question";
+import EditRegulation from "./reducer/regulation/edit-regulation";
 
 //survey
 import AddNewSurvey from "./reducer/survey/add-survey";
+
+//user
+import AddUserState from "./reducer/user/addStaff";
+import UpdateUserState from "./reducer/user/updateUser";
+import OneUserState from "./reducer/user/getOneUser";
 
 export const store = configureStore({
   reducer: {
@@ -79,6 +85,7 @@ export const store = configureStore({
     updateAssignFarmerData: updateAssignFarmerData,
     //regulation
     AddNewRegulation: AddNewRegulation,
+    EditRegulation: EditRegulation,
     ListAllRegulation: ListAllRegulation,
     ListRegulationOne: ListRegulationOne,
     ListAllPillar: ListAllPillar,
@@ -88,6 +95,10 @@ export const store = configureStore({
     DeleteQuestion: DeleteQuestion,
     //survey
     AddNewSurvey: AddNewSurvey,
+    //user
+    AddUserState: AddUserState,
+    UpdateUserState: UpdateUserState,
+    OneUserState: OneUserState,
 
     [baseApi.reducerPath]: baseApi.reducer,
   },
