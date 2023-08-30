@@ -4,13 +4,21 @@ import CustomButton from "@/components/customButton";
 import LabelText from "@/components/labelText";
 import BreadCrumb from "@/components/table/bread-crumb";
 import { Tabs, Tab, styled, Box } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import QuestionaireComp from "@/components/regulation/questionaireTab";
 import TabPanel from "@mui/lab/TabPanel/TabPanel";
 import { useSearchParams } from "next/navigation";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { listRegulationOne } from "@/redux/reducer/regulation/list-one-regulation";
 import { listAllPillar } from "@/redux/reducer/regulation/list-pillar";
+import TextInput from "../inputComponents/textInput";
+import TextArea from "../inputComponents/texArea";
+import {
+  editRegulation,
+  editRegulationIsSuccess,
+} from "@/redux/reducer/regulation/edit-regulation";
 
 const StyledTab = styled((props: any) => <Tab {...props} />)(({ theme }) => ({
   fontWeight: 500,
@@ -54,84 +62,51 @@ export default function StpQuestionary() {
   const regulationId: any = params?.get("id");
   const RegulationData = useSelector((state: any) => state.ListRegulationOne);
   const PillarData = useSelector((state: any) => state.ListAllPillar);
+  const EditRegulation = useSelector((state: any) => state.EditRegulation);
+  const [isEdit, setIsEdit] = useState(false);
 
   // useEffect
   useEffect(() => {
     dispatch(listRegulationOne(regulationId));
     dispatch(listAllPillar("?regulationId=" + regulationId));
-  }, [regulationId]);
+    if (EditRegulation.isSuccess) {
+      dispatch(editRegulationIsSuccess());
+      setIsEdit(false);
+    }
+  }, [regulationId, EditRegulation]);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange1 = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const STPTabs = [
-    {
-      name: "Nursery",
-      id: "",
-      questData: [
-        {
-          question: "Nursery Category ",
-          options: [
-            { id: "01", name: "Conventional" },
-            { id: "02", name: "Tray" },
-            { id: "03", name: "Green Tech" },
-          ],
-          answerType: "dropdown",
-        },
-        {
-          question: "Nursery Name",
-          answer: "",
-          answerType: "freeText",
-        },
-      ],
+  // validation
+  const QuestionaireSchema = Yup.object().shape({
+    description: Yup.string().required("description  is required"),
+  });
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      description: RegulationData.response.description ?? "",
     },
-    {
-      name: "Mainfield",
-      id: "",
-      questData: [
-        {
-          question: "Nursery Category ",
-          options: [
-            { id: "01", name: "Conventional" },
-            { id: "02", name: "Tray" },
-            { id: "03", name: "Green Tech" },
-          ],
-          answerType: "dropdown",
-        },
-        {
-          question: "Nursery Name",
-          answer: "",
-          answerType: "freeText",
-        },
-      ],
+    validationSchema: QuestionaireSchema,
+    onSubmit: (values: any) => {
+      const object = {
+        description: values.description,
+        id: regulationId,
+      };
+      dispatch(editRegulation(object));
     },
-    {
-      name: "Nutrient management",
-      id: "",
-      questData: [
-        {
-          question: "Nursery Category ",
-          options: [
-            { id: "01", name: "Conventional" },
-            { id: "02", name: "Tray" },
-            { id: "03", name: "Green Tech" },
-          ],
-          answerType: "dropdown",
-        },
-        {
-          question: "Nursery Name",
-          answer: "",
-          answerType: "freeText",
-        },
-      ],
-    },
-    { name: "Soil", id: "" },
-    { name: "Bio diversity", id: "" },
-    { name: "CPA Safety", id: "" },
-    { name: "Curing", id: "" },
-    { name: "NTRM Bale search", id: "" },
-  ];
+  });
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    touched,
+    setFieldValue,
+    resetForm,
+    errors,
+  } = formik;
 
   return (
     <div className="flex flex-col my-[5rem] mx-[3rem] gap-y-6">
@@ -139,30 +114,44 @@ export default function StpQuestionary() {
         <BreadCrumb lastName={RegulationData.response.name ?? ""} />
         <CustomButton
           classes={` flex self-end`}
-          buttonName={`Edit`}
+          buttonName={isEdit ? "Save" : `Edit`}
           customStyle={{
             width: "133px",
             height: "36px",
             padding: "0.5rem 1rem",
             borderRadius: "30px",
           }}
-          handleOnClick={() => {}}
+          handleOnClick={() => {
+            if (isEdit) {
+              handleSubmit();
+            } else {
+              setIsEdit(!isEdit);
+            }
+          }}
         />
       </div>
       <div className="flex gap-x-8 rounded-[10px]">
-        <LabelText labelName={`Description`} />
-        <p
-          className="px-4 py-6 bg-lGrey text-text"
-          style={{
-            fontWeight: 400,
-            lineHeight: "20px",
-            letterSpacing: "0.05em",
-            fontSize: "14px",
-            maxWidth: "710px",
+        <TextArea
+          classes={` py-0 pt-2`}
+          customStyle={{
+            marginTop: "0.5rem",
+            background: "#F7F7F7",
+            width: "100%",
+            minWidth: "700px",
+            color: "#858585",
           }}
-        >
-          {RegulationData.response.description ?? ""}
-        </p>
+          required={isEdit}
+          resizeValue={!isEdit ? "none" : ""}
+          readOnly={!isEdit}
+          label={"Regulation description"}
+          name="description"
+          handleChange={handleChange}
+          value={values}
+          onblur={handleBlur}
+          touched={touched}
+          error={errors}
+          placeholder="Type regulation description here"
+        />
       </div>
       <div className="stpContainer">
         <Tabs
@@ -188,7 +177,7 @@ export default function StpQuestionary() {
             },
           }}
           value={value}
-          onChange={handleChange}
+          onChange={handleChange1}
           variant="scrollable"
           scrollButtons
           allowScrollButtonsMobile

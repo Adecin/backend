@@ -89,18 +89,14 @@ const ListFieldOfficer = () => {
   useEffect(() => {
     dispatch(listFarmers(query));
     setCheckData([]);
-  }, [paginateData]);
+  }, [paginateData, ApproveResponse]);
 
-  useEffect(() => {
-    dispatch(listFarmers(""));
-    setCheckData([]);
-  }, [ApproveResponse]);
+  // useEffect(() => {
+  //   dispatch(listFarmers(""));
+  //   setCheckData([]);
+  // }, [ApproveResponse]);
 
   // useEffect
-
-  useEffect(() => {
-    dispatch(listFarmers(""));
-  }, []);
 
   const filterData = ListFarmer.response.data?.map((e: any, index: number) => {
     return {
