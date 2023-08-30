@@ -70,9 +70,9 @@ const ListFieldOfficer = () => {
   );
   // const ListOfficerData = ListFieldOfficer.response.data
 
-  useEffect(() => {
-    dispatch(listFieldOfficer(""));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(listFieldOfficer(""));
+  // }, []);
 
   useEffect(() => {
     dispatch(listFieldOfficer(query));
