@@ -47,6 +47,11 @@ import EditRegulation from "./reducer/regulation/edit-regulation";
 //survey
 import AddNewSurvey from "./reducer/survey/add-survey";
 
+//user
+import AddUserState from "./reducer/user/addStaff";
+import UpdateUserState from "./reducer/user/updateUser";
+import OneUserState from "./reducer/user/getOneUser";
+
 export const store = configureStore({
   reducer: {
     // common data
@@ -90,6 +95,10 @@ export const store = configureStore({
     DeleteQuestion: DeleteQuestion,
     //survey
     AddNewSurvey: AddNewSurvey,
+    //user
+    AddUserState: AddUserState,
+    UpdateUserState: UpdateUserState,
+    OneUserState: OneUserState,
 
     [baseApi.reducerPath]: baseApi.reducer,
   },
