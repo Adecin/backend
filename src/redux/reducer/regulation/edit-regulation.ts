@@ -18,16 +18,13 @@ const SUCCESS = async (data: string) => {
 };
 
 // api call
-export const deleteQuestion: any = createAsyncThunk(
-  "deleteQuestion/deleteQuestion",
+export const editRegulation: any = createAsyncThunk(
+  "editRegulation/editRegulation",
   async (value: any, { rejectWithValue }) => {
     try {
-      const data: any = await axios.delete(
-        `/api/survey/question` + (value ?? ""),
-        {
-          withCredentials: true,
-        }
-      );
+      const data: any = await axios.put(`api/survey/regulation`, value, {
+        withCredentials: true,
+      });
 
       if (data.data.status) {
         return data;
@@ -42,21 +39,25 @@ export const deleteQuestion: any = createAsyncThunk(
 
 // state
 
-const DeleteQuestion: any = createSlice({
-  name: "deleteQuestion",
+const EditRegulation: any = createSlice({
+  name: "editRegulation",
   initialState: {
     isLoading: false,
     isSuccess: false,
     isError: false,
     response: {},
   },
-  reducers: {},
+  reducers: {
+    editRegulationIsSuccess: (state: any, payload: any) => {
+      state.isSuccess = false;
+    },
+  },
   extraReducers: (builder: any) => {
-    builder.addCase(deleteQuestion.pending, (state: any, { payload }: any) => {
+    builder.addCase(editRegulation.pending, (state: any, { payload }: any) => {
       state.isLoading = true;
     });
     builder.addCase(
-      deleteQuestion.fulfilled,
+      editRegulation.fulfilled,
       (state: any, { payload }: any) => {
         state.isLoading = false;
         state.response = payload.data?.data;
@@ -66,7 +67,7 @@ const DeleteQuestion: any = createSlice({
       }
     );
 
-    builder.addCase(deleteQuestion.rejected, (state: any, { payload }: any) => {
+    builder.addCase(editRegulation.rejected, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = true;
@@ -77,4 +78,5 @@ const DeleteQuestion: any = createSlice({
 });
 
 // Reducer
-export default DeleteQuestion.reducer;
+export default EditRegulation.reducer;
+export const { editRegulationIsSuccess } = EditRegulation.actions;

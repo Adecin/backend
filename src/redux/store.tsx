@@ -42,6 +42,7 @@ import listQuestion from "./reducer/regulation/list-question";
 import UpdateQuestion from "./reducer/regulation/update-question";
 import AddQuestion from "./reducer/regulation/add-question";
 import DeleteQuestion from "./reducer/regulation/delete-question";
+import EditRegulation from "./reducer/regulation/edit-regulation";
 
 //survey
 import AddNewSurvey from "./reducer/survey/add-survey";
@@ -79,6 +80,7 @@ export const store = configureStore({
     updateAssignFarmerData: updateAssignFarmerData,
     //regulation
     AddNewRegulation: AddNewRegulation,
+    EditRegulation: EditRegulation,
     ListAllRegulation: ListAllRegulation,
     ListRegulationOne: ListRegulationOne,
     ListAllPillar: ListAllPillar,
