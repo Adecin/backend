@@ -53,6 +53,12 @@ import UpdateUserState from "./reducer/user/updateUser";
 import OneUserState from "./reducer/user/getOneUser";
 import UserListState from "./reducer/user/userList";
 
+//village Management
+import addVillageMangData from "./reducer/villageMang/addVillageMang";
+import getAllVillageMangData from "./reducer/villageMang/getAllVillageMang";
+import getOneVillageMangData from "./reducer/villageMang/getOneVillageMang";
+import updateVillageMangData from "./reducer/villageMang/updateVillageMang";
+
 export const store = configureStore({
   reducer: {
     // common data
@@ -101,6 +107,12 @@ export const store = configureStore({
     UpdateUserState: UpdateUserState,
     OneUserState: OneUserState,
     UserListState: UserListState,
+
+    //vilage management
+    addVillageMangData:addVillageMangData,
+    getAllVillageMangData:getAllVillageMangData,
+    getOneVillageMangData:getOneVillageMangData,
+    updateVillageMangData:updateVillageMangData,
 
     [baseApi.reducerPath]: baseApi.reducer,
   },
