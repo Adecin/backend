@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // utils
 import { axios } from "@/redux/api";
-import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 //toast messages
 const FAILED = async (data: string) => {
@@ -47,7 +47,11 @@ const AddCrop: any = createSlice({
     isError: false,
     response: {},
   },
-  reducers: {},
+  reducers: {
+    clear_add_crop_success: (state: any, payload: any) => {
+      state.isSuccess = false;
+    },
+  },
   extraReducers: (builder: any) => {
     builder.addCase(addCrop.pending, (state: any, { payload }: any) => {
       state.isLoading = true;
@@ -72,3 +76,4 @@ const AddCrop: any = createSlice({
 
 // Reducer
 export default AddCrop.reducer;
+export const { clear_add_crop_success } = AddCrop.actions;
