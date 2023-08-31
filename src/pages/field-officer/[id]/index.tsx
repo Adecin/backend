@@ -20,16 +20,6 @@ import DownloadIcon from "@mui/icons-material/Download";
 
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
-const dataTable = [
-  {
-    assigned_date: "04/08/2023",
-    farmer_id: "KK001",
-    Name: "Ranga Ramasamy",
-    location: "Dakshina Kannada,Karapakam, 600 061",
-    status: "Completed",
-  },
-];
-
 const surveyData = [
   {
     survey: "DTE 2023",

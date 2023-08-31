@@ -6,47 +6,14 @@ import CustomButton from "@/components/customButton";
 import HeaderText from "@/components/textComponents/headerText";
 import DatakeyValue from "@/components/textComponents/keyValueText";
 import SurveyTable from "@/components/surveyTable";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import BreadCrumb from "@/components/table/bread-crumb";
 import LabelText from "@/components/labelText";
 import Link from "next/link";
-
-const dataTable = [
-  {
-    assigned_date: "04/08/2023",
-    farmer_id: "KK001",
-    Name: "Ranga Ramasamy",
-    location: "Dakshina Kannada,Karapakam, 600 061",
-    status: "completed",
-  },
-];
-
-const surveyData = [
-  {
-    survey: "DTE 2023",
-    field_officer: "KK001",
-    location: "Dakshina Kannada,Karapakam, 600 061",
-    farmer_id: "KK001",
-  },
-  {
-    survey: "DTE 2023",
-    field_officer: "KK001",
-    location: "Dakshina Kannada,Karapakam, 600 061",
-    farmer_id: "KK001",
-  },
-  {
-    survey: "DTE 2023",
-    field_officer: "KK001",
-    location: "Dakshina Kannada,Karapakam, 600 061",
-    farmer_id: "KK001",
-  },
-  {
-    survey: "DTE 2023",
-    field_officer: "KK001",
-    location: "Dakshina Kannada,Karapakam, 600 061",
-    farmer_id: "KK001",
-  },
-];
+import { oneUserInfo } from "@/redux/reducer/user/getOneUser";
+import { dispatch } from "@/redux/store";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const dataedu = [
   { degree: "12th", certificate: "Certificate" },
@@ -55,8 +22,18 @@ const dataedu = [
 export default function OfficerProfile(props: any) {
   //const { data } = props
   const router = useRouter();
+  const params = useSearchParams();
+  const user_id: any = params?.get("id");
 
   const educationDetails = Object.keys(dataedu[0]);
+
+  const getOneUser = useSelector((store: any) => store.OneUserState);
+  const userProfile = getOneUser.response;
+  console.log(`getOneUserData`, userProfile);
+
+  useEffect(() => {
+    dispatch(oneUserInfo(user_id));
+  }, [user_id]);
 
   return (
     <div className="flex flex-col my-[5rem] m-[3rem] gap-y-6">
@@ -86,11 +63,11 @@ export default function OfficerProfile(props: any) {
             borderRadius: "30px",
           }}
           handleOnClick={() => {
-            router.push(`/staff-management/add`);
+            router.push(`/staff-management/edit?id=${user_id}`);
           }}
         />
       </div>
-      <PersonalDetailCard />
+      <PersonalDetailCard profile={userProfile} />
       <div className="idDocuments my-2">
         <HeaderText text={`Job Role`} />
         <div className="bg-[#F4F8FF] px-3 py-3 mt-[1rem] flex justify-between w-full rounded-[10px]">
@@ -216,7 +193,7 @@ const addressStyle = {
   padding: "2rem",
 };
 
-const PersonalDetailCard = () => {
+const PersonalDetailCard = (props: any) => {
   const Separater = styled.div`
     ::after {
       content: "";
@@ -226,6 +203,8 @@ const PersonalDetailCard = () => {
       display: block;
     }
   `;
+
+  const { profile } = props;
 
   return (
     <div className="">
@@ -240,8 +219,8 @@ const PersonalDetailCard = () => {
         />
         <div className="w-full flex justify-around p-[1rem] mx-[1rem]">
           <div className=" flex flex-col gap-y-6 mr-[3rem]">
-            <DatakeyValue label={`Name`} value={`Mohammed`} />
-            <DatakeyValue label={`Phone number`} value={`+91 985746328`} />
+            <DatakeyValue label={`Name`} value={profile?.name} />
+            <DatakeyValue label={`Phone number`} value={profile?.phoneNo} />
             <DatakeyValue label={`Gender`} value={`Female`} />
             <DatakeyValue label={`Education`} value={`BBA`} />
           </div>
