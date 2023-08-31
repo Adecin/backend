@@ -130,7 +130,7 @@ export default function OfficerProfileAdd(props: any) {
       ),
     dob: Yup.string().required("Dob is required"),
     gender: Yup.string().required("Gender is required"),
-    reportingManager: Yup.string().required("Reporting is required"),
+    reportingManager: Yup.string().required("Reporting Manager is required"),
     address: Yup.string().required("Address is required"),
     pincode: Yup.string()
       .matches(/^[0-9]+$/, "Invalid pincode")
@@ -410,7 +410,7 @@ export default function OfficerProfileAdd(props: any) {
                 classes={`pt-[1rem]`}
                 name="reportingManager"
                 labelname="Reporting Manager"
-                placeHolderText="Select Gender"
+                placeHolderText="Select Manager"
                 data={[]}
                 value={values}
                 handleChange={handleChange}
