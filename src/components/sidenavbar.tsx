@@ -215,6 +215,31 @@ export default function Sidebar() {
                 New Regulation
               </div>
             </div>
+            {/* inbox */}
+            <>
+              <div className="border-b h-[20px] mx-2 border-white" />
+              <div className="h-[20px]" />
+            </>
+            <div
+              onClick={() => {
+                router.push("/inbox");
+              }}
+              className={`flex xl:px-5  px-2 items-center cursor-pointer  my-2 w-[100%]  ${
+                pathname === "/inbox" ? "bg-primary" : ""
+              }  ${
+                !isExpand ? "justify-center xl:py-3 " : "pl-6 xl:py-3 py-2"
+              } ${
+                pathname?.split("/")[1] == "/inbox".split("/")[1]
+                  ? "bg-secondary"
+                  : ""
+              }`}
+            >
+              {/* <div className="w-[20px]">{e.icon ?? ""}</div> */}
+
+              <div className="px-3 ml-5 text-white text-[14px] xl:text-[16px]">
+                Inbox
+              </div>
+            </div>
           </div>
         </div>
       </div>
