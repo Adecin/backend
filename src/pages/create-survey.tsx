@@ -40,18 +40,6 @@ const CreateSurvey = () => {
     (state: any) => state.ListAllRegulation.response
   );
 
-  const fcvData = CropList?.filter((item: any) => {
-    if (item.cropType == `FCV`) {
-      return item;
-    }
-  });
-
-  const nonFcvData = CropList?.filter((item: any) => {
-    if (item.cropType == `NONFCV`) {
-      return item;
-    }
-  });
-
   const SeperaterText = styled.p`
     font-size: 16px;
     line-height: 24px;
@@ -81,7 +69,7 @@ const CreateSurvey = () => {
       .required("Survey name is required"),
     description: Yup.string()
       .required("Survey description is required")
-      .matches(/^[aA-zZ0-9]+$/, "Please enter a valid description"),
+      .matches(/^[aA-zZ0-9\s]+$/, "Please enter a valid description"),
     startDate: Yup.string().required("StartDate is required"),
     endDate: Yup.string().required("EndDate is required"),
     cropIds: Yup.array().required(),
@@ -228,8 +216,9 @@ const CreateSurvey = () => {
                 fieldStyle={{
                   marginTop: "0.5rem",
                   width: "336px",
+                  color: "#3D7FFA",
                 }}
-                labelname={"Regulation 1"}
+                labelname={"Regulation"}
                 name={""}
                 data={RegulationData ?? []}
                 handleChange={(e: any) => {
@@ -254,7 +243,7 @@ const CreateSurvey = () => {
               }}
             />
           </div>
-          <SeperaterText className="text-primary my-12">{`Crop types`}</SeperaterText>
+          <SeperaterText className="text-primary my-12">{`Crop type`}</SeperaterText>
           <div
             style={{
               borderBottom: "2px solid #D9D9D9",
@@ -277,56 +266,14 @@ const CreateSurvey = () => {
                     marginTop: "0.5rem",
                     width: "336px",
                   }}
-                  labelname={"FCV"}
+                  labelname={"Crop Type"}
                   name={""}
-                  data={fcvData ?? []}
+                  data={CropList ?? []}
                   handleChange={(e: any) => {
                     handleAddCrop(e.target.value);
                   }}
                   value={values}
                   placeHolderText={"Burley"}
-                />
-              </div>
-              <CustomButton
-                classes={`text-primary`}
-                buttonName={`Add crop type`}
-                startIcon={<AddCircleIcon className="text-primary" />}
-                customStyle={{
-                  background: "none",
-                  height: "3rem",
-                  padding: "1rem",
-                  color: "#3D7FFA",
-                }}
-                handleOnClick={() => {
-                  handleSubmit();
-                }}
-              />
-            </div>
-            <div className="flex justify-start items-center gap-x-16 my-[2rem]">
-              <div
-                className=" bg-grey w-[406px] flex flex-col my-[1rem] px-[1rem] py-[1rem] relative"
-                style={{
-                  background: "#F7F7F7",
-                }}
-              >
-                <DoNotDisturbOnIcon
-                  className="flex self-end absolute top-[10px]"
-                  style={{ color: "red" }}
-                />
-                <SelectMenu
-                  labelStyle={{ color: "#3D7FFA" }}
-                  fieldStyle={{
-                    marginTop: "0.5rem",
-                    width: "336px",
-                  }}
-                  labelname={"Non-FCV"}
-                  name={""}
-                  data={nonFcvData ?? []}
-                  handleChange={(e: any) => {
-                    handleAddCrop(e.target.value);
-                  }}
-                  value={values}
-                  placeHolderText={"STP 2.0"}
                 />
               </div>
               <CustomButton

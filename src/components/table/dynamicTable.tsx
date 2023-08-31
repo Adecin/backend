@@ -104,7 +104,7 @@ const DynamicTable = ({
                 key={index}
               >
                 {keys.map((key) => (
-                  <td className={` py-1 pl-5 ` + classes} key={key}>
+                  <td className={` py-3 pl-5 ` + classes} key={key}>
                     <div className="  ">
                       <div className="text-text flex justify-center font-[500]">
                         {item[key]}

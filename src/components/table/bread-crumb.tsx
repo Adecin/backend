@@ -21,8 +21,6 @@ const BreadCrumb = ({
     filterPath.push(lastName);
   }
 
-  console.log(`filterPath`, filterPath);
-
   return (
     <>
       <div className="py-5 px-4 bg-white">
