@@ -17,6 +17,7 @@ interface InputTypes {
   readOnly?: any;
   max?: any;
   min?: any;
+  onKeyDown?: any;
 }
 
 const TextInput = (props: InputTypes) => {
@@ -37,6 +38,7 @@ const TextInput = (props: InputTypes) => {
     readOnly,
     max,
     min,
+    onKeyDown,
   } = props;
   return (
     <>
@@ -55,6 +57,7 @@ const TextInput = (props: InputTypes) => {
           placeholder={placeholder ?? "Enter text"}
           onBlur={onblur}
           name={name}
+          onKeyDown={onKeyDown}
           type={type}
           onChange={handleChange}
           style={customStyle}

@@ -11,8 +11,14 @@ import Filter from "@/components/table/filter";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { getCrop } from "@/redux/reducer/crop/get-all-crop";
 import { useDispatch, useSelector } from "react-redux";
-import { addCrop } from "@/redux/reducer/crop/add-croptype";
-import { updateCrop } from "@/redux/reducer/crop/update-crop";
+import {
+  addCrop,
+  clear_add_crop_success,
+} from "@/redux/reducer/crop/add-croptype";
+import {
+  clear_update_crop_success,
+  updateCrop,
+} from "@/redux/reducer/crop/update-crop";
 
 const StyledTab = styled((props: any) => <Tab {...props} />)(({ theme }) => ({
   fontWeight: 500,
@@ -58,12 +64,6 @@ export default function CropManagement(props: any) {
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  const handlehidefield = () => {
-    setshowfcv(false);
-  };
-  const handlehidefieldN = () => {
-    setshowNfcv(false);
-  };
 
   const AddCropState = useSelector((state: any) => state.AddCrop);
   const AddCropType = AddCropState.response;
@@ -77,26 +77,32 @@ export default function CropManagement(props: any) {
 
   useEffect(() => {
     dispatch(getCrop());
-  }, []);
+    if (AddCropState.isSuccess) {
+      setshowNfcv(false);
+      setshowfcv(false);
+      dispatch(clear_add_crop_success());
+    }
+  }, [AddCropState, UpdateState]);
 
-  useEffect(() => {
-    dispatch(getCrop());
-  }, [AddCropState.isSuccess, UpdateState.isSuccess]);
+  const cancelAdd = () => {
+    setshowNfcv(false);
+    setshowfcv(false);
+  };
 
   return (
     <div>
       <div className="absolute top-0 sticky bg-white flex justify-between mt-14 mb-6 mr-12">
         <div className="">
-          <BreadCrumb classes={` font-bold text-[#43424D]`} />
+          <BreadCrumb classes={`font-bold text-[#43424D]`} />
         </div>
-        <Filter
+        {/* <Filter
           value={searchValue}
           applyFilter={() => {}}
           onSearch={(e: string) => {
             setSearchValue(e);
           }}
           filter={<div></div>}
-        />
+        /> */}
       </div>
       <Tabs
         className="mx-8"
@@ -124,9 +130,9 @@ export default function CropManagement(props: any) {
           })}
           {showfcv && (
             <AddCropComponent
+              cancelAdd={cancelAdd}
               cropType={CropTypeValue}
               readOnly={false}
-              hideField={handlehidefield}
             />
           )}
         </div>
@@ -155,15 +161,15 @@ export default function CropManagement(props: any) {
           })}
           {showNfcv && (
             <AddCropComponent
+              cancelAdd={cancelAdd}
               cropType={CropTypeValue}
               readOnly={false}
-              hideField={handlehidefieldN}
             />
           )}
         </div>
         <CustomButton
           classes={`text-primary `}
-          buttonName={`Add question`}
+          buttonName={`Add crop`}
           startIcon={<AddCircleIcon className="text-primary" />}
           customStyle={{
             background: "none",
@@ -184,13 +190,15 @@ const AddCropComponent = (props: any) => {
   const { cropType, hideField } = props;
   const SignInSchema = Yup.object().shape({
     name: Yup.string()
-      .matches(/^[aA-zZ]+$/, "Must be only alphabets")
+      .matches(/^[aA-zZ\s]+$/, "Must be only alphabets")
       .required("Please enter a valid crop name"),
     cropYear: Yup.string()
       .required("Please enter a valid crop year")
       .matches(/^[0-9]+$/, "Must be only digits"),
-    cropType: Yup.string(),
-    cropId: Yup.string(),
+    cropCode: Yup.string()
+      .required("crop id is required")
+      .matches(/^[0-9]+$/, "Must be only digits"),
+    tapNumber: Yup.array().min(1, "tap number is required"),
   });
 
   const formik = useFormik({
@@ -198,7 +206,9 @@ const AddCropComponent = (props: any) => {
       name: "",
       cropYear: "",
       cropType: cropType,
-      cropId: "",
+      enterTapNumber: "",
+      tapCode: [],
+      cropCode: "",
     },
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
@@ -212,46 +222,64 @@ const AddCropComponent = (props: any) => {
     handleChange,
     handleSubmit,
     setFieldTouched,
+    setFieldError,
+    setFieldValue,
     touched,
     errors,
+    resetForm,
   } = formik;
-  const submitTest = () => {
-    dispatch(addCrop(values));
-    hideField();
-  };
 
   return (
     <TypeElement
       readOnly={false}
       handleChange={handleChange}
-      crop_year={values.cropYear}
-      handleSubmit={submitTest}
-      crop_name={values.name}
+      handleSubmit={handleSubmit}
+      values={values}
       errors={errors}
       touched={touched}
+      setFieldValue={setFieldValue}
+      setFieldError={setFieldError}
+      resetForm={resetForm}
+      cancelAdd={props.cancelAdd}
     />
   );
 };
 
 const UpdateCropComponent = (props: any) => {
   const dispatch = useDispatch();
+  const [editCrop, setEditCrop] = useState(false);
+  const UpdateState = useSelector((state: any) => state.UpdateCrop);
+
+  useEffect(() => {
+    if (UpdateState.isSuccess) {
+      setEditCrop(false);
+      dispatch(clear_update_crop_success());
+    }
+  }, [UpdateState]);
+
   const { dataItem } = props;
   const SignInSchema = Yup.object().shape({
     name: Yup.string()
-      .matches(/^[aA-zZ]+$/, "Must be only alphabets")
+      .matches(/^[aA-zZ\s]+$/, "Must be only alphabets")
       .required("Please enter a valid crop name"),
     cropYear: Yup.string()
       .required("Please enter a valid crop year")
       .matches(/^[0-9]+$/, "Must be only digits"),
-    cropType: Yup.string(),
-    id: Yup.string(),
+    cropCode: Yup.string()
+      .required("crop id is required")
+      .matches(/^[0-9]+$/, "Must be only digits"),
+    tapNumber: Yup.array().min(1, "tap number is required"),
   });
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
       name: dataItem.name ?? "",
       cropYear: dataItem.cropYear ?? "",
       cropType: dataItem.cropType ?? "",
+      tapCode: dataItem.tapCode ?? [],
+      enterTapNumber: "",
+      cropCode: dataItem.cropCode ?? "",
       id: dataItem.id ?? "",
     },
     validationSchema: SignInSchema,
@@ -266,50 +294,62 @@ const UpdateCropComponent = (props: any) => {
     handleChange,
     handleSubmit,
     setFieldTouched,
+    setFieldError,
+    setFieldValue,
     touched,
     errors,
+    resetForm,
   } = formik;
 
-  const submitTest = () => {
-    dispatch(updateCrop(values));
-  };
   return (
     <TypeElement
+      readOnly={false}
       handleChange={handleChange}
-      crop_year={values.cropYear}
-      handleSubmit={submitTest}
-      crop_name={values.name}
+      handleSubmit={handleSubmit}
+      values={values}
       errors={errors}
       touched={touched}
+      setFieldValue={setFieldValue}
+      setFieldError={setFieldError}
+      editCrop={editCrop}
+      setEditCrop={setEditCrop}
+      viewPage={true}
+      resetForm={resetForm}
     />
   );
 };
 
 const TypeElement = (props: any) => {
-  const [editCrop, setEditCrop] = useState(true);
   const {
-    crop_year,
-    crop_name,
     handleChange,
     handleSubmit,
-    readOnly,
+
     errors,
     touched,
+    vl,
+    values,
+    setFieldValue,
+    setFieldError,
+    viewPage,
+    setEditCrop,
+    editCrop,
+    cancelAdd,
+    resetForm,
   } = props;
 
   const handleEdit = () => {
-    setEditCrop(false);
+    setEditCrop(true);
   };
 
   return (
-    <div className="w-full flex items-center gsp-x-12">
-      <div className="flex gap-x-8">
+    <div className="w-full flex items-center mt-5 justify-between bg-[#F7F7F7] p-5 gsp-x-12">
+      <div className="grid grid-cols-2 gap-x-8 ">
         <TextInput
-          readOnly={readOnly ?? editCrop}
+          readOnly={viewPage && !editCrop}
           classes={` py-0 pt-2`}
           label={""}
           name="name"
-          value={crop_name}
+          value={values}
           touched={touched}
           handleChange={handleChange}
           error={errors}
@@ -317,55 +357,110 @@ const TypeElement = (props: any) => {
           customStyle={{
             color: "#858585",
             padding: "0.85rem",
-            width: "300px",
-            background: "#F7F7F7",
+            width: "400px",
           }}
         />
         {/* tap number */}
         <div>
-          <div className="px-2 flex items-center justify-around py-2 border border-primary rounded-[20px]">
-            <p>vijay</p>
-            <div>
-              {/* <svg
-                height="512px"
-                id="Layer_1"
-                // style={"enable-background:new 0 0 512 512;"}
-                version="1.1"
-                viewBox="0 0 512 512"
-                width="512px"
-         
-                xmlns="http://www.w3.org/2000/svg"
-              
+          <div
+            className={`bg-[white] w-[400px] ml-[12px] ${
+              touched && touched.tapCode && errors && errors.tapCode
+                ? "text-error border-2 border-error"
+                : ""
+            }`}
+          >
+            {values?.tapCode.length != 0 ? (
+              <div
+                className={`grid ${
+                  viewPage && !editCrop ? "grid-cols-6" : "grid-cols-3"
+                } p-3`}
               >
-                <path d="M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4  L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1  c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1  c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z" />
-              </svg> */}
-            </div>
+                {values?.tapCode?.map((e: any, index: number) => (
+                  <div
+                    key={index}
+                    className={`px-2 mt-2 ${
+                      viewPage && !editCrop ? "w-[40px]" : "w-[100px]"
+                    }  flex items-center justify-around py-2 border border-primary rounded-[20px]`}
+                  >
+                    <p className="px-1">{e}</p>
+                    {viewPage && !editCrop ? (
+                      ""
+                    ) : (
+                      <div className="px-1 cursor-pointer">
+                        <svg
+                          onClick={() => {
+                            const data = [...values.tapCode];
+                            data.splice(index, 1);
+                            setFieldValue("tapCode", data);
+                          }}
+                          width="12"
+                          height="12"
+                          viewBox="0 0 12 12"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M10.2639 1.7361C9.12367 0.623064 7.59342 0 6 0C4.40658 0 2.87633 0.623064 1.73611 1.7361C0.623065 2.87633 0 4.40658 0 6C0 7.59342 0.623065 9.12367 1.73611 10.2639C2.87633 11.3769 4.40658 12 6 12C7.59342 12 9.12367 11.3769 10.2639 10.2639C11.3769 9.12367 12 7.59342 12 6C12 4.40658 11.3769 2.87633 10.2639 1.7361ZM8.13195 8.74107L6 6.60913L3.86805 8.74107L3.25892 8.13195L5.39087 6L3.25892 3.86805L3.86805 3.25892L6 5.39087L8.13195 3.25892L8.74108 3.86805L6.60913 6L8.74108 8.13195L8.13195 8.74107Z"
+                            fill="#508EF1"
+                          />{" "}
+                          <svg
+                            className="cursor-pointer"
+                            width="31"
+                            height="31"
+                            viewBox="0 0 31 31"
+                            fill="red"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4  L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1  c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1  c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z" />
+                          </svg>
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              ""
+            )}
+            <TextInput
+              readOnly={viewPage && !editCrop}
+              classes={` py-0 pt-2`}
+              label={""}
+              name="enterTapNumber"
+              value={values}
+              touched={touched}
+              handleChange={(e: any) => {
+                setFieldValue("enterTapNumber", e.target.value);
+              }}
+              onKeyDown={(e: any) => {
+                if (e.key == "Enter") {
+                  setFieldError("tapCode", null);
+                  setFieldValue("tapCode", [
+                    ...values.tapCode,
+                    values.enterTapNumber,
+                  ]);
+                  setFieldValue("enterTapNumber", "");
+                }
+              }}
+              placeholder="Type Number"
+              customStyle={{
+                color: "#858585",
+                width: "300px",
+              }}
+            />
           </div>
+          <span className="text-[10px] ml-3 my-1 text-error">
+            {(touched && touched.tapCode && errors && errors.tapCode) ?? ""}
+          </span>
         </div>
-        <TextInput
-          readOnly={readOnly ?? editCrop}
-          classes={` py-0 pt-2`}
-          label={""}
-          name="cropYear"
-          value={crop_year}
-          touched={touched}
-          handleChange={handleChange}
-          error={errors}
-          placeholder="Type year here"
-          customStyle={{
-            color: "#858585",
-            padding: "0.85rem",
-            width: "300px",
-            background: "#F7F7F7",
-          }}
-        />
+
         {/* crop year */}
         <TextInput
-          readOnly={readOnly ?? editCrop}
+          readOnly={viewPage && !editCrop}
           classes={` py-0 pt-2`}
           label={""}
           name="cropYear"
-          value={crop_year}
+          value={values}
           touched={touched}
           handleChange={handleChange}
           error={errors}
@@ -373,53 +468,59 @@ const TypeElement = (props: any) => {
           customStyle={{
             color: "#858585",
             padding: "0.85rem",
-            width: "300px",
-            background: "#F7F7F7",
+            width: "400px",
           }}
         />
         <TextInput
-          readOnly={readOnly ?? editCrop}
+          readOnly={viewPage && !editCrop}
           classes={` py-0 pt-2`}
           label={""}
-          name="cropYear"
-          value={crop_year}
+          name="cropCode"
+          value={values}
           touched={touched}
           handleChange={handleChange}
           error={errors}
-          placeholder="Type year here"
+          placeholder="Type crop id here"
           customStyle={{
             color: "#858585",
             padding: "0.85rem",
-            width: "300px",
-            background: "#F7F7F7",
+            width: "400px",
           }}
         />
       </div>
-      {readOnly ?? editCrop ? (
-        <EditIcon
-          className={`text-primary text-[28px] mx-3 cursor-pointer`}
+      <div>
+        {viewPage && !editCrop ? (
+          <EditIcon
+            className={`text-primary text-[28px] mx-3 cursor-pointer`}
+            onClick={() => {
+              handleEdit();
+            }}
+          />
+        ) : (
+          <CustomButton
+            classes={` w-[107px] rounded-[30px]`}
+            buttonName={`Save`}
+            customStyle={{
+              background: "#3D7FFA",
+              borderRadius: "30px",
+              padding: "0.5rem 1.5rem",
+            }}
+            handleOnClick={handleSubmit}
+          />
+        )}
+        <DeleteOutlineIcon
+          className={`text-grey text-[28px] mx-3 cursor-pointer`}
           onClick={() => {
-            handleEdit();
+            if (viewPage) {
+              resetForm();
+              setEditCrop(false);
+            } else {
+              resetForm();
+              cancelAdd();
+            }
           }}
         />
-      ) : (
-        <CustomButton
-          classes={` w-[107px] rounded-[30px]`}
-          buttonName={`Save`}
-          customStyle={{
-            background: "#3D7FFA",
-            borderRadius: "30px",
-            padding: "0.5rem 1.5rem",
-          }}
-          handleOnClick={handleSubmit}
-        />
-      )}
-      <DeleteOutlineIcon
-        className={`text-grey text-[28px] mx-3 cursor-pointer`}
-        onClick={() => {
-          handleEdit();
-        }}
-      />
+      </div>
     </div>
   );
 };
