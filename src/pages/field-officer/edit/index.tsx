@@ -569,6 +569,7 @@ export default function OfficerProfileEdit(props: any) {
                     label="Spouse Name"
                     placeholder="Type name here"
                     name="spouseName"
+                    readOnly={values.martialStatus == `Single` ? true : false}
                     value={values}
                     handleChange={handleChange}
                     onblur={handleBlur}
@@ -588,6 +589,10 @@ export default function OfficerProfileEdit(props: any) {
                       placeHolderText="Select Male"
                       data={[
                         {
+                          name: "0",
+                          id: "0",
+                        },
+                        {
                           name: "1",
                           id: "1",
                         },
@@ -604,6 +609,7 @@ export default function OfficerProfileEdit(props: any) {
                           id: "4",
                         },
                       ]}
+                      readOnly={values.martialStatus == `Single` ? true : false}
                       value={values}
                       handleChange={handleChange}
                       onblur={handleBlur}
@@ -616,6 +622,10 @@ export default function OfficerProfileEdit(props: any) {
                       placeHolderText="Select Female"
                       data={[
                         {
+                          name: "0",
+                          id: "0",
+                        },
+                        {
                           name: "1",
                           id: "1",
                         },
@@ -632,6 +642,7 @@ export default function OfficerProfileEdit(props: any) {
                           id: "4",
                         },
                       ]}
+                      readOnly={values.martialStatus == `Single` ? true : false}
                       value={values}
                       handleChange={handleChange}
                       onblur={handleBlur}
@@ -704,6 +715,12 @@ export default function OfficerProfileEdit(props: any) {
           <div className="w-full">
             <HeaderText text={`Assign Farmer`} required={true} />
             <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]">
+              <p
+                className="font-semibold mb-8 ml-3"
+                style={{ fontSize: "16px", marginTop: "1.65rem" }}
+              >
+                Select Filter to Assign Farmer
+              </p>
               <div className="grid grid-cols-3">
                 <SelectMenu
                   labelname={"Crop type"}
@@ -714,12 +731,17 @@ export default function OfficerProfileEdit(props: any) {
                   placeHolderText={"Select"}
                 />
                 <SelectMenu
-                  name="districtIds"
+                  name="districtFilter"
                   labelname="District"
                   placeHolderText="Select district"
                   data={districtDropDown ?? []}
-                  value={values}
-                  handleChange={handleChange}
+                  value={filterData}
+                  handleChange={(e: any) => {
+                    setFilterData({
+                      ...filterData,
+                      districtFilter: e.target.value,
+                    });
+                  }}
                   onblur={handleBlur}
                   touched={touched}
                   required={true}
@@ -736,7 +758,6 @@ export default function OfficerProfileEdit(props: any) {
                       ...filterData,
                       villageFillter: e.target.value,
                     });
-                    console.log(e.target.value);
                   }}
                   onblur={handleBlur}
                   touched={touched}
@@ -798,9 +819,7 @@ export default function OfficerProfileEdit(props: any) {
                     }}
                   />
                 ) : (
-                  <p style={{ fontSize: "13px", marginTop: "1.65rem" }}>
-                    Select Filter to Assign Farmer
-                  </p>
+                  <p style={{ fontSize: "13px", marginTop: "1.65rem" }}></p>
                 )}
               </div>
             </div>

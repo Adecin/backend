@@ -14,16 +14,31 @@ import { listFieldOfficer } from "@/redux/reducer/fieldOfficer/getList";
 import { useDispatch, useSelector } from "react-redux";
 import { getVillage } from "@/redux/reducer/dropdown/get-village";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
+const Info = async (data: string) => {
+  toast.info(data, {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+};
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
 const ListFieldOfficer = () => {
   const [searchValue, setSearchValue] = useState("");
+  const [filterEmpty, setfilterEmpty] = useState(false);
+  const [counter, setCounter] = useState(0);
+
   const router = useRouter();
 
   const [technicianFilter, setTechnicianFilter] = useState<any>({
     districtId: "",
     villageId: "",
+  });
+
+  const [paginateData, setData] = useState<any>({
+    page: 0,
+    limit: 10,
   });
 
   const initialValues = {
@@ -36,10 +51,24 @@ const ListFieldOfficer = () => {
     setTechnicianFilter({ ...technicianFilter });
   };
 
-  const query = `?districtId=${technicianFilter.districtId}&villageId=${technicianFilter.villageId}`;
+  const query = `?page=${paginateData.page}&limit=${paginateData.limit}&districtId=${technicianFilter.districtId}&villageId=${technicianFilter.villageId}`;
 
   const applyFetchFilter = () => {
-    dispatch(listFieldOfficer(query));
+    const isEmpty =
+      technicianFilter.districtId == false &&
+      technicianFilter.villageId == false
+        ? true
+        : false;
+
+    if (isEmpty) {
+      setfilterEmpty(true);
+    } else {
+      dispatch(listFieldOfficer(query));
+      setTechnicianFilter(initialValues);
+    }
+  };
+
+  const handleClearFilter = () => {
     setTechnicianFilter(initialValues);
   };
 
@@ -50,12 +79,26 @@ const ListFieldOfficer = () => {
   // const ListOfficerData = ListFieldOfficer.response.data
 
   useEffect(() => {
-    dispatch(listFieldOfficer(""));
-  }, []);
+    dispatch(listFieldOfficer(query));
+  }, [paginateData]);
+
+  useEffect(() => {
+    if (counter == 2) {
+      console.log(`filterData 11`, ListFieldOfficer.response.data);
+      if (
+        !ListFieldOfficer.response.data ||
+        ListFieldOfficer.response.data.length === 0
+      ) {
+        console.log(`filterData in`, ListFieldOfficer.response.data);
+
+        Info(`No Data Found`);
+      }
+    }
+    setCounter(counter + 1);
+  }, [ListFieldOfficer.response.data]);
 
   const filterData = ListFieldOfficer.response.data?.map(
     (e: any, index: number) => {
-      console.log(e.farmerCount);
       return {
         photo: (
           <img
@@ -106,8 +149,12 @@ const ListFieldOfficer = () => {
             applyFilter={() => {
               applyFetchFilter();
             }}
+            isEmpty={filterEmpty}
             onSearch={(e: string) => {
               setSearchValue(e);
+            }}
+            clearFilter={() => {
+              handleClearFilter();
             }}
             filter={
               <div>
@@ -123,6 +170,12 @@ const ListFieldOfficer = () => {
         <DynamicTable
           data={filterData ?? []}
           count={ListFieldOfficer.response.count}
+          paginateData={(e: any) => {
+            setData({
+              page: e.page,
+              limit: e.rowsPerPage,
+            });
+          }}
         />
       </div>
       {/* <DynamicTable data={data} /> */}
@@ -162,9 +215,7 @@ const FieldOfficerFilter = (props: any) => {
             name="manager"
             placeHolderText="Select Manager"
             data={[]}
-            handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
-            }}
+            handleChange={(e: any) => {}}
           />
         </div>
         <div className="w-[350px] px-3">
@@ -174,7 +225,6 @@ const FieldOfficerFilter = (props: any) => {
             placeHolderText="Select District"
             data={districtDropDown ?? []}
             handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
               selectFilter(`districtId`, e.target.value);
             }}
           />
@@ -186,7 +236,6 @@ const FieldOfficerFilter = (props: any) => {
             placeHolderText="Select Village"
             data={villageDropDown ?? []}
             handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
               selectFilter(`villageId`, e.target.value);
             }}
           />
@@ -194,9 +243,7 @@ const FieldOfficerFilter = (props: any) => {
         <div className="w-[350px] px-3">
           <SelectMenu
             name="manager"
-            handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
-            }}
+            handleChange={(e: any) => {}}
             placeHolderText="Survey"
             data={[]}
           />

@@ -18,11 +18,11 @@ const SUCCESS = async (data: string) => {
 };
 
 // api call
-export const updateCrop: any = createAsyncThunk(
-  "updateCrop/updateCropType",
+export const addUserStaff: any = createAsyncThunk(
+  "addUserStaff/add",
   async (value: any, { rejectWithValue }) => {
     try {
-      const data: any = await axios.put(`api/crops`, value, {
+      const data: any = await axios.post(`/api/user/create`, value, {
         withCredentials: true,
       });
 
@@ -39,8 +39,8 @@ export const updateCrop: any = createAsyncThunk(
 
 // state
 
-const UpdateCrop: any = createSlice({
-  name: "UpdateCrop",
+const AddUserState: any = createSlice({
+  name: "AddUserState",
   initialState: {
     isLoading: false,
     isSuccess: false,
@@ -49,10 +49,10 @@ const UpdateCrop: any = createSlice({
   },
   reducers: {},
   extraReducers: (builder: any) => {
-    builder.addCase(updateCrop.pending, (state: any, { payload }: any) => {
+    builder.addCase(addUserStaff.pending, (state: any, { payload }: any) => {
       state.isLoading = true;
     });
-    builder.addCase(updateCrop.fulfilled, (state: any, { payload }: any) => {
+    builder.addCase(addUserStaff.fulfilled, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.response = payload.data?.data;
       state.Message = payload.data.message;
@@ -60,7 +60,7 @@ const UpdateCrop: any = createSlice({
       SUCCESS(payload.data.message);
     });
 
-    builder.addCase(updateCrop.rejected, (state: any, { payload }: any) => {
+    builder.addCase(addUserStaff.rejected, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = true;
@@ -71,4 +71,4 @@ const UpdateCrop: any = createSlice({
 });
 
 // Reducer
-export default UpdateCrop.reducer;
+export default AddUserState.reducer;

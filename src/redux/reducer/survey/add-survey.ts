@@ -57,9 +57,7 @@ const AddNewSurvey: any = createSlice({
       state.response = payload.data?.data;
       state.Message = payload.data.message;
       state.isSuccess = true;
-      window.alert(payload.data.message)
       SUCCESS(payload.data.message);
-      console.log(`payload`,payload)
     });
 
     builder.addCase(addNewSurvey.rejected, (state: any, { payload }: any) => {
@@ -67,8 +65,7 @@ const AddNewSurvey: any = createSlice({
       state.isSuccess = false;
       state.isError = true;
       state.Message = payload.data ? payload.data.message : payload.message;
-      FAILED(payload.message);
-      console.log(`payload`,payload)
+      FAILED(state.Message);
     });
   },
 });

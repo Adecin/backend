@@ -5,11 +5,14 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Image from "next/image";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { listAllRegulation } from "@/redux/reducer/regulation/listAllRegulation";
 
 const garamond = EB_Garamond({ weight: "700", subsets: ["latin"] });
 export default function Sidebar() {
+  const dispatch = useDispatch();
   const pathname = usePathname();
   const [isExpand, setIsExpand] = useState(true);
   const [isActive, setActive] = useState(0);
@@ -17,11 +20,20 @@ export default function Sidebar() {
   const router = useRouter();
   const getUrl = pathname?.split("/");
 
+  // datas
+  const regulationList = useSelector((state: any) => state.ListAllRegulation);
+  const AddNewRegulation = useSelector((state: any) => state.AddNewRegulation);
+
+  // useEffect
+  useEffect(() => {
+    dispatch(listAllRegulation());
+  }, [AddNewRegulation]);
+
   return (
     <>
       <div className={"h-[100%] flex-row items-center flex  justify-center "}>
         <div
-        style={{overflow:'auto', scrollbarWidth:'none'}}
+          style={{ overflow: "auto", scrollbarWidth: "none" }}
           className={`bg-primary h-[100vh] max:w-[300px]  ${
             !isExpand ? "xl:w-[100px] w-[50px]" : "xl:w-[300px] w-[180px]"
           }`}
@@ -61,73 +73,173 @@ export default function Sidebar() {
             {sideMenu.map((e: any, index: number) => {
               return (
                 <>
-                  {e.name == "border" ? (
-                    <>
-                      <div className="border-b h-[20px] mx-2 border-white" />
-                      <div className="h-[20px]" />
-                    </>
-                  ) : (
-                    <>
-                      {" "}
-                      <div
-                        key={index}
-                        onClick={() => {
-                          setActive(index);
-                          if (e.children) {
-                            setOpen(!isOpen);
-                          } else {
-                            router.push(e.url);
-                          }
-                        }}
-                        className={`flex xl:px-5 px-2 items-center cursor-pointer  my-2 w-[100%]  ${
-                          !e.children
-                            ? pathname === e.url
-                              ? "bg-primary"
-                              : ""
-                            : getUrl?.[2] === e.url.split("/")[2]
-                            ? "bg-primary"
-                            : ""
-                        }  ${
-                          !isExpand
-                            ? "justify-center xl:py-3 "
-                            : "pl-6 xl:py-3 py-2"
-                        } ${
-                          pathname?.split("/")[1] == e.url.split("/")[1]
-                            ? "bg-secondary"
-                            : ""
-                        }`}
-                      >
-                        <div className="w-[20px]">{e.icon}</div>
-                        {isExpand ? (
-                          <div className="px-3 text-white text-[14px] xl:text-[16px]">
-                            {e.name}
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        {e.children ? (
-                          <KeyboardArrowDownIcon
-                            className={
-                              isExpand
-                                ? "ml-[auto] text-white mr-4 w-[15px] "
-                                : "w-[10px] text-white xl:w-[15px]"
-                            }
-                          />
-                        ) : (
-                          ""
-                        )}
+                  {" "}
+                  <div
+                    key={index}
+                    onClick={() => {
+                      setActive(index);
+                      if (e.children) {
+                        setOpen(!isOpen);
+                      } else {
+                        router.push(e.url);
+                      }
+                    }}
+                    className={`flex xl:px-5 px-2 items-center cursor-pointer  my-2 w-[100%]  ${
+                      !e.children
+                        ? pathname === e.url
+                          ? "bg-primary"
+                          : ""
+                        : getUrl?.[2] === e.url.split("/")[2]
+                        ? "bg-primary"
+                        : ""
+                    }  ${
+                      !isExpand
+                        ? "justify-center xl:py-3 "
+                        : "pl-6 xl:py-3 py-2"
+                    } ${
+                      pathname?.split("/")[1] == e.url.split("/")[1]
+                        ? "bg-secondary"
+                        : ""
+                    }`}
+                  >
+                    <div className="w-[20px]">{e.icon}</div>
+                    {isExpand ? (
+                      <div className="px-3 text-white text-[14px] xl:text-[16px]">
+                        {e.name}
                       </div>
-                      {/* open nested menu */}
-                      {isOpen &&
-                        isActive === index &&
-                        isExpand &&
-                        e.children &&
-                        NestedMenu(e, router)}
-                    </>
-                  )}
+                    ) : (
+                      ""
+                    )}
+                    {e.children ? (
+                      <KeyboardArrowDownIcon
+                        className={
+                          isExpand
+                            ? "ml-[auto] text-white mr-4 w-[15px] "
+                            : "w-[10px] text-white xl:w-[15px]"
+                        }
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </>
               );
             })}
+            <section>
+              <div className="border-b h-[20px] mx-2 border-white" />
+              <div className="h-[20px]" />
+            </section>
+            {regulationList.isSuccess &&
+              regulationList.response.map((e: any, index: number) => {
+                const url = "/regulation/" + e.id;
+
+                console.log(url, pathname);
+                return (
+                  <>
+                    {e.name == "border" ? (
+                      <>
+                        <div className="border-b h-[20px] mx-2 border-white" />
+                        <div className="h-[20px]" />
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <div
+                          key={index}
+                          onClick={() => {
+                            setActive(index);
+                            if (e.children) {
+                              setOpen(!isOpen);
+                            } else {
+                              router.push(url);
+                            }
+                          }}
+                          className={`flex xl:px-5 px-2 items-center cursor-pointer  my-2 w-[100%]  ${
+                            pathname === url ? "bg-primary" : ""
+                          }  ${
+                            !isExpand
+                              ? "justify-center xl:py-3 "
+                              : "pl-6 xl:py-3 py-2"
+                          } ${pathname == url ? "bg-secondary" : ""}`}
+                        >
+                          <div className="w-[20px]">{e.icon ?? ""}</div>
+                          {isExpand ? (
+                            <div className="px-3 text-white text-[14px] xl:text-[16px]">
+                              {e.name}
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          {e.children ? (
+                            <KeyboardArrowDownIcon
+                              className={
+                                isExpand
+                                  ? "ml-[auto] text-white mr-4 w-[15px] "
+                                  : "w-[10px] text-white xl:w-[15px]"
+                              }
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                        {/* open nested menu */}
+                        {isOpen &&
+                          isActive === index &&
+                          isExpand &&
+                          e.children &&
+                          NestedMenu(e, router)}
+                      </>
+                    )}
+                  </>
+                );
+              })}
+
+            {/* new regulation */}
+            <div
+              onClick={() => {
+                router.push("/new-regulation");
+              }}
+              className={`flex xl:px-5  px-2 items-center cursor-pointer  my-2 w-[100%]  ${
+                pathname === "/new-regulation" ? "bg-primary" : ""
+              }  ${
+                !isExpand ? "justify-center xl:py-3 " : "pl-6 xl:py-3 py-2"
+              } ${
+                pathname?.split("/")[1] == "/new-regulation".split("/")[1]
+                  ? "bg-secondary"
+                  : ""
+              }`}
+            >
+              {/* <div className="w-[20px]">{e.icon ?? ""}</div> */}
+
+              <div className="px-3 ml-5 text-white text-[14px] xl:text-[16px]">
+                New Regulation
+              </div>
+            </div>
+            {/* inbox */}
+            <>
+              <div className="border-b h-[20px] mx-2 border-white" />
+              <div className="h-[20px]" />
+            </>
+            <div
+              onClick={() => {
+                router.push("/inbox");
+              }}
+              className={`flex xl:px-5  px-2 items-center cursor-pointer  my-2 w-[100%]  ${
+                pathname === "/inbox" ? "bg-primary" : ""
+              }  ${
+                !isExpand ? "justify-center xl:py-3 " : "pl-6 xl:py-3 py-2"
+              } ${
+                pathname?.split("/")[1] == "/inbox".split("/")[1]
+                  ? "bg-secondary"
+                  : ""
+              }`}
+            >
+              {/* <div className="w-[20px]">{e.icon ?? ""}</div> */}
+
+              <div className="px-3 ml-5 text-white text-[14px] xl:text-[16px]">
+                Inbox
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -202,20 +314,16 @@ const sideMenu = [
     name: "Survey",
     url: "/create-survey",
   },
-  {
-    name: "border",
-    url: "/",
-  },
-  {
-    name: "STP",
-    url: "/stp",
-  },
-  {
-    name: "Crop Monitoring",
-    url: "/crop-monitoring",
-  },
-  {
-    name: "New Regulation",
-    url: "/new-regulation",
-  },
+  // {
+  //   name: "border",
+  //   url: "/",
+  // },
+  // {
+  //   name: "STP",
+  //   url: "/regulation",
+  // },
+  // {
+  //   name: "Crop Monitoring",
+  //   url: "/crop-monitoring",
+  // },
 ];

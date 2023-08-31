@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 const selectOptions = [{ id: 1, name: "Select by farmer Id" }];
 
 const Options = [
-  { id: 1, name: "Select by farmer Name" },
-  { id: 2, name: "Select by farmer Id" },
+  { id: 1, name: "Select by Farmer Name" },
+  { id: 2, name: "Select by Farmer Id" },
 ];
 
 export default function FarmerList(props: any) {
@@ -40,7 +40,7 @@ export default function FarmerList(props: any) {
     const assignData = {
       technicianId: fieldOfficerId,
       farmerId: selectedIds,
-      villageId: assignVillageId
+      villageId: assignVillageId,
     };
     dispatch(assignFarmer(assignData));
     onClose();
@@ -87,24 +87,26 @@ export default function FarmerList(props: any) {
       </div>
       <div className="py-3 px-[2rem] m-[1rem]">
         <FormGroup>
-          {
-            data?.length ?
-              data?.map((item: any, index: any) => {
-                return (
-                  <FormControlLabel
-                    key={index}
-                    control={
-                      <Checkbox
-                        checked={checkedItems.has(index)}
-                        onChange={() => handleCheckboxChange(index)}
-                      />
-                    }
-                    label={dataType === "name" ? item.name : item.farmerId}
-                  />
-                );
-              })
-              : <p style={{ textAlign: 'center', margin: '1rem', fontWeight: 600 }}>No Data Found</p>
-          }
+          {data?.length ? (
+            data?.map((item: any, index: any) => {
+              return (
+                <FormControlLabel
+                  key={index}
+                  control={
+                    <Checkbox
+                      checked={checkedItems.has(index)}
+                      onChange={() => handleCheckboxChange(index)}
+                    />
+                  }
+                  label={dataType === "name" ? item.name : item.farmerId}
+                />
+              );
+            })
+          ) : (
+            <p style={{ textAlign: "center", margin: "1rem", fontWeight: 600 }}>
+              No Data Found
+            </p>
+          )}
         </FormGroup>
         <div className="flex justify-center gap-x-12 my-3">
           <CustomButton

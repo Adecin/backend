@@ -23,7 +23,14 @@ import { approveFarmer } from "@/redux/reducer/farmer/approve-farmer";
 import { updateAssignFarmer } from "@/redux/reducer/fieldOfficer/updateAssignFarmer";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from "@/redux/reducer/dropdown/get-village";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
+const Info = async (data: string) => {
+  toast.info(data, {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+};
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
 const ListFieldOfficer = () => {
@@ -31,50 +38,79 @@ const ListFieldOfficer = () => {
   const [allSelect, setSelect] = useState(false);
   const [manageOpen, setManageOpen] = useState(false);
   const [checkedData, setCheckData] = useState<any>([]);
+  const [counter, setCounter] = useState(0);
 
   const router = useRouter();
   const dispatch = useDispatch();
   const ListFarmer = useSelector((store: any) => store.ListFormer);
   const ApproveResponse = useSelector((store: any) => store.ApproveFarmerData);
 
-  // console.log("datasss", ListFarmer);
-
   const [farmerFilter, setFarmerFilter] = useState<any>({
     status: "",
     districtId: "",
     villageId: "",
     technicianId: "",
+    regulation: [],
+  });
+
+  const [paginateData, setData] = useState<any>({
+    page: 0,
+    limit: 10,
   });
   const initialValues = {
     status: "",
     districtId: "",
     villageId: "",
     technicianId: "",
+    regulation: [],
   };
 
   const handleSelectFilter = (name: any, value: any) => {
     farmerFilter[`${name}`] = value;
     setFarmerFilter({ ...farmerFilter });
   };
+  const handleCheckbox = (selected: any) => {
+    const status = selected !== true ? `Approved` : `hf`;
+    console.log(`status in`, status);
+    handleSelectFilter(`status`, status);
+  };
 
-  const query = `?status=${farmerFilter.status}&districtId=${farmerFilter.districtId}&villageId=${farmerFilter.villageId}&technicianId=${farmerFilter.technicianId}`;
+  const handleClearFilter = () => {
+    setFarmerFilter(initialValues);
+  };
+
+  const handleAddRegulationFilter = (name: any, value: any) => {};
+
+  const query = `?page=${paginateData.page}&limit=${
+    paginateData.limit
+  }&status=${farmerFilter.status}&districtId=${
+    farmerFilter.districtId
+  }&villageId=${farmerFilter.villageId}&technicianId=${
+    farmerFilter.technicianId
+  }&regulation=${1}`;
 
   const applyFetchFilter = () => {
     dispatch(listFarmers(query));
     setCheckData([]);
-    setFarmerFilter(initialValues);
   };
 
   useEffect(() => {
-    dispatch(listFarmers(""));
+    dispatch(listFarmers(query));
     setCheckData([]);
-  }, [ApproveResponse]);
-
-  // useEffect
+    console.log(`filterData 1`, ListFarmer.response.data);
+  }, [paginateData, ApproveResponse]);
 
   useEffect(() => {
-    dispatch(listFarmers(""));
-  }, []);
+    if (counter == 2) {
+      console.log(`filterData 11`, ListFarmer.response.data);
+      if (!ListFarmer.response.data || ListFarmer.response.data.length === 0) {
+        console.log(`filterData in`, ListFarmer.response.data);
+
+        Info(`No Data Found`);
+      }
+    }
+    setCounter(counter + 1);
+  }, [ListFarmer.response.data]);
 
   const filterData = ListFarmer.response.data?.map((e: any, index: number) => {
     return {
@@ -82,7 +118,6 @@ const ListFieldOfficer = () => {
         <Checkbox
           checked={allSelect ? true : checkedData.includes(e.farmer_id)}
           onChange={() => {
-            console.log(checkedData);
             if (checkedData.includes(e.farmer_id)) {
               const findIndex = checkedData.indexOf(e.farmer_id);
               const cloneData = [...checkedData];
@@ -120,13 +155,17 @@ const ListFieldOfficer = () => {
                 : `#F8B34C`;
             return (
               <div key={index} className="flex my-[10px] items-center">
-                <div
-                  style={{
-                    background: statusColor,
-                  }}
-                  className={`w-[15px] mr-3 h-[15px] bg-[${statusColor}]`}
-                />
-                {item.name}
+                <div>
+                  <abbr style={{ textDecoration: "none" }} title={item.status}>
+                    <div
+                      style={{
+                        background: statusColor,
+                      }}
+                      className={`w-[15px] mr-3 h-[15px] bg-[${statusColor}]`}
+                    />
+                  </abbr>
+                </div>
+                <div>{item.name}</div>
               </div>
             );
           })}
@@ -257,12 +296,15 @@ const ListFieldOfficer = () => {
               onSearch={(e: string) => {
                 setSearchValue(e);
               }}
+              clearFilter={() => {
+                handleClearFilter();
+              }}
               filter={
                 <div>
                   <FieldOfficerFilter
                     values={farmerFilter}
                     selectFilter={handleSelectFilter}
-                    //applyFilter={}
+                    handleCheckbox={handleCheckbox}
                   />
                 </div>
               }
@@ -356,6 +398,12 @@ const ListFieldOfficer = () => {
             }}
             data={filterData ?? []}
             count={ListFarmer?.response?.count}
+            paginateData={(e: any) => {
+              setData({
+                page: e.page,
+                limit: e.rowsPerPage,
+              });
+            }}
           />
         </div>
       </div>
@@ -416,17 +464,12 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
     setValue(newValue);
   };
 
-  console.log(farmersList);
-
-  console.log(ListFieldOfficer);
-
   useEffect(() => {
     dispatch(listFieldOfficer(""));
   }, []);
 
   const handleApprove = () => {
     closePopUp();
-    console.log(is_approve);
     const data =
       is_approve == "true"
         ? {
@@ -437,7 +480,6 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
             id: farmersList,
             reason: reason,
           };
-    console.log(data);
     dispatch(approveFarmer(data));
   };
 
@@ -639,7 +681,8 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
 // filter values
 
 const FieldOfficerFilter = (props: any) => {
-  const { selectFilter, values } = props;
+  const { selectFilter, values, handleCheckbox } = props;
+  const [selected, setSelected] = useState(false);
 
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
@@ -699,7 +742,6 @@ const FieldOfficerFilter = (props: any) => {
             data={districtDropDown ?? []}
             value={values}
             handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
               selectFilter(`districtId`, e.target.value);
             }}
           />
@@ -711,7 +753,6 @@ const FieldOfficerFilter = (props: any) => {
             data={villageDropDown ?? []}
             value={values}
             handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
               selectFilter(`villageId`, e.target.value);
             }}
           />
@@ -722,7 +763,6 @@ const FieldOfficerFilter = (props: any) => {
             placeHolderText="Select Field Officer"
             value={values}
             handleChange={(e: any) => {
-              console.log(`e.target.value`, e.target.value);
               selectFilter(`technicianId`, e.target.value);
             }}
             data={technicianDropDown ?? []}
@@ -776,9 +816,11 @@ const FieldOfficerFilter = (props: any) => {
             <label className="font-semibold"> Approved Status</label>
             <Checkbox
               onChange={(e: any) => {
-                //console.log(`e.target.value`, e.target.value);
-                //selectFilter(`status`, `Pending`);
+                setSelected(!selected);
+                handleCheckbox(selected);
+                console.log(`selected`, selected);
               }}
+              checked={selected}
             />
           </div>
         </div>

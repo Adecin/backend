@@ -14,6 +14,7 @@ interface propsType {
   value?: any;
   classes?: any;
   customStyle?: any;
+  readOnly?: any;
 }
 
 export default function TextArea(props: propsType) {
@@ -31,6 +32,7 @@ export default function TextArea(props: propsType) {
     classes,
     value,
     customStyle,
+    readOnly = false,
   } = props;
 
   return (
@@ -47,6 +49,7 @@ export default function TextArea(props: propsType) {
             resize: resizeValue,
             ...customStyle,
           }}
+          readOnly={readOnly}
           className={`w-full px-2 py-3 placeholder-gray-400 placeholder-opacity-25 outline-none rounded-[5px] h-[100px] ${
             touched && touched[name] && error && error[name]
               ? "text-error border-2 border-error"

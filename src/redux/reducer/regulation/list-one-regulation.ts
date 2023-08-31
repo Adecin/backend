@@ -17,13 +17,13 @@ const SUCCESS = async (data: string) => {
   });
 };
 
-// api call
-export const listAllRegulation: any = createAsyncThunk(
-  "listAllRegulation/list",
+// api c
+export const listRegulationOne: any = createAsyncThunk(
+  "listRegulationOne/ListRegulationOne",
   async (value: any, { rejectWithValue }) => {
     try {
       const data: any = await axios.get(
-        `/api/survey/regulation` + (value ? value : ""),
+        `/api/survey/regulation/detail/${value ?? ""}`,
         {
           withCredentials: true,
         }
@@ -42,8 +42,8 @@ export const listAllRegulation: any = createAsyncThunk(
 
 // state
 
-const ListAllRegulation: any = createSlice({
-  name: "ListAllRegulation",
+const ListRegulationOne: any = createSlice({
+  name: "ListRegulationOne",
   initialState: {
     isLoading: false,
     isSuccess: false,
@@ -53,23 +53,24 @@ const ListAllRegulation: any = createSlice({
   reducers: {},
   extraReducers: (builder: any) => {
     builder.addCase(
-      listAllRegulation.pending,
+      listRegulationOne.pending,
       (state: any, { payload }: any) => {
         state.isLoading = true;
       }
     );
     builder.addCase(
-      listAllRegulation.fulfilled,
+      listRegulationOne.fulfilled,
       (state: any, { payload }: any) => {
         state.isLoading = false;
         state.response = payload.data?.data;
         state.Message = payload.data.message;
         state.isSuccess = true;
+        // SUCCESS(payload.data.message);
       }
     );
 
     builder.addCase(
-      listAllRegulation.rejected,
+      listRegulationOne.rejected,
       (state: any, { payload }: any) => {
         state.isLoading = false;
         state.isSuccess = false;
@@ -82,4 +83,4 @@ const ListAllRegulation: any = createSlice({
 });
 
 // Reducer
-export default ListAllRegulation.reducer;
+export default ListRegulationOne.reducer;

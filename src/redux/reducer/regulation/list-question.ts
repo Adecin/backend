@@ -1,29 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // utils
 import { axios } from "@/redux/api";
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
-
-//toast messages
-const FAILED = async (data: string) => {
-  toast.error(data, {
-    position: toast.POSITION.TOP_RIGHT,
-  });
-};
-
-const SUCCESS = async (data: string) => {
-  toast.success(data, {
-    position: toast.POSITION.TOP_RIGHT,
-  });
-};
 
 // api call
-export const listAllRegulation: any = createAsyncThunk(
-  "listAllRegulation/list",
+export const listAllQuestion: any = createAsyncThunk(
+  "listAllQuestion/ListAllQuestion",
   async (value: any, { rejectWithValue }) => {
     try {
       const data: any = await axios.get(
-        `/api/survey/regulation` + (value ? value : ""),
+        `/api/survey/question` + (value ?? ""),
         {
           withCredentials: true,
         }
@@ -42,8 +27,8 @@ export const listAllRegulation: any = createAsyncThunk(
 
 // state
 
-const ListAllRegulation: any = createSlice({
-  name: "ListAllRegulation",
+const ListAllQuestion: any = createSlice({
+  name: "ListAllQuestion",
   initialState: {
     isLoading: false,
     isSuccess: false,
@@ -52,14 +37,11 @@ const ListAllRegulation: any = createSlice({
   },
   reducers: {},
   extraReducers: (builder: any) => {
+    builder.addCase(listAllQuestion.pending, (state: any, { payload }: any) => {
+      state.isLoading = true;
+    });
     builder.addCase(
-      listAllRegulation.pending,
-      (state: any, { payload }: any) => {
-        state.isLoading = true;
-      }
-    );
-    builder.addCase(
-      listAllRegulation.fulfilled,
+      listAllQuestion.fulfilled,
       (state: any, { payload }: any) => {
         state.isLoading = false;
         state.response = payload.data?.data;
@@ -69,17 +51,16 @@ const ListAllRegulation: any = createSlice({
     );
 
     builder.addCase(
-      listAllRegulation.rejected,
+      listAllQuestion.rejected,
       (state: any, { payload }: any) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.isError = true;
         state.Message = payload.data ? payload.data.message : payload.message;
-        // FAILED(state.Message);
       }
     );
   },
 });
 
 // Reducer
-export default ListAllRegulation.reducer;
+export default ListAllQuestion.reducer;

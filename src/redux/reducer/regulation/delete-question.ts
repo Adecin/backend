@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // utils
 import { axios } from "@/redux/api";
-import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 //toast messages
 const FAILED = async (data: string) => {
@@ -18,13 +18,16 @@ const SUCCESS = async (data: string) => {
 };
 
 // api call
-export const updateCrop: any = createAsyncThunk(
-  "updateCrop/updateCropType",
+export const deleteQuestion: any = createAsyncThunk(
+  "deleteQuestion/deleteQuestion",
   async (value: any, { rejectWithValue }) => {
     try {
-      const data: any = await axios.put(`api/crops`, value, {
-        withCredentials: true,
-      });
+      const data: any = await axios.delete(
+        `/api/survey/question` + (value ?? ""),
+        {
+          withCredentials: true,
+        }
+      );
 
       if (data.data.status) {
         return data;
@@ -39,8 +42,8 @@ export const updateCrop: any = createAsyncThunk(
 
 // state
 
-const UpdateCrop: any = createSlice({
-  name: "UpdateCrop",
+const DeleteQuestion: any = createSlice({
+  name: "deleteQuestion",
   initialState: {
     isLoading: false,
     isSuccess: false,
@@ -49,18 +52,21 @@ const UpdateCrop: any = createSlice({
   },
   reducers: {},
   extraReducers: (builder: any) => {
-    builder.addCase(updateCrop.pending, (state: any, { payload }: any) => {
+    builder.addCase(deleteQuestion.pending, (state: any, { payload }: any) => {
       state.isLoading = true;
     });
-    builder.addCase(updateCrop.fulfilled, (state: any, { payload }: any) => {
-      state.isLoading = false;
-      state.response = payload.data?.data;
-      state.Message = payload.data.message;
-      state.isSuccess = true;
-      SUCCESS(payload.data.message);
-    });
+    builder.addCase(
+      deleteQuestion.fulfilled,
+      (state: any, { payload }: any) => {
+        state.isLoading = false;
+        state.response = payload.data?.data;
+        state.Message = payload.data.message;
+        state.isSuccess = true;
+        SUCCESS(payload.data.message);
+      }
+    );
 
-    builder.addCase(updateCrop.rejected, (state: any, { payload }: any) => {
+    builder.addCase(deleteQuestion.rejected, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = true;
@@ -71,4 +77,4 @@ const UpdateCrop: any = createSlice({
 });
 
 // Reducer
-export default UpdateCrop.reducer;
+export default DeleteQuestion.reducer;

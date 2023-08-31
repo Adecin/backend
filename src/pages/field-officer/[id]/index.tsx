@@ -20,16 +20,6 @@ import DownloadIcon from "@mui/icons-material/Download";
 
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
-const dataTable = [
-  {
-    assigned_date: "04/08/2023",
-    farmer_id: "KK001",
-    Name: "Ranga Ramasamy",
-    location: "Dakshina Kannada,Karapakam, 600 061",
-    status: "Completed",
-  },
-];
-
 const surveyData = [
   {
     survey: "DTE 2023",
@@ -69,11 +59,10 @@ export default function OfficerProfile(props: any) {
     villageId: "",
   });
 
-  const initialValues = {
-    farmer: "",
-    districtId: "",
-    villageId: "",
-  };
+  const [paginateData, setData] = useState<any>({
+    page: 0,
+    limit: 10,
+  });
 
   const handleTaskFilter = (name: any, value: any) => {
     taskFilter[`${name}`] = value;
@@ -96,11 +85,18 @@ export default function OfficerProfile(props: any) {
     dispatch(listFarmers(query));
   }, [fieldOfficer_id]);
 
-  const assignTaskQuery = `?technicianId=${fieldOfficer_id}&farmer=${taskFilter.farmer}&districtId=${taskFilter.districtId}&villageId=${taskFilter.villageId}`;
+  const assignTaskQuery = `?limit=${paginateData.limit}&page=${paginateData.page}&technicianId=${fieldOfficer_id}&farmer=${taskFilter.farmer}&districtId=${taskFilter.districtId}&villageId=${taskFilter.villageId}`;
+
+  const setPaginate = (item: any) => {
+    setData({
+      page: item.page,
+      limit: item.rowsPerPage,
+    });
+  };
 
   useEffect(() => {
     dispatch(listFarmers(assignTaskQuery));
-  }, [assignTaskQuery]);
+  }, [assignTaskQuery, paginateData]);
 
   const districtDropDown = GetDistrict.response?.data?.map(
     (e: any, index: number) => {
@@ -140,11 +136,11 @@ export default function OfficerProfile(props: any) {
         Farmer_Id: e?.farmer_farmerId,
         Name: e?.farmer_name,
         Location: (
-          <p>
-            {e.farmer_address},<br></br>
-            {e.village_name},<br></br>
+          <p className="w-full">
+            {e.farmer_address},<br />
+            {e.village_name},<br />
             {e.state_name}
-            <br></br>
+            <br />
             {e.farmer_pincode}
           </p>
         ),
@@ -289,6 +285,7 @@ export default function OfficerProfile(props: any) {
         districtDrop={districtDropDown}
         villageDrop={villageDropDown}
         handleChange={handleTaskFilter}
+        setPaginate={setPaginate}
       />
       <SurveyComponent data={surveyData} />
     </div>
@@ -296,8 +293,15 @@ export default function OfficerProfile(props: any) {
 }
 
 const AssignedTask = (props: any) => {
-  const { data, farmerDrop, districtDrop, villageDrop, handleChange, values } =
-    props;
+  const {
+    data,
+    farmerDrop,
+    districtDrop,
+    villageDrop,
+    handleChange,
+    values,
+    setPaginate,
+  } = props;
 
   const LabelText = styled.p`
     width: 100px;
@@ -357,8 +361,14 @@ const AssignedTask = (props: any) => {
           </div>
         </div>
       </div>
-      <div className="Surveytable">
-        <DynamicTable data={data} count={data?.length} />
+      <div className="assignListtable">
+        <DynamicTable
+          data={data}
+          count={data?.length}
+          paginateData={(e: any) => {
+            setPaginate(e);
+          }}
+        />
       </div>
     </div>
   );

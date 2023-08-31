@@ -57,7 +57,9 @@ const FieldOne = ({ data }: any) => {
       <div className="bg-lblue  max-w-[1400px]  my-2 p-5 rounded-[10px] grid grid-cols-5 ">
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Acreage</div>
-          <div className="my-4 text-text font-semibold text-[14px]">{data.acres ?? ""}</div>
+          <div className="my-4 text-text font-semibold text-[14px]">
+            {data.acres ?? ""}
+          </div>
         </div>{" "}
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Soil Type</div>
@@ -87,7 +89,9 @@ const FieldOne = ({ data }: any) => {
         </div>
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">Farm ID</div>
-          <div className="my-4 font-semibold text-text text-[14px]">{data.farmId}</div>
+          <div className="my-4 font-semibold text-text text-[14px]">
+            {data.farmId}
+          </div>
         </div>
         <div className="px-5 flex flex-col  justify-between">
           <div className="my-4 text-[#858585] text-[16px]">

@@ -549,6 +549,10 @@ const AddFarmer = () => {
                         placeHolderText="Select number of children"
                         data={[
                           {
+                            name: "0",
+                            id: "0",
+                          },
+                          {
                             name: "1",
                             id: "1",
                           },
@@ -578,6 +582,10 @@ const AddFarmer = () => {
                         labelname="Female"
                         placeHolderText="Select number of children"
                         data={[
+                          {
+                            name: "0",
+                            id: "0",
+                          },
                           {
                             name: "1",
                             id: "1",
@@ -693,7 +701,7 @@ const AddFarmer = () => {
             <>
               <div>
                 <div className="my-4">
-                  <HeaderText text={`Family Info`} />
+                  <HeaderText text={`Farm Details`} />
                 </div>
                 {farmData.response.data?.map((e: any, index: number) => {
                   return (

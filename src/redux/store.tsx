@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { baseApi } from "@/redux/baseapi";
-import  UserLogin  from "./reducer/login/login";
+import UserLogin from "./reducer/login/login";
 // stores
 
 // dropdown
@@ -36,9 +36,22 @@ import updateAssignFarmerData from "./reducer/fieldOfficer/updateAssignFarmer";
 //regulation
 import AddNewRegulation from "./reducer/regulation/add-regulation";
 import ListAllRegulation from "./reducer/regulation/listAllRegulation";
+import ListRegulationOne from "./reducer/regulation/list-one-regulation";
+import ListAllPillar from "./reducer/regulation/list-pillar";
+import listQuestion from "./reducer/regulation/list-question";
+import UpdateQuestion from "./reducer/regulation/update-question";
+import AddQuestion from "./reducer/regulation/add-question";
+import DeleteQuestion from "./reducer/regulation/delete-question";
+import EditRegulation from "./reducer/regulation/edit-regulation";
 
 //survey
 import AddNewSurvey from "./reducer/survey/add-survey";
+
+//user
+import AddUserState from "./reducer/user/addStaff";
+import UpdateUserState from "./reducer/user/updateUser";
+import OneUserState from "./reducer/user/getOneUser";
+import UserListState from "./reducer/user/userList";
 
 export const store = configureStore({
   reducer: {
@@ -61,23 +74,34 @@ export const store = configureStore({
     EditFarmer: EditFarmer,
     EditFarm: EditFarm,
     //fieldOfficer
-    ListFieldOfficerData:ListFieldOfficerData,
-    OneFieldOfficerData:OneFieldOfficerData,
-    AddFieldOfficerData:AddFieldOfficerData,
-    UpdateFieldOfficerData:UpdateFieldOfficerData,
-    UnassignFarmerListData:UnassignFarmerListData,
-    AssignFarmerData:AssignFarmerData,
-    AssignFarmerListData:AssignFarmerListData,
-    ApproveFarmerData:ApproveFarmerData,
-    AssignedFarmersCountData:AssignedFarmersCountData,
-    updateAssignFarmerData:updateAssignFarmerData,
+    ListFieldOfficerData: ListFieldOfficerData,
+    OneFieldOfficerData: OneFieldOfficerData,
+    AddFieldOfficerData: AddFieldOfficerData,
+    UpdateFieldOfficerData: UpdateFieldOfficerData,
+    UnassignFarmerListData: UnassignFarmerListData,
+    AssignFarmerData: AssignFarmerData,
+    AssignFarmerListData: AssignFarmerListData,
+    ApproveFarmerData: ApproveFarmerData,
+    AssignedFarmersCountData: AssignedFarmersCountData,
+    updateAssignFarmerData: updateAssignFarmerData,
     //regulation
     AddNewRegulation: AddNewRegulation,
+    EditRegulation: EditRegulation,
     ListAllRegulation: ListAllRegulation,
-
+    ListRegulationOne: ListRegulationOne,
+    ListAllPillar: ListAllPillar,
+    listQuestion: listQuestion,
+    UpdateQuestion: UpdateQuestion,
+    AddQuestion: AddQuestion,
+    DeleteQuestion: DeleteQuestion,
     //survey
     AddNewSurvey: AddNewSurvey,
-    
+    //user
+    AddUserState: AddUserState,
+    UpdateUserState: UpdateUserState,
+    OneUserState: OneUserState,
+    UserListState: UserListState,
+
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware: any) => {
