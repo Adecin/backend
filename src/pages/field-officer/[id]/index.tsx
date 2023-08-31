@@ -18,8 +18,20 @@ import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from "@/redux/reducer/dropdown/get-village";
 import DownloadIcon from "@mui/icons-material/Download";
 import TextInput from "@/components/inputComponents/textInput";
+import { Chip } from "@mui/material";
 
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
+
+const assignedVillage = [
+  {
+    id: "KK001",
+    name: "Vallkottai",
+  },
+  {
+    id: "KK002",
+    name: "Mathur",
+  },
+];
 
 const surveyData = [
   {
@@ -365,34 +377,33 @@ export default function OfficerProfile(props: any) {
               required={true}
             />
           </div>
-          {/* <div className="px-[1rem]">
-                  <LabelText labelName={``} />
-                  <div className="gap-x-4 pt-3">
-                    {assignFarmerListFarmer?.response?.length ? (
-                      assignFarmerListFarmer?.response?.map(
-                        (item: any, index: number) => {
-                          return (
-                            <>
-                              <Chip
-                                style={{
-                                  margin: "5px",
-                                  background: "#3D7FFA",
-                                  padding: "1.5rem",
-                                  borderRadius: "10px",
-                                  color: "#fff",
-                                }}
-                                label={item.farmerId.farmerId}
-                                onDelete={() => {}}
-                              />
-                            </>
-                          );
-                        }
-                      )
-                    ) : (
-                      <p>No Assigned Data</p>
-                    )}
-                  </div>
-                </div> */}
+          <div className="px-[1rem]">
+            <LabelText labelName={``} />
+            <div className="gap-x-4 pt-3">
+              {assignedVillage?.length ? (
+                assignedVillage?.map((item: any, index: number) => {
+                  return (
+                    <>
+                      <Chip
+                        style={{
+                          margin: "5px",
+                          background: "#fff",
+                          padding: "1.5rem",
+                          borderRadius: "10px",
+                          color: "#3D7FFA",
+                          border: "1px solid #3D7FFA",
+                        }}
+                        label={item.name}
+                        onDelete={() => {}}
+                      />
+                    </>
+                  );
+                })
+              ) : (
+                <p>No Assigned Data</p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>
