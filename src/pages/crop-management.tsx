@@ -179,89 +179,6 @@ export default function CropManagement(props: any) {
   );
 }
 
-const TypeElement = (props: any) => {
-  const [editCrop, setEditCrop] = useState(true);
-  const {
-    crop_year,
-    crop_name,
-    handleChange,
-    handleSubmit,
-    readOnly,
-    errors,
-    touched,
-  } = props;
-
-  const handleEdit = () => {
-    setEditCrop(false);
-  };
-
-  return (
-    <div className="w-full flex items-center gsp-x-12">
-      <div className="flex gap-x-8">
-        <TextInput
-          readOnly={readOnly ?? editCrop}
-          classes={` py-0 pt-2`}
-          label={""}
-          name="name"
-          value={crop_name}
-          //touched={touched}
-          handleChange={handleChange}
-          //error={errors}
-          placeholder="Type crop name here"
-          customStyle={{
-            color: "#858585",
-            padding: "0.85rem",
-            width: "300px",
-            background: "#F7F7F7",
-          }}
-        />
-        <TextInput
-          readOnly={readOnly ?? editCrop}
-          classes={` py-0 pt-2`}
-          label={""}
-          name="cropYear"
-          value={crop_year}
-          touched={touched}
-          handleChange={handleChange}
-          error={errors}
-          placeholder="Type year here"
-          customStyle={{
-            color: "#858585",
-            padding: "0.85rem",
-            width: "300px",
-            background: "#F7F7F7",
-          }}
-        />
-      </div>
-      {readOnly ?? editCrop ? (
-        <EditIcon
-          className={`text-primary text-[28px] mx-3 cursor-pointer`}
-          onClick={() => {
-            handleEdit();
-          }}
-        />
-      ) : (
-        <CustomButton
-          classes={` w-[107px] rounded-[30px]`}
-          buttonName={`Save`}
-          customStyle={{
-            background: "#3D7FFA",
-            borderRadius: "30px",
-            padding: "0.5rem 1.5rem",
-          }}
-          handleOnClick={handleSubmit}
-        />
-      )}
-      <DeleteOutlineIcon
-        className={`text-grey text-[28px] mx-3 cursor-pointer`}
-        onClick={() => {
-          handleEdit();
-        }}
-      />
-    </div>
-  );
-};
-
 const AddCropComponent = (props: any) => {
   const dispatch = useDispatch();
   const { cropType, hideField } = props;
@@ -273,7 +190,7 @@ const AddCropComponent = (props: any) => {
       .required("Please enter a valid crop year")
       .matches(/^[0-9]+$/, "Must be only digits"),
     cropType: Yup.string(),
-    id: Yup.string(),
+    cropId: Yup.string(),
   });
 
   const formik = useFormik({
@@ -281,6 +198,7 @@ const AddCropComponent = (props: any) => {
       name: "",
       cropYear: "",
       cropType: cropType,
+      cropId: "",
     },
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
@@ -364,5 +282,144 @@ const UpdateCropComponent = (props: any) => {
       errors={errors}
       touched={touched}
     />
+  );
+};
+
+const TypeElement = (props: any) => {
+  const [editCrop, setEditCrop] = useState(true);
+  const {
+    crop_year,
+    crop_name,
+    handleChange,
+    handleSubmit,
+    readOnly,
+    errors,
+    touched,
+  } = props;
+
+  const handleEdit = () => {
+    setEditCrop(false);
+  };
+
+  return (
+    <div className="w-full flex items-center gsp-x-12">
+      <div className="flex gap-x-8">
+        <TextInput
+          readOnly={readOnly ?? editCrop}
+          classes={` py-0 pt-2`}
+          label={""}
+          name="name"
+          value={crop_name}
+          touched={touched}
+          handleChange={handleChange}
+          error={errors}
+          placeholder="Type crop name here"
+          customStyle={{
+            color: "#858585",
+            padding: "0.85rem",
+            width: "300px",
+            background: "#F7F7F7",
+          }}
+        />
+        {/* tap number */}
+        <div>
+          <div className="px-2 flex items-center justify-around py-2 border border-primary rounded-[20px]">
+            <p>vijay</p>
+            <div>
+              {/* <svg
+                height="512px"
+                id="Layer_1"
+                // style={"enable-background:new 0 0 512 512;"}
+                version="1.1"
+                viewBox="0 0 512 512"
+                width="512px"
+         
+                xmlns="http://www.w3.org/2000/svg"
+              
+              >
+                <path d="M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4  L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1  c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1  c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z" />
+              </svg> */}
+            </div>
+          </div>
+        </div>
+        <TextInput
+          readOnly={readOnly ?? editCrop}
+          classes={` py-0 pt-2`}
+          label={""}
+          name="cropYear"
+          value={crop_year}
+          touched={touched}
+          handleChange={handleChange}
+          error={errors}
+          placeholder="Type year here"
+          customStyle={{
+            color: "#858585",
+            padding: "0.85rem",
+            width: "300px",
+            background: "#F7F7F7",
+          }}
+        />
+        {/* crop year */}
+        <TextInput
+          readOnly={readOnly ?? editCrop}
+          classes={` py-0 pt-2`}
+          label={""}
+          name="cropYear"
+          value={crop_year}
+          touched={touched}
+          handleChange={handleChange}
+          error={errors}
+          placeholder="Type year here"
+          customStyle={{
+            color: "#858585",
+            padding: "0.85rem",
+            width: "300px",
+            background: "#F7F7F7",
+          }}
+        />
+        <TextInput
+          readOnly={readOnly ?? editCrop}
+          classes={` py-0 pt-2`}
+          label={""}
+          name="cropYear"
+          value={crop_year}
+          touched={touched}
+          handleChange={handleChange}
+          error={errors}
+          placeholder="Type year here"
+          customStyle={{
+            color: "#858585",
+            padding: "0.85rem",
+            width: "300px",
+            background: "#F7F7F7",
+          }}
+        />
+      </div>
+      {readOnly ?? editCrop ? (
+        <EditIcon
+          className={`text-primary text-[28px] mx-3 cursor-pointer`}
+          onClick={() => {
+            handleEdit();
+          }}
+        />
+      ) : (
+        <CustomButton
+          classes={` w-[107px] rounded-[30px]`}
+          buttonName={`Save`}
+          customStyle={{
+            background: "#3D7FFA",
+            borderRadius: "30px",
+            padding: "0.5rem 1.5rem",
+          }}
+          handleOnClick={handleSubmit}
+        />
+      )}
+      <DeleteOutlineIcon
+        className={`text-grey text-[28px] mx-3 cursor-pointer`}
+        onClick={() => {
+          handleEdit();
+        }}
+      />
+    </div>
   );
 };

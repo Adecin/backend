@@ -51,6 +51,7 @@ import AddNewSurvey from "./reducer/survey/add-survey";
 import AddUserState from "./reducer/user/addStaff";
 import UpdateUserState from "./reducer/user/updateUser";
 import OneUserState from "./reducer/user/getOneUser";
+import UserListState from "./reducer/user/userList";
 
 export const store = configureStore({
   reducer: {
@@ -99,6 +100,7 @@ export const store = configureStore({
     AddUserState: AddUserState,
     UpdateUserState: UpdateUserState,
     OneUserState: OneUserState,
+    UserListState: UserListState,
 
     [baseApi.reducerPath]: baseApi.reducer,
   },

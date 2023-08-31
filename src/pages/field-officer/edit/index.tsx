@@ -569,6 +569,7 @@ export default function OfficerProfileEdit(props: any) {
                     label="Spouse Name"
                     placeholder="Type name here"
                     name="spouseName"
+                    readOnly={values.martialStatus == `Single` ? true : false}
                     value={values}
                     handleChange={handleChange}
                     onblur={handleBlur}
@@ -608,6 +609,7 @@ export default function OfficerProfileEdit(props: any) {
                           id: "4",
                         },
                       ]}
+                      readOnly={values.martialStatus == `Single` ? true : false}
                       value={values}
                       handleChange={handleChange}
                       onblur={handleBlur}
@@ -640,6 +642,7 @@ export default function OfficerProfileEdit(props: any) {
                           id: "4",
                         },
                       ]}
+                      readOnly={values.martialStatus == `Single` ? true : false}
                       value={values}
                       handleChange={handleChange}
                       onblur={handleBlur}
