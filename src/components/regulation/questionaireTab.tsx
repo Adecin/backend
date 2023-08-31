@@ -172,7 +172,7 @@ const Questing = ({ item, index, pillarId, regulationId }: any) => {
     { name: "Text Box", id: "Text" },
     { name: "DropDown", id: "DropDown" },
     { name: "Image Capture", id: "image" },
-    { name: "Yes or No", id: "YesorNo" },
+    // { name: "Yes or No", id: "YesorNo" },
     { name: "Number Box", id: "number" },
     { name: "GEO Location", id: "location" },
   ];
@@ -391,7 +391,7 @@ const AddQuesting = ({ length, pillarId, regulationId, onClose }: any) => {
     { name: "Text Box", id: "Text" },
     { name: "DropDown", id: "DropDown" },
     { name: "Image Capture", id: "image" },
-    { name: "Yes or No", id: "YesorNo" },
+    // { name: "Yes or No", id: "YesorNo" },
     { name: "Number Box", id: "number" },
     { name: "GEO Location", id: "location" },
   ];
