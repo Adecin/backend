@@ -19,6 +19,7 @@ import { getVillage } from "@/redux/reducer/dropdown/get-village";
 import DownloadIcon from "@mui/icons-material/Download";
 import TextInput from "@/components/inputComponents/textInput";
 import { Chip } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
@@ -328,7 +329,7 @@ export default function OfficerProfile(props: any) {
         //handleChange={handleTaskFilter}
         //setPaginate={setPaginate}
       />
-      <SurveyComponent data={surveyData} />
+      <SurveyComponent data={surveyData} villageDropDown={villageDropDown} />
       <div className="w-full">
         <HeaderText text={`Assign Village`} />
         <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]">
@@ -337,7 +338,7 @@ export default function OfficerProfile(props: any) {
               name="districtIds"
               labelname="Survey name"
               placeHolderText="Select district"
-              data={districtDropDown ?? []}
+              data={[]}
               value={``}
               handleChange={() => {}}
               onblur={() => {}}
@@ -402,6 +403,7 @@ export default function OfficerProfile(props: any) {
               ) : (
                 <p>No Assigned Data</p>
               )}
+              <AddCircleIcon className="text-primary pl-8" />
             </div>
           </div>
         </div>
@@ -546,7 +548,7 @@ const PersonalDetailCard = ({ data }: any) => {
 };
 
 const SurveyComponent = (props: any) => {
-  const { data } = props;
+  const { data, villageDropDown } = props;
 
   const LabelText = styled.p`
     width: 100px;
@@ -589,10 +591,10 @@ const SurveyComponent = (props: any) => {
               fieldStyle={{ background: "#F4F8FF" }}
               //labelname={"Location"}
               name={""}
-              data={[]}
+              data={villageDropDown ?? []}
               handleChange={undefined}
               value={undefined}
-              placeHolderText={"Location"}
+              placeHolderText={"Village"}
             />
           </div>
         </div>
