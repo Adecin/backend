@@ -26,15 +26,21 @@ import CustomButton from "@/components/customButton";
 import { getCrop } from "@/redux/reducer/crop/get-all-crop";
 import { useDispatch, useSelector } from "react-redux";
 import { listAllRegulation } from "@/redux/reducer/regulation/listAllRegulation";
+import MultiSelectMenu from "@/components/inputComponents/multiSelect";
+import { Chip, SelectChangeEvent } from "@mui/material";
+import { addNewSurvey } from "@/redux/reducer/survey/add-survey";
 
 const CreateSurvey = () => {
   const [allSelect, setSelect] = useState(false);
+  const [showRegulations, setShowRegulations] = useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
 
   const CropResponse = useSelector((state: any) => state.ListCrop.response);
   const CropList = CropResponse.data;
+
+  console.log(`CropList`, CropList);
 
   const RegulationData = useSelector(
     (state: any) => state.ListAllRegulation.response
@@ -50,7 +56,7 @@ const CreateSurvey = () => {
     &::before,
     ::after {
       content: "";
-      height: 2.25px;
+      height: 2px;
       width: 15rem;
       background-color: #3d7ffa;
       display: block;
@@ -62,6 +68,7 @@ const CreateSurvey = () => {
       margin-left: 1rem;
     }
   `;
+  const [selectedType, setSelectedType] = useState("FCV");
 
   const SignInSchema = Yup.object().shape({
     name: Yup.string()
@@ -72,8 +79,8 @@ const CreateSurvey = () => {
       .matches(/^[aA-zZ0-9\s]+$/, "Please enter a valid description"),
     startDate: Yup.string().required("StartDate is required"),
     endDate: Yup.string().required("EndDate is required"),
-    cropIds: Yup.array().required(),
-    regulationIds: Yup.array().required(),
+    cropId: Yup.string().required(),
+    regulationIdsNo: Yup.array().required(),
   });
 
   const formik = useFormik({
@@ -82,12 +89,13 @@ const CreateSurvey = () => {
       description: "",
       startDate: "",
       endDate: "",
-      cropIds: [],
-      regulationIds: [],
+      cropId: "",
+      regulationIdsNo: [],
     },
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
       console.log(values);
+      dispatch(addNewSurvey(values));
     },
   });
 
@@ -102,17 +110,35 @@ const CreateSurvey = () => {
     errors,
   } = formik;
 
+  console.log(`vallues`, values);
+
   useEffect(() => {
     dispatch(getCrop());
     dispatch(listAllRegulation());
   }, []);
 
-  const handleAddRegulation = (selected: any) => {
-    values.regulationIds.push(selected);
+  const filterCropType = (type: any) => {
+    const filtereData = CropList?.filter((item: any) => {
+      if (item.cropType == type) {
+        return item;
+      }
+    });
+    return filtereData;
   };
 
-  const handleAddCrop = (selected: any) => {
-    values.cropIds.push(selected);
+  useEffect(() => {
+    filterCropType(selectedType);
+  }, [selectedType]);
+
+  const [selectedItems, setSelectedItems] = useState<any>([]);
+
+  const handleSelectItems = () => {
+    setSelectedItems({ id: "", name: "" });
+  };
+
+  const handleAddRegulation = (id: any) => {
+    console.log(`id`, id);
+    setFieldValue(`regulationIdsNo`, id);
   };
 
   return (
@@ -134,7 +160,7 @@ const CreateSurvey = () => {
                 touched={touched}
                 handleChange={handleChange}
                 error={errors}
-                placeholder="Type regulation name here"
+                placeholder="Type survey name here"
                 customStyle={{
                   background: "#F7F7F7",
                 }}
@@ -158,7 +184,7 @@ const CreateSurvey = () => {
                 touched={touched}
                 handleChange={handleChange}
                 error={errors}
-                placeholder="Type regulation description here"
+                placeholder="Type survey description here"
               />
             </div>
           </div>
@@ -201,47 +227,96 @@ const CreateSurvey = () => {
             }}
             className="flex justify-start items-center gap-x-16 "
           >
-            <div
-              className=" bg-grey w-[376px] flex flex-col my-[2rem] p-[1rem] relative"
-              style={{
-                background: "#F7F7F7",
-              }}
-            >
-              <DoNotDisturbOnIcon
-                className="flex self-end absolute top-[10px]"
-                style={{ color: "red" }}
-              />
-              <SelectMenu
-                labelStyle={{ color: "#3D7FFA" }}
-                fieldStyle={{
-                  marginTop: "0.5rem",
-                  width: "336px",
-                  color: "#3D7FFA",
-                }}
-                labelname={"Regulation"}
-                name={""}
-                data={RegulationData ?? []}
-                handleChange={(e: any) => {
-                  handleAddRegulation(e.target.value);
-                }}
-                value={values}
-                placeHolderText={"Crop Type"}
-              />
-            </div>
-            <CustomButton
-              classes={`text-primary`}
-              buttonName={`Add Regulation`}
-              startIcon={<AddCircleIcon className="text-primary" />}
-              customStyle={{
-                background: "none",
-                height: "3rem",
-                padding: "1rem",
-                color: "#3D7FFA",
-              }}
-              handleOnClick={() => {
-                handleSubmit();
-              }}
-            />
+            {showRegulations ? (
+              <div className="flex flex-col mx-[1rem] my-[2rem]">
+                <LabelText
+                  classes={`w-full`}
+                  labelName={`Regulations`}
+                  required={true}
+                />
+                <div className="flex gap-x-6 my-4">
+                  <div>
+                    {values.regulationIdsNo.map((item: any) => {
+                      return (
+                        <>
+                          <Chip
+                            style={{
+                              margin: "5px",
+                              background: "#fff",
+                              padding: "1.5rem",
+                              border: "1px solid #3D7FFA",
+                              borderRadius: "10px",
+                              color: "#3D7FFA",
+                            }}
+                            sx={{
+                              "MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiChip-deleteIcon MuiChip-deleteIconMedium MuiChip-deleteIconColorDefault MuiChip-deleteIconFilledColorDefault css-i4bv87-MuiSvgIcon-root":
+                                {
+                                  padding: "1rem",
+                                  color: "#3D7FFA",
+                                },
+                            }}
+                            label={item}
+                            onDelete={() => {}}
+                          />
+                        </>
+                      );
+                    })}
+                  </div>
+                  <CustomButton
+                    classes={`text-primary`}
+                    buttonName={``}
+                    startIcon={<AddCircleIcon className="text-primary" />}
+                    customStyle={{
+                      background: "none",
+                      height: "3rem",
+                      padding: "1rem",
+                      color: "#3D7FFA",
+                    }}
+                    handleOnClick={() => {
+                      setShowRegulations(false);
+                    }}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-x-6">
+                <div className="p-[1rem]">
+                  <MultiSelectMenu
+                    labelStyle={{ color: "#3D7FFA" }}
+                    fieldStyle={{
+                      fontSize: "16px",
+                      marginTop: "0.5rem",
+                      width: "336px",
+                      color: "#3D7FFA",
+                      background: "#F7F7F7",
+                      boxShadow: "2px 2px 5px #0000003d",
+                    }}
+                    name={`regulationIdsNo`}
+                    data={RegulationData ?? []}
+                    handleChange={(e: any) => {
+                      console.log(`e.target.value`, e.target.value);
+                      handleAddRegulation(e.target.value);
+                    }}
+                    value={values.regulationIdsNo}
+                    placeHolderText={"Select Regulations"}
+                  />
+                </div>
+                <CustomButton
+                  classes={`text-primary`}
+                  buttonName={`Save`}
+                  customStyle={{
+                    background: "none",
+                    height: "3rem",
+                    padding: "1rem",
+                    color: "#3D7FFA",
+                    fontSize: "18px",
+                  }}
+                  handleOnClick={() => {
+                    setShowRegulations(true);
+                  }}
+                />
+              </div>
+            )}
           </div>
           <SeperaterText className="text-primary my-12">{`Crop type`}</SeperaterText>
           <div
@@ -250,46 +325,57 @@ const CreateSurvey = () => {
             }}
           >
             <div className="flex justify-start items-center gap-x-16 my-[2rem]">
-              <div
-                className=" bg-grey w-[406px] flex flex-col mt-[1rem] px-[1rem] py-[1rem] relative"
-                style={{
-                  background: "#F7F7F7",
-                }}
-              >
-                <DoNotDisturbOnIcon
-                  className="flex self-end absolute top-[10px]"
-                  style={{ color: "red" }}
-                />
+              <div className="p-[1rem]" style={{}}>
+                <FormControl>
+                  <RadioGroup
+                    value={selectedType}
+                    onChange={(e: any) => {
+                      console.log(`value`, e.target.value);
+                      setSelectedType(e.target.value);
+                    }}
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                  >
+                    <FormControlLabel
+                      value={"FCV"}
+                      control={
+                        <Radio
+                          sx={{
+                            color: "var(--primary) !important",
+                          }}
+                        />
+                      }
+                      label="FCV"
+                    />
+                    <FormControlLabel
+                      value={"NONFCV"}
+                      control={
+                        <Radio
+                          sx={{
+                            color: "var(--primary) !important",
+                          }}
+                        />
+                      }
+                      label="Non-FCV"
+                    />
+                  </RadioGroup>
+                </FormControl>
                 <SelectMenu
-                  labelStyle={{ color: "#3D7FFA" }}
                   fieldStyle={{
                     marginTop: "0.5rem",
                     width: "336px",
+                    color: "#3D7FFA",
+                    background: "#F7F7F7",
+                    boxShadow: "2px 2px 5px #0000003d",
                   }}
-                  labelname={"Crop Type"}
-                  name={""}
-                  data={CropList ?? []}
-                  handleChange={(e: any) => {
-                    handleAddCrop(e.target.value);
-                  }}
+                  name={"cropId"}
+                  data={filterCropType(selectedType) ?? []}
+                  handleChange={handleChange}
                   value={values}
-                  placeHolderText={"Burley"}
+                  placeHolderText={"Select Crop"}
                 />
               </div>
-              <CustomButton
-                classes={`text-primary`}
-                buttonName={`Add crop type`}
-                startIcon={<AddCircleIcon className="text-primary" />}
-                customStyle={{
-                  background: "none",
-                  height: "3rem",
-                  padding: "1rem",
-                  color: "#3D7FFA",
-                }}
-                handleOnClick={() => {
-                  handleSubmit();
-                }}
-              />
             </div>
           </div>
         </div>
