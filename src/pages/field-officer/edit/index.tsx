@@ -401,7 +401,6 @@ export default function OfficerProfileEdit(props: any) {
                   required={true}
                   error={errors}
                 />
-                s
               </div>
             </div>
           </div>

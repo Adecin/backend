@@ -172,7 +172,7 @@ const ListFieldOfficer = () => {
           >
             <span>
               {" "}
-              {e.farmer_status == "Pending" ? (
+              {e.farmer_status == "Pending" || e.farmer_status == "Rejected" ? (
                 <PendingOutlinedIcon className="text-[#F75656]" />
               ) : (
                 <CheckCircleOutlinedIcon className="text-[#3D7FFA]" />

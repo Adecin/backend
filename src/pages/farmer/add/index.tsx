@@ -413,6 +413,20 @@ const AddFarmer = () => {
                     error={errors}
                   />
                 </div>
+                <div className="pt-5">
+                  <SelectMenu
+                    name="cropType"
+                    labelname="Crop Type"
+                    placeHolderText="Select Crop"
+                    data={[]}
+                    value={values}
+                    handleChange={handleChange}
+                    onblur={handleBlur}
+                    touched={touched}
+                    required={true}
+                    error={errors}
+                  />
+                </div>
               </div>
             </div>
           </div>
