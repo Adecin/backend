@@ -15,7 +15,7 @@ const BreadCrumb = ({
     const path: any = window.location.pathname;
     setPathName(path.split("/"));
   }, []);
-  const filterPath: any = [...pathName];
+  let filterPath: any = [...pathName];
   if (lastName) {
     filterPath.splice(pathName.length - 1, 1);
     filterPath.push(lastName);
@@ -26,16 +26,16 @@ const BreadCrumb = ({
       <div className="py-5 px-4 bg-white">
         <div className="flex items-center">
           {filterPath?.map((breadCrumb: any, index: number) => {
-            console.log(`breadCrumb`, breadCrumb);
             return (
               <>
                 <div
                   key={index}
                   onClick={() => {
-                    const getRoutingPath = pathName
+                    const getRoutingPath = filterPath
                       .splice(0, index + 1)
                       .join("/");
                     router.push(getRoutingPath);
+                    filterPath = [...pathName];
                   }}
                   className={
                     `text-[18px] text-red cursor-pointer capitalize font-semibold hover:underline ` +
