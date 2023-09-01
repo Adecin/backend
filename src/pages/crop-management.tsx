@@ -138,7 +138,7 @@ export default function CropManagement(props: any) {
         </div>
         <CustomButton
           classes={`text-primary `}
-          buttonName={`Add question`}
+          buttonName={`Add crop`}
           startIcon={<AddCircleIcon className="text-primary" />}
           customStyle={{
             background: "none",
