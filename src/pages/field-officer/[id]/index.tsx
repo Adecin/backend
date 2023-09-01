@@ -52,8 +52,8 @@ const surveyData = [
     village: "vallakottai",
     survey: "Dakshina Kannada,Karapakam, 600 061",
     survey_status: (
-      <div className={`bg-[#FFE8E8] rounded-[10px] py-2 px-3`}>
-        <div className={`text-[#F75656]`}>{`pending`}</div>
+      <div className={`bg-[#EFF5E6] rounded-[10px] py-2 px-3`}>
+        <div className={`text-[#70B10E]`}>{`Completed`}</div>
       </div>
     ),
   },
@@ -63,8 +63,8 @@ const surveyData = [
     village: "vallakottai",
     survey: "Dakshina Kannada,Karapakam, 600 061",
     survey_status: (
-      <div className={`bg-[#FFE8E8] rounded-[10px] py-2 px-3`}>
-        <div className={`text-[#F75656]`}>{`pending`}</div>
+      <div className={`bg-[#FFF4E4] rounded-[10px] py-2 px-3`}>
+        <div className={`text-[#F8B34C]`}>{`Partial`}</div>
       </div>
     ),
   },
@@ -380,7 +380,7 @@ export default function OfficerProfile(props: any) {
           </div>
           <div className="px-[1rem]">
             <LabelText labelName={``} />
-            <div className="gap-x-4 pt-3">
+            <div className="gap-x-6 pt-3">
               {assignedVillage?.length ? (
                 assignedVillage?.map((item: any, index: number) => {
                   return (
@@ -389,7 +389,7 @@ export default function OfficerProfile(props: any) {
                         style={{
                           margin: "5px",
                           background: "#fff",
-                          padding: "1.5rem",
+                          padding: "1.25rem 1rem",
                           borderRadius: "10px",
                           color: "#3D7FFA",
                           border: "1px solid #3D7FFA",
@@ -403,7 +403,7 @@ export default function OfficerProfile(props: any) {
               ) : (
                 <p>No Assigned Data</p>
               )}
-              <AddCircleIcon className="text-primary pl-8" />
+              <AddCircleIcon className={`text-primary ml-[3rem]`} />
             </div>
           </div>
         </div>
