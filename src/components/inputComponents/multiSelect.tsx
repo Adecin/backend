@@ -118,7 +118,7 @@ export default function MultiSelectMenu(props: propsType) {
             }
             return (
               <MenuItem selected={true} key={index} value={item.id}>
-                {/* <Checkbox checked={true} /> */}
+                <Checkbox checked={value.includes(item.id)} />
                 {item.name}
               </MenuItem>
             );

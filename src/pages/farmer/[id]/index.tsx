@@ -76,6 +76,48 @@ const FarmerList = () => {
       ),
     },
   ];
+
+  const surveyData = [
+    {
+      no: 1,
+      regional_Manager: "KK001",
+      farm_ID: "KK001",
+      village: "vallakottai",
+      survey: "Dakshina Kannada,Karapakam, 600 061",
+      survey_status: (
+        <div className={`bg-[#FFE8E8] rounded-[10px] py-2 px-3`}>
+          <div className={`text-[#F75656]`}>{`pending`}</div>
+        </div>
+      ),
+      _: <span className="text-primary underline pr-8">view</span>,
+    },
+    {
+      no: 2,
+      regional_Manager: "KK001",
+      farm_ID: "KK001",
+      village: "vallakottai",
+      survey: "Dakshina Kannada,Karapakam, 600 061",
+      survey_status: (
+        <div className={`bg-[#EFF5E6] rounded-[10px] py-2 px-3`}>
+          <div className={`text-[#70B10E]`}>{`Completed`}</div>
+        </div>
+      ),
+      _: <span className="text-primary underline pr-8">view</span>,
+    },
+    {
+      no: 3,
+      regional_Manager: "KK001",
+      farm_ID: "KK001",
+      village: "vallakottai",
+      survey: "Dakshina Kannada,Karapakam, 600 061",
+      survey_status: (
+        <div className={`bg-[#FFF4E4] rounded-[10px] py-2 px-3`}>
+          <div className={`text-[#F8B34C]`}>{`Partial`}</div>
+        </div>
+      ),
+      _: <span className="text-primary underline pr-8">view</span>,
+    },
+  ];
   const data = tableData.map((e, index) => {
     return { No: index + 1, ...e };
   });
@@ -266,11 +308,13 @@ const FarmerList = () => {
             </div>{" "}
             <div className="px-5 ">
               <div className="my-4 text-[#858585] text-[16px]">Children</div>
-              <div className="my-4 text-text text-[14px]">
-                {`Male - ${farmerData.response.childrenMale ?? 0} `}
-              </div>
-              <div className="my-4 text-text text-[14px]">
-                {`Female - ${farmerData.response.childrenFemale ?? 0} `}
+              <div className="flex gap-x-8">
+                <div className="my-4 text-text text-[14px]">
+                  {`Male - ${farmerData.response.childrenMale ?? 0} `}
+                </div>
+                <div className="my-4 text-text text-[14px]">
+                  {`Female - ${farmerData.response.childrenFemale ?? 0} `}
+                </div>
               </div>
             </div>
           </div>
@@ -287,7 +331,7 @@ const FarmerList = () => {
         )}
         {/* second phase */}
         {/* survey details */}
-        {/* <div>
+        <div>
           <div className="text-text my-4 text-[16px]">Survey Details</div>
           <div className="flex items-center">
             <div className="text-text w-[70px]">Filter By : </div>
@@ -386,11 +430,11 @@ const FarmerList = () => {
               </div>
             </div>
           </div>
-        </div> */}
+        </div>
         {/* table */}
-        {/* <div className="max-w-[1100px] my-9">
-          <DynamicTable backgroundColor="lblue" data={data} />
-        </div> */}
+        <div className="max-w-[1100px] my-9">
+          <DynamicTable backgroundColor="lblue" data={surveyData} />
+        </div>
       </div>
     </>
   );
