@@ -72,7 +72,7 @@ export default function VillageManagement(props: any) {
       </div>
       <CustomButton
         classes={`text-primary `}
-        buttonName={`Add question`}
+        buttonName={`Add Village`}
         startIcon={<AddCircleIcon className="text-primary" />}
         customStyle={{
           background: "none",
