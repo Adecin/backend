@@ -357,13 +357,13 @@ const TypeElement = (props: any) => {
           customStyle={{
             color: "#858585",
             padding: "0.85rem",
-            width: "400px",
+            // width: "400px",
           }}
         />
         {/* tap number */}
         <div>
           <div
-            className={`bg-[white] w-[400px] ml-[12px] ${
+            className={`bg-[white] w-[300px] 2xl:w-[400px] mx-[12px] ${
               touched && touched.tapCode && errors && errors.tapCode
                 ? "text-error border-2 border-error"
                 : ""
@@ -445,7 +445,7 @@ const TypeElement = (props: any) => {
               placeholder="Type Number"
               customStyle={{
                 color: "#858585",
-                width: "300px",
+                // width: "300px",
               }}
             />
           </div>
@@ -468,7 +468,7 @@ const TypeElement = (props: any) => {
           customStyle={{
             color: "#858585",
             padding: "0.85rem",
-            width: "400px",
+            // width: "400px",
           }}
         />
         <TextInput
@@ -484,11 +484,11 @@ const TypeElement = (props: any) => {
           customStyle={{
             color: "#858585",
             padding: "0.85rem",
-            width: "400px",
+            // width: "400px",
           }}
         />
       </div>
-      <div>
+      <div className="flex">
         {viewPage && !editCrop ? (
           <EditIcon
             className={`text-primary text-[28px] mx-3 cursor-pointer`}

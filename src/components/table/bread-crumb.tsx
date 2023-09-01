@@ -31,11 +31,10 @@ const BreadCrumb = ({
                 <div
                   key={index}
                   onClick={() => {
-                    const getRoutingPath = filterPath
+                    const getRoutingPath = [...pathName]
                       .splice(0, index + 1)
                       .join("/");
                     router.push(getRoutingPath);
-                    filterPath = [...pathName];
                   }}
                   className={
                     `text-[18px] text-red cursor-pointer capitalize font-semibold hover:underline ` +

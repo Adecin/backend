@@ -19,8 +19,6 @@ import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from "@/redux/reducer/dropdown/get-village";
 import SelectMenu from "@/components/inputComponents/selectMenu";
 
-
-
 export default function VillageManagement(props: any) {
   const [value, setValue] = React.useState(0);
   const [searchValue, setSearchValue] = React.useState("");
@@ -28,12 +26,14 @@ export default function VillageManagement(props: any) {
   const [showNfcv, setshowNfcv] = React.useState(false);
   const dispatch = useDispatch();
 
-  const villageMangList = useSelector((state: any) => state.getAllVillageMangData);
+  const villageMangList = useSelector(
+    (state: any) => state.getAllVillageMangData
+  );
   const villageMangListData = villageMangList.response?.data;
 
   useEffect(() => {
     dispatch(getAllVillageMang(""));
-  }, [])
+  }, []);
 
   const CropTypeValue = value == 0 ? `FCV` : `NONFCV`;
 
@@ -50,14 +50,14 @@ export default function VillageManagement(props: any) {
         </div>
         <Filter
           value={searchValue}
-          applyFilter={() => { }}
+          applyFilter={() => {}}
           onSearch={(e: string) => {
             setSearchValue(e);
           }}
           filter={<div></div>}
         />
       </div>
-      <div>
+      <div className="px-5">
         {villageMangListData?.data?.map((filteredItem: any, index: any) => {
           console.log(filteredItem);
           return <UpdateCropComponent key={index} dataItem={filteredItem} />;
@@ -114,7 +114,7 @@ const AddCropComponent = (props: any) => {
     dispatch(getState());
     dispatch(getVillage());
     dispatch(getDistrict());
-  }, [])
+  }, []);
 
   const SignInSchema = Yup.object().shape({
     tapNumber: Yup.string()
@@ -202,7 +202,7 @@ const UpdateCropComponent = (props: any) => {
     dispatch(getState());
     dispatch(getVillage());
     dispatch(getDistrict());
-  }, [])
+  }, []);
 
   // useEffect(() => {
   //   if (UpdateState.isSuccess) {
@@ -212,7 +212,7 @@ const UpdateCropComponent = (props: any) => {
   // }, [UpdateState]);
 
   const { dataItem } = props;
-  console.log('azar', dataItem);
+  console.log("azar", dataItem);
   const SignInSchema = Yup.object().shape({
     tapNumber: Yup.string()
       .required("Please enter a Tap number")
@@ -335,7 +335,7 @@ const TypeElement = (props: any) => {
           data={villageDropDown}
           value={values}
           handleChange={(e: any) => {
-            setFieldValue('villageId', e.target.value)
+            setFieldValue("villageId", e.target.value);
           }}
           touched={touched}
           error={errors}
@@ -371,26 +371,27 @@ const TypeElement = (props: any) => {
           placeholder="Type Tap Number"
           customStyle={{
             padding: "0.85rem",
-            width: "400px",
+            // width: "400px",
           }}
         />
-        <TextInput
-          readOnly={viewPage && !editCrop}
-          classes={` py-0 pt-2`}
-          label={""}
-          name="villageCode"
-          value={values}
-          touched={touched}
-          handleChange={handleChange}
-          error={errors}
-          placeholder="Type Village Code"
-          customStyle={{
-            padding: "0.85rem",
-            width: "400px",
-          }}
-        />
+        <div className="2xl:w-[400px]">
+          <TextInput
+            readOnly={viewPage && !editCrop}
+            classes={` py-0 pt-2`}
+            label={""}
+            name="villageCode"
+            value={values}
+            touched={touched}
+            handleChange={handleChange}
+            error={errors}
+            placeholder="Type Village Code"
+            customStyle={{
+              padding: "0.85rem",
+            }}
+          />
+        </div>
       </div>
-      <div>
+      <div className="flex min-w-[300px]">
         {viewPage && !editCrop ? (
           <EditIcon
             className={`text-primary text-[28px] mx-3 cursor-pointer`}
