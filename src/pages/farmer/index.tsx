@@ -25,6 +25,8 @@ import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from "@/redux/reducer/dropdown/get-village";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import PendingOutlinedIcon from "@mui/icons-material/PendingOutlined";
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 
 const Info = async (data: string) => {
   toast.info(data, {
@@ -144,31 +146,19 @@ const ListFieldOfficer = () => {
       ),
       farmer_ID: e.farmer_farmerId,
       Name: e.farmer_name,
-      regulations: (
-        <div className="flex flex-col gap-y-2">
-          {e.regulation?.map((item: any, index: any) => {
-            let statusColor =
-              item.status === "Pending"
-                ? `#F75656`
-                : item.status === `Completed`
-                ? `#70B10E`
-                : `#F8B34C`;
-            return (
-              <div key={index} className="flex my-[10px] items-center">
-                <div>
-                  <abbr style={{ textDecoration: "none" }} title={item.status}>
-                    <div
-                      style={{
-                        background: statusColor,
-                      }}
-                      className={`w-[15px] mr-3 h-[15px] bg-[${statusColor}]`}
-                    />
-                  </abbr>
-                </div>
-                <div>{item.name}</div>
-              </div>
-            );
-          })}
+      survey_Status: (
+        <div
+          className={`${
+            e.farmer_status == "Pending" ? `bg-[#FFE8E8]` : `bg-[#E6EFFF]`
+          } rounded-[10px] py-2 px-3`}
+        >
+          <div
+            className={
+              e.farmer_status == "Pending" ? `text-[#F75656]` : `text-[#3D7FFA]`
+            }
+          >
+            {e.farmer_status}
+          </div>
         </div>
       ),
       approved_status: (
@@ -176,11 +166,19 @@ const ListFieldOfficer = () => {
           <div
             className={
               e.farmer_status == "Rejected" || e.farmer_status == "Pending"
-                ? "text-error"
-                : "text-[#70B10E]"
+                ? "text-[#F75656]"
+                : "text-[#3D7FFA]"
             }
           >
-            {e.farmer_status}
+            <span>
+              {" "}
+              {e.farmer_status == "Pending" || e.farmer_status == "Rejected" ? (
+                <PendingOutlinedIcon className="text-[#F75656]" />
+              ) : (
+                <CheckCircleOutlinedIcon className="text-[#3D7FFA]" />
+              )}{" "}
+            </span>
+            <span>{e.farmer_status}</span>
           </div>
         </div>
       ),
@@ -770,33 +768,12 @@ const FieldOfficerFilter = (props: any) => {
         </div>
         <div className="w-[350px] px-7 mt-8">
           <FormControl>
-            <label className="font-semibold">STP Status</label>
+            <label className="font-semibold">Survey Status</label>
             <RadioGroup
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
               onChange={(e: any) => {}}
-            >
-              <FormControlLabel
-                value="pending"
-                control={<Radio />}
-                label="Pending"
-              />
-              <FormControlLabel
-                value="complete"
-                control={<Radio />}
-                label="Completed"
-              />
-            </RadioGroup>
-          </FormControl>
-        </div>
-        <div className="w-[350px] px-8 mt-8">
-          <FormControl>
-            <label className="font-semibold">CM Status</label>
-            <RadioGroup
-              row
-              aria-labelledby="demo-row-radio-buttons-group-label"
-              name="row-radio-buttons-group"
             >
               <FormControlLabel
                 value="pending"

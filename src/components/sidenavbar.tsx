@@ -311,6 +311,10 @@ const sideMenu = [
     url: "/crop-management",
   },
   {
+    name: "Village Management",
+    url: "/village-management",
+  },
+  {
     name: "Survey",
     url: "/create-survey",
   },

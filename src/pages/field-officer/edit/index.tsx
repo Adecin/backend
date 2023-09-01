@@ -133,6 +133,7 @@ export default function OfficerProfileEdit(props: any) {
       ),
     dob: Yup.string().required("Dob is required"),
     gender: Yup.string().required("Gender is required"),
+    reportingManager: Yup.string().required("Reporting is required"),
     address: Yup.string().required("Address is required"),
     pincode: Yup.string()
       .matches(/^[0-9]+$/, "Invalid pincode")
@@ -159,6 +160,7 @@ export default function OfficerProfileEdit(props: any) {
       companyEmailId: getOneFieldData?.companyEmailId ?? "",
       dob: getOneFieldData?.dob ?? "",
       gender: getOneFieldData?.gender ?? "",
+      reportingManager: getOneFieldData?.gender ?? "",
       address: getOneFieldData?.address ?? "",
       stateId: getOneFieldData?.stateId?.id ?? "",
       districtId: getOneFieldData?.districtId?.id ?? "",
@@ -379,6 +381,19 @@ export default function OfficerProfileEdit(props: any) {
                       id: "FEMALE",
                     },
                   ]}
+                  value={values}
+                  handleChange={handleChange}
+                  onblur={handleBlur}
+                  touched={touched}
+                  required={true}
+                  error={errors}
+                />
+                <SelectMenu
+                  classes={`pt-[1rem]`}
+                  name="reportingManager"
+                  labelname="Reporting Manager"
+                  placeHolderText="Reporting Manager"
+                  data={[]}
                   value={values}
                   handleChange={handleChange}
                   onblur={handleBlur}
@@ -703,7 +718,7 @@ export default function OfficerProfileEdit(props: any) {
               </div>
             </div>
           </div>
-          <div className="flex self-center">
+          {/* <div className="flex self-center">
             <CustomButton
               buttonName={`Update Profile`}
               customStyle={{
@@ -711,42 +726,44 @@ export default function OfficerProfileEdit(props: any) {
               }}
               handleOnClick={handleSubmit}
             />
-          </div>
+          </div> */}
           <div className="w-full">
-            <HeaderText text={`Assign Farmer`} required={true} />
+            <HeaderText text={`Assign Village`} required={true} />
             <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]">
-              <p
-                className="font-semibold mb-8 ml-3"
-                style={{ fontSize: "16px", marginTop: "1.65rem" }}
-              >
-                Select Filter to Assign Farmer
-              </p>
               <div className="grid grid-cols-3">
                 <SelectMenu
+                  name="districtIds"
+                  labelname="Survey name"
+                  placeHolderText="Select district"
+                  data={districtDropDown ?? []}
+                  value={values}
+                  handleChange={handleChange}
+                  onblur={handleBlur}
+                  touched={touched}
+                  required={true}
+                  error={errors}
+                />
+                <SelectMenu
+                  //readOnly={!profileCreated}
                   labelname={"Crop type"}
                   name={""}
                   data={[]}
                   handleChange={undefined}
                   value={undefined}
                   placeHolderText={"Select"}
-                />
-                <SelectMenu
-                  name="districtFilter"
-                  labelname="District"
-                  placeHolderText="Select district"
-                  data={districtDropDown ?? []}
-                  value={filterData}
-                  handleChange={(e: any) => {
-                    setFilterData({
-                      ...filterData,
-                      districtFilter: e.target.value,
-                    });
-                  }}
-                  onblur={handleBlur}
-                  touched={touched}
                   required={true}
+                />
+                <TextInput
+                  value={``}
+                  label={"TAP number"}
+                  name=""
+                  placeholder="Enter in numbers"
+                  onblur={handleBlur}
+                  handleChange={handleChange}
+                  touched={touched}
                   error={errors}
                 />
+
                 <SelectMenu
                   name="villageFillter"
                   labelname="Village"
@@ -765,15 +782,15 @@ export default function OfficerProfileEdit(props: any) {
                   error={errors}
                 />
               </div>
-              <div className="px-[1rem]">
-                <LabelText labelName={`Farmer`} />
+              {/* <div className="px-[1rem]">
+                <LabelText labelName={`Village`} />
                 <div className="gap-x-4 pt-3">
                   {assignFarmerListFarmer?.response?.length ? (
                     assignFarmerListFarmer?.response?.map(
                       (item: any, index: number) => {
                         return (
                           <div key={index}>
-                            <Chip
+                            {/* <Chip
                               style={{
                                 margin: "5px",
                                 background: "#3D7FFA",
@@ -783,7 +800,7 @@ export default function OfficerProfileEdit(props: any) {
                               }}
                               label={item.farmerId.farmerId}
                               onDelete={() => {}}
-                            />
+                            /> 
                           </div>
                         );
                       }
@@ -792,36 +809,7 @@ export default function OfficerProfileEdit(props: any) {
                     <p>No Assigned Data</p>
                   )}
                 </div>
-                {filterData.villageFillter ? (
-                  <CustomButton
-                    startIcon={
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M10 0C7.35774 0.0318782 4.83268 1.09568 2.96418 2.96418C1.09568 4.83268 0.0318782 7.35774 0 10C0.0318782 12.6423 1.09568 15.1673 2.96418 17.0358C4.83268 18.9043 7.35774 19.9681 10 20C12.6423 19.9681 15.1673 18.9043 17.0358 17.0358C18.9043 15.1673 19.9681 12.6423 20 10C19.9681 7.35774 18.9043 4.83268 17.0358 2.96418C15.1673 1.09568 12.6423 0.0318782 10 0ZM15.7143 10.7143H10.7143V15.7143H9.28571V10.7143H4.28571V9.28571H9.28571V4.28571H10.7143V9.28571H15.7143V10.7143Z"
-                          fill="#3D7FFA"
-                        />
-                      </svg>
-                    }
-                    buttonName={`Assign farmer`}
-                    customStyle={{
-                      background: "none",
-                      color: "#3D7FFA",
-                      marginTop: "1.65rem",
-                    }}
-                    handleOnClick={() => {
-                      setFarmerPop(true);
-                    }}
-                  />
-                ) : (
-                  <p style={{ fontSize: "13px", marginTop: "1.65rem" }}></p>
-                )}
-              </div>
+              </div> */}
             </div>
           </div>
           {/* <div className="bg-[#F4F8FF] w-full p-[1rem]">
@@ -852,14 +840,11 @@ export default function OfficerProfileEdit(props: any) {
           </div> */}
           <div className="flex self-center">
             <CustomButton
-              buttonName={`Save Changes`}
+              buttonName={`Update Profile`}
               customStyle={{
-                background: "#3D7FFA",
                 padding: "1rem 3rem",
               }}
-              handleOnClick={() => {
-                router.back();
-              }}
+              handleOnClick={handleSubmit}
             />
           </div>
         </div>

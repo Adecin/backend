@@ -17,33 +17,75 @@ import { listFarmers } from "@/redux/reducer/farmer/list-former";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from "@/redux/reducer/dropdown/get-village";
 import DownloadIcon from "@mui/icons-material/Download";
+import TextInput from "@/components/inputComponents/textInput";
+import { Chip } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
+const assignedVillage = [
+  {
+    id: "KK001",
+    name: "Vallkottai",
+  },
+  {
+    id: "KK002",
+    name: "Mathur",
+  },
+];
+
 const surveyData = [
   {
-    survey: "DTE 2023",
-    field_officer: "KK001",
-    location: "Dakshina Kannada,Karapakam, 600 061",
-    farmer_ID: "KK001",
+    regional_Manager: "KK001",
+    farm_ID: "KK001",
+    village: "vallakottai",
+    survey: "Dakshina Kannada,Karapakam, 600 061",
+    survey_status: (
+      <div className={`bg-[#FFE8E8] rounded-[10px] py-2 px-3`}>
+        <div className={`text-[#F75656]`}>{`pending`}</div>
+      </div>
+    ),
   },
   {
-    survey: "DTE 2023",
-    field_officer: "KK001",
-    location: "Dakshina Kannada,Karapakam, 600 061",
-    farmer_ID: "KK001",
+    regional_Manager: "KK001",
+    farm_ID: "KK001",
+    village: "vallakottai",
+    survey: "Dakshina Kannada,Karapakam, 600 061",
+    survey_status: (
+      <div className={`bg-[#EFF5E6] rounded-[10px] py-2 px-3`}>
+        <div className={`text-[#70B10E]`}>{`Completed`}</div>
+      </div>
+    ),
   },
   {
-    survey: "DTE 2023",
-    field_officer: "KK001",
-    location: "Dakshina Kannada,Karapakam, 600 061",
-    farmer_ID: "KK001",
+    regional_Manager: "KK001",
+    farm_ID: "KK001",
+    village: "vallakottai",
+    survey: "Dakshina Kannada,Karapakam, 600 061",
+    survey_status: (
+      <div className={`bg-[#FFF4E4] rounded-[10px] py-2 px-3`}>
+        <div className={`text-[#F8B34C]`}>{`Partial`}</div>
+      </div>
+    ),
+  },
+];
+
+const villageData = [
+  {
+    No: "1",
+    assigned_Date: "04/08/2023",
+    village_ID: "KK001",
+    village: " xxy village",
+    tap_number: "KK00186",
+    status: <p style={{ color: "#70B10E" }}>{"Completed"}</p>,
   },
   {
-    survey: "DTE 2023",
-    field_officer: "KK001",
-    location: "Dakshina Kannada,Karapakam, 600 061",
-    farmer_ID: "KK002",
+    No: "1",
+    assigned_Date: "04/08/2023",
+    village_ID: "KK001",
+    village: " xxy village",
+    tap_number: "KK00186",
+    status: <p style={{ color: "#70B10E" }}>{"Completed"}</p>,
   },
 ];
 
@@ -279,15 +321,93 @@ export default function OfficerProfile(props: any) {
         </div>
       </div>
       <AssignedTask
-        values={taskFilter}
-        data={FilterDataList}
+        //values={taskFilter}
+        data={villageData}
         farmerDrop={farmerDropDown}
         districtDrop={districtDropDown}
         villageDrop={villageDropDown}
-        handleChange={handleTaskFilter}
-        setPaginate={setPaginate}
+        //handleChange={handleTaskFilter}
+        //setPaginate={setPaginate}
       />
-      <SurveyComponent data={surveyData} />
+      <SurveyComponent data={surveyData} villageDropDown={villageDropDown} />
+      <div className="w-full">
+        <HeaderText text={`Assign Village`} />
+        <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]">
+          <div className="grid grid-cols-3">
+            <SelectMenu
+              name="districtIds"
+              labelname="Survey name"
+              placeHolderText="Select district"
+              data={[]}
+              value={``}
+              handleChange={() => {}}
+              onblur={() => {}}
+              required={true}
+            />
+            <SelectMenu
+              labelname={"Crop type"}
+              name={""}
+              data={[]}
+              handleChange={undefined}
+              value={undefined}
+              placeHolderText={"Select"}
+              required={true}
+            />
+            <TextInput
+              value={``}
+              label={"TAP number"}
+              name=""
+              placeholder="Enter in numbers"
+              onblur={() => {}}
+              handleChange={() => {}}
+            />
+
+            <SelectMenu
+              name="villageFillter"
+              labelname="Village"
+              placeHolderText="Select village"
+              data={villageDropDown ?? []}
+              value={filterData}
+              handleChange={(e: any) => {
+                setFilterData({
+                  ...filterData,
+                  villageFillter: e.target.value,
+                });
+              }}
+              onblur={() => {}}
+              required={true}
+            />
+          </div>
+          <div className="px-[1rem]">
+            <LabelText labelName={``} />
+            <div className="gap-x-6 pt-3">
+              {assignedVillage?.length ? (
+                assignedVillage?.map((item: any, index: number) => {
+                  return (
+                    <>
+                      <Chip
+                        style={{
+                          margin: "5px",
+                          background: "#fff",
+                          padding: "1.25rem 1rem",
+                          borderRadius: "10px",
+                          color: "#3D7FFA",
+                          border: "1px solid #3D7FFA",
+                        }}
+                        label={item.name}
+                        onDelete={() => {}}
+                      />
+                    </>
+                  );
+                })
+              ) : (
+                <p>No Assigned Data</p>
+              )}
+              <AddCircleIcon className={`text-primary ml-[3rem]`} />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -313,8 +433,8 @@ const AssignedTask = (props: any) => {
 
   return (
     <div className="my-2">
-      <HeaderText text={`Assigned Task`} />
-      <div className="filters flex items-center mt-[1rem]">
+      <HeaderText text={`Assigned Village`} />
+      {/* <div className="filters flex items-center mt-[1rem]">
         <LabelText className="">{`Filter by`}</LabelText>
         <div className="flex w-[100%] justify-around">
           <div className="w-full">
@@ -360,7 +480,7 @@ const AssignedTask = (props: any) => {
             />
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="assignListtable">
         <DynamicTable
           data={data}
@@ -428,7 +548,7 @@ const PersonalDetailCard = ({ data }: any) => {
 };
 
 const SurveyComponent = (props: any) => {
-  const { data } = props;
+  const { data, villageDropDown } = props;
 
   const LabelText = styled.p`
     width: 100px;
@@ -471,10 +591,10 @@ const SurveyComponent = (props: any) => {
               fieldStyle={{ background: "#F4F8FF" }}
               //labelname={"Location"}
               name={""}
-              data={[]}
+              data={villageDropDown ?? []}
               handleChange={undefined}
               value={undefined}
-              placeHolderText={"Location"}
+              placeHolderText={"Village"}
             />
           </div>
         </div>
