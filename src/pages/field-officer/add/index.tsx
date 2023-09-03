@@ -22,6 +22,11 @@ import { addFieldOfficer } from "@/redux/reducer/fieldOfficer/addFieldOfficer";
 import { assignFarmerList } from "@/redux/reducer/fieldOfficer/assignFarmerList";
 import { useRouter, usePathname } from "next/navigation";
 import { unassignFarmerList } from "@/redux/reducer/fieldOfficer/unassignFarmerList";
+import { getRolesList } from "@/redux/reducer/dropdown/get-roles";
+import { listAllSurvey } from "@/redux/reducer/survey/getSurveyList";
+import { getCrop } from "@/redux/reducer/crop/get-all-crop";
+import { listTechnicianSurveyDetails } from "@/redux/reducer/survey/technicianSurveyDetails";
+import { getAllVillageMang } from "@/redux/reducer/villageMang/getAllVillageMang";
 
 export default function OfficerProfileAdd(props: any) {
   const [farmerPop, setFarmerPop] = useState(false);
@@ -36,6 +41,12 @@ export default function OfficerProfileAdd(props: any) {
   const GetState = useSelector((state: any) => state.ListState);
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
+
+  const villageMangList = useSelector(
+    (state: any) => state.getAllVillageMangData
+  );
+  const villageMangListData = villageMangList.response?.data;
+
   const addFieldOffData = useSelector(
     (state: any) => state.AddFieldOfficerData
   );
@@ -45,6 +56,10 @@ export default function OfficerProfileAdd(props: any) {
   const assignFarmerListFarmer = useSelector(
     (store: any) => store.AssignFarmerListData
   );
+
+  const SurveyList = useSelector((state: any) => state.ListAllSurvey.response);
+  const CropResponse = useSelector((state: any) => state.ListCrop.response);
+  const CropList = CropResponse.data;
 
   const [filterData, setFilterData] = useState({
     stateFilter: "all",
@@ -65,7 +80,9 @@ export default function OfficerProfileAdd(props: any) {
     dispatch(getState());
     dispatch(getVillage());
     dispatch(getDistrict());
+    dispatch(getRolesList());
     dispatch(unassignFarmerList(""));
+    dispatch(getAllVillageMang());
   }, []);
 
   useEffect(() => {
@@ -75,6 +92,8 @@ export default function OfficerProfileAdd(props: any) {
 
   useEffect(() => {
     dispatch(assignFarmerList(`?id=${addFieldOffData.response.id}`));
+    dispatch(listAllSurvey());
+    dispatch(getCrop());
   }, [addFieldOffData, farmerPop]);
 
   const stateDropDown = GetState.response?.data?.map(
@@ -92,6 +111,12 @@ export default function OfficerProfileAdd(props: any) {
       return { id: e.id, name: e.name };
     }
   );
+
+  // const assignVillageDropDown = villageMangListData?.map(
+  //   (e: any, index: number) => {
+  //     return { id: e.id, name: e.name };
+  //   }
+  // );
 
   const marriedDropDown = [
     {
@@ -130,7 +155,7 @@ export default function OfficerProfileAdd(props: any) {
       ),
     dob: Yup.string().required("Dob is required"),
     gender: Yup.string().required("Gender is required"),
-    reportingManager: Yup.string().required("Reporting Manager is required"),
+    reportingManager: Yup.string(),
     address: Yup.string().required("Address is required"),
     pincode: Yup.string()
       .matches(/^[0-9]+$/, "Invalid pincode")
@@ -750,122 +775,10 @@ export default function OfficerProfileAdd(props: any) {
             />
           </div>
         )}
-        {addFieldOffData.response.id && (
-          <div>
-            <div className="w-full">
-              <HeaderText text={`Assign Village`} />
-              <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]">
-                <div className="grid grid-cols-3">
-                  <SelectMenu
-                    name="districtIds"
-                    labelname="Survey name"
-                    placeHolderText="Select district"
-                    data={districtDropDown ?? []}
-                    value={values}
-                    handleChange={handleChange}
-                    onblur={handleBlur}
-                    touched={touched}
-                    required={true}
-                    error={errors}
-                  />
-                  <SelectMenu
-                    labelname={"Crop type"}
-                    name={""}
-                    data={[]}
-                    handleChange={undefined}
-                    value={undefined}
-                    placeHolderText={"Select"}
-                    required={true}
-                  />
-                  <TextInput
-                    value={``}
-                    label={"TAP number"}
-                    name=""
-                    placeholder="Enter in numbers"
-                    onblur={handleBlur}
-                    handleChange={handleChange}
-                    touched={touched}
-                    error={errors}
-                  />
-
-                  <SelectMenu
-                    name="villageFillter"
-                    labelname="Village"
-                    placeHolderText="Select village"
-                    data={villageDropDown ?? []}
-                    value={filterData}
-                    handleChange={(e: any) => {
-                      setFilterData({
-                        ...filterData,
-                        villageFillter: e.target.value,
-                      });
-                    }}
-                    onblur={handleBlur}
-                    touched={touched}
-                    required={true}
-                    error={errors}
-                  />
-                </div>
-                {/* <div className="px-[1rem]">
-                  <LabelText labelName={``} />
-                  <div className="gap-x-4 pt-3">
-                    {assignFarmerListFarmer?.response?.length ? (
-                      assignFarmerListFarmer?.response?.map(
-                        (item: any, index: number) => {
-                          return (
-                            <>
-                              <Chip
-                                style={{
-                                  margin: "5px",
-                                  background: "#3D7FFA",
-                                  padding: "1.5rem",
-                                  borderRadius: "10px",
-                                  color: "#fff",
-                                }}
-                                label={item.farmerId.farmerId}
-                                onDelete={() => {}}
-                              />
-                            </>
-                          );
-                        }
-                      )
-                    ) : (
-                      <p>No Assigned Data</p>
-                    )}
-                  </div>
-                </div> */}
-              </div>
-            </div>
-            {/* <div className="bg-[#F4F8FF] w-full p-[1rem]">
-            <CustomButton
-              //disable={!profileCreated}
-              startIcon={
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M10 0C7.35774 0.0318782 4.83268 1.09568 2.96418 2.96418C1.09568 4.83268 0.0318782 7.35774 0 10C0.0318782 12.6423 1.09568 15.1673 2.96418 17.0358C4.83268 18.9043 7.35774 19.9681 10 20C12.6423 19.9681 15.1673 18.9043 17.0358 17.0358C18.9043 15.1673 19.9681 12.6423 20 10C19.9681 7.35774 18.9043 4.83268 17.0358 2.96418C15.1673 1.09568 12.6423 0.0318782 10 0ZM15.7143 10.7143H10.7143V15.7143H9.28571V10.7143H4.28571V9.28571H9.28571V4.28571H10.7143V9.28571H15.7143V10.7143Z"
-                    fill="#3D7FFA"
-                  />
-                </svg>
-              }
-              buttonName={`Assign farmer`}
-              customStyle={{
-                background: "none",
-                color: "#3D7FFA",
-              }}
-              handleOnClick={() => {
-                setFarmerPop(true);
-              }}
-            />
-          </div> */}
-          </div>
-        )}
-        {addFieldOffData.response.id && (
+        {/* {addFieldOffData.response.id && (
+          <AssignVillage techId={addFieldOffData.response.id} />
+        )} */}
+        {/* {addFieldOffData.response.id && (
           <div className="flex self-center">
             <CustomButton
               buttonName={`Save`}
@@ -877,9 +790,9 @@ export default function OfficerProfileAdd(props: any) {
               }}
             />
           </div>
-        )}
+        )} */}
       </div>
-      <Dialog open={farmerPop} maxWidth={`xs`} fullWidth={true}>
+      {/* <Dialog open={farmerPop} maxWidth={`xs`} fullWidth={true}>
         <FarmerList
           onClose={() => {
             setFarmerPop(false);
@@ -888,7 +801,7 @@ export default function OfficerProfileAdd(props: any) {
           assignVillageId={filterData?.villageFillter}
           data={unAssignListFarmer.response.data}
         />
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 }
@@ -918,5 +831,177 @@ const LabelText = (props: any) => {
     >
       {labelName}
     </p>
+  );
+};
+
+const AssignVillage = (props: any) => {
+  const { createdTrue, techId } = props;
+  const dispatch = useDispatch();
+  const CropResponse = useSelector((state: any) => state.ListCrop.response);
+  const CropList = CropResponse.data;
+
+  const villageMangList = useSelector(
+    (state: any) => state.getAllVillageMangData
+  );
+  const villageMangListData = villageMangList.response?.data;
+
+  const query = `?technicianId=${techId}`;
+
+  useEffect(() => {
+    //dispatch(listTechnicianSurvey());
+    dispatch(getCrop());
+  }, [createdTrue]);
+
+  const AssignVillageSchema = Yup.object().shape({
+    surveyId: Yup.string().required("Survey is required"),
+    cropId: Yup.string().required("Crop Type is required"),
+    tapNumber: Yup.string().required("Tap Number is required"),
+    villageId: Yup.array().required("Village is required"),
+  });
+
+  // formik
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      surveyId: "",
+      cropId: "",
+      tapNumber: "",
+      villageIds: [],
+    },
+    validationSchema: AssignVillageSchema,
+    onSubmit: (values: any) => {
+      console.log(`values`, values);
+    },
+  });
+
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    touched,
+    setFieldTouched,
+    setFieldValue,
+    resetForm,
+    setErrors,
+    errors,
+    setFieldError,
+  }: any = formik;
+
+  console.log(`values`, values);
+
+  return (
+    <div>
+      <div className="w-full">
+        <HeaderText text={`Assign Village`} />
+        <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]">
+          <div className="grid grid-cols-3">
+            <SelectMenu
+              name="surveyId"
+              labelname="Survey name"
+              placeHolderText="Select Survey"
+              data={[]}
+              value={values}
+              handleChange={handleChange}
+              onblur={handleBlur}
+              touched={touched}
+              required={true}
+              error={errors}
+            />
+            <SelectMenu
+              labelname={"Crop type"}
+              name={"cropId"}
+              data={CropList ?? []}
+              handleChange={handleChange}
+              onblur={handleBlur}
+              touched={touched}
+              value={values}
+              placeHolderText={"Select"}
+              required={true}
+            />
+            <TextInput
+              value={values}
+              label={"TAP number"}
+              name="tapNumber"
+              placeholder="Enter in numbers"
+              onblur={handleBlur}
+              handleChange={handleChange}
+              touched={touched}
+              error={errors}
+            />
+
+            <SelectMenu
+              name="villageIds"
+              labelname="Village"
+              placeHolderText="Select village"
+              data={villageMangListData ?? []}
+              value={values}
+              handleChange={(e: any) => {
+                setFieldValue(`villageIds`, e.target.value);
+              }}
+              onblur={handleBlur}
+              touched={touched}
+              required={true}
+              error={errors}
+            />
+          </div>
+          {/* <div className="px-[1rem]">
+                  <LabelText labelName={``} />
+                  <div className="gap-x-4 pt-3">
+                    {assignFarmerListFarmer?.response?.length ? (
+                      assignFarmerListFarmer?.response?.map(
+                        (item: any, index: number) => {
+                          return (
+                            <>
+                              <Chip
+                                style={{
+                                  margin: "5px",
+                                  background: "#3D7FFA",
+                                  padding: "1.5rem",
+                                  borderRadius: "10px",
+                                  color: "#fff",
+                                }}
+                                label={item.farmerId.farmerId}
+                                onDelete={() => {}}
+                              />
+                            </>
+                          );
+                        }
+                      )
+                    ) : (
+                      <p>No Assigned Data</p>
+                    )}
+                  </div>
+                </div> */}
+        </div>
+      </div>
+      {/* <div className="bg-[#F4F8FF] w-full p-[1rem]">
+            <CustomButton
+              //disable={!profileCreated}
+              startIcon={
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10 0C7.35774 0.0318782 4.83268 1.09568 2.96418 2.96418C1.09568 4.83268 0.0318782 7.35774 0 10C0.0318782 12.6423 1.09568 15.1673 2.96418 17.0358C4.83268 18.9043 7.35774 19.9681 10 20C12.6423 19.9681 15.1673 18.9043 17.0358 17.0358C18.9043 15.1673 19.9681 12.6423 20 10C19.9681 7.35774 18.9043 4.83268 17.0358 2.96418C15.1673 1.09568 12.6423 0.0318782 10 0ZM15.7143 10.7143H10.7143V15.7143H9.28571V10.7143H4.28571V9.28571H9.28571V4.28571H10.7143V9.28571H15.7143V10.7143Z"
+                    fill="#3D7FFA"
+                  />
+                </svg>
+              }
+              buttonName={`Assign farmer`}
+              customStyle={{
+                background: "none",
+                color: "#3D7FFA",
+              }}
+              handleOnClick={() => {
+                setFarmerPop(true);
+              }}
+            />
+          </div> */}
+    </div>
   );
 };

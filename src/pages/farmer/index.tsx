@@ -23,10 +23,12 @@ import { approveFarmer } from "@/redux/reducer/farmer/approve-farmer";
 import { updateAssignFarmer } from "@/redux/reducer/fieldOfficer/updateAssignFarmer";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from "@/redux/reducer/dropdown/get-village";
+import { getAllVillageMang } from "@/redux/reducer/villageMang/getAllVillageMang";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import PendingOutlinedIcon from "@mui/icons-material/PendingOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import Header from "@/components/header";
 
 const Info = async (data: string) => {
   toast.info(data, {
@@ -276,7 +278,7 @@ const ListFieldOfficer = () => {
             )}
           </div>
         </Dialog>
-
+        <Header />
         <div className="px-4">
           {/* bread crumb and filters */}
           <div
@@ -311,14 +313,6 @@ const ListFieldOfficer = () => {
           </div>
           {/* mange */}
           <div className="flex justify-between ">
-            <div
-              onClick={() => {
-                setManageOpen(true);
-              }}
-              className="mx-4 text-[18px] underline cursor-pointer text-grey font-semibold"
-            >
-              Manage
-            </div>
             <div className="mx-4 text-[18px] underline text-[#107C41] cursor-pointer flex items-center">
               <div>
                 <svg
@@ -684,6 +678,9 @@ const FieldOfficerFilter = (props: any) => {
 
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
+  const villageMangList = useSelector(
+    (state: any) => state.getAllVillageMangData
+  );
   const ListFieldOfficer = useSelector(
     (store: any) => store.ListFieldOfficerData
   );
@@ -694,6 +691,7 @@ const FieldOfficerFilter = (props: any) => {
     dispatch(listFieldOfficer(""));
     dispatch(getVillage());
     dispatch(getDistrict());
+    dispatch(getAllVillageMang());
   }, []);
 
   const districtDropDown = GetDistrict.response?.data?.map(
@@ -701,9 +699,9 @@ const FieldOfficerFilter = (props: any) => {
       return { id: e.id, name: e.name };
     }
   );
-  const villageDropDown = GetSVillage.response?.data?.map(
+  const villageDropDown = villageMangList.response?.data?.data?.map(
     (e: any, index: number) => {
-      return { id: e.id, name: e.name };
+      return { id: e.id, name: e.villageId.name };
     }
   );
   const technicianDropDown = ListFieldOfficer.response?.data?.map(
@@ -731,6 +729,7 @@ const FieldOfficerFilter = (props: any) => {
                 id: "09",
               },
             ]}
+            readOnly={true}
           />
         </div>
         <div className="w-[350px] px-3">

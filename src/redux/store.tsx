@@ -7,12 +7,14 @@ import UserLogin from "./reducer/login/login";
 import ListState from "./reducer/dropdown/get-state";
 import ListDistrict from "./reducer/dropdown/get-district";
 import ListVillage from "./reducer/dropdown/get-village";
+import GetRolesList from "./reducer/dropdown/get-roles";
 
 //fieldOfficer
 import ListFieldOfficerData from "./reducer/fieldOfficer/getList";
 import OneFieldOfficerData from "./reducer/fieldOfficer/getOne";
 import AddFieldOfficerData from "./reducer/fieldOfficer/addFieldOfficer";
 import UpdateFieldOfficerData from "./reducer/fieldOfficer/updateFieldOfficer";
+import AssignTechCrop from "./reducer/fieldOfficer/assignTechCrop";
 
 // crop
 import ListCrop from "./reducer/crop/get-all-crop";
@@ -46,7 +48,10 @@ import EditRegulation from "./reducer/regulation/edit-regulation";
 
 //survey
 import AddNewSurvey from "./reducer/survey/add-survey";
-
+import ListAllSurvey from "./reducer/survey/getSurveyList";
+import AssignTechSurvey from "./reducer/fieldOfficer/assignSurvey";
+import TechSurveyDetails from "./reducer/survey/technicianSurveyDetails";
+import ListTechSurvey from "./reducer/survey/getTechSurvey";
 //user
 import AddUserState from "./reducer/user/addStaff";
 import UpdateUserState from "./reducer/user/updateUser";
@@ -66,6 +71,7 @@ export const store = configureStore({
     ListDistrict: ListDistrict,
     ListVillage: ListVillage,
     UserLogin: UserLogin,
+    GetRolesList: GetRolesList,
 
     // crop
     ListCrop: ListCrop,
@@ -90,6 +96,8 @@ export const store = configureStore({
     ApproveFarmerData: ApproveFarmerData,
     AssignedFarmersCountData: AssignedFarmersCountData,
     updateAssignFarmerData: updateAssignFarmerData,
+    AssignTechSurvey: AssignTechSurvey,
+    AssignTechCrop: AssignTechCrop,
     //regulation
     AddNewRegulation: AddNewRegulation,
     EditRegulation: EditRegulation,
@@ -102,6 +110,9 @@ export const store = configureStore({
     DeleteQuestion: DeleteQuestion,
     //survey
     AddNewSurvey: AddNewSurvey,
+    ListAllSurvey: ListAllSurvey,
+    ListTechSurvey: ListTechSurvey,
+    TechSurveyDetails: TechSurveyDetails,
     //user
     AddUserState: AddUserState,
     UpdateUserState: UpdateUserState,
@@ -109,10 +120,10 @@ export const store = configureStore({
     UserListState: UserListState,
 
     //vilage management
-    addVillageMangData:addVillageMangData,
-    getAllVillageMangData:getAllVillageMangData,
-    getOneVillageMangData:getOneVillageMangData,
-    updateVillageMangData:updateVillageMangData,
+    addVillageMangData: addVillageMangData,
+    getAllVillageMangData: getAllVillageMangData,
+    getOneVillageMangData: getOneVillageMangData,
+    updateVillageMangData: updateVillageMangData,
 
     [baseApi.reducerPath]: baseApi.reducer,
   },
