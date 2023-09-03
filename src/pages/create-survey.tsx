@@ -305,11 +305,12 @@ const CreateSurvey = () => {
                   classes={`text-primary`}
                   buttonName={`Save`}
                   customStyle={{
-                    background: "none",
+                    background: "#3D7FFA",
+                    border: "1px solid #3D7FFA",
                     height: "3rem",
-                    padding: "1rem",
-                    color: "#3D7FFA",
-                    fontSize: "18px",
+                    padding: "1rem 2rem",
+                    color: "#fff",
+                    fontSize: "16px",
                   }}
                   handleOnClick={() => {
                     setShowRegulations(true);

@@ -41,7 +41,9 @@ const AddFarmer = () => {
   const farmerOneData = useSelector((state: any) => state.listOneFarmer);
   const CropList = useSelector((state: any) => state.ListCrop);
 
-  const villageMangList = useSelector((state: any) => state.getAllVillageMangData)
+  const villageMangList = useSelector(
+    (state: any) => state.getAllVillageMangData
+  );
   const villageMangListData = villageMangList.response?.data;
   console.log(villageMangListData);
 
@@ -99,8 +101,6 @@ const AddFarmer = () => {
     },
   ];
 
-
-
   //<==================== validations ================================>
 
   const ProfileSchemas = Yup.object().shape({
@@ -148,34 +148,34 @@ const AddFarmer = () => {
       ? Yup.string().notRequired()
       : Yup.mixed()
 
-        .test(
-          "profile image required",
-          "profile image required",
-          (value: any) => {
-            if (value.type) {
-              return true;
-            } else {
-              return false;
+          .test(
+            "profile image required",
+            "profile image required",
+            (value: any) => {
+              if (value.type) {
+                return true;
+              } else {
+                return false;
+              }
             }
-          }
-        )
-        .required("Profile image  is required"),
+          )
+          .required("Profile image  is required"),
 
     adharImage: farmerOneData.response?.id
       ? Yup.string().notRequired()
       : Yup.mixed()
-        .test(
-          "aadhar card is required",
-          "aadhar card is required",
-          (value: any) => {
-            if (value.type) {
-              return true;
-            } else {
-              return false;
+          .test(
+            "aadhar card is required",
+            "aadhar card is required",
+            (value: any) => {
+              if (value.type) {
+                return true;
+              } else {
+                return false;
+              }
             }
-          }
-        )
-        .required("Aadhar card is required"),
+          )
+          .required("Aadhar card is required"),
   });
 
   // <================ field values ===================>
@@ -225,9 +225,14 @@ const AddFarmer = () => {
   const submit = (data: any) => {
     const apiFormData = new FormData();
 
-    const villageCode = villageMangListData?.data?.find((item: any) => item.id === data.villageId);
-    const cropCode = CropList?.response?.data?.find((item: any) => item.cropId === data.cropId);
-    const newFarmerId = cropCode.cropCode + villageCode.tapNumber + villageCode.villageCode;
+    const villageCode = villageMangListData?.data?.find(
+      (item: any) => item.id === data.villageId
+    );
+    const cropCode = CropList?.response?.data?.find(
+      (item: any) => item.cropId === data.cropId
+    );
+    const newFarmerId =
+      cropCode.cropCode + villageCode.tapNumber + villageCode.villageCode;
 
     data.farmerId = newFarmerId;
 
@@ -723,8 +728,8 @@ const AddFarmer = () => {
                 {addFarmerData.isLoading || editFarmerData.isLoading
                   ? "Loading..."
                   : farmer_id
-                    ? "Update Profile"
-                    : "Create Profile"}
+                  ? "Update Profile"
+                  : "Create Profile"}
               </div>
             </div>
           )}
@@ -743,7 +748,9 @@ const AddFarmer = () => {
                     <>
                       <div key={index} className="my-3">
                         <FormDetails
-                          farmerCode={addFarmerData.response.farmerId ?? values.farmerId}
+                          farmerCode={
+                            addFarmerData.response.farmerId ?? values.farmerId
+                          }
                           formerId={addFarmerData.response.id ?? farmer_id}
                           is_edit={farmer_id ? true : false}
                           data={e}
@@ -757,7 +764,9 @@ const AddFarmer = () => {
               {/* add form details */}
               {addFormDetail ? (
                 <FormDetails
-                  farmerCode={addFarmerData.response.farmerId ?? values.farmerId}
+                  farmerCode={
+                    addFarmerData.response.farmerId ?? values.farmerId
+                  }
                   formerId={addFarmerData.response.id ?? farmer_id}
                   index={farmData.response.data?.length ?? 0}
                   closeFarm={() => {
@@ -802,7 +811,14 @@ const AddFarmer = () => {
 };
 export default AddFarmer;
 
-const FormDetails = ({ data, index, formerId, farmerCode, closeFarm, is_edit }: any) => {
+const FormDetails = ({
+  data,
+  index,
+  formerId,
+  farmerCode,
+  closeFarm,
+  is_edit,
+}: any) => {
   const dispatch = useDispatch();
 
   const GetState = useSelector((state: any) => state.ListState);
@@ -811,7 +827,9 @@ const FormDetails = ({ data, index, formerId, farmerCode, closeFarm, is_edit }: 
   const CropList = useSelector((state: any) => state.ListCrop);
   const AddFarm = useSelector((state: any) => state.AddFarm);
   const EditFarm = useSelector((state: any) => state.EditFarm);
-  const villageMangList = useSelector((state: any) => state.getAllVillageMangData)
+  const villageMangList = useSelector(
+    (state: any) => state.getAllVillageMangData
+  );
   const villageMangListData = villageMangList.response?.data;
 
   // dropdowns
@@ -850,10 +868,8 @@ const FormDetails = ({ data, index, formerId, farmerCode, closeFarm, is_edit }: 
   ];
 
   const farmSchemas = Yup.object().shape({
-    state: Yup.string().required("state is required"),
     district: Yup.string().required("district is required"),
     village: Yup.string().required("village  is required"),
-    cropTypeId: Yup.number().required("crop type is required"),
     acres: Yup.string().required("acres is required"),
     soilType: Yup.string().required("soilType is required"),
     ownership: Yup.string().required("ownership is required"),
@@ -868,10 +884,8 @@ const FormDetails = ({ data, index, formerId, farmerCode, closeFarm, is_edit }: 
   const formik = useFormik({
     initialValues: {
       farmerId: formerId ?? "",
-      state: data?.state?.id ?? "",
       district: data?.district?.id ?? "",
       village: data?.villageManagementId?.id ?? "",
-      cropTypeId: data?.cropTypeId?.id ?? "",
       acres: data?.acres ?? "",
       soilType: data?.soilType ?? "",
       ownership: data?.ownership ?? "",
@@ -884,7 +898,7 @@ const FormDetails = ({ data, index, formerId, farmerCode, closeFarm, is_edit }: 
     validationSchema: farmSchemas,
     onSubmit: (values: any) => {
       if (!is_edit) {
-        values.farmId = farmerCode
+        values.farmId = farmerCode;
         dispatch(addFarm(values));
       } else {
         values.id = data?.id;
@@ -914,23 +928,6 @@ const FormDetails = ({ data, index, formerId, farmerCode, closeFarm, is_edit }: 
           <div className="grid grid-cols-2 w-full lg:grid-cols-3">
             <div className="pt-5">
               <SelectMenu
-                name="state"
-                labelname="State Name"
-                placeHolderText="Select district"
-                data={stateDropDown ?? []}
-                value={values}
-                handleChange={(e: any) => {
-                  dispatch(getDistrict("?stateId=" + e.target.value));
-                  setFieldValue("state", e.target.value);
-                }}
-                required={true}
-                onblur={handleBlur}
-                touched={touched}
-                error={errors}
-              />
-            </div>
-            <div className="pt-5">
-              <SelectMenu
                 name="district"
                 labelname="District Name"
                 placeHolderText="Select district"
@@ -952,20 +949,6 @@ const FormDetails = ({ data, index, formerId, farmerCode, closeFarm, is_edit }: 
                 labelname="Village"
                 placeHolderText="Select village"
                 data={villageDropDown ?? []}
-                value={values}
-                handleChange={handleChange}
-                required={true}
-                onblur={handleBlur}
-                touched={touched}
-                error={errors}
-              />
-            </div>
-            <div className="pt-5">
-              <SelectMenu
-                name="cropTypeId"
-                labelname="Crop Type"
-                placeHolderText="Select crop type"
-                data={cropDropDown ?? []}
                 value={values}
                 handleChange={handleChange}
                 required={true}
@@ -1106,8 +1089,8 @@ const FormDetails = ({ data, index, formerId, farmerCode, closeFarm, is_edit }: 
                 {AddFarm.isLoading || EditFarm.isLoading
                   ? "Loading..."
                   : is_edit
-                    ? "Update"
-                    : "Save"}
+                  ? "Update"
+                  : "Save"}
               </div>
             </div>
           )}

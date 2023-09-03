@@ -20,6 +20,10 @@ import DownloadIcon from "@mui/icons-material/Download";
 import TextInput from "@/components/inputComponents/textInput";
 import { Chip } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { listTechnicianSurveyDetails } from "@/redux/reducer/survey/technicianSurveyDetails";
+import { listTechnicianSurvey } from "@/redux/reducer/survey/getTechSurvey";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
@@ -31,42 +35,6 @@ const assignedVillage = [
   {
     id: "KK002",
     name: "Mathur",
-  },
-];
-
-const surveyData = [
-  {
-    regional_Manager: "KK001",
-    farm_ID: "KK001",
-    village: "vallakottai",
-    survey: "Dakshina Kannada,Karapakam, 600 061",
-    survey_status: (
-      <div className={`bg-[#FFE8E8] rounded-[10px] py-2 px-3`}>
-        <div className={`text-[#F75656]`}>{`pending`}</div>
-      </div>
-    ),
-  },
-  {
-    regional_Manager: "KK001",
-    farm_ID: "KK001",
-    village: "vallakottai",
-    survey: "Dakshina Kannada,Karapakam, 600 061",
-    survey_status: (
-      <div className={`bg-[#EFF5E6] rounded-[10px] py-2 px-3`}>
-        <div className={`text-[#70B10E]`}>{`Completed`}</div>
-      </div>
-    ),
-  },
-  {
-    regional_Manager: "KK001",
-    farm_ID: "KK001",
-    village: "vallakottai",
-    survey: "Dakshina Kannada,Karapakam, 600 061",
-    survey_status: (
-      <div className={`bg-[#FFF4E4] rounded-[10px] py-2 px-3`}>
-        <div className={`text-[#F8B34C]`}>{`Partial`}</div>
-      </div>
-    ),
   },
 ];
 
@@ -125,6 +93,7 @@ export default function OfficerProfile(props: any) {
     const query = `?technicianId=${fieldOfficer_id}`;
     dispatch(oneFieldOfficer(fieldOfficer_id));
     dispatch(listFarmers(query));
+    dispatch(listTechnicianSurvey(query));
   }, [fieldOfficer_id]);
 
   const assignTaskQuery = `?limit=${paginateData.limit}&page=${paginateData.page}&technicianId=${fieldOfficer_id}&farmer=${taskFilter.farmer}&districtId=${taskFilter.districtId}&villageId=${taskFilter.villageId}`;
@@ -329,8 +298,12 @@ export default function OfficerProfile(props: any) {
         //handleChange={handleTaskFilter}
         //setPaginate={setPaginate}
       />
-      <SurveyComponent data={surveyData} villageDropDown={villageDropDown} />
-      <div className="w-full">
+      <SurveyComponent
+        villageDropDown={villageDropDown}
+        //Survey={setSurveyId}
+        techId={fieldOfficer_id}
+      />
+      {/* <div className="w-full">
         <HeaderText text={`Assign Village`} />
         <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]">
           <div className="grid grid-cols-3">
@@ -407,7 +380,8 @@ export default function OfficerProfile(props: any) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      <AssignVillage techId={fieldOfficer_id} />
     </div>
   );
 }
@@ -548,7 +522,9 @@ const PersonalDetailCard = ({ data }: any) => {
 };
 
 const SurveyComponent = (props: any) => {
-  const { data, villageDropDown } = props;
+  const { villageDropDown, setSurvey, techId } = props;
+  const [surveyId, setSurveyId] = useState("");
+  const dispatch = useDispatch();
 
   const LabelText = styled.p`
     width: 100px;
@@ -557,6 +533,47 @@ const SurveyComponent = (props: any) => {
       padding: 0 0.25rem;
     }
   `;
+  const SurveyDetails = useSelector((state: any) => state.TechSurveyDetails);
+
+  console.log(`SurveyDetails`, SurveyDetails);
+
+  const filterData = SurveyDetails.response?.map((e: any, index: number) => {
+    return {
+      No: index + 1,
+      regional_Manager: "",
+      farmer_ID: e.farmerId.farmerId,
+      village: "",
+      survey: e.surveyId.name,
+      survey_status: (
+        <div
+          className={`p-[10px]  rounded-[10px] ${
+            e.surveyStatus == "Pending"
+              ? "bg-[#FFE8E8]"
+              : e.surveyStatus == "Completed"
+              ? "bg-[#EFF5E6]"
+              : "bg-[#FFF4E4]"
+          }`}
+        >
+          <span
+            className={`${
+              e.surveyStatus == "Pending"
+                ? "text-[#F75656]"
+                : e.surveyStatus == "Completed"
+                ? "text-[#70B10E]"
+                : "text-[#F8B34C]"
+            }`}
+          >
+            {e.surveyStatus}
+          </span>
+        </div>
+      ),
+    };
+  });
+
+  const surveyQuery = `?technicianId=${techId}&surveyId=${surveyId}`;
+  useEffect(() => {
+    dispatch(listTechnicianSurveyDetails(surveyQuery));
+  }, [surveyQuery]);
 
   return (
     <div className="my-2">
@@ -568,9 +585,11 @@ const SurveyComponent = (props: any) => {
             <SelectMenu
               fieldStyle={{ background: "#F4F8FF" }}
               //labelname={"Survey"}
-              name={""}
+              name={"setSurveyId"}
               data={[]}
-              handleChange={undefined}
+              handleChange={() => {
+                setSurvey(1);
+              }}
               value={undefined}
               placeHolderText={"Survey"}
             />
@@ -600,8 +619,195 @@ const SurveyComponent = (props: any) => {
         </div>
       </div>
       <div className="Surveytable">
-        <SurveyTable data={data} />
+        <DynamicTable data={filterData} count={filterData.length} />
       </div>
+    </div>
+  );
+};
+
+const AssignVillage = (props: any) => {
+  const { techId } = props;
+  const dispatch = useDispatch();
+  const [cropId, setCropId] = useState(0);
+
+  const villageMangList = useSelector(
+    (state: any) => state.getAllVillageMangData
+  );
+  const villageMangListData = villageMangList.response?.data;
+
+  const AssignVillageSchema = Yup.object().shape({
+    surveyId: Yup.string().required("Survey is required"),
+    cropId: Yup.string().required("Crop Type is required"),
+    tapNumber: Yup.string().required("Tap Number is required"),
+    villageId: Yup.array().required("Village is required"),
+  });
+
+  // formik
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      surveyId: "",
+      cropId: "",
+      tapNumber: "",
+      villageIds: [],
+    },
+    validationSchema: AssignVillageSchema,
+    onSubmit: (values: any) => {
+      console.log(`values`, values);
+    },
+  });
+
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    touched,
+    setFieldTouched,
+    setFieldValue,
+    resetForm,
+    setErrors,
+    errors,
+    setFieldError,
+  }: any = formik;
+
+  useEffect(() => {
+    const query = `?technicianId=${techId}`;
+    dispatch(listTechnicianSurvey(query));
+  }, []);
+
+  const TechSurveyList = useSelector(
+    (state: any) => state.ListTechSurvey.response
+  );
+
+  const surveyDropDown = TechSurveyList?.map((e: any, index: number) => {
+    return { id: e.id, name: e.name };
+  });
+
+  const cropDropdown = TechSurveyList.filter((item: any) => {
+    console.log(item);
+    if (item.id === values.surveyId) {
+      return item;
+    }
+  }).map((e: any, index: number) => {
+    console.log(e, `e`);
+    return { id: e.cropId?.id, name: e.cropId.name };
+  });
+
+  return (
+    <div>
+      <div className="w-full">
+        <HeaderText text={`Assign Village`} />
+        <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]">
+          <div className="grid grid-cols-3">
+            <SelectMenu
+              name="surveyId"
+              labelname="Survey name"
+              placeHolderText="Select Survey"
+              data={surveyDropDown ?? []}
+              value={values}
+              handleChange={(e: any) => {
+                setFieldValue(`surveyId`, e.target.value);
+              }}
+              onblur={handleBlur}
+              touched={touched}
+              required={true}
+              error={errors}
+            />
+            <SelectMenu
+              labelname={"Crop type"}
+              name={"cropId"}
+              data={cropDropdown ?? []}
+              handleChange={handleChange}
+              onblur={handleBlur}
+              touched={touched}
+              value={values}
+              placeHolderText={"Select"}
+              required={true}
+            />
+            <TextInput
+              value={values}
+              label={"TAP number"}
+              name="tapNumber"
+              placeholder="Enter in numbers"
+              onblur={handleBlur}
+              handleChange={handleChange}
+              touched={touched}
+              error={errors}
+            />
+
+            <SelectMenu
+              name="villageIds"
+              labelname="Village"
+              placeHolderText="Select village"
+              data={villageMangListData ?? []}
+              value={values}
+              handleChange={(e: any) => {
+                setFieldValue(`villageIds`, e.target.value);
+              }}
+              onblur={handleBlur}
+              touched={touched}
+              required={true}
+              error={errors}
+            />
+          </div>
+          {/* <div className="px-[1rem]">
+                  <LabelText labelName={``} />
+                  <div className="gap-x-4 pt-3">
+                    {assignFarmerListFarmer?.response?.length ? (
+                      assignFarmerListFarmer?.response?.map(
+                        (item: any, index: number) => {
+                          return (
+                            <>
+                              <Chip
+                                style={{
+                                  margin: "5px",
+                                  background: "#3D7FFA",
+                                  padding: "1.5rem",
+                                  borderRadius: "10px",
+                                  color: "#fff",
+                                }}
+                                label={item.farmerId.farmerId}
+                                onDelete={() => {}}
+                              />
+                            </>
+                          );
+                        }
+                      )
+                    ) : (
+                      <p>No Assigned Data</p>
+                    )}
+                  </div>
+                </div> */}
+        </div>
+      </div>
+      {/* <div className="bg-[#F4F8FF] w-full p-[1rem]">
+            <CustomButton
+              //disable={!profileCreated}
+              startIcon={
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10 0C7.35774 0.0318782 4.83268 1.09568 2.96418 2.96418C1.09568 4.83268 0.0318782 7.35774 0 10C0.0318782 12.6423 1.09568 15.1673 2.96418 17.0358C4.83268 18.9043 7.35774 19.9681 10 20C12.6423 19.9681 15.1673 18.9043 17.0358 17.0358C18.9043 15.1673 19.9681 12.6423 20 10C19.9681 7.35774 18.9043 4.83268 17.0358 2.96418C15.1673 1.09568 12.6423 0.0318782 10 0ZM15.7143 10.7143H10.7143V15.7143H9.28571V10.7143H4.28571V9.28571H9.28571V4.28571H10.7143V9.28571H15.7143V10.7143Z"
+                    fill="#3D7FFA"
+                  />
+                </svg>
+              }
+              buttonName={`Assign farmer`}
+              customStyle={{
+                background: "none",
+                color: "#3D7FFA",
+              }}
+              handleOnClick={() => {
+                setFarmerPop(true);
+              }}
+            />
+          </div> */}
     </div>
   );
 };
