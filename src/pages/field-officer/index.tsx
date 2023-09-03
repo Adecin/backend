@@ -18,6 +18,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { Checkbox, Dialog } from "@mui/material";
 import TechnicianManage from "./managePop";
+import { getRolesList } from "@/redux/reducer/dropdown/get-roles";
+import Header from "@/components/header";
 
 const Info = async (data: string) => {
   toast.info(data, {
@@ -81,10 +83,14 @@ const ListFieldOfficer = () => {
   const ListFieldOfficer = useSelector(
     (store: any) => store.ListFieldOfficerData
   );
+  const RolesList = useSelector((store: any) => store.GetRolesList);
+
+  console.log(`RolesList`), RolesList;
   // const ListOfficerData = ListFieldOfficer.response.data
 
   useEffect(() => {
     dispatch(listFieldOfficer(query));
+    dispatch(getRolesList());
   }, [paginateData]);
 
   useEffect(() => {
@@ -139,15 +145,13 @@ const ListFieldOfficer = () => {
       };
     }
   );
+
+  console.log(`checkedData`, checkedData);
   return (
     <>
       <div className="p-5">
         {/* bread crumb and filters */}
-        <div className="flex justify-end px-8 m-3">
-          <Badge badgeContent={2} color="error">
-            <NotificationsNoneIcon className="text-primary text-[28px]" />
-          </Badge>
-        </div>
+        <Header />
         <div
           style={{
             zIndex: 3,
@@ -185,7 +189,7 @@ const ListFieldOfficer = () => {
           onClick={() => {
             setManageOpen(true);
           }}
-          className="mx-4 text-[18px] underline cursor-pointer text-grey font-semibold"
+          className="mx-4 text-[18px] underline cursor-pointer text-primary font-semibold"
         >
           Manage
         </div>
@@ -281,6 +285,7 @@ const ListFieldOfficer = () => {
           )}
           {checkedData.length ? (
             <TechnicianManage
+              techIds={checkedData}
               closePopUp={() => {
                 setManageOpen(false);
               }}

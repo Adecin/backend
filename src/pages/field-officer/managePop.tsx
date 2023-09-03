@@ -1,23 +1,15 @@
 import MultiSelectMenu from "@/components/inputComponents/multiSelect";
 import SelectMenu from "@/components/inputComponents/selectMenu";
-import TextArea from "@/components/inputComponents/texArea";
-import approveFarmer from "@/redux/reducer/farmer/approve-farmer";
-import { listFieldOfficer } from "@/redux/reducer/fieldOfficer/getList";
 import updateAssignFarmer from "@/redux/reducer/fieldOfficer/updateAssignFarmer";
 import { getCrop } from "@/redux/reducer/crop/get-all-crop";
-import {
-  Box,
-  Tabs,
-  FormControl,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  styled,
-  Tab,
-} from "@mui/material";
+import { Box, Tabs, styled, Tab } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
+import { listAllSurvey } from "@/redux/reducer/survey/getSurveyList";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { assignTechSurvey } from "@/redux/reducer/fieldOfficer/assignSurvey";
+import { assignTechCrop } from "@/redux/reducer/fieldOfficer/assignTechCrop";
 const StyledTab = styled((props: any) => <Tab {...props} />)(({ theme }) => ({
   fontWeight: 500,
   fontSize: "16px",
@@ -53,45 +45,11 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
-const TechnicianManage = ({ closePopUp, farmersList }: any) => {
-  const [is_approve, setApprove] = useState("true");
-  const [reason, setReason] = useState("");
-
-  const [selectedTechnicain, setSelectedTechnicain] = useState({
-    tech: "",
-  });
-
+const TechnicianManage = ({ closePopUp, farmersList, techIds }: any) => {
   const [value, setValue] = useState(0);
-  const ListFieldOfficer = useSelector(
-    (store: any) => store.ListFieldOfficerData
-  );
 
-  const CropResponse = useSelector((state: any) => state.ListCrop.response);
-  const CropList = CropResponse.data;
-
-  const dispatch = useDispatch();
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-  };
-
-  useEffect(() => {
-    dispatch(listFieldOfficer(""));
-    dispatch(getCrop());
-  }, []);
-
-  const handleApprove = () => {
-    closePopUp();
-    const data =
-      is_approve == "true"
-        ? {
-            is_approve: is_approve,
-            id: farmersList,
-          }
-        : {
-            id: farmersList,
-            reason: reason,
-          };
-    dispatch(approveFarmer(data));
   };
 
   return (
@@ -112,78 +70,155 @@ const TechnicianManage = ({ closePopUp, farmersList }: any) => {
         <StyledTab label={`Assign crop type`} className="" />
       </Tabs>
       <CustomTabPanel index={0} value={value}>
-        <div className="w-[400px] mt-6">
-          <MultiSelectMenu
-            name="tech"
-            handleChange={(e: any) => {
-              setSelectedTechnicain({
-                ...selectedTechnicain,
-                tech: e.target.value,
-              });
-            }}
-            //value={selectedTechnicain}
-            labelname="Select survey name"
-            placeHolderText="Select survey name"
-            data={ListFieldOfficer?.response?.data}
-            value={[]}
-          />
-        </div>
-        <div className="flex justify-center mr-5">
-          <div
-            onClick={() => {
-              closePopUp();
-            }}
-            className="bg-[#BEBEBE] cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
-          >
-            Cancel
-          </div>
-          <div
-            onClick={() => {
-              const data = {
-                technicianId: selectedTechnicain.tech,
-                farmerId: farmersList,
-              };
-              dispatch(updateAssignFarmer(data));
-              closePopUp();
-            }}
-            className="bg-primary cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
-          >
-            Save
-          </div>
-        </div>
+        <ManageAssignSurvey technicianIds={techIds} closePopUp={closePopUp} />
       </CustomTabPanel>
       <CustomTabPanel index={1} value={value}>
-        <div className="w-[400px] mt-6">
-          <MultiSelectMenu
-            name="manager"
-            handleChange={() => {}}
-            placeHolderText="Select crop type"
-            labelname="Select crop type"
-            data={CropList ?? []}
-            value={[]}
-          />
-        </div>
-        <div className="flex justify-center mr-5">
-          <div
-            onClick={() => {
-              closePopUp();
-            }}
-            className="bg-[#BEBEBE] cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
-          >
-            Cancel
-          </div>
-          <div
-            onClick={() => {
-              closePopUp();
-            }}
-            className="bg-primary cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
-          >
-            Save
-          </div>
-        </div>
+        <ManageCropType technicianIds={techIds} closePopUp={closePopUp} />
       </CustomTabPanel>
     </>
   );
 };
 
 export default TechnicianManage;
+
+const ManageCropType = (props: any) => {
+  const { technicianIds, closePopUp } = props;
+  const dispatch = useDispatch();
+  const CropResponse = useSelector((state: any) => state.ListCrop.response);
+  const CropList = CropResponse.data;
+
+  console.log(`technicianIds crop`, technicianIds);
+
+  const CropTypeSchema = Yup.object().shape({
+    cropIds: Yup.array().required(),
+    technicianIds: Yup.array().required(),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      cropIds: [],
+      technicianIds: technicianIds,
+    },
+    validationSchema: CropTypeSchema,
+    onSubmit: (values: any) => {
+      console.log(values);
+      dispatch(assignTechCrop(values));
+    },
+  });
+
+  const { values, handleChange, handleSubmit, touched, setFieldValue, errors } =
+    formik;
+
+  useEffect(() => {
+    dispatch(getCrop());
+  }, []);
+
+  return (
+    <div>
+      <div className="w-[400px] mt-6">
+        <MultiSelectMenu
+          name="cropIds"
+          fieldStyle={{
+            fontSize: "16px",
+            color: "#000",
+          }}
+          handleChange={(e: any) => {
+            console.log(`value`, e.target.value);
+            setFieldValue(`cropIds`, e.target.value);
+          }}
+          placeHolderText="Select crop type"
+          labelname="Select crop type"
+          data={CropList ?? []}
+          value={values.cropIds}
+        />
+      </div>
+      <div className="flex justify-center mr-5">
+        <div
+          onClick={() => {}}
+          className="bg-[#BEBEBE] cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
+        >
+          Cancel
+        </div>
+        <div
+          onClick={(e: any) => {
+            handleSubmit();
+            //closePopUp();
+          }}
+          className="bg-primary cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
+        >
+          Save
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ManageAssignSurvey = (props: any) => {
+  const dispatch = useDispatch();
+
+  const { technicianIds, closePopUp } = props;
+
+  console.log(`technicianIds`, technicianIds);
+
+  const SurveyList = useSelector((state: any) => state.ListAllSurvey.response);
+
+  const AssignSurveySchema = Yup.object().shape({
+    surveyIds: Yup.array().required(),
+    technicianIds: Yup.array().required(),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      surveyIds: [],
+      technicianIds: technicianIds,
+    },
+    validationSchema: AssignSurveySchema,
+    onSubmit: (values: any) => {
+      console.log(values);
+      dispatch(assignTechSurvey(values));
+    },
+  });
+
+  const { values, handleChange, handleSubmit, touched, setFieldValue, errors } =
+    formik;
+
+  useEffect(() => {
+    dispatch(listAllSurvey());
+  }, []);
+
+  return (
+    <div>
+      <div className="w-[400px] mt-6">
+        <MultiSelectMenu
+          name="surveyIds"
+          handleChange={(e: any) => {
+            console.log(e.target, `target.value`);
+            setFieldValue(`surveyIds`, e.target.value);
+          }}
+          //value={selectedTechnicain}
+          labelname="Select survey name"
+          placeHolderText="Select survey name"
+          data={SurveyList ?? []}
+          value={values.surveyIds}
+        />
+      </div>
+      <div className="flex justify-center mr-5">
+        <div
+          onClick={() => {}}
+          className="bg-[#BEBEBE] cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
+        >
+          Cancel
+        </div>
+        <div
+          onClick={(e: any) => {
+            handleSubmit();
+            //closePopUp();
+          }}
+          className="bg-primary cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
+        >
+          Save
+        </div>
+      </div>
+    </div>
+  );
+};

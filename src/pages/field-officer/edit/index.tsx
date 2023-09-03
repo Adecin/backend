@@ -727,7 +727,7 @@ export default function OfficerProfileEdit(props: any) {
               handleOnClick={handleSubmit}
             />
           </div> */}
-          <div className="w-full">
+          {/* <div className="w-full">
             <HeaderText text={`Assign Village`} required={true} />
             <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]">
               <div className="grid grid-cols-3">
@@ -809,9 +809,9 @@ export default function OfficerProfileEdit(props: any) {
                     <p>No Assigned Data</p>
                   )}
                 </div>
-              </div> */}
+              </div> 
             </div>
-          </div>
+          </div> */}
           {/* <div className="bg-[#F4F8FF] w-full p-[1rem]">
             <CustomButton
               startIcon={
