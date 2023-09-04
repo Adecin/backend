@@ -195,6 +195,10 @@ const ManageAssignSurvey = (props: any) => {
             console.log(e.target, `target.value`);
             setFieldValue(`surveyIds`, e.target.value);
           }}
+          fieldStyle={{
+            fontSize: "16px",
+            color: "#000",
+          }}
           //value={selectedTechnicain}
           labelname="Select survey name"
           placeHolderText="Select survey name"
