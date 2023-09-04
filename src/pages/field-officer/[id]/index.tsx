@@ -16,7 +16,6 @@ import { useEffect, useState, lazy } from "react";
 import { listFarmers } from "@/redux/reducer/farmer/list-former";
 import { getDistrict } from "@/redux/reducer/dropdown/get-district";
 import { getVillage } from "@/redux/reducer/dropdown/get-village";
-import DownloadIcon from "@mui/icons-material/Download";
 import TextInput from "@/components/inputComponents/textInput";
 import { Chip } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -29,38 +28,9 @@ import { getCropById } from "@/redux/reducer/crop/getCropById";
 import { getAllVillageMang } from "@/redux/reducer/villageMang/getAllVillageMang";
 import MultiSelectMenu from "@/components/inputComponents/multiSelect";
 import { assignTechVillage } from "@/redux/reducer/fieldOfficer/assignVillage";
+import { listAssignedVillages } from "@/redux/reducer/fieldOfficer/listAssignedVillages";
 
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
-
-const assignedVillage = [
-  {
-    id: "KK001",
-    name: "Vallkottai",
-  },
-  {
-    id: "KK002",
-    name: "Mathur",
-  },
-];
-
-const villageData = [
-  {
-    No: "1",
-    assigned_Date: "04/08/2023",
-    village_ID: "KK001",
-    village: " xxy village",
-    tap_number: "KK00186",
-    status: <p style={{ color: "#70B10E" }}>{"Completed"}</p>,
-  },
-  {
-    No: "1",
-    assigned_Date: "04/08/2023",
-    village_ID: "KK001",
-    village: " xxy village",
-    tap_number: "KK00186",
-    status: <p style={{ color: "#70B10E" }}>{"Completed"}</p>,
-  },
-];
 
 export default function OfficerProfile(props: any) {
   //const { data } = props
@@ -93,12 +63,14 @@ export default function OfficerProfile(props: any) {
   const GetState = useSelector((state: any) => state.ListState);
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
+  const SurveyDetails = useSelector((state: any) => state.TechSurveyDetails);
 
   useEffect(() => {
     const query = `?technicianId=${fieldOfficer_id}`;
     dispatch(oneFieldOfficer(fieldOfficer_id));
     dispatch(listFarmers(query));
     dispatch(listTechnicianSurvey(query));
+    dispatch(listAssignedVillages(query));
   }, [fieldOfficer_id]);
 
   const assignTaskQuery = `?limit=${paginateData.limit}&page=${paginateData.page}&technicianId=${fieldOfficer_id}&farmer=${taskFilter.farmer}&districtId=${taskFilter.districtId}&villageId=${taskFilter.villageId}`;
@@ -131,6 +103,12 @@ export default function OfficerProfile(props: any) {
     }
   );
 
+  const surveyDropdown = SurveyDetails.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.farmer_farmerId, name: e.farmer_name };
+    }
+  );
+
   const [filterData, setFilterData] = useState({
     districtFilter: "",
     villageFillter: "",
@@ -141,35 +119,7 @@ export default function OfficerProfile(props: any) {
     dispatch(getDistrict());
   }, []);
 
-  const FilterDataList = ListFarmer.response.data?.map(
-    (e: any, index: number) => {
-      const hasPendingRegulation = e.regulation.some(
-        (e: any) => e.status === "Pending"
-      );
-
-      return {
-        No: index + 1,
-        Assigned_Date: e?.assign_farmer?.[0]?.createdDate.split("T")[0],
-        Farmer_Id: e?.farmer_farmerId,
-        Name: e?.farmer_name,
-        Location: (
-          <p className="w-full">
-            {e.farmer_address},<br />
-            {e.village_name},<br />
-            {e.state_name}
-            <br />
-            {e.farmer_pincode}
-          </p>
-        ),
-        Status: (
-          <p style={{ color: hasPendingRegulation ? "#F75656" : "#70B10E" }}>
-            {hasPendingRegulation ? "Pending" : "Completed"}
-          </p>
-        ),
-        Download: <DownloadIcon sx={{ color: "#3D7FFA", fontSize: 35 }} />,
-      };
-    }
-  );
+  console.log(``);
 
   return (
     <div className="flex flex-col my-[5rem] m-[3rem] gap-y-6">
@@ -297,7 +247,6 @@ export default function OfficerProfile(props: any) {
       </div>
       <AssignedTask
         //values={taskFilter}
-        data={villageData}
         farmerDrop={farmerDropDown}
         districtDrop={districtDropDown}
         villageDrop={villageDropDown}
@@ -306,7 +255,7 @@ export default function OfficerProfile(props: any) {
       />
       <SurveyComponent
         villageDropDown={villageDropDown}
-        //Survey={setSurveyId}
+        //survey={setSurveyId}
         techId={fieldOfficer_id}
       />
       {/* <div className="w-full">
@@ -394,7 +343,6 @@ export default function OfficerProfile(props: any) {
 
 const AssignedTask = (props: any) => {
   const {
-    data,
     farmerDrop,
     districtDrop,
     villageDrop,
@@ -410,6 +358,27 @@ const AssignedTask = (props: any) => {
       padding: 0 0.25rem;
     }
   `;
+
+  const AssignedVillages = useSelector(
+    (state: any) => state.ListAssignedVillage
+  );
+
+  console.log(`AssignedVillages`, AssignedVillages);
+
+  const FilterDataList = AssignedVillages.response.data?.map(
+    (e: any, index: number) => {
+      console.log(e, `e list item`);
+      return {
+        No: index + 1,
+        Assigned_Date: e?.activeDate.split("T")[0] ?? "",
+        Village_Id: e?.id ?? "",
+        Village: e?.name ?? "",
+        Tap_Number: e?.tapNumber ?? "",
+      };
+    }
+  );
+
+  console.log(`FilterDataList`, FilterDataList);
 
   return (
     <div className="my-2">
@@ -463,8 +432,8 @@ const AssignedTask = (props: any) => {
       </div> */}
       <div className="assignListtable">
         <DynamicTable
-          data={data}
-          count={data?.length}
+          data={FilterDataList}
+          count={FilterDataList?.length}
           paginateData={(e: any) => {
             setPaginate(e);
           }}
@@ -541,13 +510,20 @@ const SurveyComponent = (props: any) => {
   `;
   const SurveyDetails = useSelector((state: any) => state.TechSurveyDetails);
 
+  const surveyDropdown = SurveyDetails.response?.data?.map(
+    (e: any, index: number) => {
+      return { id: e.farmer_farmerId, name: e.farmer_name };
+    }
+  );
+
   const filterData = SurveyDetails.response?.map((e: any, index: number) => {
+    console.log(`fgnfh`, e);
     return {
       No: index + 1,
       regional_Manager: "",
-      farmer_ID: e.farmerId.farmerId,
+      farmer_ID: e.farmerId?.farmerId,
       village: "",
-      survey: e.surveyId.name,
+      survey: e.surveyId?.name,
       survey_status: (
         <div
           className={`p-[10px]  rounded-[10px] ${
@@ -571,6 +547,7 @@ const SurveyComponent = (props: any) => {
           </span>
         </div>
       ),
+      "": <div></div>,
     };
   });
 
@@ -578,6 +555,8 @@ const SurveyComponent = (props: any) => {
   useEffect(() => {
     dispatch(listTechnicianSurveyDetails(surveyQuery));
   }, [surveyQuery]);
+
+  console.log(`SurveyDetails`, SurveyDetails);
 
   return (
     <div className="my-2">
@@ -589,12 +568,14 @@ const SurveyComponent = (props: any) => {
             <SelectMenu
               fieldStyle={{ background: "#F4F8FF" }}
               //labelname={"Survey"}
-              name={"setSurveyId"}
-              data={[]}
+              name={"surveyId"}
+              data={surveyDropdown ?? []}
               handleChange={() => {
                 setSurvey(1);
               }}
-              value={undefined}
+              value={(e: any) => {
+                e.target.value;
+              }}
               placeHolderText={"Survey"}
             />
           </div>
@@ -711,7 +692,7 @@ const AssignVillage = (props: any) => {
       }
     })
     .map((e: any, index: number) => {
-      return { id: e.villageId.id, name: e.villageId.name };
+      return { id: e.id, name: e.villageId.name };
     });
 
   const tapDropDown =
@@ -762,7 +743,7 @@ const AssignVillage = (props: any) => {
               readOnly={noEdit}
             />
             <SelectMenu
-              labelname={"Crop type"}
+              labelname={"Tap Number"}
               name={"tapNumber"}
               data={tapDropDown ?? []}
               handleChange={(e: any) => {
