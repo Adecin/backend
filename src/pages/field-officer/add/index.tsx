@@ -106,17 +106,17 @@ export default function OfficerProfileAdd(props: any) {
       return { id: e.id, name: e.name };
     }
   );
-  const villageDropDown = GetSVillage.response?.data?.map(
+  const villageDropDown = villageMangList.response?.data?.data?.map(
     (e: any, index: number) => {
-      return { id: e.id, name: e.name };
+      return { id: e.id, name: e.villageId.name };
     }
   );
 
-  const assignVillageDropDown = villageMangListData?.map(
-    (e: any, index: number) => {
-      return { id: e.id, name: e.name };
-    }
-  );
+  // const assignVillageDropDown = villageMangListData?.map(
+  //   (e: any, index: number) => {
+  //     return { id: e.id, name: e.name };
+  //   }
+  // );
 
   const marriedDropDown = [
     {
