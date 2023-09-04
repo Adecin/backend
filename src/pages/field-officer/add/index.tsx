@@ -112,11 +112,11 @@ export default function OfficerProfileAdd(props: any) {
     }
   );
 
-  // const assignVillageDropDown = villageMangListData?.map(
-  //   (e: any, index: number) => {
-  //     return { id: e.id, name: e.name };
-  //   }
-  // );
+  const assignVillageDropDown = villageMangListData?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
 
   const marriedDropDown = [
     {

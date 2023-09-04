@@ -20,18 +20,20 @@ import {
   editRegulationIsSuccess,
 } from "@/redux/reducer/regulation/edit-regulation";
 
-const StyledTab = styled((props: any) => <Tab {...props} />)(({ theme }) => ({
-  fontWeight: 500,
-  fontSize: "18px",
-  lineHeight: "24px",
-  margin: "0 5rem",
-  textTransform: "none",
-  color: "#858585",
-  "&.Mui-selected": {
-    fontWeight: 700,
-    color: "#3D7FFA",
-  },
-}));
+export const StyledTab = styled((props: any) => <Tab {...props} />)(
+  ({ theme }) => ({
+    fontWeight: 500,
+    fontSize: "18px",
+    lineHeight: "24px",
+    margin: "0 5rem",
+    textTransform: "none",
+    color: "#858585",
+    "&.Mui-selected": {
+      fontWeight: 700,
+      color: "#3D7FFA",
+    },
+  })
+);
 
 interface TabPanelProps {
   children?: React.ReactNode;
