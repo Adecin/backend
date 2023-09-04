@@ -167,20 +167,20 @@ const ListFieldOfficer = () => {
         <div>
           <div
             className={
-              e.farmer_status == "Rejected" || e.farmer_status == "Pending"
+              e.assign_farmer?.surveyStatus == "Rejected" || e.assign_farmer?.surveyStatus == "Pending"
                 ? "text-[#F75656]"
                 : "text-[#3D7FFA]"
             }
           >
             <span>
               {" "}
-              {e.farmer_status == "Pending" || e.farmer_status == "Rejected" ? (
+              {e.assign_farmer?.surveyStatus == "Pending" || e.assign_farmer?.surveyStatus == "Rejected" ? (
                 <PendingOutlinedIcon className="text-[#F75656]" />
               ) : (
                 <CheckCircleOutlinedIcon className="text-[#3D7FFA]" />
               )}{" "}
             </span>
-            <span>{e.farmer_status}</span>
+            <span>{e.assign_farmer?.surveyStatus}</span>
           </div>
         </div>
       ),
