@@ -16,6 +16,7 @@ import AddFieldOfficerData from "./reducer/fieldOfficer/addFieldOfficer";
 import UpdateFieldOfficerData from "./reducer/fieldOfficer/updateFieldOfficer";
 import AssignTechCrop from "./reducer/fieldOfficer/assignTechCrop";
 import AssignTechVillage from "./reducer/fieldOfficer/assignVillage";
+import ListAssignedVillage from "./reducer/fieldOfficer/listAssignedVillages";
 // crop
 import ListCrop from "./reducer/crop/get-all-crop";
 import AddCrop from "./reducer/crop/add-croptype";
@@ -101,6 +102,7 @@ export const store = configureStore({
     AssignTechSurvey: AssignTechSurvey,
     AssignTechCrop: AssignTechCrop,
     AssignTechVillage: AssignTechVillage,
+    ListAssignedVillage: ListAssignedVillage,
     //regulation
     AddNewRegulation: AddNewRegulation,
     EditRegulation: EditRegulation,
