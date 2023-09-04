@@ -74,9 +74,8 @@ const CreateSurvey = () => {
     name: Yup.string()
       .matches(/^[aA-zZ]+$/, "Must be only alphabets")
       .required("Survey name is required"),
-    description: Yup.string()
-      .required("Survey description is required")
-      .matches(/^[aA-zZ0-9\s]+$/, "Please enter a valid description"),
+    description: Yup.string().required("Survey description is required"),
+    //.matches(/^[aA-zZ0-9\s]+$/, "Please enter a valid description"),
     startDate: Yup.string().required("StartDate is required"),
     endDate: Yup.string().required("EndDate is required"),
     cropId: Yup.string().required(),

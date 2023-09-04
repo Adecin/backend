@@ -292,7 +292,10 @@ const ListFieldOfficer = () => {
               farmersList={checkedData}
             />
           ) : (
-            <div style={{ fontSize: "18px" }}> Please select the farmers</div>
+            <div style={{ fontSize: "18px" }}>
+              {" "}
+              Please select the Field officer
+            </div>
           )}
         </div>
       </Dialog>

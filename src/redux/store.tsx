@@ -15,11 +15,12 @@ import OneFieldOfficerData from "./reducer/fieldOfficer/getOne";
 import AddFieldOfficerData from "./reducer/fieldOfficer/addFieldOfficer";
 import UpdateFieldOfficerData from "./reducer/fieldOfficer/updateFieldOfficer";
 import AssignTechCrop from "./reducer/fieldOfficer/assignTechCrop";
-
+import AssignTechVillage from "./reducer/fieldOfficer/assignVillage";
 // crop
 import ListCrop from "./reducer/crop/get-all-crop";
 import AddCrop from "./reducer/crop/add-croptype";
 import UpdateCrop from "./reducer/crop/update-crop";
+import ListCropById from "./reducer/crop/getCropById";
 
 // farmer
 import AddFarmer from "./reducer/farmer/add-farmer";
@@ -77,6 +78,7 @@ export const store = configureStore({
     ListCrop: ListCrop,
     AddCrop: AddCrop,
     UpdateCrop: UpdateCrop,
+    ListCropById: ListCropById,
     //  farmer
     AddFarmer: AddFarmer,
     AddFarm: AddFarm,
@@ -98,6 +100,7 @@ export const store = configureStore({
     updateAssignFarmerData: updateAssignFarmerData,
     AssignTechSurvey: AssignTechSurvey,
     AssignTechCrop: AssignTechCrop,
+    AssignTechVillage: AssignTechVillage,
     //regulation
     AddNewRegulation: AddNewRegulation,
     EditRegulation: EditRegulation,
