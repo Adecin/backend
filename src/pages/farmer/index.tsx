@@ -313,6 +313,14 @@ const ListFieldOfficer = () => {
           </div>
           {/* mange */}
           <div className="flex justify-between ">
+            <div
+              onClick={() => {
+                setManageOpen(true);
+              }}
+              className="mx-4 text-[18px] underline cursor-pointer text-grey font-semibold"
+            >
+              Manage
+            </div>
             <div className="mx-4 text-[18px] underline text-[#107C41] cursor-pointer flex items-center">
               <div>
                 <svg
@@ -490,8 +498,8 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
         aria-label=""
       >
         <StyledTab label={`Approval`} className="" />
-        <StyledTab label={`Assign field officer`} className="" />
-        <StyledTab label={`Assign survey`} className="" />
+        {/* <StyledTab label={`Assign field officer`} className="" /> */}
+        {/* <StyledTab label={`Assign survey`} className="" /> */}
       </Tabs>
       <CustomTabPanel index={0} value={value}>
         <div className="w-[400px] px-3 mb-5 flex items-center">
@@ -566,7 +574,7 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
           </div>
         </div>
       </CustomTabPanel>
-      <CustomTabPanel index={1} value={value}>
+      {/* <CustomTabPanel index={1} value={value}>
         <div className="w-[400px] ">
           <p
             className="text-grey ml-5 my-4"
@@ -665,7 +673,7 @@ const Dialogs = ({ closePopUp, farmersList }: any) => {
             Save
           </div>
         </div>
-      </CustomTabPanel>
+      </CustomTabPanel> */}
     </>
   );
 };
