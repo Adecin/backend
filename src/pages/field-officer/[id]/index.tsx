@@ -24,6 +24,11 @@ import { listTechnicianSurveyDetails } from "@/redux/reducer/survey/technicianSu
 import { listTechnicianSurvey } from "@/redux/reducer/survey/getTechSurvey";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { getCrop } from "@/redux/reducer/crop/get-all-crop";
+import { getCropById } from "@/redux/reducer/crop/getCropById";
+import { getAllVillageMang } from "@/redux/reducer/villageMang/getAllVillageMang";
+import MultiSelectMenu from "@/components/inputComponents/multiSelect";
+import { assignTechVillage } from "@/redux/reducer/fieldOfficer/assignVillage";
 
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
@@ -119,6 +124,7 @@ export default function OfficerProfile(props: any) {
       return { id: e.id, name: e.name };
     }
   );
+
   const farmerDropDown = ListFarmer.response?.data?.map(
     (e: any, index: number) => {
       return { id: e.farmer_farmerId, name: e.farmer_name };
@@ -535,8 +541,6 @@ const SurveyComponent = (props: any) => {
   `;
   const SurveyDetails = useSelector((state: any) => state.TechSurveyDetails);
 
-  console.log(`SurveyDetails`, SurveyDetails);
-
   const filterData = SurveyDetails.response?.map((e: any, index: number) => {
     return {
       No: index + 1,
@@ -628,18 +632,14 @@ const SurveyComponent = (props: any) => {
 const AssignVillage = (props: any) => {
   const { techId } = props;
   const dispatch = useDispatch();
-  const [cropId, setCropId] = useState(0);
-
-  const villageMangList = useSelector(
-    (state: any) => state.getAllVillageMangData
-  );
-  const villageMangListData = villageMangList.response?.data;
+  const [cropId, setCropId] = useState<number | string>("");
+  const [noEdit, setNoEdit] = useState<boolean>(false);
 
   const AssignVillageSchema = Yup.object().shape({
     surveyId: Yup.string().required("Survey is required"),
     cropId: Yup.string().required("Crop Type is required"),
     tapNumber: Yup.string().required("Tap Number is required"),
-    villageId: Yup.array().required("Village is required"),
+    villageIds: Yup.array().required("Village is required"),
   });
 
   // formik
@@ -653,7 +653,8 @@ const AssignVillage = (props: any) => {
     },
     validationSchema: AssignVillageSchema,
     onSubmit: (values: any) => {
-      console.log(`values`, values);
+      console.log(`values in`, values);
+      dispatch(assignTechVillage(values));
     },
   });
 
@@ -674,10 +675,21 @@ const AssignVillage = (props: any) => {
   useEffect(() => {
     const query = `?technicianId=${techId}`;
     dispatch(listTechnicianSurvey(query));
-  }, []);
+    dispatch(getCropById(cropId));
+    dispatch(getAllVillageMang());
+  }, [cropId]);
 
   const TechSurveyList = useSelector(
     (state: any) => state.ListTechSurvey.response
+  );
+  const CropData = useSelector((state: any) => state.ListCropById);
+
+  const AssignVillageResponse = useSelector(
+    (state: any) => state.AssignTechVillage
+  );
+
+  const villageMangList = useSelector(
+    (state: any) => state.getAllVillageMangData
   );
 
   const surveyDropDown = TechSurveyList?.map((e: any, index: number) => {
@@ -685,14 +697,33 @@ const AssignVillage = (props: any) => {
   });
 
   const cropDropdown = TechSurveyList.filter((item: any) => {
-    console.log(item);
     if (item.id === values.surveyId) {
       return item;
     }
   }).map((e: any, index: number) => {
-    console.log(e, `e`);
-    return { id: e.cropId?.id, name: e.cropId.name };
+    return { id: e.cropId?.id, name: e.cropId?.name };
   });
+
+  const villageDropDown = villageMangList.response?.data?.data
+    ?.filter((item: any) => {
+      if (item.tapNumber == values.tapNumber) {
+        return item;
+      }
+    })
+    .map((e: any, index: number) => {
+      return { id: e.villageId.id, name: e.villageId.name };
+    });
+
+  const tapDropDown =
+    CropData.response?.data?.tapCode?.map((e: any, index: number) => {
+      return { id: e, name: e };
+    }) ?? [];
+
+  useEffect(() => {
+    if (AssignVillageResponse.isSuccess) {
+      setNoEdit(true);
+    }
+  }, [AssignVillageResponse]);
 
   return (
     <div>
@@ -712,20 +743,39 @@ const AssignVillage = (props: any) => {
               onblur={handleBlur}
               touched={touched}
               required={true}
+              readOnly={noEdit}
               error={errors}
             />
             <SelectMenu
               labelname={"Crop type"}
               name={"cropId"}
               data={cropDropdown ?? []}
-              handleChange={handleChange}
+              handleChange={(e: any) => {
+                setFieldValue(`cropId`, e.target.value);
+                setCropId(e.target.value);
+              }}
               onblur={handleBlur}
               touched={touched}
               value={values}
               placeHolderText={"Select"}
               required={true}
+              readOnly={noEdit}
             />
-            <TextInput
+            <SelectMenu
+              labelname={"Crop type"}
+              name={"tapNumber"}
+              data={tapDropDown ?? []}
+              handleChange={(e: any) => {
+                setFieldValue(`tapNumber`, e.target.value);
+              }}
+              onblur={handleBlur}
+              touched={touched}
+              value={values}
+              placeHolderText={"Select"}
+              required={true}
+              readOnly={noEdit}
+            />
+            {/* <TextInput
               value={values}
               label={"TAP number"}
               name="tapNumber"
@@ -734,23 +784,42 @@ const AssignVillage = (props: any) => {
               handleChange={handleChange}
               touched={touched}
               error={errors}
-            />
-
-            <SelectMenu
+            /> */}
+            <MultiSelectMenu
               name="villageIds"
               labelname="Village"
               placeHolderText="Select village"
-              data={villageMangListData ?? []}
-              value={values}
+              fieldStyle={{
+                fontSize: "16px",
+                color: "#000",
+              }}
+              data={villageDropDown ?? []}
+              value={values.villageIds}
               handleChange={(e: any) => {
                 setFieldValue(`villageIds`, e.target.value);
               }}
               onblur={handleBlur}
               touched={touched}
               required={true}
+              readOnly={noEdit}
               error={errors}
             />
           </div>
+          {!noEdit && (
+            <div className="bg-[#F4F8FF] w-full p-[1rem]">
+              <CustomButton
+                buttonName={`Save`}
+                customStyle={{
+                  padding: "0.75rem 2rem",
+                  // background: "#3D7FFA",
+                  // color: "#fff",
+                }}
+                handleOnClick={() => {
+                  handleSubmit();
+                }}
+              />
+            </div>
+          )}
           {/* <div className="px-[1rem]">
                   <LabelText labelName={``} />
                   <div className="gap-x-4 pt-3">
@@ -781,33 +850,6 @@ const AssignVillage = (props: any) => {
                 </div> */}
         </div>
       </div>
-      {/* <div className="bg-[#F4F8FF] w-full p-[1rem]">
-            <CustomButton
-              //disable={!profileCreated}
-              startIcon={
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M10 0C7.35774 0.0318782 4.83268 1.09568 2.96418 2.96418C1.09568 4.83268 0.0318782 7.35774 0 10C0.0318782 12.6423 1.09568 15.1673 2.96418 17.0358C4.83268 18.9043 7.35774 19.9681 10 20C12.6423 19.9681 15.1673 18.9043 17.0358 17.0358C18.9043 15.1673 19.9681 12.6423 20 10C19.9681 7.35774 18.9043 4.83268 17.0358 2.96418C15.1673 1.09568 12.6423 0.0318782 10 0ZM15.7143 10.7143H10.7143V15.7143H9.28571V10.7143H4.28571V9.28571H9.28571V4.28571H10.7143V9.28571H15.7143V10.7143Z"
-                    fill="#3D7FFA"
-                  />
-                </svg>
-              }
-              buttonName={`Assign farmer`}
-              customStyle={{
-                background: "none",
-                color: "#3D7FFA",
-              }}
-              handleOnClick={() => {
-                setFarmerPop(true);
-              }}
-            />
-          </div> */}
     </div>
   );
 };
