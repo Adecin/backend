@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { listAllRegulation } from "@/redux/reducer/regulation/listAllRegulation";
+import { listAllSurvey } from "@/redux/reducer/survey/getSurveyList";
 
 const garamond = EB_Garamond({ weight: "700", subsets: ["latin"] });
 export default function Sidebar() {
@@ -24,10 +25,14 @@ export default function Sidebar() {
   const regulationList = useSelector((state: any) => state.ListAllRegulation);
   const AddNewRegulation = useSelector((state: any) => state.AddNewRegulation);
 
+  const SurveyList = useSelector((state: any) => state.ListAllSurvey);
+  const AddNewSurvey = useSelector((state: any) => state.AddNewSurvey);
+
   // useEffect
   useEffect(() => {
     dispatch(listAllRegulation());
-  }, [AddNewRegulation]);
+    dispatch(listAllSurvey());
+  }, [AddNewRegulation, AddNewSurvey]);
 
   return (
     <>
@@ -129,6 +134,110 @@ export default function Sidebar() {
               <div className="border-b h-[20px] mx-2 border-white" />
               <div className="h-[20px]" />
             </section>
+            <div
+              onClick={() => {
+                router.push("/create-survey");
+              }}
+              className={`flex xl:px-5  px-2 items-center cursor-pointer  my-2 w-[100%]  ${
+                pathname === "/create-survey" ? "bg-primary" : ""
+              }  ${
+                !isExpand ? "justify-center xl:py-3 " : "pl-6 xl:py-3 py-2"
+              } ${
+                pathname?.split("/")[1] == "/create-survey".split("/")[1]
+                  ? "bg-secondary"
+                  : ""
+              }`}
+            >
+              {/* <div className="w-[20px]">{e.icon ?? ""}</div> */}
+
+              <div className="flex gap-x-4 items-center px-3 ml-5 text-white text-[14px] xl:text-[16px]">
+                <svg
+                  width="16"
+                  height="17"
+                  viewBox="0 0 16 17"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16 10.7778V15.2222C16 15.6937 15.8127 16.1459 15.4793 16.4793C15.1459 16.8127 14.6937 17 14.2222 17H1.77778C1.30628 17 0.854097 16.8127 0.520699 16.4793C0.187301 16.1459 0 15.6937 0 15.2222V2.77778C0 2.30628 0.187301 1.8541 0.520699 1.5207C0.854097 1.1873 1.30628 1 1.77778 1H6.22222V2.77778H1.77778V15.2222H14.2222V10.7778H16Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M16 4.4H11.6V0H9.4V4.4H5V6.6H9.4V11H11.6V6.6H16V4.4Z"
+                    fill="white"
+                  />
+                </svg>
+                <span>{`Create Survey`}</span>
+              </div>
+            </div>
+            {SurveyList.isSuccess &&
+              SurveyList.response.map((e: any, index: number) => {
+                const url = "/survey/" + e.id;
+
+                console.log(url, pathname);
+                return (
+                  <>
+                    {e.name == "border" ? (
+                      <>
+                        <div className="border-b h-[20px] mx-2 border-white" />
+                        <div className="h-[20px]" />
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <div
+                          key={index}
+                          onClick={() => {
+                            setActive(index);
+                            if (e.children) {
+                              setOpen(!isOpen);
+                            } else {
+                              router.push(url);
+                            }
+                          }}
+                          className={`flex xl:px-5 px-2 items-center cursor-pointer  my-2 w-[100%]  ${
+                            pathname === url ? "bg-primary" : ""
+                          }  ${
+                            !isExpand
+                              ? "justify-center xl:py-3 "
+                              : "pl-6 xl:py-3 py-2"
+                          } ${pathname == url ? "bg-secondary" : ""}`}
+                        >
+                          <div className="w-[20px]">{e.icon ?? ""}</div>
+                          {isExpand ? (
+                            <div className="px-3 text-white text-[14px] xl:text-[16px]">
+                              {e.name}
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          {e.children ? (
+                            <KeyboardArrowDownIcon
+                              className={
+                                isExpand
+                                  ? "ml-[auto] text-white mr-4 w-[15px] "
+                                  : "w-[10px] text-white xl:w-[15px]"
+                              }
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                        {/* open nested menu */}
+                        {isOpen &&
+                          isActive === index &&
+                          isExpand &&
+                          e.children &&
+                          NestedMenu(e, router)}
+                      </>
+                    )}
+                  </>
+                );
+              })}
+            <section>
+              <div className="border-b h-[20px] mx-2 border-white" />
+              <div className="h-[20px]" />
+            </section>
             {regulationList.isSuccess &&
               regulationList.response.map((e: any, index: number) => {
                 const url = "/regulation/" + e.id;
@@ -211,8 +320,24 @@ export default function Sidebar() {
             >
               {/* <div className="w-[20px]">{e.icon ?? ""}</div> */}
 
-              <div className="px-3 ml-5 text-white text-[14px] xl:text-[16px]">
-                New Regulation
+              <div className="flex gap-x-3 items-center px-3 ml-5 text-white text-[14px] xl:text-[16px]">
+                <svg
+                  width="16"
+                  height="17"
+                  viewBox="0 0 16 17"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16 10.7778V15.2222C16 15.6937 15.8127 16.1459 15.4793 16.4793C15.1459 16.8127 14.6937 17 14.2222 17H1.77778C1.30628 17 0.854097 16.8127 0.520699 16.4793C0.187301 16.1459 0 15.6937 0 15.2222V2.77778C0 2.30628 0.187301 1.8541 0.520699 1.5207C0.854097 1.1873 1.30628 1 1.77778 1H6.22222V2.77778H1.77778V15.2222H14.2222V10.7778H16Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M16 4.4H11.6V0H9.4V4.4H5V6.6H9.4V11H11.6V6.6H16V4.4Z"
+                    fill="white"
+                  />
+                </svg>
+                <span>{`New Regulation`}</span>{" "}
               </div>
             </div>
             {/* inbox */}
@@ -313,10 +438,6 @@ const sideMenu = [
   {
     name: "Village Management",
     url: "/village-management",
-  },
-  {
-    name: "Survey",
-    url: "/create-survey",
   },
   // {
   //   name: "border",
