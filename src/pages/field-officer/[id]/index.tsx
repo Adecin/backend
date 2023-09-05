@@ -557,7 +557,11 @@ const SurveyComponent = (props: any) => {
               fontSize: "16px",
               paddingRight: "2rem",
             }}
-            href={`/survey-details/` + e.farmerId.id + `?techId=${techId}`}
+            href={
+              `/survey-details/` +
+              e.farmerId.id +
+              `?techId=${techId}&surveyId=${e.surveyId?.id}`
+            }
           >{`View`}</Link>
         ),
       };
