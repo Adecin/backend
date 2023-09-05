@@ -200,8 +200,8 @@ export default function OfficerProfile(props: any) {
             {`${getOneFieldData.address ? getOneFieldData.address + `, ` : ``}`}
             <br />
             {`${
-              getOneFieldData?.villageId?.name
-                ? getOneFieldData?.villageId?.name + `, `
+              getOneFieldData?.village?.name
+                ? getOneFieldData?.village?.name + `, `
                 : ``
             }`}
             <br />
@@ -643,6 +643,7 @@ const AssignVillage = (props: any) => {
       surveyId: "",
       cropId: "",
       tapNumber: "",
+      technicianId: props.techId,
       villageIds: [],
     },
     validationSchema: AssignVillageSchema,
