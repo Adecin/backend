@@ -407,7 +407,7 @@ const FarmerList = () => {
           <DynamicTable
             backgroundColor="lblue"
             data={filterData}
-            count={filterData.length}
+            count={filterData?.length}
           />
         </div>
       </div>
