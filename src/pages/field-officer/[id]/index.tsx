@@ -663,6 +663,7 @@ const AssignVillage = (props: any) => {
     onSubmit: (values: any) => {
       console.log(`values in`, values);
       dispatch(assignTechVillage(values));
+      resetForm();
     },
   });
 
@@ -747,7 +748,7 @@ const AssignVillage = (props: any) => {
               onblur={handleBlur}
               touched={touched}
               required={true}
-              readOnly={noEdit}
+              //readOnly={noEdit}
               error={errors}
             />
             <SelectMenu
@@ -763,7 +764,7 @@ const AssignVillage = (props: any) => {
               value={values}
               placeHolderText={"Select"}
               required={true}
-              readOnly={noEdit}
+              //readOnly={noEdit}
             />
             <SelectMenu
               labelname={"Tap Number"}
@@ -777,7 +778,7 @@ const AssignVillage = (props: any) => {
               value={values}
               placeHolderText={"Select"}
               required={true}
-              readOnly={noEdit}
+              //readOnly={noEdit}
             />
             {/* <TextInput
               value={values}
@@ -805,11 +806,12 @@ const AssignVillage = (props: any) => {
               onblur={handleBlur}
               touched={touched}
               required={true}
-              readOnly={noEdit}
+              //readOnly={noEdit}
               error={errors}
             />
           </div>
-          {!noEdit && (
+          {
+            //!noEdit && (
             <div className="bg-[#F4F8FF] w-full p-[1rem]">
               <CustomButton
                 buttonName={`Save`}
@@ -823,7 +825,7 @@ const AssignVillage = (props: any) => {
                 }}
               />
             </div>
-          )}
+          }
           {/* <div className="px-[1rem]">
                   <LabelText labelName={``} />
                   <div className="gap-x-4 pt-3">
