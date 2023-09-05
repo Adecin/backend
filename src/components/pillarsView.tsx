@@ -175,6 +175,7 @@ export default function PillarDrtailComponent(props: any) {
             console.log(`FilteredAnswer`, FilteredAnswer.answer);
             return (
               <div
+                key={index}
                 className={`flex bg-[#F4F8FF] p-[18px] text-[16px] text-[#000] hover:bg-[#F75656]  hover:text-[#fff] my-6`}
               >
                 <span className="pr-2">{`${index + 1} .`}</span>
