@@ -368,7 +368,11 @@ const TypeElement = (props: any) => {
           name="tapNumber"
           value={values}
           touched={touched}
-          handleChange={handleChange}
+          handleChange={(e: any) => {
+            if (e.target.value.length < 3) {
+              setFieldValue("tapNumber", e.target.value);
+            }
+          }}
           error={errors}
           placeholder="Type Tap Number"
           customStyle={{
@@ -384,7 +388,11 @@ const TypeElement = (props: any) => {
             name="villageCode"
             value={values}
             touched={touched}
-            handleChange={handleChange}
+            handleChange={(e: any) => {
+              if (e.target.value.length < 4) {
+                setFieldValue("villageCode", e.target.value);
+              }
+            }}
             error={errors}
             placeholder="Type Village Code"
             customStyle={{
