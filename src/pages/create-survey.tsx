@@ -72,7 +72,7 @@ const CreateSurvey = () => {
 
   const SignInSchema = Yup.object().shape({
     name: Yup.string()
-      .matches(/^[aA-zZ]+$/, "Must be only alphabets")
+      .matches(/^[aA-zZ\s]+$/, "Must be only alphabets")
       .required("Survey name is required"),
     description: Yup.string().required("Survey description is required"),
     //.matches(/^[aA-zZ0-9\s]+$/, "Please enter a valid description"),
