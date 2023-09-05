@@ -87,7 +87,9 @@ const ManageCropType = (props: any) => {
   const CropResponse = useSelector((state: any) => state.ListCrop.response);
   const CropList = CropResponse.data;
 
-  console.log(`technicianIds crop`, technicianIds);
+  const AssignTechCrop = useSelector((state: any) => state.AssignTechCrop);
+
+  console.log(`vjkj`, AssignTechCrop);
 
   const CropTypeSchema = Yup.object().shape({
     cropIds: Yup.array().required(),
@@ -106,12 +108,25 @@ const ManageCropType = (props: any) => {
     },
   });
 
-  const { values, handleChange, handleSubmit, touched, setFieldValue, errors } =
-    formik;
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    resetForm,
+    touched,
+    setFieldValue,
+    errors,
+  } = formik;
 
   useEffect(() => {
     dispatch(getCrop());
   }, []);
+
+  useEffect(() => {
+    if (AssignTechCrop.isSuccess) {
+      closePopUp();
+    }
+  }, [AssignTechCrop]);
 
   return (
     <div>
@@ -134,7 +149,9 @@ const ManageCropType = (props: any) => {
       </div>
       <div className="flex justify-center mr-5">
         <div
-          onClick={() => {}}
+          onClick={(e: any) => {
+            resetForm();
+          }}
           className="bg-[#BEBEBE] cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
         >
           Cancel
@@ -161,6 +178,7 @@ const ManageAssignSurvey = (props: any) => {
   console.log(`technicianIds`, technicianIds);
 
   const SurveyList = useSelector((state: any) => state.ListAllSurvey.response);
+  const AssignTechSurvey = useSelector((state: any) => state.AssignTechSurvey);
 
   const AssignSurveySchema = Yup.object().shape({
     surveyIds: Yup.array().required(),
@@ -179,12 +197,25 @@ const ManageAssignSurvey = (props: any) => {
     },
   });
 
-  const { values, handleChange, handleSubmit, touched, setFieldValue, errors } =
-    formik;
+  const {
+    values,
+    handleChange,
+    resetForm,
+    handleSubmit,
+    touched,
+    setFieldValue,
+    errors,
+  } = formik;
 
   useEffect(() => {
     dispatch(listAllSurvey());
   }, []);
+
+  useEffect(() => {
+    if (AssignTechSurvey.isSuccess) {
+      closePopUp();
+    }
+  }, [AssignTechSurvey]);
 
   return (
     <div>
@@ -208,7 +239,9 @@ const ManageAssignSurvey = (props: any) => {
       </div>
       <div className="flex justify-center mr-5">
         <div
-          onClick={() => {}}
+          onClick={(e: any) => {
+            resetForm();
+          }}
           className="bg-[#BEBEBE] cursor-pointer px-8 mx-2 rounded-[5px] text-white py-2 font-medium"
         >
           Cancel
