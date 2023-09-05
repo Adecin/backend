@@ -114,10 +114,7 @@ export default function PillarDrtailComponent(props: any) {
             console.log(`regulationId`, e.target.value);
             handleRegulationChange(e.target.value);
           }}
-          value={(e: any) => {
-            console.log(`value`, e.target.value);
-            e.target.value;
-          }}
+          value={regulationId}
           placeHolderText={"Select Regulation"}
         />
       </div>
