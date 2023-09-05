@@ -44,11 +44,11 @@ const FarmerList = () => {
     (e: any, index: number) => {
       console.log(`fgnfh`, e);
       return {
-        No: index + 1,
+        No: `${index + 1} .`,
         Field_Officer: (
           <div className="flex flex-col">
-            {e.technician.map((tech: any) => {
-              return <span>{tech.name}</span>;
+            {e.technician.map((tech: any, index: any) => {
+              return <span key={index}>{tech.name}</span>;
             })}
           </div>
         ),

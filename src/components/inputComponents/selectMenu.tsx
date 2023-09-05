@@ -57,6 +57,7 @@ export default function SelectMenu(props: propsType) {
     font-weight:400;
    `;
 
+  console.log(`value in wkef`, value);
   return (
     <div className={`dropdown px-4 ` + classes}>
       <label
@@ -66,55 +67,55 @@ export default function SelectMenu(props: propsType) {
         {labelname ?? ""}{" "}
         {required ? <span className="text-error">*</span> : ""}{" "}
       </label>
-        {/* <DropdownLabel id="helper-label">{labelname}</DropdownLabel> */}
-        <StyledDropdown
-          className="outline-none border-none"
-          sx={{
-            border: "none",
-            outline: "none",
-            color: `${value && value[name] ? "" : "rgba(133, 133, 133, 0.24)"}`,
-            "&.MuiOutlinedInput-root": {
-              "& fieldset": {
-                border:
-                  touched[name] && error[name]
-                    ? "2px solid var(--error)"
-                    : "none",
-                outline: "none",
-              },
-              "&:hover fieldset": {
-                border: "none",
-                outline: "none",
-              },
-              "&.Mui-focused fieldset": {
-                border: "none",
-                outline: "none",
-              },
+      {/* <DropdownLabel id="helper-label">{labelname}</DropdownLabel> */}
+      <StyledDropdown
+        className="outline-none border-none"
+        sx={{
+          border: "none",
+          outline: "none",
+          color: `${value && value[name] ? "" : "rgba(133, 133, 133, 0.24)"}`,
+          "&.MuiOutlinedInput-root": {
+            "& fieldset": {
+              border:
+                touched[name] && error[name]
+                  ? "2px solid var(--error)"
+                  : "none",
+              outline: "none",
             },
-          }}
-          labelId="helper-label"
-          id="helper"
-          onChange={handleChange}
-          name={name}
-          style={{ ...fieldStyle, outline: "none", border: "none" }}
-          value={value ? (value[name] != "" ? value[name] : "d") : "d"}
-          onBlur={onblur}
-          readOnly={readOnly}
-        >
-          <MenuItem disabled value={"d"}>
-            {placeHolderText}
-          </MenuItem>
-          {Array.isArray(data) &&
-            data.map((item: any, index: number) => {
-              if (item.group) {
-                return <ListSubheader key={index}>{item.name}</ListSubheader>;
-              }
-              return (
-                <MenuItem selected={true} key={index} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              );
-            })}
-        </StyledDropdown>
+            "&:hover fieldset": {
+              border: "none",
+              outline: "none",
+            },
+            "&.Mui-focused fieldset": {
+              border: "none",
+              outline: "none",
+            },
+          },
+        }}
+        labelId="helper-label"
+        id="helper"
+        onChange={handleChange}
+        name={name}
+        style={{ ...fieldStyle, outline: "none", border: "none" }}
+        value={value ? (value[name] != "" ? value[name] : "d") : value}
+        onBlur={onblur}
+        readOnly={readOnly}
+      >
+        <MenuItem disabled value={"d"}>
+          {placeHolderText}
+        </MenuItem>
+        {Array.isArray(data) &&
+          data.map((item: any, index: number) => {
+            if (item.group) {
+              return <ListSubheader key={index}>{item.name}</ListSubheader>;
+            }
+            return (
+              <MenuItem selected={true} key={index} value={item.id}>
+                {item.name}
+              </MenuItem>
+            );
+          })}
+      </StyledDropdown>
       <div
         style={{
           marginBottom: "1rem",

@@ -174,7 +174,6 @@ export default function Sidebar() {
               SurveyList.response.map((e: any, index: number) => {
                 const url = "/survey/" + e.id;
 
-                console.log(url, pathname);
                 return (
                   <>
                     {e.name == "border" ? (
@@ -242,7 +241,6 @@ export default function Sidebar() {
               regulationList.response.map((e: any, index: number) => {
                 const url = "/regulation/" + e.id;
 
-                console.log(url, pathname);
                 return (
                   <>
                     {e.name == "border" ? (
