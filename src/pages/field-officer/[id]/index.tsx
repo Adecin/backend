@@ -219,7 +219,7 @@ export default function OfficerProfile(props: any) {
           <HeaderText text={`Government ID proof`} />
           <div
             style={addressStyle}
-            className="px-8 py-8 mt-[1rem] w-[228px] rounded-[10px] flex flex-col gap-y-2"
+            className="px-8 py-8 mt-[1rem] rounded-[10px] flex flex-col gap-y-2"
           >
             <LabelText labelName={`Aadhar No`} />
             <p>
@@ -557,7 +557,11 @@ const SurveyComponent = (props: any) => {
               fontSize: "16px",
               paddingRight: "2rem",
             }}
-            href={`/survey-details/` + e.farmerId.id + `?techId=${techId}`}
+            href={
+              `/survey-details/` +
+              e.farmerId.id +
+              `?techId=${techId}&surveyId=${e.surveyId?.id}`
+            }
           >{`View`}</Link>
         ),
       };

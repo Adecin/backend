@@ -122,6 +122,7 @@ const AddCropComponent = (props: any) => {
       .matches(/^[0-9]+$/, "Must be only digits"),
     villageCode: Yup.string()
       .required("Please enter a Village Code")
+      .max(3, "Should not be greater than 3 digits")
       .matches(/^[0-9]+$/, "Must be only digits"),
     stateId: Yup.string().required("State is required"),
     districtId: Yup.string().required("District is required"),
@@ -218,6 +219,7 @@ const UpdateCropComponent = (props: any) => {
       .required("Please enter a Tap number")
       .matches(/^[0-9]+$/, "Must be only digits"),
     villageCode: Yup.string()
+      .max(3, "Should not be greater than 3 digits")
       .required("Please enter a Village Code")
       .matches(/^[0-9]+$/, "Must be only digits"),
     stateId: Yup.string().required("State is required"),
