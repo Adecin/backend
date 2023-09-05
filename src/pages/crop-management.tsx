@@ -197,6 +197,7 @@ const AddCropComponent = (props: any) => {
       .matches(/^[0-9]+$/, "Must be only digits"),
     cropCode: Yup.string()
       .required("crop id is required")
+      .max(3, "Should not be greater than 3 digits")
       .matches(/^[0-9]+$/, "Must be only digits"),
     tapNumber: Yup.array().min(1, "tap number is required"),
   });
