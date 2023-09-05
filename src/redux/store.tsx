@@ -47,6 +47,7 @@ import UpdateQuestion from "./reducer/regulation/update-question";
 import AddQuestion from "./reducer/regulation/add-question";
 import DeleteQuestion from "./reducer/regulation/delete-question";
 import EditRegulation from "./reducer/regulation/edit-regulation";
+import ListRegulationPillars from "./reducer/regulation/listRegulationPillars";
 
 //survey
 import AddNewSurvey from "./reducer/survey/add-survey";
@@ -54,6 +55,9 @@ import ListAllSurvey from "./reducer/survey/getSurveyList";
 import AssignTechSurvey from "./reducer/fieldOfficer/assignSurvey";
 import TechSurveyDetails from "./reducer/survey/technicianSurveyDetails";
 import ListTechSurvey from "./reducer/survey/getTechSurvey";
+import ListFarmerSurvey from "./reducer/survey/getFarmerSurvey";
+import ListPillarDetail from "./reducer/regulation/listpillarDetail";
+
 //user
 import AddUserState from "./reducer/user/addStaff";
 import UpdateUserState from "./reducer/user/updateUser";
@@ -113,11 +117,14 @@ export const store = configureStore({
     UpdateQuestion: UpdateQuestion,
     AddQuestion: AddQuestion,
     DeleteQuestion: DeleteQuestion,
+    ListRegulationPillars: ListRegulationPillars,
     //survey
     AddNewSurvey: AddNewSurvey,
     ListAllSurvey: ListAllSurvey,
     ListTechSurvey: ListTechSurvey,
+    ListFarmerSurvey: ListFarmerSurvey,
     TechSurveyDetails: TechSurveyDetails,
+    ListPillarDetail: ListPillarDetail,
     //user
     AddUserState: AddUserState,
     UpdateUserState: UpdateUserState,

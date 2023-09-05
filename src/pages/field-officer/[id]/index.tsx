@@ -515,41 +515,54 @@ const SurveyComponent = (props: any) => {
       return { id: e.farmer_farmerId, name: e.farmer_name };
     }
   );
+  console.log(`fgnfh`, SurveyDetails.response.farmerList);
 
-  const filterData = SurveyDetails.response?.map((e: any, index: number) => {
-    console.log(`fgnfh`, e);
-    return {
-      No: index + 1,
-      regional_Manager: "",
-      farmer_ID: e.farmerId?.farmerId,
-      village: "",
-      survey: e.surveyId?.name,
-      survey_status: (
-        <div
-          className={`p-[10px]  rounded-[10px] ${
-            e.surveyStatus == "Pending"
-              ? "bg-[#FFE8E8]"
-              : e.surveyStatus == "Completed"
-              ? "bg-[#EFF5E6]"
-              : "bg-[#FFF4E4]"
-          }`}
-        >
-          <span
-            className={`${
+  const filterData = SurveyDetails.response.farmerList?.map(
+    (e: any, index: number) => {
+      console.log(`fgnfh`, e);
+      return {
+        No: `${index + 1} .`,
+        regional_Manager: "",
+        farmer_ID: e.farmerId?.farmerId,
+        village: e.farmerId.villageManagementId.villageId.name,
+        survey: e.surveyId?.name,
+        survey_status: (
+          <div
+            className={`p-[10px]  rounded-[10px] ${
               e.surveyStatus == "Pending"
-                ? "text-[#F75656]"
+                ? "bg-[#FFE8E8]"
                 : e.surveyStatus == "Completed"
-                ? "text-[#70B10E]"
-                : "text-[#F8B34C]"
+                ? "bg-[#EFF5E6]"
+                : "bg-[#FFF4E4]"
             }`}
           >
-            {e.surveyStatus}
-          </span>
-        </div>
-      ),
-      "": <div></div>,
-    };
-  });
+            <span
+              className={`${
+                e.surveyStatus == "Pending"
+                  ? "text-[#F75656]"
+                  : e.surveyStatus == "Completed"
+                  ? "text-[#70B10E]"
+                  : "text-[#F8B34C]"
+              }`}
+            >
+              {e.surveyStatus}
+            </span>
+          </div>
+        ),
+        "": (
+          <Link
+            style={{
+              color: "#3D7FFA",
+              textDecoration: "underline",
+              fontSize: "16px",
+              paddingRight: "2rem",
+            }}
+            href={`/survey-details/` + e.farmerId.id + `?techId=${techId}`}
+          >{`View`}</Link>
+        ),
+      };
+    }
+  );
 
   const surveyQuery = `?technicianId=${techId}&surveyId=${surveyId}`;
   useEffect(() => {
@@ -604,7 +617,7 @@ const SurveyComponent = (props: any) => {
         </div>
       </div>
       <div className="Surveytable">
-        <DynamicTable data={filterData} count={filterData.length} />
+        <DynamicTable data={filterData} count={filterData?.length} />
       </div>
     </div>
   );
@@ -657,8 +670,8 @@ const AssignVillage = (props: any) => {
     const query = `?technicianId=${techId}`;
     dispatch(listTechnicianSurvey(query));
     dispatch(getCropById(cropId));
-    dispatch(getAllVillageMang());
-  }, [cropId]);
+    dispatch(getAllVillageMang(`?tapNumber=${values.tapNumber}`));
+  }, [cropId, values.tapNumber]);
 
   const TechSurveyList = useSelector(
     (state: any) => state.ListTechSurvey.response
@@ -685,15 +698,11 @@ const AssignVillage = (props: any) => {
     return { id: e.cropId?.id, name: e.cropId?.name };
   });
 
-  const villageDropDown = villageMangList.response?.data?.data
-    ?.filter((item: any) => {
-      if (item.tapNumber == values.tapNumber) {
-        return item;
-      }
-    })
-    .map((e: any, index: number) => {
+  const villageDropDown = villageMangList.response?.data?.data?.map(
+    (e: any, index: number) => {
       return { id: e.id, name: e.villageId.name };
-    });
+    }
+  );
 
   const tapDropDown =
     CropData.response?.data?.tapCode?.map((e: any, index: number) => {

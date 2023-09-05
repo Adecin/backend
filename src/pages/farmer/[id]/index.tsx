@@ -7,12 +7,14 @@ import Tabs from "@/components/tabs/farm-details";
 import HeaderText from "@/components/textComponents/headerText";
 import { listFarm } from "@/redux/reducer/farmer/list-farm";
 import { listOneFarmer } from "@/redux/reducer/farmer/list-one-farmer";
+import { listFarmerSurvey } from "@/redux/reducer/survey/getFarmerSurvey";
 import {
   Checkbox,
   FormControl,
   FormControlLabel,
   RadioGroup,
 } from "@mui/material";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,102 +27,71 @@ const FarmerList = () => {
   //  farmer data
   const farmerData = useSelector((state: any) => state.listOneFarmer);
   const farmData = useSelector((state: any) => state.listFarm);
+  const FarmerSurveyData = useSelector(
+    (state: any) => state.ListFarmerSurvey.response
+  );
+
+  console.log(`FarmerSurveyData`, FarmerSurveyData);
+
   // useEffect
   useEffect(() => {
     dispatch(listOneFarmer(farmer_id));
     dispatch(listFarm(farmer_id));
+    dispatch(listFarmerSurvey(`?farmerId=${farmer_id}`));
   }, [farmer_id]);
 
-  // table data
-  const tableData = [
-    {
-      Survey_name: "DTE 202344",
-      field_officer: "Vijay",
-      Location: (
-        <>
-          <div>Dakshina</div>
-          <div>Kanada</div>
-          <div>Karapakkam</div>
-          <div>600 61</div>
-        </>
-      ),
-
-      download: (
-        <svg
-          className="cursor-pointer"
-          width="22"
-          height="22"
-          viewBox="0 0 28 28"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M1 27H27H1Z" fill="#3D7FFA" />
-          <path
-            d="M1 27H27"
-            stroke="#3D7FFA"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M14 1H17.8519V9.66667H22.6667L14 22.6667M14 1H10.1482V9.66667H5.33337L14 22.6667"
-            fill="#3D7FFA"
-          />
-          <path
-            d="M14 1H17.8519V9.66667H22.6667L14 22.6667L5.33337 9.66667H10.1482V1H14Z"
-            stroke="#3D7FFA"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      ),
-    },
-  ];
-
-  const surveyData = [
-    {
-      no: 1,
-      regional_Manager: "KK001",
-      farm_ID: "KK001",
-      village: "vallakottai",
-      survey: "Dakshina Kannada,Karapakam, 600 061",
-      survey_status: (
-        <div className={`bg-[#FFE8E8] rounded-[10px] py-2 px-3`}>
-          <div className={`text-[#F75656]`}>{`pending`}</div>
-        </div>
-      ),
-      _: <span className="text-primary underline pr-8">view</span>,
-    },
-    {
-      no: 2,
-      regional_Manager: "KK001",
-      farm_ID: "KK001",
-      village: "vallakottai",
-      survey: "Dakshina Kannada,Karapakam, 600 061",
-      survey_status: (
-        <div className={`bg-[#EFF5E6] rounded-[10px] py-2 px-3`}>
-          <div className={`text-[#70B10E]`}>{`Completed`}</div>
-        </div>
-      ),
-      _: <span className="text-primary underline pr-8">view</span>,
-    },
-    {
-      no: 3,
-      regional_Manager: "KK001",
-      farm_ID: "KK001",
-      village: "vallakottai",
-      survey: "Dakshina Kannada,Karapakam, 600 061",
-      survey_status: (
-        <div className={`bg-[#FFF4E4] rounded-[10px] py-2 px-3`}>
-          <div className={`text-[#F8B34C]`}>{`Partial`}</div>
-        </div>
-      ),
-      _: <span className="text-primary underline pr-8">view</span>,
-    },
-  ];
-  const data = tableData.map((e, index) => {
-    return { No: index + 1, ...e };
-  });
+  const filterData = FarmerSurveyData.farmerList?.map(
+    (e: any, index: number) => {
+      console.log(`fgnfh`, e);
+      return {
+        No: `${index + 1} .`,
+        Field_Officer: (
+          <div className="flex flex-col">
+            {e.technician.map((tech: any, index: any) => {
+              return <span key={index}>{tech.name}</span>;
+            })}
+          </div>
+        ),
+        farmer_ID: e.fid_farmerId,
+        location: e.villageId_name,
+        survey: e.surveyId_name,
+        survey_status: (
+          <div
+            className={`p-[10px]  rounded-[10px] ${
+              e.afs_surveyStatus == "Pending"
+                ? "bg-[#FFE8E8]"
+                : e.afs_surveyStatus == "Completed"
+                ? "bg-[#EFF5E6]"
+                : "bg-[#FFF4E4]"
+            }`}
+          >
+            <span
+              className={`${
+                e.afs_surveyStatus == "Pending"
+                  ? "text-[#F75656]"
+                  : e.afs_surveyStatus == "Completed"
+                  ? "text-[#70B10E]"
+                  : "text-[#F8B34C]"
+              }`}
+            >
+              {e.afs_surveyStatus}
+            </span>
+          </div>
+        ),
+        "": (
+          <Link
+            style={{
+              color: "#3D7FFA",
+              textDecoration: "underline",
+              fontSize: "16px",
+              paddingRight: "2rem",
+            }}
+            href={``}
+          >{`View`}</Link>
+        ),
+      };
+    }
+  );
 
   return (
     <>
@@ -433,7 +404,11 @@ const FarmerList = () => {
         </div>
         {/* table */}
         <div className="max-w-[1100px] my-9">
-          <DynamicTable backgroundColor="lblue" data={surveyData} />
+          <DynamicTable
+            backgroundColor="lblue"
+            data={filterData}
+            count={filterData.length}
+          />
         </div>
       </div>
     </>
