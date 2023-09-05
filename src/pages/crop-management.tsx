@@ -431,7 +431,9 @@ const TypeElement = (props: any) => {
               value={values}
               touched={touched}
               handleChange={(e: any) => {
-                setFieldValue("enterTapNumber", e.target.value);
+                if (e.target.value.length < 3) {
+                  setFieldValue("enterTapNumber", e.target.value);
+                }
               }}
               onKeyDown={(e: any) => {
                 if (e.key == "Enter") {
@@ -463,7 +465,11 @@ const TypeElement = (props: any) => {
           name="cropYear"
           value={values}
           touched={touched}
-          handleChange={handleChange}
+          handleChange={(e: any) => {
+            if (e.target.value.length < 5) {
+              setFieldValue("cropYear", e.target.value);
+            }
+          }}
           error={errors}
           placeholder="Type year here"
           customStyle={{
@@ -479,7 +485,11 @@ const TypeElement = (props: any) => {
           name="cropCode"
           value={values}
           touched={touched}
-          handleChange={handleChange}
+          handleChange={(e: any) => {
+            if (e.target.value.length < 4) {
+              setFieldValue("cropCode", e.target.value);
+            }
+          }}
           error={errors}
           placeholder="Type crop id here"
           customStyle={{

@@ -67,7 +67,6 @@ export default function OfficerProfile(props: any) {
   const AssignVillageResponse = useSelector(
     (state: any) => state.AssignTechVillage
   );
-
   const query = `?technicianId=${fieldOfficer_id}`;
 
   useEffect(() => {
@@ -76,12 +75,6 @@ export default function OfficerProfile(props: any) {
     dispatch(listTechnicianSurvey(query));
     dispatch(listAssignedVillages(query));
   }, [fieldOfficer_id, AssignVillageResponse]);
-
-  useEffect(() => {
-    if (AssignVillageResponse.isSuccess) {
-      dispatch(listAssignedVillages(query));
-    }
-  }, [AssignVillageResponse]);
 
   const assignTaskQuery = `?limit=${paginateData.limit}&page=${paginateData.page}&technicianId=${fieldOfficer_id}&farmer=${taskFilter.farmer}&districtId=${taskFilter.districtId}&villageId=${taskFilter.villageId}`;
 
@@ -210,8 +203,8 @@ export default function OfficerProfile(props: any) {
             {`${getOneFieldData.address ? getOneFieldData.address + `, ` : ``}`}
             <br />
             {`${
-              getOneFieldData?.villageId?.name
-                ? getOneFieldData?.villageId?.name + `, `
+              getOneFieldData?.village?.name
+                ? getOneFieldData?.village?.name + `, `
                 : ``
             }`}
             <br />
@@ -657,6 +650,7 @@ const AssignVillage = (props: any) => {
       surveyId: "",
       cropId: "",
       tapNumber: "",
+      technicianId: props.techId,
       villageIds: [],
     },
     validationSchema: AssignVillageSchema,
