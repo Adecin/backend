@@ -64,14 +64,24 @@ export default function OfficerProfile(props: any) {
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
   const SurveyDetails = useSelector((state: any) => state.TechSurveyDetails);
+  const AssignVillageResponse = useSelector(
+    (state: any) => state.AssignTechVillage
+  );
+
+  const query = `?technicianId=${fieldOfficer_id}`;
 
   useEffect(() => {
-    const query = `?technicianId=${fieldOfficer_id}`;
     dispatch(oneFieldOfficer(fieldOfficer_id));
     dispatch(listFarmers(query));
     dispatch(listTechnicianSurvey(query));
     dispatch(listAssignedVillages(query));
-  }, [fieldOfficer_id]);
+  }, [fieldOfficer_id, AssignVillageResponse]);
+
+  useEffect(() => {
+    if (AssignVillageResponse.isSuccess) {
+      dispatch(listAssignedVillages(query));
+    }
+  }, [AssignVillageResponse]);
 
   const assignTaskQuery = `?limit=${paginateData.limit}&page=${paginateData.page}&technicianId=${fieldOfficer_id}&farmer=${taskFilter.farmer}&districtId=${taskFilter.districtId}&villageId=${taskFilter.villageId}`;
 

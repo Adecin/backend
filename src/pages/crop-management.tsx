@@ -443,7 +443,7 @@ const TypeElement = (props: any) => {
                   setFieldValue("enterTapNumber", "");
                 }
               }}
-              placeholder="Type Number"
+              placeholder="Tap Number"
               customStyle={{
                 color: "#858585",
                 // width: "300px",
