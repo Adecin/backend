@@ -60,7 +60,9 @@ export default function PillarDrtailComponent(props: any) {
   console.log(RegulationPillars, `RegulationPillars`);
   const [regulationId, setRegulationId] = useState("");
 
-  const { farmerId } = props;
+  const { farmerId, farmId, surveyId } = props;
+
+  console.log(`farmId in`, farmId);
   const PillarList = RegulationPillars[0]?.pillar;
   console.log(`PillarList`, PillarList);
 
@@ -69,12 +71,12 @@ export default function PillarDrtailComponent(props: any) {
   const ListPillarData = useSelector(
     (state: any) => state.ListPillarDetail.response
   );
-  const query = `?farmerId=${farmerId}&regulationId=${regulationId}&farmId=${1}`;
+  const query = `?farmerId=${farmerId}&regulationId=${regulationId}&farmId=${farmId}`;
   console.log(`ListPillarData`, ListPillarData);
 
   console.log(`pillarId`, pillarId);
 
-  const pillarDetalQuery = `?pillarId=${pillarId}&farmerId=${farmerId}&farmId=1`;
+  const pillarDetalQuery = `?pillarId=${pillarId}&farmerId=${farmerId}&farmId=${farmId}`;
 
   const handleRegulationChange = (id: any) => {
     setRegulationId(id);
@@ -89,7 +91,7 @@ export default function PillarDrtailComponent(props: any) {
   }, [regulationId, PillarList]);
 
   useEffect(() => {
-    dispatch(listAllRegulation());
+    dispatch(listAllRegulation(`?surveyId=${surveyId}`));
     dispatch(listRegulationPillars(query));
     dispatch(listPillarDetail(pillarDetalQuery));
   }, [query, pillarDetalQuery, regulationId, pillarId]);
@@ -112,10 +114,7 @@ export default function PillarDrtailComponent(props: any) {
             console.log(`regulationId`, e.target.value);
             handleRegulationChange(e.target.value);
           }}
-          value={(e: any) => {
-            console.log(`value`, e.target.value);
-            e.target.value;
-          }}
+          value={regulationId}
           placeHolderText={"Select Regulation"}
         />
       </div>
