@@ -225,7 +225,9 @@ const FarmerList = () => {
                 <div className="my-4 text-text ">
                   {farmerData.response.address ?? ""},
                   <br />
-                  {farmerData.response.villageId?.name ?? ""},<br />
+                  {farmerData.response?.villageManagementId?.villageId?.name ??
+                    ""}
+                  ,<br />
                   {farmerData.response.districtId?.name ?? ""},<br />
                   {farmerData.response.stateId?.name ?? ""}-
                   {farmerData.response.pincode ?? ""}
