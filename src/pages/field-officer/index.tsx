@@ -189,7 +189,7 @@ const ListFieldOfficer = () => {
           onClick={() => {
             setManageOpen(true);
           }}
-          className="mx-4 text-[18px] underline cursor-pointer text-primary font-semibold"
+          className="mx-4 w-fit text-[18px] underline cursor-pointer text-primary font-semibold"
         >
           Manage
         </div>

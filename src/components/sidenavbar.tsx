@@ -172,7 +172,7 @@ export default function Sidebar() {
             </div>
             {SurveyList.isSuccess &&
               SurveyList.response.map((e: any, index: number) => {
-                const url = "/survey/" + e.id;
+                const url = "/viewSurvey?id=" + e.id;
 
                 return (
                   <>

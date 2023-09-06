@@ -18,11 +18,12 @@ const SUCCESS = async (data: string) => {
 };
 
 // api call
-export const updateVillageMang: any = createAsyncThunk(
-  "villageMang/update",
+export const readNotification: any = createAsyncThunk(
+  "readNotification/read",
   async (value: any, { rejectWithValue }) => {
     try {
-      const data: any = await axios.put(`api/village-mang`, value, {
+      console.log('rediux', value);
+      const data: any = await axios.put(`api/notification`, value, {
         withCredentials: true,
       });
 
@@ -39,24 +40,20 @@ export const updateVillageMang: any = createAsyncThunk(
 
 // state
 
-const updateVillageMangData: any = createSlice({
-  name: "updateVillageMangData",
+const ReadNotificationState: any = createSlice({
+  name: "ReadNotificationState",
   initialState: {
     isLoading: false,
     isSuccess: false,
     isError: false,
     response: {},
   },
-  reducers: {
-    clear_update_villageMang_success: (state: any, payload: any) => {
-      state.isSuccess = false;
-    },
-  },
+  reducers: {},
   extraReducers: (builder: any) => {
-    builder.addCase(updateVillageMang.pending, (state: any, { payload }: any) => {
+    builder.addCase(readNotification.pending, (state: any, { payload }: any) => {
       state.isLoading = true;
     });
-    builder.addCase(updateVillageMang.fulfilled, (state: any, { payload }: any) => {
+    builder.addCase(readNotification.fulfilled, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.response = payload.data?.data;
       state.Message = payload.data.message;
@@ -64,7 +61,7 @@ const updateVillageMangData: any = createSlice({
       SUCCESS(payload.data.message);
     });
 
-    builder.addCase(updateVillageMang.rejected, (state: any, { payload }: any) => {
+    builder.addCase(readNotification.rejected, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = true;
@@ -75,5 +72,4 @@ const updateVillageMangData: any = createSlice({
 });
 
 // Reducer
-export default updateVillageMangData.reducer;
-export const { clear_update_villageMang_success } = updateVillageMangData.actions;
+export default ReadNotificationState.reducer;
