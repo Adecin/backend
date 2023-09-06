@@ -165,13 +165,10 @@ export default function PillarDrtailComponent(props: any) {
       <div>
         <CustomTabPanel value={value} index={0}>
           {ListPillarData?.question?.map((questionItem: any, index: any) => {
-            console.log(`question item`, questionItem);
+            const FilteredAnswer = ListPillarData.answers.find(
+              (item: any) => item.questionId == questionItem.id
+            );
 
-            const FilteredAnswer = ListPillarData.answers.find((item: any) => {
-              return item.qustionId == questionItem.id;
-            });
-
-            console.log(`FilteredAnswer`, FilteredAnswer.answer);
             return (
               <div
                 key={index}
@@ -179,7 +176,7 @@ export default function PillarDrtailComponent(props: any) {
               >
                 <span className="pr-2">{`${index + 1} .`}</span>
                 <div className="pr-2">{`${questionItem.question} : `}</div>
-                <div className="pl-2">{FilteredAnswer.answer}</div>
+                <div className="pl-2">{FilteredAnswer?.answer ?? ""}</div>
               </div>
             );
           })}
