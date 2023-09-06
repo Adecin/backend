@@ -47,7 +47,11 @@ const updateVillageMangData: any = createSlice({
     isError: false,
     response: {},
   },
-  reducers: {},
+  reducers: {
+    clear_update_villageMang_success: (state: any, payload: any) => {
+      state.isSuccess = false;
+    },
+  },
   extraReducers: (builder: any) => {
     builder.addCase(updateVillageMang.pending, (state: any, { payload }: any) => {
       state.isLoading = true;
@@ -72,3 +76,4 @@ const updateVillageMangData: any = createSlice({
 
 // Reducer
 export default updateVillageMangData.reducer;
+export const { clear_update_villageMang_success } = updateVillageMangData.actions;

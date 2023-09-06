@@ -47,7 +47,11 @@ const addVillageMangData: any = createSlice({
     isError: false,
     response: {},
   },
-  reducers: {},
+  reducers: {
+    clear_add_villageMang_success: (state: any, payload: any) => {
+      state.isSuccess = false;
+    },
+  },
   extraReducers: (builder: any) => {
     builder.addCase(addVillageMang.pending, (state: any, { payload }: any) => {
       state.isLoading = true;
@@ -72,3 +76,4 @@ const addVillageMangData: any = createSlice({
 
 // Reducer
 export default addVillageMangData.reducer;
+export const { clear_add_villageMang_success } = addVillageMangData.actions;
