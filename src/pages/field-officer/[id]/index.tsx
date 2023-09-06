@@ -527,7 +527,7 @@ const SurveyComponent = (props: any) => {
         No: `${index + 1} .`,
         regional_Manager: "",
         farmer_ID: e.farmerId?.farmerId,
-        village: e.farmerId.villageManagementId.villageId.name,
+        village: e.farmerId.villageManagementId?.villageId?.name ?? "",
         survey: e.surveyId?.name,
         survey_status: (
           <div
