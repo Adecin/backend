@@ -670,7 +670,11 @@ const AddFarmer = () => {
                     name="adharNumber"
                     required={true}
                     value={values}
-                    handleChange={handleChange}
+                    handleChange={(e: any) => {
+                      if (e.target.value.length <= 12) {
+                        setFieldValue("adharNumber", e.target.value);
+                      }
+                    }}
                     onblur={handleBlur}
                     touched={touched}
                     error={errors}
