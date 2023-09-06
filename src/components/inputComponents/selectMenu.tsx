@@ -97,7 +97,7 @@ export default function SelectMenu(props: propsType) {
         onChange={handleChange}
         name={name}
         style={{ ...fieldStyle, outline: "none", border: "none" }}
-        value={value ? (value[name] != "" ? value[name] : "d") : value}
+        value={value ? (value[name] != "" ? value[name] : "d") : "d"}
         onBlur={onblur}
         readOnly={readOnly}
       >

@@ -280,6 +280,7 @@ const CreateSurvey = () => {
             ) : (
               <div className="flex items-center gap-x-6">
                 <div className="p-[1rem]">
+                  <LabelText classes={`pl-4`} labelName={`Regulations`} />
                   <MultiSelectMenu
                     labelStyle={{ color: "#3D7FFA" }}
                     fieldStyle={{
@@ -304,6 +305,7 @@ const CreateSurvey = () => {
                   classes={`text-primary`}
                   buttonName={`Save`}
                   customStyle={{
+                    marginTop: "1rem",
                     background: "#3D7FFA",
                     border: "1px solid #3D7FFA",
                     height: "3rem",
@@ -326,7 +328,7 @@ const CreateSurvey = () => {
           >
             <div className="flex justify-start items-center gap-x-16 my-[2rem]">
               <div className="p-[1rem]" style={{}}>
-                <FormControl>
+                {/* <FormControl>
                   <RadioGroup
                     value={selectedType}
                     onChange={(e: any) => {
@@ -360,7 +362,8 @@ const CreateSurvey = () => {
                       label="Non-FCV"
                     />
                   </RadioGroup>
-                </FormControl>
+                </FormControl> */}
+                <LabelText classes={`pl-4`} labelName={`Crop Type`} />
                 <SelectMenu
                   fieldStyle={{
                     marginTop: "0.5rem",
@@ -370,7 +373,7 @@ const CreateSurvey = () => {
                     boxShadow: "2px 2px 5px #0000003d",
                   }}
                   name={"cropId"}
-                  data={filterCropType(selectedType) ?? []}
+                  data={CropList ?? []}
                   handleChange={handleChange}
                   value={values}
                   placeHolderText={"Select Crop"}

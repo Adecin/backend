@@ -18,6 +18,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { listTechnicianSurvey } from "@/redux/reducer/survey/getTechSurvey";
 
 const FarmerList = () => {
   const dispatch = useDispatch();
@@ -224,7 +225,9 @@ const FarmerList = () => {
                 <div className="my-4 text-text ">
                   {farmerData.response.address ?? ""},
                   <br />
-                  {farmerData.response.villageId?.name ?? ""},<br />
+                  {farmerData.response?.villageManagementId?.villageId?.name ??
+                    ""}
+                  ,<br />
                   {farmerData.response.districtId?.name ?? ""},<br />
                   {farmerData.response.stateId?.name ?? ""}-
                   {farmerData.response.pincode ?? ""}
@@ -305,7 +308,7 @@ const FarmerList = () => {
         <div>
           <div className="text-text my-4 text-[16px]">Survey Details</div>
           <div className="flex items-center">
-            <div className="text-text w-[70px]">Filter By : </div>
+            <div className="text-text w-[70px] mb-8 pb-3">Filter By : </div>
             <div>
               <div className="flex">
                 <div className="w-[300px] ">
@@ -315,16 +318,7 @@ const FarmerList = () => {
                     handleChange={() => {}}
                     placeHolderText="Select Survey"
                     background="blue"
-                    data={[
-                      {
-                        name: "vijay",
-                        id: "09",
-                      },
-                      {
-                        name: "vijay",
-                        id: "09",
-                      },
-                    ]}
+                    data={[]}
                   />
                 </div>
                 <div className="w-[300px] ml-2">
@@ -334,47 +328,13 @@ const FarmerList = () => {
                     handleChange={() => {}}
                     placeHolderText="Select Field Officer"
                     background="blue"
-                    data={[
-                      {
-                        name: "vijay",
-                        id: "09",
-                      },
-                      {
-                        name: "vijay",
-                        id: "09",
-                      },
-                    ]}
+                    data={[]}
                   />
                 </div>
               </div>
               <div className="ml-2 flex">
                 <div className="flex items-center">
-                  <div className="mx-4 text-text">STP &nbsp;:</div>
-                  <div className="flex items-center">
-                    <FormControl>
-                      <RadioGroup
-                        row
-                        aria-labelledby="demo-row-radio-buttons-group-label"
-                        name="row-radio-buttons-group"
-                      >
-                        <FormControlLabel
-                          value="pending"
-                          className="text-text "
-                          control={<Checkbox />}
-                          label="Pending"
-                        />
-                        <FormControlLabel
-                          className="text-text"
-                          value="complete"
-                          control={<Checkbox />}
-                          label="Completed"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <div className="mx-4 text-text">CM &nbsp;:</div>
+                  <div className="mx-4 text-text">Survey Status &nbsp;:</div>
                   <div className="flex items-center">
                     <FormControl>
                       <RadioGroup

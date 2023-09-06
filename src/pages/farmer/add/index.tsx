@@ -197,10 +197,13 @@ const AddFarmer = () => {
       education: !farmer_id ? "" : farmerOneData.response?.education ?? "",
       address: !farmer_id ? "" : farmerOneData.response?.address ?? "",
       stateId: !farmer_id ? "" : farmerOneData.response?.stateId?.id ?? "",
+      cropId: !farmer_id ? "" : farmerOneData.response?.cropId?.id ?? "",
       districtId: !farmer_id
         ? ""
         : farmerOneData.response?.districtId?.id ?? "",
-      villageId: !farmer_id ? "" : farmerOneData.response?.villageId?.id ?? "",
+      villageId: !farmer_id
+        ? ""
+        : farmerOneData.response?.villageManagementId?.id ?? "",
       pincode: !farmer_id ? "" : farmerOneData.response?.pincode ?? "",
       martialStatus: !farmer_id
         ? ""
@@ -229,8 +232,9 @@ const AddFarmer = () => {
       (item: any) => item.id === data.villageId
     );
     const cropCode = CropList?.response?.data?.find(
-      (item: any) => item.cropId === data.cropId
+      (item: any) => item.id === data.cropId
     );
+
     const newFarmerId =
       cropCode.cropCode + villageCode.tapNumber + villageCode.villageCode;
 
@@ -262,6 +266,8 @@ const AddFarmer = () => {
     errors,
     setFieldError,
   }: any = formik;
+
+  console.log(errors);
 
   return (
     <div className="flex mx-auto">
@@ -441,7 +447,7 @@ const AddFarmer = () => {
                 </div>
                 <div className="pt-5">
                   <SelectMenu
-                    name="cropType"
+                    name="cropId"
                     labelname="Crop Type"
                     placeHolderText="Select Crop"
                     data={cropDropDown ?? []}
@@ -476,7 +482,7 @@ const AddFarmer = () => {
                     touched={touched}
                     error={errors}
                   />
-                </div>{" "}
+                </div>
                 <div className="pt-5">
                   <SelectMenu
                     name="stateId"
@@ -670,7 +676,11 @@ const AddFarmer = () => {
                     name="adharNumber"
                     required={true}
                     value={values}
-                    handleChange={handleChange}
+                    handleChange={(e: any) => {
+                      if (e.target.value.length <= 12) {
+                        setFieldValue("adharNumber", e.target.value);
+                      }
+                    }}
                     onblur={handleBlur}
                     touched={touched}
                     error={errors}

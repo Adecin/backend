@@ -677,7 +677,11 @@ export default function OfficerProfileEdit(props: any) {
                   name="aadharNo"
                   placeholder="Type Aadhar number here"
                   onblur={handleBlur}
-                  handleChange={handleChange}
+                  handleChange={(e: any) => {
+                    if (e.target.value.length <= 12) {
+                      setFieldValue("aadharNo", e.target.value);
+                    }
+                  }}
                   touched={touched}
                   error={errors}
                 />

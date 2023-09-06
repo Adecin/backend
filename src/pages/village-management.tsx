@@ -10,8 +10,8 @@ import BreadCrumb from "@/components/table/bread-crumb";
 import Filter from "@/components/table/filter";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useDispatch, useSelector } from "react-redux";
-import { addVillageMang } from "@/redux/reducer/villageMang/addVillageMang";
-import { updateVillageMang } from "@/redux/reducer/villageMang/updateVillageMang";
+import { addVillageMang, clear_add_villageMang_success } from "@/redux/reducer/villageMang/addVillageMang";
+import { updateVillageMang, clear_update_villageMang_success } from "@/redux/reducer/villageMang/updateVillageMang";
 import { getAllVillageMang } from "@/redux/reducer/villageMang/getAllVillageMang";
 import { deleteVillageMang } from "@/redux/reducer/villageMang/deleteVillageMang";
 import { getState } from "@/redux/reducer/dropdown/get-state";
@@ -26,6 +26,10 @@ export default function VillageManagement(props: any) {
   const [showNfcv, setshowNfcv] = React.useState(false);
   const dispatch = useDispatch();
 
+
+  const AddVillage = useSelector((state: any) => state.addVillageMangData)
+  const UpdateVillage = useSelector((state: any) => state.updateVillageMangData)
+
   const villageMangList = useSelector(
     (state: any) => state.getAllVillageMangData
   );
@@ -34,6 +38,15 @@ export default function VillageManagement(props: any) {
   useEffect(() => {
     dispatch(getAllVillageMang(""));
   }, []);
+
+  useEffect(() => {
+    dispatch(getAllVillageMang());
+    if (AddVillage.isSuccess || UpdateVillage.isSuccess) {
+      setshowNfcv(false);
+      setshowfcv(false);
+      dispatch(clear_add_villageMang_success());
+    }
+  }, [AddVillage, UpdateVillage]);
 
   const CropTypeValue = value == 0 ? `FCV` : `NONFCV`;
 
@@ -50,7 +63,7 @@ export default function VillageManagement(props: any) {
         </div>
         <Filter
           value={searchValue}
-          applyFilter={() => {}}
+          applyFilter={() => { }}
           onSearch={(e: string) => {
             setSearchValue(e);
           }}
@@ -182,6 +195,7 @@ const UpdateCropComponent = (props: any) => {
   const GetState = useSelector((state: any) => state.ListState);
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
+  const UpdateVillage = useSelector((state: any) => state.updateVillageMangData)
 
   const stateDropDown = GetState.response?.data?.map(
     (e: any, index: number) => {
@@ -200,17 +214,17 @@ const UpdateCropComponent = (props: any) => {
   );
 
   useEffect(() => {
+    if (UpdateVillage.isSuccess) {
+      setEditCrop(false);
+      dispatch(clear_update_villageMang_success());
+    }
+  }, [UpdateVillage]);
+
+  useEffect(() => {
     dispatch(getState());
     dispatch(getVillage());
     dispatch(getDistrict());
   }, []);
-
-  // useEffect(() => {
-  //   if (UpdateState.isSuccess) {
-  //     setEditCrop(false);
-  //     // dispatch(clear_update_crop_success());
-  //   }
-  // }, [UpdateState]);
 
   const { dataItem } = props;
   console.log("azar", dataItem);

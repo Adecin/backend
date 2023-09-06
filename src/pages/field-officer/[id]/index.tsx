@@ -30,6 +30,7 @@ import MultiSelectMenu from "@/components/inputComponents/multiSelect";
 import { assignTechVillage } from "@/redux/reducer/fieldOfficer/assignVillage";
 import { listAssignedVillages } from "@/redux/reducer/fieldOfficer/listAssignedVillages";
 
+
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
 export default function OfficerProfile(props: any) {
@@ -63,6 +64,9 @@ export default function OfficerProfile(props: any) {
   const GetState = useSelector((state: any) => state.ListState);
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
+  const villageMangList = useSelector(
+    (state: any) => state.getAllVillageMangData
+  );
   const SurveyDetails = useSelector((state: any) => state.TechSurveyDetails);
   const AssignVillageResponse = useSelector(
     (state: any) => state.AssignTechVillage
@@ -94,9 +98,9 @@ export default function OfficerProfile(props: any) {
       return { id: e.id, name: e.name };
     }
   );
-  const villageDropDown = GetSVillage.response?.data?.map(
+  const villageDropDown = villageMangList.response?.data?.data?.map(
     (e: any, index: number) => {
-      return { id: e.id, name: e.name };
+      return { id: e.id, name: e.villageId.name };
     }
   );
 
@@ -120,6 +124,7 @@ export default function OfficerProfile(props: any) {
   useEffect(() => {
     dispatch(getVillage());
     dispatch(getDistrict());
+    dispatch(getAllVillageMang());
   }, []);
 
   console.log(``);
@@ -202,11 +207,10 @@ export default function OfficerProfile(props: any) {
           >
             {`${getOneFieldData.address ? getOneFieldData.address + `, ` : ``}`}
             <br />
-            {`${
-              getOneFieldData?.village?.name
-                ? getOneFieldData?.village?.name + `, `
-                : ``
-            }`}
+            {`${getOneFieldData?.village?.name
+              ? getOneFieldData?.village?.name + `, `
+              : ``
+              }`}
             <br />
             {getOneFieldData?.districtId?.name
               ? getOneFieldData?.districtId?.name + `, `
@@ -248,13 +252,13 @@ export default function OfficerProfile(props: any) {
           </div>
         </div>
       </div>
-      <AssignedTask
+      <AssignedVillageTable
         //values={taskFilter}
         farmerDrop={farmerDropDown}
         districtDrop={districtDropDown}
         villageDrop={villageDropDown}
-        //handleChange={handleTaskFilter}
-        //setPaginate={setPaginate}
+      //handleChange={handleTaskFilter}
+      //setPaginate={setPaginate}
       />
       <SurveyComponent
         villageDropDown={villageDropDown}
@@ -344,7 +348,7 @@ export default function OfficerProfile(props: any) {
   );
 }
 
-const AssignedTask = (props: any) => {
+const AssignedVillageTable = (props: any) => {
   const {
     farmerDrop,
     districtDrop,
@@ -503,6 +507,19 @@ const SurveyComponent = (props: any) => {
   const { villageDropDown, setSurvey, techId } = props;
   const [surveyId, setSurveyId] = useState("");
   const dispatch = useDispatch();
+  const [surveyFilter, setSurveyFilter] = useState({
+    surveyId: '',
+    farmerId: '',
+    villageId: ''
+  })
+
+  const TechSurveyList = useSelector(
+    (state: any) => state.ListTechSurvey.response
+  );
+
+  const surveyDropDown = TechSurveyList?.map((e: any, index: number) => {
+    return { id: e.id, name: e.name };
+  });
 
   const LabelText = styled.p`
     width: 100px;
@@ -511,13 +528,14 @@ const SurveyComponent = (props: any) => {
       padding: 0 0.25rem;
     }
   `;
-  const SurveyDetails = useSelector((state: any) => state.TechSurveyDetails);
 
-  const surveyDropdown = SurveyDetails.response?.data?.map(
-    (e: any, index: number) => {
-      return { id: e.farmer_farmerId, name: e.farmer_name };
-    }
-  );
+  useEffect(() => {
+    const query = `?technicianId=${techId}&surveyId=${surveyFilter.surveyId}&farmerId=${surveyFilter.farmerId}&villageId=${surveyFilter.villageId}`;
+    dispatch(listTechnicianSurveyDetails(query));
+    console.log(query);
+  }, [surveyFilter])
+
+  const SurveyDetails = useSelector((state: any) => state.TechSurveyDetails);
   console.log(`fgnfh`, SurveyDetails.response.farmerList);
 
   const filterData = SurveyDetails.response.farmerList?.map(
@@ -527,26 +545,24 @@ const SurveyComponent = (props: any) => {
         No: `${index + 1} .`,
         regional_Manager: "",
         farmer_ID: e.farmerId?.farmerId,
-        village: e.farmerId.villageManagementId.villageId.name,
+        village: e.farmerId.villageManagementId?.villageId?.name ?? "",
         survey: e.surveyId?.name,
         survey_status: (
           <div
-            className={`p-[10px]  rounded-[10px] ${
-              e.surveyStatus == "Pending"
-                ? "bg-[#FFE8E8]"
-                : e.surveyStatus == "Completed"
+            className={`p-[10px]  rounded-[10px] ${e.surveyStatus == "Pending"
+              ? "bg-[#FFE8E8]"
+              : e.surveyStatus == "Completed"
                 ? "bg-[#EFF5E6]"
                 : "bg-[#FFF4E4]"
-            }`}
+              }`}
           >
             <span
-              className={`${
-                e.surveyStatus == "Pending"
-                  ? "text-[#F75656]"
-                  : e.surveyStatus == "Completed"
+              className={`${e.surveyStatus == "Pending"
+                ? "text-[#F75656]"
+                : e.surveyStatus == "Completed"
                   ? "text-[#70B10E]"
                   : "text-[#F8B34C]"
-              }`}
+                }`}
             >
               {e.surveyStatus}
             </span>
@@ -574,7 +590,7 @@ const SurveyComponent = (props: any) => {
   const surveyQuery = `?technicianId=${techId}&surveyId=${surveyId}`;
   useEffect(() => {
     dispatch(listTechnicianSurveyDetails(surveyQuery));
-  }, [surveyQuery]);
+  }, []);
 
   console.log(`SurveyDetails`, SurveyDetails);
 
@@ -589,13 +605,14 @@ const SurveyComponent = (props: any) => {
               fieldStyle={{ background: "#F4F8FF" }}
               //labelname={"Survey"}
               name={"surveyId"}
-              data={surveyDropdown ?? []}
-              handleChange={() => {
-                setSurvey(1);
+              data={surveyDropDown ?? []}
+              handleChange={(e: any) => {
+                setSurveyFilter({
+                  ...surveyFilter,
+                  surveyId: e.target.value
+                });
               }}
-              value={(e: any) => {
-                e.target.value;
-              }}
+              value={surveyFilter}
               placeHolderText={"Survey"}
             />
           </div>
@@ -614,10 +631,15 @@ const SurveyComponent = (props: any) => {
             <SelectMenu
               fieldStyle={{ background: "#F4F8FF" }}
               //labelname={"Location"}
-              name={""}
+              name={"villageId"}
               data={villageDropDown ?? []}
-              handleChange={undefined}
-              value={undefined}
+              handleChange={(e: any) => {
+                setSurveyFilter({
+                  ...surveyFilter,
+                  villageId: e.target.value
+                });
+              }}
+              value={surveyFilter}
               placeHolderText={"Village"}
             />
           </div>
@@ -657,6 +679,7 @@ const AssignVillage = (props: any) => {
     onSubmit: (values: any) => {
       console.log(`values in`, values);
       dispatch(assignTechVillage(values));
+      resetForm();
     },
   });
 
@@ -741,7 +764,7 @@ const AssignVillage = (props: any) => {
               onblur={handleBlur}
               touched={touched}
               required={true}
-              readOnly={noEdit}
+              //readOnly={noEdit}
               error={errors}
             />
             <SelectMenu
@@ -757,7 +780,7 @@ const AssignVillage = (props: any) => {
               value={values}
               placeHolderText={"Select"}
               required={true}
-              readOnly={noEdit}
+            //readOnly={noEdit}
             />
             <SelectMenu
               labelname={"Tap Number"}
@@ -771,7 +794,7 @@ const AssignVillage = (props: any) => {
               value={values}
               placeHolderText={"Select"}
               required={true}
-              readOnly={noEdit}
+            //readOnly={noEdit}
             />
             {/* <TextInput
               value={values}
@@ -799,11 +822,12 @@ const AssignVillage = (props: any) => {
               onblur={handleBlur}
               touched={touched}
               required={true}
-              readOnly={noEdit}
+              //readOnly={noEdit}
               error={errors}
             />
           </div>
-          {!noEdit && (
+          {
+            //!noEdit && (
             <div className="bg-[#F4F8FF] w-full p-[1rem]">
               <CustomButton
                 buttonName={`Save`}
@@ -817,7 +841,7 @@ const AssignVillage = (props: any) => {
                 }}
               />
             </div>
-          )}
+          }
           {/* <div className="px-[1rem]">
                   <LabelText labelName={``} />
                   <div className="gap-x-4 pt-3">

@@ -15,6 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const noSlide = [
     `/login`,
+    `/forget-password`,
     `/farmer/add`,
     `/field-officer/add`,
     `/field-officer/edit`,
