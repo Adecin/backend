@@ -67,14 +67,14 @@ const TechnicianManage = ({ closePopUp, farmersList, techIds }: any) => {
         aria-label=""
       >
         <StyledTab label={`Assign survey`} className="" />
-        <StyledTab label={`Assign crop type`} className="" />
+        {/* <StyledTab label={`Assign crop type`} className="" /> */}
       </Tabs>
       <CustomTabPanel index={0} value={value}>
         <ManageAssignSurvey technicianIds={techIds} closePopUp={closePopUp} />
       </CustomTabPanel>
-      <CustomTabPanel index={1} value={value}>
+      {/* <CustomTabPanel index={1} value={value}>
         <ManageCropType technicianIds={techIds} closePopUp={closePopUp} />
-      </CustomTabPanel>
+      </CustomTabPanel> */}
     </>
   );
 };
