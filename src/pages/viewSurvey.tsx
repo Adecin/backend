@@ -126,6 +126,7 @@ const DTE2022 = () => {
               {cropTypes.map((item: any, index: any) => {
                 return (
                   <Chip
+                    key={index}
                     style={{
                       margin: "5px",
                       background: "#fff",
@@ -158,6 +159,7 @@ const DTE2022 = () => {
               {cropTypes.map((item: any, index: any) => {
                 return (
                   <Chip
+                    key={index}
                     style={{
                       margin: "5px",
                       background: "#fff",
