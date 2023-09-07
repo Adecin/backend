@@ -1,6 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { baseApi } from "@/redux/baseapi";
 import UserLogin from "./reducer/login/login";
+import ForgetPassword from "./reducer/login/forgetPasswordLink";
+import VerifyPasswordState from "./reducer/login/verifyOtp";
+import ResetPassword from "./reducer/login/resetPassword";
 // stores
 
 // dropdown
@@ -57,6 +60,8 @@ import TechSurveyDetails from "./reducer/survey/technicianSurveyDetails";
 import ListTechSurvey from "./reducer/survey/getTechSurvey";
 import ListFarmerSurvey from "./reducer/survey/getFarmerSurvey";
 import ListPillarDetail from "./reducer/regulation/listpillarDetail";
+import ListOneSurveyData from "./reducer/survey/get-survey";
+import UpdateSurveyData from "./reducer/survey/edit-survey";
 
 //user
 import AddUserState from "./reducer/user/addStaff";
@@ -70,14 +75,23 @@ import getAllVillageMangData from "./reducer/villageMang/getAllVillageMang";
 import getOneVillageMangData from "./reducer/villageMang/getOneVillageMang";
 import updateVillageMangData from "./reducer/villageMang/updateVillageMang";
 
+//notifcation
+import NotificationListState from "./reducer/notification/getNotificationList";
+import ReadNotificationState from "./reducer/notification/readNotification";
+
 export const store = configureStore({
   reducer: {
     // common data
     ListState: ListState,
     ListDistrict: ListDistrict,
     ListVillage: ListVillage,
-    UserLogin: UserLogin,
     GetRolesList: GetRolesList,
+
+    //auth
+    UserLogin: UserLogin,
+    ForgetPassword: ForgetPassword,
+    VerifyPasswordState: VerifyPasswordState,
+    ResetPassword: ResetPassword,
 
     // crop
     ListCrop: ListCrop,
@@ -125,6 +139,8 @@ export const store = configureStore({
     ListFarmerSurvey: ListFarmerSurvey,
     TechSurveyDetails: TechSurveyDetails,
     ListPillarDetail: ListPillarDetail,
+    ListOneSurveyData:ListOneSurveyData,
+    UpdateSurveyData:UpdateSurveyData,
     //user
     AddUserState: AddUserState,
     UpdateUserState: UpdateUserState,
@@ -136,6 +152,10 @@ export const store = configureStore({
     getAllVillageMangData: getAllVillageMangData,
     getOneVillageMangData: getOneVillageMangData,
     updateVillageMangData: updateVillageMangData,
+
+    //notifactiom
+    NotificationListState: NotificationListState,
+    ReadNotificationState: ReadNotificationState,
 
     [baseApi.reducerPath]: baseApi.reducer,
   },
