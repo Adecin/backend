@@ -57,14 +57,11 @@ export default function PillarDrtailComponent(props: any) {
     (state: any) => state.ListRegulationPillars.response
   );
 
-  console.log(RegulationPillars, `RegulationPillars`);
   const [regulationId, setRegulationId] = useState("");
 
   const { farmerId, farmId, surveyId } = props;
 
-  console.log(`farmId in`, farmId);
   const PillarList = RegulationPillars[0]?.pillar;
-  console.log(`PillarList`, PillarList);
 
   const [pillarId, setPillarId] = useState();
 
@@ -72,9 +69,6 @@ export default function PillarDrtailComponent(props: any) {
     (state: any) => state.ListPillarDetail.response
   );
   const query = `?farmerId=${farmerId}&regulationId=${regulationId}&farmId=${farmId}`;
-  console.log(`ListPillarData`, ListPillarData);
-
-  console.log(`pillarId`, pillarId);
 
   const pillarDetalQuery = `?pillarId=${pillarId}&farmerId=${farmerId}&farmId=${farmId}`;
 
@@ -111,10 +105,9 @@ export default function PillarDrtailComponent(props: any) {
           name={"regulationId"}
           data={RegulationData ?? []}
           handleChange={(e: any) => {
-            console.log(`regulationId`, e.target.value);
             handleRegulationChange(e.target.value);
           }}
-          value={regulationId}
+          value={{ regulationId: regulationId }}
           placeHolderText={"Select Regulation"}
         />
       </div>
