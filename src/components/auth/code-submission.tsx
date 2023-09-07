@@ -9,7 +9,7 @@ import { forgetPasswordLink } from "@/redux/reducer/login/forgetPasswordLink";
 export default function CodeSubmit(props: any) {
   const { companyEmailId } = props;
   const [submitted, setSubmitted] = useState(false);
-  const [otp, setOtp] = useState(new Array(4).fill(""));
+  const [otp, setOtp] = useState(new Array(5).fill(""));
 
   console.log(`companyEmailId`, companyEmailId);
 
