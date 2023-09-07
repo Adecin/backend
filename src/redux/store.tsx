@@ -60,6 +60,8 @@ import TechSurveyDetails from "./reducer/survey/technicianSurveyDetails";
 import ListTechSurvey from "./reducer/survey/getTechSurvey";
 import ListFarmerSurvey from "./reducer/survey/getFarmerSurvey";
 import ListPillarDetail from "./reducer/regulation/listpillarDetail";
+import ListOneSurveyData from "./reducer/survey/get-survey";
+import UpdateSurveyData from "./reducer/survey/edit-survey";
 
 //user
 import AddUserState from "./reducer/user/addStaff";
@@ -137,6 +139,8 @@ export const store = configureStore({
     ListFarmerSurvey: ListFarmerSurvey,
     TechSurveyDetails: TechSurveyDetails,
     ListPillarDetail: ListPillarDetail,
+    ListOneSurveyData:ListOneSurveyData,
+    UpdateSurveyData:UpdateSurveyData,
     //user
     AddUserState: AddUserState,
     UpdateUserState: UpdateUserState,
