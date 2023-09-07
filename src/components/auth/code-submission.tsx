@@ -117,13 +117,15 @@ export default function CodeSubmit(props: any) {
             }}
           >
             <span className="text-grey pr-1">{`Didn't receive Code`}</span>
-            {/* 
+
             <CustomButton
               classes={`text-primary pl-1 cursor-pointer underline`}
-              //customStyle={}
-              //handleOnClick={resendOTP(companyEmailId)}
+              customStyle={{
+                background: "none",
+                color: "#3D7FFA",
+              }}
               buttonName={`Verify`}
-            /> */}
+            />
           </p>
           <div className="w-full flex justify-center gap-x-6 px-3">
             <CustomButton
