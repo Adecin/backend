@@ -509,9 +509,9 @@ const SurveyComponent = (props: any) => {
   const [surveyId, setSurveyId] = useState("");
   const dispatch = useDispatch();
   const [surveyFilter, setSurveyFilter] = useState({
-    surveyId: '',
-    farmerId: '',
-    villageId: ''
+    surveyId: 'all',
+    farmerId: 'All',
+    villageId: 'all'
   })
 
   const TechSurveyList = useSelector(
@@ -522,6 +522,9 @@ const SurveyComponent = (props: any) => {
     return { id: e.id, name: e.name };
   });
 
+  villageDropDown?.unshift({ id: 'all', name: 'All' })
+  surveyDropDown?.unshift({ id: 'all', name: 'All' })
+
   const LabelText = styled.p`
     width: 100px;
     ::after {
@@ -531,7 +534,16 @@ const SurveyComponent = (props: any) => {
   `;
 
   useEffect(() => {
-    const query = `?technicianId=${techId}&surveyId=${surveyFilter.surveyId}&farmerId=${surveyFilter.farmerId}&villageId=${surveyFilter.villageId}`;
+    let query = `?technicianId=${techId}`;
+    if (surveyFilter.surveyId !== 'all') {
+      query += `&surveyId=${surveyFilter.surveyId}`
+    }
+    if (surveyFilter.farmerId !== 'all') {
+      query += `&farmerId=${surveyFilter.farmerId}`
+    }
+    if (surveyFilter.villageId !== 'all') {
+      query += `&villageManagementId=${surveyFilter.villageId}`
+    }
     dispatch(listTechnicianSurveyDetails(query));
     console.log(query);
   }, [surveyFilter])
@@ -618,14 +630,22 @@ const SurveyComponent = (props: any) => {
             />
           </div>
           <div className="w-full">
-            <SelectMenu
-              fieldStyle={{ background: "#F4F8FF" }}
-              //labelname={"Farmer ID"}
-              name={""}
-              data={[]}
-              handleChange={undefined}
-              value={undefined}
-              placeHolderText={"Farmer ID"}
+            <TextInput
+              label=""
+              classes={` py-0 mt-[-4px]`}
+              name="farmerId"
+              value={surveyFilter.farmerId}
+              handleChange={(e: any) => {
+                setSurveyFilter({
+                  ...surveyFilter,
+                  farmerId: e.target.value
+                })
+              }}
+              placeholder="Farmer Id"
+              customStyle={{
+                background: "#F4F8FF",
+              }}
+              readOnly={true}
             />
           </div>
           <div className="w-full">
