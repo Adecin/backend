@@ -5,6 +5,7 @@ import ResetPassword from "./reset-password";
 import { verifyLoginOTP } from "@/redux/reducer/login/verifyOtp";
 import { dispatch } from "@/redux/store";
 import { forgetPasswordLink } from "@/redux/reducer/login/forgetPasswordLink";
+import { useSelector } from "react-redux";
 
 export default function CodeSubmit(props: any) {
   const { companyEmailId } = props;
@@ -40,12 +41,21 @@ export default function CodeSubmit(props: any) {
   };
 
   const handleSubmit = () => {
+    const otpNumber = Number(otp.join(""));
     dispatch(
-      verifyLoginOTP({ companyEmailId: companyEmailId, otp: otp.join("") })
+      verifyLoginOTP({ companyEmailId: companyEmailId, emailOtp: otpNumber })
     );
 
-    setSubmitted(true);
+    console.log({ companyEmailId: companyEmailId, emailOtp: otpNumber });
   };
+
+  const VerifyState = useSelector((state: any) => state.VerifyPasswordState);
+
+  useEffect(() => {
+    if (VerifyState.isSuccess) {
+      setSubmitted(true);
+    }
+  }, [VerifyState]);
 
   return (
     <>
