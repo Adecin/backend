@@ -8,36 +8,41 @@ import styled from "@emotion/styled";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { Chip } from "@mui/material";
-import { useState } from "react";
-const DTE2022 = () => {
-  const SeperaterText = styled.p`
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 500;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &::before,
-    ::after {
-      content: "";
-      height: 2px;
-      width: 15rem;
-      background-color: #3d7ffa;
-      display: block;
-    }
-    &::before {
-      margin-right: 1rem;
-    }
-    &::after {
-      margin-left: 1rem;
-    }
-  `;
+import { useEffect, useState } from "react";
+import { listOneSurvey } from "@/redux/reducer/survey/get-survey";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter, useSearchParams } from "next/navigation";
+
+const dateFormat = (date: string) => {
+  const inputDate = new Date("2023-09-05T04:08:42.416Z");
+  const day = String(inputDate.getDate()).padStart(2, "0");
+  const month = String(inputDate.getMonth() + 1).padStart(2, "0");
+  const year = inputDate.getFullYear();
+  const formattedDate = `${day}/${month}/${year}`;
+  return formattedDate;
+};
+
+const ViewSurvey = () => {
   const [edit, setEdit] = useState(false);
   const cropTypes = [
     { name: "WRU" },
     { name: "Mysure-Burley" },
     { name: "Type-3" },
   ];
+
+  const dispatch = useDispatch();
+  const params = useSearchParams();
+  const survey_id: any = params?.get("id");
+  const router = useRouter();
+
+  const getOneSurvey = useSelector((state: any) => state.ListOneSurveyData);
+  const getOneSurveyData = getOneSurvey.response;
+  console.log(getOneSurvey);
+
+  useEffect(() => {
+    dispatch(listOneSurvey(`${survey_id}`));
+    console.log(survey_id);
+  }, [survey_id]);
 
   return (
     <>
@@ -81,7 +86,7 @@ const DTE2022 = () => {
               style={{ fontWeight: "bold", fontSize: "16px" }}
             >
               <p>Created Date&nbsp;: &nbsp;</p>
-              <p>20/05/2023</p>
+              <p>{dateFormat(getOneSurveyData.createdDate)}</p>
             </div>
             <div
               className="mb-5 my-4 flex text-[#43424D] "
@@ -92,24 +97,17 @@ const DTE2022 = () => {
                   Survey Description&nbsp;:&nbsp;
                 </p>
               </div>
-              {
-                <p>
-                  Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-                  vulputate libero et velit interdum, ac aliquet odio mattis.
-                  Class aptent taciti sociosqu ad litora torquent per conubia
-                  nostra, per inceptos himenaeos.
-                </p>
-              }
+              {<p>{getOneSurveyData.description}</p>}
             </div>
             <div
               className="mb-5 my-4 flex text-[#43424D]"
               style={{ whiteSpace: "nowrap", fontSize: "16px" }}
             >
               <p style={{ fontWeight: "bold" }}>Start Date&nbsp;: &nbsp;</p>
-              <p className="mr-5">20/05/2023</p>
+              <p className="mr-5">{dateFormat(getOneSurveyData.startDate)}</p>
 
               <p style={{ fontWeight: "bold" }}>End Date&nbsp;: &nbsp;</p>
-              <p>20/05/2023</p>
+              <p>{dateFormat(getOneSurveyData.endDate)}</p>
             </div>
           </div>
 
@@ -123,22 +121,24 @@ const DTE2022 = () => {
             className="flex justify-start items-center gap-x-16 "
           >
             <div className="mb-5 ml-5">
-              {cropTypes.map((item: any, index: any) => {
-                return (
-                  <Chip
-                    key={index}
-                    style={{
-                      margin: "5px",
-                      background: "#fff",
-                      padding: "1rem",
-                      border: "1px solid #43424D",
-                      borderRadius: "10px",
-                      color: "#43424D",
-                    }}
-                    label={item.name}
-                  />
-                );
-              })}
+              {getOneSurveyData.regulationIdsNo?.map(
+                (item: any, index: number) => {
+                  return (
+                    <Chip
+                      key={index}
+                      style={{
+                        margin: "5px",
+                        background: "#fff",
+                        padding: "1rem",
+                        border: "1px solid #43424D",
+                        borderRadius: "10px",
+                        color: "#43424D",
+                      }}
+                      label={item.name}
+                    />
+                  );
+                }
+              )}
             </div>
           </div>
           <SeperaterText className="text-primary my-12">
@@ -156,22 +156,21 @@ const DTE2022 = () => {
             }}
           >
             <div className="mb-5 ml-5">
-              {cropTypes.map((item: any, index: any) => {
-                return (
-                  <Chip
-                    key={index}
-                    style={{
-                      margin: "5px",
-                      background: "#fff",
-                      padding: "1rem",
-                      border: "1px solid #43424D",
-                      borderRadius: "10px",
-                      color: "#43424D",
-                    }}
-                    label={item.name}
-                  />
-                );
-              })}
+              {/* {cropTypes.map((item: any, index: any) => {
+                return ( */}
+              <Chip
+                style={{
+                  margin: "5px",
+                  background: "#fff",
+                  padding: "1rem",
+                  border: "1px solid #43424D",
+                  borderRadius: "10px",
+                  color: "#43424D",
+                }}
+                label={getOneSurveyData?.cropId?.name}
+              />
+              {/* );
+              })} */}
             </div>
           </div>
         </div>
@@ -179,4 +178,27 @@ const DTE2022 = () => {
     </>
   );
 };
-export default DTE2022;
+export default ViewSurvey;
+
+const SeperaterText = styled.p`
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &::before,
+  ::after {
+    content: "";
+    height: 2px;
+    width: 15rem;
+    background-color: #3d7ffa;
+    display: block;
+  }
+  &::before {
+    margin-right: 1rem;
+  }
+  &::after {
+    margin-left: 1rem;
+  }
+`;

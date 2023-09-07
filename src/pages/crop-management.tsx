@@ -199,7 +199,7 @@ const AddCropComponent = (props: any) => {
       .required("crop id is required")
       .max(3, "Should not be greater than 3 digits")
       .matches(/^[0-9]+$/, "Must be only digits"),
-    tapNumber: Yup.array().min(1, "tap number is required"),
+    tapCode: Yup.array().min(1, "tap number is required"),
   });
 
   const formik = useFormik({
@@ -225,6 +225,7 @@ const AddCropComponent = (props: any) => {
     setFieldTouched,
     setFieldError,
     setFieldValue,
+    setErrors,
     touched,
     errors,
     resetForm,
@@ -242,6 +243,7 @@ const AddCropComponent = (props: any) => {
       setFieldError={setFieldError}
       resetForm={resetForm}
       cancelAdd={props.cancelAdd}
+      setErrors={setErrors}
     />
   );
 };
@@ -269,7 +271,7 @@ const UpdateCropComponent = (props: any) => {
     cropCode: Yup.string()
       .required("crop id is required")
       .matches(/^[0-9]+$/, "Must be only digits"),
-    tapNumber: Yup.array().min(1, "tap number is required"),
+    tapCode: Yup.array().min(1, "tap number is required"),
   });
 
   const formik = useFormik({
@@ -300,7 +302,10 @@ const UpdateCropComponent = (props: any) => {
     touched,
     errors,
     resetForm,
+    setErrors,
   } = formik;
+
+  console.log("errors", errors);
 
   return (
     <TypeElement
@@ -316,6 +321,7 @@ const UpdateCropComponent = (props: any) => {
       setEditCrop={setEditCrop}
       viewPage={true}
       resetForm={resetForm}
+      setErrors={setErrors}
     />
   );
 };
@@ -324,7 +330,6 @@ const TypeElement = (props: any) => {
   const {
     handleChange,
     handleSubmit,
-
     errors,
     touched,
     vl,
@@ -335,6 +340,7 @@ const TypeElement = (props: any) => {
     setEditCrop,
     editCrop,
     cancelAdd,
+    setErrors,
     resetForm,
   } = props;
 
@@ -432,12 +438,21 @@ const TypeElement = (props: any) => {
               touched={touched}
               handleChange={(e: any) => {
                 if (e.target.value.length < 3) {
-                  setFieldValue("enterTapNumber", e.target.value);
+                  if (values?.tapCode.length != 0) {
+                    const err = { ...errors };
+                    delete err.tapCode;
+                    setErrors(err);
+                    setFieldValue("enterTapNumber", e.target.value);
+                  } else {
+                    setFieldValue("enterTapNumber", e.target.value);
+                  }
                 }
               }}
               onKeyDown={(e: any) => {
                 if (e.key == "Enter") {
-                  setFieldError("tapCode", null);
+                  const err = { ...errors };
+                  delete err.tapCode;
+                  setErrors(err);
                   setFieldValue("tapCode", [
                     ...values.tapCode,
                     values.enterTapNumber,
@@ -445,7 +460,7 @@ const TypeElement = (props: any) => {
                   setFieldValue("enterTapNumber", "");
                 }
               }}
-              placeholder="Tap Number"
+              placeholder="Enter the TAP number and press 'Enter'"
               customStyle={{
                 color: "#858585",
                 // width: "300px",
