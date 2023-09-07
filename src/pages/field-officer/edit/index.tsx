@@ -24,6 +24,7 @@ import { getVillage } from "@/redux/reducer/dropdown/get-village";
 import { updateFieldOfficer } from "@/redux/reducer/fieldOfficer/updateFieldOfficer";
 import { assignFarmerList } from "@/redux/reducer/fieldOfficer/assignFarmerList";
 import { unassignFarmerList } from "@/redux/reducer/fieldOfficer/unassignFarmerList";
+import { getAllVillageMang } from "@/redux/reducer/villageMang/getAllVillageMang";
 
 export default function OfficerProfileEdit(props: any) {
   const [farmerPop, setFarmerPop] = useState(false);
@@ -55,6 +56,11 @@ export default function OfficerProfileEdit(props: any) {
     (state: any) => state.UpdateFieldOfficerData
   );
 
+  const villageMangList = useSelector(
+    (state: any) => state.getAllVillageMangData
+  );
+  const villageMangListData = villageMangList.response?.data;
+
   const pathName = usePathname();
 
   const [filterData, setFilterData] = useState({
@@ -74,9 +80,9 @@ export default function OfficerProfileEdit(props: any) {
       return { id: e.id, name: e.name };
     }
   );
-  const villageDropDown = GetSVillage.response?.data?.map(
+  const villageDropDown = villageMangList.response?.data?.data?.map(
     (e: any, index: number) => {
-      return { id: e.id, name: e.name };
+      return { id: e.id, name: e.villageId.name };
     }
   );
   const marriedDropDown = [
@@ -99,6 +105,7 @@ export default function OfficerProfileEdit(props: any) {
     dispatch(getVillage());
     dispatch(getDistrict());
     dispatch(unassignFarmerList(""));
+    dispatch(getAllVillageMang());
   }, []);
 
   useEffect(() => {
@@ -164,7 +171,7 @@ export default function OfficerProfileEdit(props: any) {
       address: getOneFieldData?.address ?? "",
       stateId: getOneFieldData?.stateId?.id ?? "",
       districtId: getOneFieldData?.districtId?.id ?? "",
-      villageId: getOneFieldData?.villageId?.id ?? "",
+      villageId: getOneFieldData?.villageManagementId?.id ?? "",
       pincode: getOneFieldData?.pincode ?? "",
       joiningDate: getOneFieldData?.joiningDate ?? "",
       relievingDate: getOneFieldData?.relievingDate ?? "",

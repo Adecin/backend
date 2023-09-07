@@ -20,16 +20,11 @@ export default function SurveyDetails() {
     (state: any) => state.TechSurveyDetails.response.farmerList
   );
 
-  console.log(`SurveyDetails in`, SurveyDetails);
   const [farmId, setFarmId] = useState();
   const surveyQuery = `?technicianId=${fieldOfficer_id}&surveyId=${surveyId}`;
   const filteredFarmer = SurveyDetails?.find((item: any) => {
-    console.log(`fillkh`, item.farmerId.id);
-    console.log(`fillsafbaekh`, farmer_id);
     return item.farmerId.id == farmer_id;
   });
-
-  console.log(`SurveyDetails jgf`, SurveyDetails);
 
   const farmData = useSelector((state: any) => state.listFarm.response.data);
 
@@ -84,7 +79,7 @@ export default function SurveyDetails() {
             name="farmId"
             placeHolderText="Select Farm"
             data={farmDropdown ?? []}
-            value={farmId}
+            value={{ farmId }}
             handleChange={(e: any) => {
               setFarmId(e.target.value);
             }}

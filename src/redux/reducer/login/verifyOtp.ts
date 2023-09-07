@@ -23,7 +23,7 @@ export const verifyLoginOTP: any = createAsyncThunk(
     "verifyLoginOTP/verify",
     async (value: any, { rejectWithValue }) => {
         try {
-            const data: any = await axios.post(`/api/user/forget-password-verify`, value, {
+            const data: any = await axios.post(`/api/user/verify/email`, value, {
                 withCredentials: true,
             });
 

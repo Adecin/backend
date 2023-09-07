@@ -60,8 +60,6 @@ export default function MultiSelectMenu(props: propsType) {
     font-weight:400;
    `;
 
-  console.log(`values recieved`, value);
-
   return (
     <div className={`dropdown px-4 ` + classes}>
       <label
@@ -98,17 +96,24 @@ export default function MultiSelectMenu(props: propsType) {
         }}
         labelId="helper-label"
         id="helper"
-        onChange={handleChange}
+        onChange={(e: any) => {
+          e.stopPropagation();
+          handleChange(e);
+        }}
         name={name}
         style={{ ...fieldStyle, outline: "none", border: "none" }}
         value={value}
         onBlur={onblur}
         readOnly={readOnly}
         multiple={multiple}
-        //disableCloseOnSelect
-        renderValue={(selected: any) => selected.join(", ")}
+        renderValue={(selected: any) => {
+          const filterValue: any = selected.map((e: any) =>
+            Array.isArray(data) ? data.find((a: any) => a.id == e) : {}
+          );
+          return filterValue.map((e: any) => e.name + ", " ?? "");
+        }}
       >
-        <MenuItem disabled value={"d"}>
+        <MenuItem disabled value={""}>
           {placeHolderText}
         </MenuItem>
         {Array.isArray(data) &&
