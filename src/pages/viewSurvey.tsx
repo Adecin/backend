@@ -121,7 +121,7 @@ const ViewSurvey = () => {
             className="flex justify-start items-center gap-x-16 "
           >
             <div className="mb-5 ml-5">
-              {getOneSurveyData.regulationIdsNo.map(
+              {getOneSurveyData.regulationIdsNo?.map(
                 (item: any, index: number) => {
                   return (
                     <Chip
