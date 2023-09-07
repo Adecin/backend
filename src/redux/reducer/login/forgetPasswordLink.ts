@@ -23,7 +23,7 @@ export const forgetPasswordLink: any = createAsyncThunk(
     "forgetPasswordLink/forgetPassword",
     async (value: any, { rejectWithValue }) => {
         try {
-            const data: any = await axios.post(`api/user/sent-otp/email`, value, {
+            const data: any = await axios.post(`/api/user/sent-otp/email`, value, {
                 withCredentials: true,
             });
 

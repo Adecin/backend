@@ -7,7 +7,6 @@ export const getNotficatioList: any = createAsyncThunk(
   "getNotficatioList/listNotificaton",
   async (value: any, { rejectWithValue }) => {
     try {
-      console.log('rediux', value);
       const data: any = await axios.get(`api/notification`, {
         withCredentials: true,
       });

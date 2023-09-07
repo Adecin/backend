@@ -22,7 +22,6 @@ export const updateAssignFarmer: any = createAsyncThunk(
   "updateAssignFarmer/update",
   async (value: any, { rejectWithValue }) => {
     try {
-      console.log('rediux', value);
       const data: any = await axios.put(`/api/farmer/update-assign`, value, {
         withCredentials: true,
       });
