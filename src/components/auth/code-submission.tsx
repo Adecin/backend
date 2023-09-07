@@ -124,7 +124,7 @@ export default function CodeSubmit(props: any) {
                 background: "none",
                 color: "#3D7FFA",
               }}
-              buttonName={`Verify`}
+              buttonName={`Send again`}
             />
           </p>
           <div className="w-full flex justify-center gap-x-6 px-3">
