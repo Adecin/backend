@@ -13,20 +13,16 @@ import { listOneSurvey } from "@/redux/reducer/survey/get-survey";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter, useSearchParams } from "next/navigation";
 
-
-
-
 const dateFormat = (date: string) => {
   const inputDate = new Date("2023-09-05T04:08:42.416Z");
-  const day = String(inputDate.getDate()).padStart(2, '0');
-  const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+  const day = String(inputDate.getDate()).padStart(2, "0");
+  const month = String(inputDate.getMonth() + 1).padStart(2, "0");
   const year = inputDate.getFullYear();
   const formattedDate = `${day}/${month}/${year}`;
-  return formattedDate
-}
+  return formattedDate;
+};
 
 const ViewSurvey = () => {
-
   const [edit, setEdit] = useState(false);
   const cropTypes = [
     { name: "WRU" },
@@ -44,9 +40,9 @@ const ViewSurvey = () => {
   console.log(getOneSurvey);
 
   useEffect(() => {
-    dispatch(listOneSurvey(`${survey_id}`))
-    console.log(survey_id)
-  }, [survey_id])
+    dispatch(listOneSurvey(`${survey_id}`));
+    console.log(survey_id);
+  }, [survey_id]);
 
   return (
     <>
@@ -81,7 +77,7 @@ const ViewSurvey = () => {
                 padding: "0.5rem 1rem",
                 borderRadius: "30px",
               }}
-              handleOnClick={() => { }}
+              handleOnClick={() => {}}
             />
           </div>
           <div className="ml-5">
@@ -101,9 +97,7 @@ const ViewSurvey = () => {
                   Survey Description&nbsp;:&nbsp;
                 </p>
               </div>
-              {
-                <p>{getOneSurveyData.description}</p>
-              }
+              {<p>{getOneSurveyData.description}</p>}
             </div>
             <div
               className="mb-5 my-4 flex text-[#43424D]"
@@ -127,22 +121,24 @@ const ViewSurvey = () => {
             className="flex justify-start items-center gap-x-16 "
           >
             <div className="mb-5 ml-5">
-              {getOneSurveyData.regulationIdsNo.map((item: any, index: number) => {
-                return (
-                  <Chip
-                    key={index}
-                    style={{
-                      margin: "5px",
-                      background: "#fff",
-                      padding: "1rem",
-                      border: "1px solid #43424D",
-                      borderRadius: "10px",
-                      color: "#43424D",
-                    }}
-                    label={item.name}
-                  />
-                );
-              })}
+              {getOneSurveyData.regulationIdsNo.map(
+                (item: any, index: number) => {
+                  return (
+                    <Chip
+                      key={index}
+                      style={{
+                        margin: "5px",
+                        background: "#fff",
+                        padding: "1rem",
+                        border: "1px solid #43424D",
+                        borderRadius: "10px",
+                        color: "#43424D",
+                      }}
+                      label={item.name}
+                    />
+                  );
+                }
+              )}
             </div>
           </div>
           <SeperaterText className="text-primary my-12">
@@ -185,24 +181,24 @@ const ViewSurvey = () => {
 export default ViewSurvey;
 
 const SeperaterText = styled.p`
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 500;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &::before,
-    ::after {
-      content: "";
-      height: 2px;
-      width: 15rem;
-      background-color: #3d7ffa;
-      display: block;
-    }
-    &::before {
-      margin-right: 1rem;
-    }
-    &::after {
-      margin-left: 1rem;
-    }
-  `;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &::before,
+  ::after {
+    content: "";
+    height: 2px;
+    width: 15rem;
+    background-color: #3d7ffa;
+    display: block;
+  }
+  &::before {
+    margin-right: 1rem;
+  }
+  &::after {
+    margin-left: 1rem;
+  }
+`;

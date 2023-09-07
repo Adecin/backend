@@ -18,7 +18,7 @@ const NotificationComponent = ({ items }: { items: NotificationItem[] }) => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
 
-  console.log(`recieved`, items.length);
+  console.log(`recieved`, items?.length);
 
   const handleSelectAll = () => {
     if (selectAll) {
