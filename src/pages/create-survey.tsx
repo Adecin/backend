@@ -69,6 +69,7 @@ const CreateSurvey = () => {
     }
   `;
   const [selectedType, setSelectedType] = useState("FCV");
+  const [chipData, setChipData] = useState<any>([]);
 
   const SignInSchema = Yup.object().shape({
     name: Yup.string()
@@ -139,6 +140,28 @@ const CreateSurvey = () => {
     console.log(`id`, id);
     setFieldValue(`regulationIdsNo`, id);
   };
+
+  const handleRemoveRegulation = (array: any, id: any) => {
+    array?.findIndex((item: any, index: any) => {
+      if (item == id) {
+        array.splice(index, 1);
+      }
+    });
+    setFieldValue(`regulationIdsNo`, values.regulationIdsNo);
+  };
+
+  values.regulationIdsNo.map((valueItem: any) => {
+    let filteredRegulations: any;
+    RegulationData.find((dataItem: any) => {
+      if (dataItem.id == valueItem) {
+        console.log(`dataItem`, dataItem);
+        filteredRegulations = dataItem;
+        return filteredRegulations;
+      }
+    });
+    console.log(`filteredRegulations`, filteredRegulations);
+    return filteredRegulations;
+  });
 
   return (
     <>
@@ -235,7 +258,8 @@ const CreateSurvey = () => {
                 />
                 <div className="flex gap-x-6 my-4">
                   <div>
-                    {values.regulationIdsNo.map((item: any) => {
+                    {values.regulationIdsNo?.map((item: any) => {
+                      console.log(`item wee`, item);
                       return (
                         <>
                           <Chip
@@ -255,16 +279,28 @@ const CreateSurvey = () => {
                                 },
                             }}
                             label={item}
-                            onDelete={() => {}}
+                            onDelete={(e: any) => {
+                              handleRemoveRegulation(
+                                values.regulationIdsNo,
+                                item
+                              );
+                            }}
                           />
                         </>
                       );
                     })}
                   </div>
                   <CustomButton
-                    classes={`text-primary`}
+                    classes={`text-primary mt-1`}
                     buttonName={``}
-                    startIcon={<AddCircleIcon className="text-primary" />}
+                    startIcon={
+                      <AddCircleIcon
+                        style={{
+                          fontSize: "26px",
+                        }}
+                        className="text-primary"
+                      />
+                    }
                     customStyle={{
                       background: "none",
                       height: "3rem",
