@@ -40,6 +40,7 @@ import EditFarm from "./reducer/farmer/edit-farm";
 import ApproveFarmerData from "./reducer/farmer/approve-farmer";
 import AssignedFarmersCountData from "./reducer/fieldOfficer/assignFarmersCounts";
 import updateAssignFarmerData from "./reducer/fieldOfficer/updateAssignFarmer";
+import ListFarmerFilterData from "./reducer/farmer/farmer-survey-filter";
 //regulation
 import AddNewRegulation from "./reducer/regulation/add-regulation";
 import ListAllRegulation from "./reducer/regulation/listAllRegulation";
@@ -62,6 +63,7 @@ import ListFarmerSurvey from "./reducer/survey/getFarmerSurvey";
 import ListPillarDetail from "./reducer/regulation/listpillarDetail";
 import ListOneSurveyData from "./reducer/survey/get-survey";
 import UpdateSurveyData from "./reducer/survey/edit-survey";
+import AddCategoryState from "./reducer/survey/addCategory";
 
 //user
 import AddUserState from "./reducer/user/addStaff";
@@ -78,6 +80,7 @@ import updateVillageMangData from "./reducer/villageMang/updateVillageMang";
 //notifcation
 import NotificationListState from "./reducer/notification/getNotificationList";
 import ReadNotificationState from "./reducer/notification/readNotification";
+import addCategory from "./reducer/survey/addCategory";
 
 export const store = configureStore({
   reducer: {
@@ -106,6 +109,7 @@ export const store = configureStore({
     listFarm: listFarm,
     EditFarmer: EditFarmer,
     EditFarm: EditFarm,
+    ListFarmerFilterData:ListFarmerFilterData,
     //fieldOfficer
     ListFieldOfficerData: ListFieldOfficerData,
     OneFieldOfficerData: OneFieldOfficerData,
@@ -139,8 +143,9 @@ export const store = configureStore({
     ListFarmerSurvey: ListFarmerSurvey,
     TechSurveyDetails: TechSurveyDetails,
     ListPillarDetail: ListPillarDetail,
-    ListOneSurveyData:ListOneSurveyData,
-    UpdateSurveyData:UpdateSurveyData,
+    ListOneSurveyData: ListOneSurveyData,
+    UpdateSurveyData: UpdateSurveyData,
+    AddCategoryState: AddCategoryState,
     //user
     AddUserState: AddUserState,
     UpdateUserState: UpdateUserState,

@@ -12,7 +12,6 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import { useRouter } from "next/navigation";
 import TextInput from "@/components/inputComponents/textInput";
 import TextArea from "@/components/inputComponents/texArea";
 import { useFormik } from "formik";
@@ -29,45 +28,33 @@ import { listAllRegulation } from "@/redux/reducer/regulation/listAllRegulation"
 import MultiSelectMenu from "@/components/inputComponents/multiSelect";
 import { Chip, SelectChangeEvent } from "@mui/material";
 import { addNewSurvey } from "@/redux/reducer/survey/add-survey";
+import { listOneSurvey } from "@/redux/reducer/survey/get-survey";
+import { useRouter, useSearchParams } from "next/navigation";
+import { dateFormat } from "./viewSurvey";
+import { updateSurvey } from "@/redux/reducer/survey/edit-survey";
 
-const CreateSurvey = () => {
+const EditSurvey = () => {
   const [allSelect, setSelect] = useState(false);
   const [showRegulations, setShowRegulations] = useState(false);
 
+  const params = useSearchParams();
+  const survey_id: any = params?.get("id");
   const router = useRouter();
   const dispatch = useDispatch();
 
   const CropResponse = useSelector((state: any) => state.ListCrop.response);
   const CropList = CropResponse.data;
 
-  console.log(`CropList`, CropList);
-
   const RegulationData = useSelector(
     (state: any) => state.ListAllRegulation.response
   );
 
-  const SeperaterText = styled.p`
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 500;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &::before,
-    ::after {
-      content: "";
-      height: 2px;
-      width: 15rem;
-      background-color: #3d7ffa;
-      display: block;
-    }
-    &::before {
-      margin-right: 1rem;
-    }
-    &::after {
-      margin-left: 1rem;
-    }
-  `;
+  const getOneSurvey = useSelector((state: any) => state.ListOneSurveyData);
+  const getOneSurveyData = getOneSurvey.response;
+  console.log(getOneSurvey);
+
+  const regulationIds = getOneSurveyData?.regulationIdsNo?.map((item: any) => item.name);
+
   const [selectedType, setSelectedType] = useState("FCV");
 
   const SignInSchema = Yup.object().shape({
@@ -83,18 +70,20 @@ const CreateSurvey = () => {
   });
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      name: "",
-      description: "",
-      startDate: "",
-      endDate: "",
-      cropId: "",
-      regulationIdsNo: [],
+      id: survey_id,
+      name: getOneSurveyData?.name ?? "",
+      description: getOneSurveyData?.description ?? "",
+      startDate: getOneSurveyData?.startDate?.split('T')[0] ?? "",
+      endDate: getOneSurveyData?.endDate?.split('T')[0] ?? "",
+      cropId: getOneSurveyData?.cropId?.id ?? "",
+      regulationIdsNo: regulationIds ?? [],
     },
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
-      console.log(values);
-      dispatch(addNewSurvey(values));
+      console.log(values)
+      dispatch(updateSurvey(values));
     },
   });
 
@@ -111,25 +100,15 @@ const CreateSurvey = () => {
 
   console.log(`vallues`, values);
 
-  const [chipData, setChipData] = useState<any>(
-    values.regulationIdsNo.map((valueItem: any) => {
-      let filteredRegulations: any;
-      RegulationData.find((dataItem: any) => {
-        if (dataItem.id == valueItem) {
-          console.log(`dataItem`, dataItem);
-          filteredRegulations = dataItem;
-          return filteredRegulations;
-        }
-      });
-      console.log(`filteredRegulations`, filteredRegulations);
-      return filteredRegulations;
-    })
-  );
-
   useEffect(() => {
     dispatch(getCrop());
     dispatch(listAllRegulation());
   }, []);
+
+  useEffect(() => {
+    dispatch(listOneSurvey(`${survey_id}`));
+    console.log(survey_id);
+  }, [survey_id]);
 
   const filterCropType = (type: any) => {
     const filtereData = CropList?.filter((item: any) => {
@@ -155,32 +134,6 @@ const CreateSurvey = () => {
     setFieldValue(`regulationIdsNo`, id);
   };
 
-  const handleChipData = (arrayItems: any) => {
-    const data = arrayItems.map((valueItem: any) => {
-      let filteredRegulations: any;
-      RegulationData.find((dataItem: any) => {
-        if (dataItem.id == valueItem) {
-          console.log(`dataItem`, dataItem);
-          filteredRegulations = dataItem;
-          return filteredRegulations;
-        }
-      });
-      console.log(`filteredRegulations`, filteredRegulations);
-      return filteredRegulations;
-    });
-    setChipData(data);
-  };
-
-  const handleRemoveRegulation = (array: any, id: any) => {
-    array?.findIndex((item: any, index: any) => {
-      if (item == id) {
-        array.splice(index, 1);
-      }
-    });
-    setFieldValue(`regulationIdsNo`, values.regulationIdsNo);
-    handleChipData(values.regulationIdsNo);
-  };
-
   return (
     <>
       <div className="p-5">
@@ -204,10 +157,11 @@ const CreateSurvey = () => {
                 customStyle={{
                   background: "#F7F7F7",
                 }}
+                readOnly={true}
               />
               <p className="px-4 py-2">
                 <span>{`Created date :`}</span>
-                <span>{` 20/05/2023`}</span>
+                <span>{dateFormat(getOneSurveyData?.createdDate)}</span>
               </p>
             </div>
             <div className="w-full">
@@ -244,6 +198,7 @@ const CreateSurvey = () => {
                   handleChange={handleChange}
                   touched={touched}
                   error={errors}
+                  readOnly={true}
                 />
               </div>
               <div className="w-full">
@@ -267,112 +222,41 @@ const CreateSurvey = () => {
             }}
             className="flex justify-start items-center gap-x-16 "
           >
-            {showRegulations ? (
-              <div className="flex flex-col mx-[1rem] my-[2rem]">
-                <LabelText
-                  classes={`w-full`}
-                  labelName={`Regulations`}
-                  required={true}
-                />
-                <div className="flex gap-x-6 my-4">
-                  <div>
-                    {chipData?.map((item: any) => {
-                      console.log(`item wee`, item);
-                      return (
-                        <>
-                          <Chip
-                            style={{
-                              margin: "5px",
-                              background: "#fff",
-                              padding: "1.5rem",
-                              border: "1px solid #3D7FFA",
-                              borderRadius: "10px",
+            <div className="flex flex-col mx-[1rem] my-[2rem]">
+              <LabelText
+                classes={`w-full`}
+                labelName={`Regulations`}
+                required={true}
+              />
+              <div className="flex gap-x-6 my-4">
+                <div>
+                  {values.regulationIdsNo.map((item: any) => {
+                    return (
+                      <>
+                        <Chip
+                          style={{
+                            margin: "5px",
+                            background: "#fff",
+                            padding: "1.5rem",
+                            border: "1px solid #3D7FFA",
+                            borderRadius: "10px",
+                            color: "#3D7FFA",
+                          }}
+                          sx={{
+                            "MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiChip-deleteIcon MuiChip-deleteIconMedium MuiChip-deleteIconColorDefault MuiChip-deleteIconFilledColorDefault css-i4bv87-MuiSvgIcon-root":
+                            {
+                              padding: "1rem",
                               color: "#3D7FFA",
-                            }}
-                            sx={{
-                              "MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiChip-deleteIcon MuiChip-deleteIconMedium MuiChip-deleteIconColorDefault MuiChip-deleteIconFilledColorDefault css-i4bv87-MuiSvgIcon-root":
-                                {
-                                  padding: "1rem",
-                                  color: "#3D7FFA",
-                                },
-                            }}
-                            label={item}
-                            onDelete={(e: any) => {
-                              handleRemoveRegulation(
-                                values.regulationIdsNo,
-                                item
-                              );
-                            }}
-                          />
-                        </>
-                      );
-                    })}
-                  </div>
-                  <CustomButton
-                    classes={`text-primary mt-1`}
-                    buttonName={``}
-                    startIcon={
-                      <AddCircleIcon
-                        style={{
-                          fontSize: "26px",
-                        }}
-                        className="text-primary"
-                      />
-                    }
-                    customStyle={{
-                      background: "none",
-                      height: "3rem",
-                      padding: "1rem",
-                      color: "#3D7FFA",
-                    }}
-                    handleOnClick={() => {
-                      setShowRegulations(false);
-                    }}
-                  />
+                            },
+                          }}
+                          label={item}
+                        />
+                      </>
+                    );
+                  })}
                 </div>
               </div>
-            ) : (
-              <div className="flex items-center gap-x-6">
-                <div className="p-[1rem]">
-                  <LabelText classes={`pl-4`} labelName={`Regulations`} />
-                  <MultiSelectMenu
-                    labelStyle={{ color: "#3D7FFA" }}
-                    fieldStyle={{
-                      fontSize: "16px",
-                      marginTop: "0.5rem",
-                      width: "336px",
-                      color: "#3D7FFA",
-                      background: "#F7F7F7",
-                      boxShadow: "2px 2px 5px #0000003d",
-                    }}
-                    name={`regulationIdsNo`}
-                    data={RegulationData ?? []}
-                    handleChange={(e: any) => {
-                      console.log(`e.target.value`, e.target.value);
-                      handleAddRegulation(e.target.value);
-                    }}
-                    value={values.regulationIdsNo}
-                    placeHolderText={"Select Regulations"}
-                  />
-                </div>
-                <CustomButton
-                  classes={`text-primary`}
-                  buttonName={`Save`}
-                  customStyle={{
-                    marginTop: "1rem",
-                    background: "#3D7FFA",
-                    border: "1px solid #3D7FFA",
-                    height: "3rem",
-                    padding: "1rem 2rem",
-                    color: "#fff",
-                    fontSize: "16px",
-                  }}
-                  handleOnClick={() => {
-                    setShowRegulations(true);
-                  }}
-                />
-              </div>
-            )}
+            </div>
           </div>
           <SeperaterText className="text-primary my-12">{`Crop type`}</SeperaterText>
           <div
@@ -410,7 +294,8 @@ const CreateSurvey = () => {
                         <Radio
                           sx={{
                             color: "var(--primary) !important",
-                          }}
+                          }}import { dateFormat } from './viewSurvey';
+
                         />
                       }
                       label="Non-FCV"
@@ -431,6 +316,7 @@ const CreateSurvey = () => {
                   handleChange={handleChange}
                   value={values}
                   placeHolderText={"Select Crop"}
+                  readOnly={true}
                 />
               </div>
             </div>
@@ -438,7 +324,7 @@ const CreateSurvey = () => {
         </div>
         <div className="flex justify-center my-4">
           <CustomButton
-            buttonName={`Create Survey`}
+            buttonName={`Update Survey`}
             customStyle={{
               padding: "1rem 3rem",
             }}
@@ -451,4 +337,27 @@ const CreateSurvey = () => {
     </>
   );
 };
-export default CreateSurvey;
+export default EditSurvey;
+
+const SeperaterText = styled.p`
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &::before,
+    ::after {
+      content: "";
+      height: 2px;
+      width: 15rem;
+      background-color: #3d7ffa;
+      display: block;
+    }
+    &::before {
+      margin-right: 1rem;
+    }
+    &::after {
+      margin-left: 1rem;
+    }
+  `;

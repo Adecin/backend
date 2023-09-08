@@ -42,7 +42,11 @@ function CustomTabPanel(props: TabPanelProps) {
 }
 
 export default function PillarDrtailComponent(props: any) {
+  const { farmerId, farmId, surveyId } = props;
   const [value, setValue] = useState(0);
+  const [pillarId, setPillarId] = useState();
+  const [regulationId, setRegulationId] = useState("");
+
   const dispatch = useDispatch();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -56,39 +60,33 @@ export default function PillarDrtailComponent(props: any) {
   const RegulationPillars = useSelector(
     (state: any) => state.ListRegulationPillars.response
   );
-
-  const [regulationId, setRegulationId] = useState("");
-
-  const { farmerId, farmId, surveyId } = props;
-
   const PillarList = RegulationPillars[0]?.pillar;
-
-  const [pillarId, setPillarId] = useState();
 
   const ListPillarData = useSelector(
     (state: any) => state.ListPillarDetail.response
   );
   const query = `?farmerId=${farmerId}&regulationId=${regulationId}&farmId=${farmId}`;
 
-  const pillarDetalQuery = `?pillarId=${pillarId}&farmerId=${farmerId}&farmId=${farmId}`;
-
   const handleRegulationChange = (id: any) => {
     setRegulationId(id);
   };
 
   useEffect(() => {
-    console.log(`PillarList`, PillarList);
-    const defaultPillar = PillarList ? PillarList[0].id : "";
-    console.log(`defaultPillar`, defaultPillar);
-    setPillarId(defaultPillar);
-    console.log(`pillarId`, pillarId);
-  }, [regulationId, PillarList]);
+    setPillarId(PillarList ? PillarList[0].id : "");
+    dispatch(
+      listPillarDetail(
+        `?pillarId=${
+          PillarList ? PillarList[0].id : ""
+        }&farmerId=${farmerId}&farmId=${farmId}&surveyId=${surveyId}`
+      )
+    );
+    setValue(0);
+  }, [regulationId, PillarList, farmId]);
 
   useEffect(() => {
     dispatch(listAllRegulation(`?surveyId=${surveyId}`));
     dispatch(listRegulationPillars(query));
-    dispatch(listPillarDetail(pillarDetalQuery));
-  }, [query, pillarDetalQuery, regulationId, pillarId]);
+  }, [query, regulationId, farmId]);
 
   return (
     <div className="py-4">
@@ -107,7 +105,7 @@ export default function PillarDrtailComponent(props: any) {
           handleChange={(e: any) => {
             handleRegulationChange(e.target.value);
           }}
-          value={{ regulationId: regulationId }}
+          value={{ regulationId }}
           placeHolderText={"Select Regulation"}
         />
       </div>
@@ -140,15 +138,18 @@ export default function PillarDrtailComponent(props: any) {
         allowScrollButtonsMobile
         aria-label="scrollable force tabs example"
       >
-        {PillarList?.map((item: any) => {
-          console.log(`dvmaevn`, item);
+        {PillarList?.map((item: any, index: number) => {
           return (
             <StyledTab
+              key={index}
               onClick={(e: any) => {
+                dispatch(
+                  listPillarDetail(
+                    `?pillarId=${item.id}&farmerId=${farmerId}&farmId=${farmId}&surveyId=${surveyId}`
+                  )
+                );
                 setPillarId(item.id);
-                console.log(`selected pillar`, pillarId);
               }}
-              key={``}
               label={item.name}
               className="mx-5 px-5"
             />
@@ -156,24 +157,29 @@ export default function PillarDrtailComponent(props: any) {
         })}
       </Tabs>
       <div>
-        <CustomTabPanel value={value} index={0}>
-          {ListPillarData?.question?.map((questionItem: any, index: any) => {
-            const FilteredAnswer = ListPillarData.answers.find(
-              (item: any) => item.questionId == questionItem.id
-            );
-
-            return (
-              <div
-                key={index}
-                className={`flex bg-[#F4F8FF] p-[18px] text-[16px] text-[#000] hover:bg-[#F75656]  hover:text-[#fff] my-6`}
-              >
-                <span className="pr-2">{`${index + 1} .`}</span>
-                <div className="pr-2">{`${questionItem.question} : `}</div>
-                <div className="pl-2">{FilteredAnswer?.answer ?? ""}</div>
-              </div>
-            );
-          })}
-        </CustomTabPanel>
+        {PillarList?.map((item: any, index: number) => {
+          return (
+            <CustomTabPanel value={value} index={index} key={index}>
+              {ListPillarData?.question?.map(
+                (questionItem: any, index: any) => {
+                  const FilteredAnswer = ListPillarData.answers.find(
+                    (item: any) => item.questionId == questionItem.id
+                  );
+                  return (
+                    <div
+                      key={questionItem.id}
+                      className={`flex bg-[#F4F8FF] p-[18px] text-[16px] text-[#000] hover:bg-[#F75656]  hover:text-[#fff] my-6`}
+                    >
+                      <span className="pr-2">{`${index + 1} .`}</span>
+                      <div className="pr-2">{`${questionItem.question} : `}</div>
+                      <div className="pl-2">{FilteredAnswer?.answer ?? ""}</div>
+                    </div>
+                  );
+                }
+              )}
+            </CustomTabPanel>
+          );
+        })}
       </div>
     </div>
   );

@@ -3,13 +3,16 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { axios } from "@/redux/api";
 
 // api call
-export const userListInfo: any = createAsyncThunk(
-  "userListInfo/listUser",
+export const listFarmerFilter: any = createAsyncThunk(
+  "listFarmerFilter/listFarm",
   async (value: any, { rejectWithValue }) => {
     try {
-      const data: any = await axios.get(`/api/user/list/`, {
-        withCredentials: true,
-      });
+      const data: any = await axios.get(
+        `api/farmer/assign/surveytech/list` + value,
+        {
+          withCredentials: true,
+        }
+      );
 
       if (data.data.status) {
         return data;
@@ -24,8 +27,8 @@ export const userListInfo: any = createAsyncThunk(
 
 // state
 
-const UserListState: any = createSlice({
-  name: "UserListState",
+const ListFarmerFilterData: any = createSlice({
+  name: "ListFarmerFilterData",
   initialState: {
     isLoading: false,
     isSuccess: false,
@@ -34,17 +37,17 @@ const UserListState: any = createSlice({
   },
   reducers: {},
   extraReducers: (builder: any) => {
-    builder.addCase(userListInfo.pending, (state: any, { payload }: any) => {
+    builder.addCase(listFarmerFilter.pending, (state: any, { payload }: any) => {
       state.isLoading = true;
     });
-    builder.addCase(userListInfo.fulfilled, (state: any, { payload }: any) => {
+    builder.addCase(listFarmerFilter.fulfilled, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.response = payload.data?.data;
       state.Message = payload.data.message;
       state.isSuccess = true;
     });
 
-    builder.addCase(userListInfo.rejected, (state: any, { payload }: any) => {
+    builder.addCase(listFarmerFilter.rejected, (state: any, { payload }: any) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = true;
@@ -54,4 +57,4 @@ const UserListState: any = createSlice({
 });
 
 // Reducer
-export default UserListState.reducer;
+export default ListFarmerFilterData.reducer;

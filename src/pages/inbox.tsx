@@ -145,9 +145,9 @@ const Inbox = () => {
         >
           Inbox
         </p>
-        <div className=" ml-3 mr-6 text-sm mt font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
-          <ul className="flex flex-wrap -mb-px">
-            <li className="mr-2">
+        <div className=" ml-3 mr-6 text-[18px] mt font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+          <ul className="flex flex-wrap -mb-px gap-x-[3rem]">
+            <li className="mr-2 cursor-pointer">
               <a
                 className={`inline-block p-4  ${
                   activeTab === "notification"
@@ -160,7 +160,7 @@ const Inbox = () => {
               </a>
             </li>
 
-            <li className="mr-2">
+            <li className="mr-2 cursor-pointer">
               <a
                 className={`inline-block p-4  ${
                   activeTab === "messages"

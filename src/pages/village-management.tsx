@@ -10,8 +10,14 @@ import BreadCrumb from "@/components/table/bread-crumb";
 import Filter from "@/components/table/filter";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useDispatch, useSelector } from "react-redux";
-import { addVillageMang, clear_add_villageMang_success } from "@/redux/reducer/villageMang/addVillageMang";
-import { updateVillageMang, clear_update_villageMang_success } from "@/redux/reducer/villageMang/updateVillageMang";
+import {
+  addVillageMang,
+  clear_add_villageMang_success,
+} from "@/redux/reducer/villageMang/addVillageMang";
+import {
+  updateVillageMang,
+  clear_update_villageMang_success,
+} from "@/redux/reducer/villageMang/updateVillageMang";
 import { getAllVillageMang } from "@/redux/reducer/villageMang/getAllVillageMang";
 import { deleteVillageMang } from "@/redux/reducer/villageMang/deleteVillageMang";
 import { getState } from "@/redux/reducer/dropdown/get-state";
@@ -26,9 +32,10 @@ export default function VillageManagement(props: any) {
   const [showNfcv, setshowNfcv] = React.useState(false);
   const dispatch = useDispatch();
 
-
-  const AddVillage = useSelector((state: any) => state.addVillageMangData)
-  const UpdateVillage = useSelector((state: any) => state.updateVillageMangData)
+  const AddVillage = useSelector((state: any) => state.addVillageMangData);
+  const UpdateVillage = useSelector(
+    (state: any) => state.updateVillageMangData
+  );
 
   const villageMangList = useSelector(
     (state: any) => state.getAllVillageMangData
@@ -63,7 +70,7 @@ export default function VillageManagement(props: any) {
         </div>
         <Filter
           value={searchValue}
-          applyFilter={() => { }}
+          applyFilter={() => {}}
           onSearch={(e: string) => {
             setSearchValue(e);
           }}
@@ -131,11 +138,14 @@ const AddCropComponent = (props: any) => {
 
   const SignInSchema = Yup.object().shape({
     tapNumber: Yup.string()
+      .min(2, "Must be exactly 2 digits")
+      .max(2, "Must be exactly 2 digits")
       .required("Please enter a Tap number")
       .matches(/^[0-9]+$/, "Must be only digits"),
     villageCode: Yup.string()
       .required("Please enter a Village Code")
-      .max(3, "Should not be greater than 3 digits")
+      .min(3, "Must be exactly 3 digits")
+      .max(3, "Must be exactly 3 digits")
       .matches(/^[0-9]+$/, "Must be only digits"),
     stateId: Yup.string().required("State is required"),
     districtId: Yup.string().required("District is required"),
@@ -195,7 +205,9 @@ const UpdateCropComponent = (props: any) => {
   const GetState = useSelector((state: any) => state.ListState);
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
   const GetSVillage = useSelector((state: any) => state.ListVillage);
-  const UpdateVillage = useSelector((state: any) => state.updateVillageMangData)
+  const UpdateVillage = useSelector(
+    (state: any) => state.updateVillageMangData
+  );
 
   const stateDropDown = GetState.response?.data?.map(
     (e: any, index: number) => {
@@ -230,10 +242,13 @@ const UpdateCropComponent = (props: any) => {
   console.log("azar", dataItem);
   const SignInSchema = Yup.object().shape({
     tapNumber: Yup.string()
+      .min(2, "Must be exactly 2 digits")
+      .max(2, "Must be exactly 2 digits")
       .required("Please enter a Tap number")
       .matches(/^[0-9]+$/, "Must be only digits"),
     villageCode: Yup.string()
-      .max(3, "Should not be greater than 3 digits")
+      .min(3, "Must be exactly 3 digits")
+      .max(3, "Must be exactly 3 digits")
       .required("Please enter a Village Code")
       .matches(/^[0-9]+$/, "Must be only digits"),
     stateId: Yup.string().required("State is required"),

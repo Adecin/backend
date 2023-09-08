@@ -22,7 +22,6 @@ export const updateFieldOfficer: any = createAsyncThunk(
   "fieldOfficer/update",
   async (value: any, { rejectWithValue }) => {
     try {
-      console.log('rediux', value);
       const data: any = await axios.put(`/api/technician/update`, value, {
         withCredentials: true,
       });

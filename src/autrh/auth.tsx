@@ -7,8 +7,6 @@ import jwtDecode from "jwt-decode";
 import styleds from "@emotion/styled";
 import Error from "next/error";
 const publicPage = ["login.tsx"];
-const publicPage1 = ["rm-admin-login"];
-const adminRoutes = ["admin"];
 const publicRoutes = ["/login"];
 
 const Auth = (props: any) => {
