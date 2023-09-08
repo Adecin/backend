@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export const dateFormat = (date: string) => {
-  const inputDate = new Date("2023-09-05T04:08:42.416Z");
+  const inputDate = new Date(date);
   const day = String(inputDate.getDate()).padStart(2, "0");
   const month = String(inputDate.getMonth() + 1).padStart(2, "0");
   const year = inputDate.getFullYear();
@@ -37,7 +37,6 @@ const ViewSurvey = () => {
 
   const getOneSurvey = useSelector((state: any) => state.ListOneSurveyData);
   const getOneSurveyData = getOneSurvey.response;
-  console.log(getOneSurvey);
 
   useEffect(() => {
     dispatch(listOneSurvey(`${survey_id}`));
@@ -78,7 +77,7 @@ const ViewSurvey = () => {
                 borderRadius: "30px",
               }}
               handleOnClick={() => {
-                router.push(`/edit-survey?id=${survey_id}`)
+                router.push(`/edit-survey?id=${survey_id}`);
               }}
             />
           </div>
@@ -105,8 +104,8 @@ const ViewSurvey = () => {
               className="mb-5 my-4 flex text-[#43424D]"
               style={{ whiteSpace: "nowrap", fontSize: "16px" }}
             >
-              <p style={{ fontWeight: "bold" }}>Start Date&nbsp;: &nbsp;</p>
-              <p className="mr-5">{dateFormat(getOneSurveyData.startDate)}</p>
+              <p style={{ fontWeight: "bold" }}>Start Date &nbsp;: &nbsp;</p>
+              <p className="mr-5">{dateFormat(getOneSurveyData?.startDate)}</p>
 
               <p style={{ fontWeight: "bold" }}>End Date&nbsp;: &nbsp;</p>
               <p>{dateFormat(getOneSurveyData.endDate)}</p>
