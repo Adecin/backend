@@ -1,6 +1,6 @@
 "use client";
 
-import React, { lazy, Suspense, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import { Metadata } from "next";
 import BreadCrumb from "@/components/table/bread-crumb";
@@ -58,16 +58,16 @@ const CreateSurvey = () => {
 
   const AddCropState = useSelector((state: any) => state.AddCrop);
 
+  const RegulationResponse = useSelector(
+    (state: any) => state.AddNewRegulation
+  );
+
   const SignInSchema = Yup.object().shape({
-    name: Yup.string()
-      .required("Regulation name is required")
-      .matches(/^[aA-zZ0-9\s]+$/, "Please enter a valid regulation name"),
+    name: Yup.string().required("Regulation name is required"),
     description: Yup.string().required("Description is required"),
     pillars: Yup.array().of(
       Yup.object().shape({
-        name: Yup.string()
-          .required("Category name is required")
-          .matches(/^[aA-zZ0-9\s]+$/, "Please enter a valid category name"),
+        name: Yup.string().required("Category name is required"),
         description: Yup.string().required("Description is required"),
       })
     ),
@@ -96,6 +96,12 @@ const CreateSurvey = () => {
     resetForm,
     errors,
   } = formik;
+
+  useEffect(() => {
+    if (RegulationResponse.isSuccess) {
+      resetForm();
+    }
+  }, [RegulationResponse]);
 
   return (
     <>
