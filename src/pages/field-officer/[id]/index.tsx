@@ -31,7 +31,6 @@ import { assignTechVillage } from "@/redux/reducer/fieldOfficer/assignVillage";
 import { listAssignedVillages } from "@/redux/reducer/fieldOfficer/listAssignedVillages";
 import { Dialog } from "@mui/material";
 
-
 const DynamicTable = lazy(() => import("@/components/table/dynamicTable"));
 
 export default function OfficerProfile(props: any) {
@@ -208,10 +207,11 @@ export default function OfficerProfile(props: any) {
           >
             {`${getOneFieldData.address ? getOneFieldData.address + `, ` : ``}`}
             <br />
-            {`${getOneFieldData?.village?.name
-              ? getOneFieldData?.village?.name + `, `
-              : ``
-              }`}
+            {`${
+              getOneFieldData?.village?.name
+                ? getOneFieldData?.village?.name + `, `
+                : ``
+            }`}
             <br />
             {getOneFieldData?.districtId?.name
               ? getOneFieldData?.districtId?.name + `, `
@@ -258,8 +258,8 @@ export default function OfficerProfile(props: any) {
         farmerDrop={farmerDropDown}
         districtDrop={districtDropDown}
         villageDrop={villageDropDown}
-      //handleChange={handleTaskFilter}
-      //setPaginate={setPaginate}
+        //handleChange={handleTaskFilter}
+        //setPaginate={setPaginate}
       />
       <SurveyComponent
         villageDropDown={villageDropDown}
@@ -509,10 +509,10 @@ const SurveyComponent = (props: any) => {
   const [surveyId, setSurveyId] = useState("");
   const dispatch = useDispatch();
   const [surveyFilter, setSurveyFilter] = useState({
-    surveyId: '',
-    farmerId: '',
-    villageId: ''
-  })
+    surveyId: "",
+    farmerId: "",
+    villageId: "",
+  });
 
   const TechSurveyList = useSelector(
     (state: any) => state.ListTechSurvey.response
@@ -534,7 +534,7 @@ const SurveyComponent = (props: any) => {
     const query = `?technicianId=${techId}&surveyId=${surveyFilter.surveyId}&farmerId=${surveyFilter.farmerId}&villageId=${surveyFilter.villageId}`;
     dispatch(listTechnicianSurveyDetails(query));
     console.log(query);
-  }, [surveyFilter])
+  }, [surveyFilter]);
 
   const SurveyDetails = useSelector((state: any) => state.TechSurveyDetails);
   console.log(`fgnfh`, SurveyDetails.response.farmerList);
@@ -550,20 +550,22 @@ const SurveyComponent = (props: any) => {
         survey: e.surveyId?.name,
         survey_status: (
           <div
-            className={`p-[10px]  rounded-[10px] ${e.surveyStatus == "Pending"
-              ? "bg-[#FFE8E8]"
-              : e.surveyStatus == "Completed"
+            className={`p-[10px]  rounded-[10px] ${
+              e.surveyStatus == "Pending"
+                ? "bg-[#FFE8E8]"
+                : e.surveyStatus == "Completed"
                 ? "bg-[#EFF5E6]"
                 : "bg-[#FFF4E4]"
-              }`}
+            }`}
           >
             <span
-              className={`${e.surveyStatus == "Pending"
-                ? "text-[#F75656]"
-                : e.surveyStatus == "Completed"
+              className={`${
+                e.surveyStatus == "Pending"
+                  ? "text-[#F75656]"
+                  : e.surveyStatus == "Completed"
                   ? "text-[#70B10E]"
                   : "text-[#F8B34C]"
-                }`}
+              }`}
             >
               {e.surveyStatus}
             </span>
@@ -610,7 +612,7 @@ const SurveyComponent = (props: any) => {
               handleChange={(e: any) => {
                 setSurveyFilter({
                   ...surveyFilter,
-                  surveyId: e.target.value
+                  surveyId: e.target.value,
                 });
               }}
               value={surveyFilter}
@@ -637,7 +639,7 @@ const SurveyComponent = (props: any) => {
               handleChange={(e: any) => {
                 setSurveyFilter({
                   ...surveyFilter,
-                  villageId: e.target.value
+                  villageId: e.target.value,
                 });
               }}
               value={surveyFilter}
@@ -754,9 +756,10 @@ const AssignVillage = (props: any) => {
     <div>
       <div className="w-full">
         <HeaderText text={`Assign Village`} />
-        <div className="bg-[#F4F8FF] mt-[1rem] p-[2rem]"
+        <div
+          className="bg-[#F4F8FF] mt-[1rem] p-[2rem]"
           onClick={() =>
-            surveyDropDown.length != 0 ? '' : setAssignOpen(true)
+            surveyDropDown.length != 0 ? "" : setAssignOpen(true)
           }
         >
           <div className="grid grid-cols-3">
@@ -788,7 +791,7 @@ const AssignVillage = (props: any) => {
               value={values}
               placeHolderText={"Select"}
               required={true}
-            //readOnly={noEdit}
+              //readOnly={noEdit}
             />
             <SelectMenu
               labelname={"Tap Number"}
@@ -802,7 +805,7 @@ const AssignVillage = (props: any) => {
               value={values}
               placeHolderText={"Select"}
               required={true}
-            //readOnly={noEdit}
+              //readOnly={noEdit}
             />
             {/* <TextInput
               value={values}
@@ -959,7 +962,7 @@ const AssignVillage = (props: any) => {
           </div>
           <div
             className="text-center text-[#3D7FFA] underline cursor-pointer"
-            onClick={() => router.push('/field-officer')}
+            onClick={() => router.push("/field-officer")}
           >
             Go Back
           </div>
