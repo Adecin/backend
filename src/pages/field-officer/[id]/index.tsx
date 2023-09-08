@@ -379,7 +379,7 @@ const AssignedVillageTable = (props: any) => {
       return {
         No: index + 1,
         Assigned_Date: e?.activeDate.split("T")[0] ?? "",
-        Village_Id: e?.id ?? "",
+        Village_Id: e?.villageCode ?? "",
         Village: e?.name ?? "",
         Tap_Number: e?.tapNumber ?? "",
       };
@@ -509,10 +509,10 @@ const SurveyComponent = (props: any) => {
   const [surveyId, setSurveyId] = useState("");
   const dispatch = useDispatch();
   const [surveyFilter, setSurveyFilter] = useState({
-    surveyId: "all",
-    farmerId: "All",
-    villageId: "all",
-  });
+    surveyId: 'all',
+    farmerId: '',
+    villageId: 'all'
+  })
 
   const TechSurveyList = useSelector(
     (state: any) => state.ListTechSurvey.response
@@ -538,8 +538,8 @@ const SurveyComponent = (props: any) => {
     if (surveyFilter.surveyId !== "all") {
       query += `&surveyId=${surveyFilter.surveyId}`;
     }
-    if (surveyFilter.farmerId !== "all") {
-      query += `&farmerId=${surveyFilter.farmerId}`;
+    if (surveyFilter.farmerId !== '') {
+      query += `&farmerId=${surveyFilter.farmerId}`
     }
     if (surveyFilter.villageId !== "all") {
       query += `&villageManagementId=${surveyFilter.villageId}`;
@@ -602,10 +602,10 @@ const SurveyComponent = (props: any) => {
     }
   );
 
-  const surveyQuery = `?technicianId=${techId}&surveyId=${surveyId}`;
+  const surveyQuery = `?technicianId=${techId}`;
   useEffect(() => {
     dispatch(listTechnicianSurveyDetails(surveyQuery));
-  }, []);
+  }, [techId]);
 
   console.log(`SurveyDetails`, SurveyDetails);
 
@@ -647,7 +647,6 @@ const SurveyComponent = (props: any) => {
               customStyle={{
                 background: "#F4F8FF",
               }}
-              readOnly={true}
             />
           </div>
           <div className="w-full">
