@@ -197,9 +197,14 @@ const AddCropComponent = (props: any) => {
       .matches(/^[0-9]+$/, "Must be only digits"),
     cropCode: Yup.string()
       .required("crop id is required")
-      .max(3, "Should not be greater than 3 digits")
+      .min(3, "Must be exactly 3 digits")
+      .max(3, "Must be exactly 3 digits")
       .matches(/^[0-9]+$/, "Must be only digits"),
-    tapCode: Yup.array().min(1, "tap number is required"),
+    tapCode: Yup.array().min(1, "Tap Number is required"),
+    enterTapNumber: Yup.string()
+      .min(2, "Must be exactly 2 digits")
+      .max(2, "Must be exactly 2 digits")
+      .matches(/^[0-9]+$/, "Must be only digits"),
   });
 
   const formik = useFormik({
@@ -269,9 +274,15 @@ const UpdateCropComponent = (props: any) => {
       .required("Please enter a valid crop year")
       .matches(/^[0-9]+$/, "Must be only digits"),
     cropCode: Yup.string()
+      .min(3, "Must be exactly 3 digits")
+      .max(3, "Must be exactly 3 digits")
       .required("crop id is required")
       .matches(/^[0-9]+$/, "Must be only digits"),
-    tapCode: Yup.array().min(1, "tap number is required"),
+    tapCode: Yup.array().min(1, "Tap Number is required"),
+    enterTapNumber: Yup.string()
+      .min(2, "Must be exactly 2 digits")
+      .max(2, "Must be exactly 2 digits")
+      .matches(/^[0-9]+$/, "Must be only digits"),
   });
 
   const formik = useFormik({
@@ -453,11 +464,16 @@ const TypeElement = (props: any) => {
                   const err = { ...errors };
                   delete err.tapCode;
                   setErrors(err);
-                  setFieldValue("tapCode", [
-                    ...values.tapCode,
-                    values.enterTapNumber,
-                  ]);
-                  setFieldValue("enterTapNumber", "");
+                  if (values.enterTapNumber.length == 2) {
+                    setFieldValue("tapCode", [
+                      ...values.tapCode,
+                      values.enterTapNumber,
+                    ]);
+                    setFieldValue("enterTapNumber", "");
+                  } else {
+                    setErrors(err);
+                    console.log(`errors`, errors["enterTapNumber"]);
+                  }
                 }
               }}
               placeholder="Enter the TAP number and press 'Enter'"
@@ -467,6 +483,9 @@ const TypeElement = (props: any) => {
               }}
             />
           </div>
+          <span className="text-[10px] ml-3 my-1 text-error">
+            {errors.enterTapNumber ?? ""}
+          </span>
           <span className="text-[10px] ml-3 my-1 text-error">
             {(touched && touched.tapCode && errors && errors.tapCode) ?? ""}
           </span>
