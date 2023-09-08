@@ -21,6 +21,7 @@ export default function SurveyDetails() {
   );
 
   const [farmId, setFarmId] = useState();
+  const [updateFarm, setFarm] = useState(true);
   const surveyQuery = `?technicianId=${fieldOfficer_id}&surveyId=${surveyId}`;
   const filteredFarmer = SurveyDetails?.find((item: any) => {
     return item.farmerId.id == farmer_id;
@@ -38,7 +39,8 @@ export default function SurveyDetails() {
 
   // console.log(`filteredFarmer in`, filteredFarmer);
   useEffect(() => {
-    if (farmDropdown && farmDropdown.length != 0) {
+    if (farmDropdown && farmDropdown.length != 0 && updateFarm) {
+      setFarm(false);
       setFarmId(farmDropdown[0].id);
     }
   }, [farmDropdown]);

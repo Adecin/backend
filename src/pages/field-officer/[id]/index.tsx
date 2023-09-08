@@ -509,10 +509,10 @@ const SurveyComponent = (props: any) => {
   const [surveyId, setSurveyId] = useState("");
   const dispatch = useDispatch();
   const [surveyFilter, setSurveyFilter] = useState({
-    surveyId: 'all',
-    farmerId: '',
-    villageId: 'all'
-  })
+    surveyId: "all",
+    farmerId: "",
+    villageId: "all",
+  });
 
   const TechSurveyList = useSelector(
     (state: any) => state.ListTechSurvey.response
@@ -538,8 +538,8 @@ const SurveyComponent = (props: any) => {
     if (surveyFilter.surveyId !== "all") {
       query += `&surveyId=${surveyFilter.surveyId}`;
     }
-    if (surveyFilter.farmerId !== '') {
-      query += `&farmerId=${surveyFilter.farmerId}`
+    if (surveyFilter.farmerId !== "") {
+      query += `&farmerId=${surveyFilter.farmerId}`;
     }
     if (surveyFilter.villageId !== "all") {
       query += `&villageManagementId=${surveyFilter.villageId}`;
@@ -837,6 +837,7 @@ const AssignVillage = (props: any) => {
               error={errors}
             /> */}
             <MultiSelectMenu
+              readOnly={values.tapNumber ? false : true}
               name="villageIds"
               labelname="Village"
               placeHolderText="Select village"
