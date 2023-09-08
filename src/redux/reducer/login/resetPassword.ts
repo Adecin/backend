@@ -23,7 +23,7 @@ export const resetPassword: any = createAsyncThunk(
     "resetPassword/reset",
     async (value: any, { rejectWithValue }) => {
         try {
-            const data: any = await axios.post(`/api/technician/create-password`, value, {
+            const data: any = await axios.post(`/api/user/create-password`, value, {
                 withCredentials: true,
             });
 

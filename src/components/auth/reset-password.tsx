@@ -4,11 +4,13 @@ import * as Yup from "yup";
 import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import { resetPassword } from "@/redux/reducer/login/resetPassword";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 export default function ResetPassword(props: any) {
   const { onClose, companyEmailId } = props;
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const passwordSchema = Yup.object().shape({
     confirm_password: Yup.string()
@@ -23,6 +25,10 @@ export default function ResetPassword(props: any) {
         "Must Contain 6 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
       ),
   });
+
+  const ResetPasswordResponse = useSelector(
+    (state: any) => state.ResetPassword
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -41,6 +47,7 @@ export default function ResetPassword(props: any) {
       //onClose();
     },
   });
+
   const {
     values,
     handleBlur,
@@ -51,6 +58,14 @@ export default function ResetPassword(props: any) {
     resetForm,
     errors,
   } = formik;
+
+  useEffect(() => {
+    if (ResetPasswordResponse.isSuccess) {
+      resetForm();
+      router.push(`/login`);
+    }
+  }, [ResetPasswordResponse]);
+
   return (
     <>
       <div

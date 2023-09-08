@@ -7,7 +7,6 @@ export const oneUserInfo: any = createAsyncThunk(
   "oneUserInfo/oneUser",
   async (value: any, { rejectWithValue }) => {
     try {
-      console.log('rediux', value);
       const data: any = await axios.get(`/api/user/list/` + value, {
         withCredentials: true,
       });

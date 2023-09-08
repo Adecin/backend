@@ -7,7 +7,6 @@ export const oneFieldOfficer: any = createAsyncThunk(
   "fieldOfficer/list/one",
   async (value: any, { rejectWithValue }) => {
     try {
-      console.log('rediux', value);
       const data: any = await axios.get(`/api/technician/list/` + value, {
         withCredentials: true,
       });

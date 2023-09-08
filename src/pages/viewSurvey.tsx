@@ -13,7 +13,7 @@ import { listOneSurvey } from "@/redux/reducer/survey/get-survey";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const dateFormat = (date: string) => {
+export const dateFormat = (date: string) => {
   const inputDate = new Date("2023-09-05T04:08:42.416Z");
   const day = String(inputDate.getDate()).padStart(2, "0");
   const month = String(inputDate.getMonth() + 1).padStart(2, "0");
@@ -77,7 +77,9 @@ const ViewSurvey = () => {
                 padding: "0.5rem 1rem",
                 borderRadius: "30px",
               }}
-              handleOnClick={() => {}}
+              handleOnClick={() => {
+                router.push(`/edit-survey?id=${survey_id}`)
+              }}
             />
           </div>
           <div className="ml-5">
@@ -121,7 +123,7 @@ const ViewSurvey = () => {
             className="flex justify-start items-center gap-x-16 "
           >
             <div className="mb-5 ml-5">
-              {getOneSurveyData.regulationIdsNo.map(
+              {getOneSurveyData.regulationIdsNo?.map(
                 (item: any, index: number) => {
                   return (
                     <Chip

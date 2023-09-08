@@ -34,13 +34,16 @@ export default function ForegetPasswordComp(props: any) {
     onSubmit: (values) => {
       console.log(`values`, values);
       dispatch(forgetPasswordLink(values));
-      setShowForm(false);
-
-      // if (ForgetPasswordResponse.isSuccess) {
-      //   setShowForm(false);
-      // }
     },
   });
+
+  console.log(`ForgetPasswordResponse`, ForgetPasswordResponse);
+
+  useEffect(() => {
+    if (ForgetPasswordResponse.isSuccess) {
+      setShowForm(false);
+    }
+  }, [ForgetPasswordResponse]);
 
   // useEffect
   useEffect(() => {
