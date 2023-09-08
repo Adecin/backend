@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 const BreadCrumb = ({
   lastName,
   classes,
+  backpage,
 }: {
   lastName?: string;
   classes?: any;
+  backpage?: boolean;
 }) => {
   const [pathName, setPathName] = useState([]);
   const router: any = useRouter();
@@ -34,7 +36,12 @@ const BreadCrumb = ({
                     const getRoutingPath = [...pathName]
                       .splice(0, index + 1)
                       .join("/");
-                    router.push(getRoutingPath);
+                    if (index + 1 != filterPath.length && !backpage) {
+                      router.push(getRoutingPath);
+                    }
+                    if (backpage) {
+                      router.back();
+                    }
                   }}
                   className={
                     `text-[18px] text-red cursor-pointer capitalize font-semibold hover:underline ` +
