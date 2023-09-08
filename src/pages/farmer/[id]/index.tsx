@@ -16,9 +16,10 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listTechnicianSurvey } from "@/redux/reducer/survey/getTechSurvey";
+import { listFarmerFilter } from "@/redux/reducer/farmer/farmer-survey-filter";
 
 const FarmerList = () => {
   const dispatch = useDispatch();
@@ -32,7 +33,20 @@ const FarmerList = () => {
     (state: any) => state.ListFarmerSurvey.response
   );
 
-  console.log(`FarmerSurveyData`, FarmerSurveyData);
+  const FarmerFilterData = useSelector(
+    (state: any) => state.ListFarmerFilterData
+  );
+
+  console.log('azr', farmerData);
+  console.log('azar1', FarmerFilterData)
+
+  const [surveyFilter, setSurveyFilter] = useState({
+    surveyId: 'all',
+    technicianId: 'all',
+    surveyStatus: ''
+  })
+
+  // console.log(`FarmerSurveyData`, FarmerSurveyData);
 
   // useEffect
   useEffect(() => {
@@ -41,14 +55,44 @@ const FarmerList = () => {
     dispatch(listFarmerSurvey(`?farmerId=${farmer_id}`));
   }, [farmer_id]);
 
+  useEffect(() => {
+    let query = `?villageManagementId=${farmerData?.response?.villageManagementId?.id}`;
+    dispatch(listFarmerFilter(query));
+  }, [farmerData])
+
+  const surveyDropDown = FarmerFilterData?.response?.survey?.map((e: any, index: number) => {
+    return { id: e.id, name: e.name };
+  });
+
+  const techDropDown = FarmerFilterData?.response?.technician?.map((e: any, index: number) => {
+    return { id: e.id, name: e.name };
+  });
+
+  console.log(surveyDropDown, techDropDown)
+
+  useEffect(() => {
+    let query = `?farmerId=${farmer_id}`;
+    if (surveyFilter.surveyId !== 'all') {
+      query += `&surveyId=${surveyFilter.surveyId}`
+    }
+    if (surveyFilter.surveyStatus !== '') {
+      query += `&surveyStatus=${surveyFilter.surveyStatus}`
+    }
+    if (surveyFilter.technicianId !== 'all') {
+      query += `&technicianId=${surveyFilter.technicianId}`
+    }
+    dispatch(listFarmerSurvey(query));
+    console.log(query);
+  }, [surveyFilter])
+
   const filterData = FarmerSurveyData.farmerList?.map(
     (e: any, index: number) => {
-      console.log(`fgnfh`, e);
+      // console.log(`fgnfh`, e);
       return {
         No: `${index + 1} .`,
         Field_Officer: (
           <div className="flex flex-col">
-            {e.technician.map((tech: any, index: any) => {
+            {e?.technician?.map((tech: any, index: any) => {
               return <span key={index}>{tech.name}</span>;
             })}
           </div>
@@ -58,22 +102,20 @@ const FarmerList = () => {
         survey: e.surveyId_name,
         survey_status: (
           <div
-            className={`p-[10px]  rounded-[10px] ${
-              e.afs_surveyStatus == "Pending"
-                ? "bg-[#FFE8E8]"
-                : e.afs_surveyStatus == "Completed"
+            className={`p-[10px]  rounded-[10px] ${e.afs_surveyStatus == "Pending"
+              ? "bg-[#FFE8E8]"
+              : e.afs_surveyStatus == "Completed"
                 ? "bg-[#EFF5E6]"
                 : "bg-[#FFF4E4]"
-            }`}
+              }`}
           >
             <span
-              className={`${
-                e.afs_surveyStatus == "Pending"
-                  ? "text-[#F75656]"
-                  : e.afs_surveyStatus == "Completed"
+              className={`${e.afs_surveyStatus == "Pending"
+                ? "text-[#F75656]"
+                : e.afs_surveyStatus == "Completed"
                   ? "text-[#70B10E]"
                   : "text-[#F8B34C]"
-              }`}
+                }`}
             >
               {e.afs_surveyStatus}
             </span>
@@ -315,20 +357,20 @@ const FarmerList = () => {
                   <SelectMenu
                     name="manager"
                     labelname="Survey"
-                    handleChange={() => {}}
+                    handleChange={() => { }}
                     placeHolderText="Select Survey"
                     background="blue"
-                    data={[]}
+                    data={surveyDropDown ?? []}
                   />
                 </div>
                 <div className="w-[300px] ml-2">
                   <SelectMenu
                     name="manager"
                     labelname="Field Officer"
-                    handleChange={() => {}}
+                    handleChange={() => { }}
                     placeHolderText="Select Field Officer"
                     background="blue"
-                    data={[]}
+                    data={techDropDown ?? []}
                   />
                 </div>
               </div>
