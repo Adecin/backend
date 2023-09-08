@@ -141,6 +141,7 @@ export default function PillarDrtailComponent(props: any) {
         {PillarList?.map((item: any, index: number) => {
           return (
             <StyledTab
+              key={index}
               onClick={(e: any) => {
                 dispatch(
                   listPillarDetail(
@@ -158,7 +159,7 @@ export default function PillarDrtailComponent(props: any) {
       <div>
         {PillarList?.map((item: any, index: number) => {
           return (
-            <CustomTabPanel value={value} index={index}>
+            <CustomTabPanel value={value} index={index} key={index}>
               {ListPillarData?.question?.map(
                 (questionItem: any, index: any) => {
                   const FilteredAnswer = ListPillarData.answers.find(
