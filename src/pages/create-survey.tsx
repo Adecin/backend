@@ -70,9 +70,11 @@ const CreateSurvey = () => {
   `;
   const [selectedType, setSelectedType] = useState("FCV");
 
+  const SurveyResponse = useSelector((state: any) => state.AddNewSurvey);
+
   const SignInSchema = Yup.object().shape({
     name: Yup.string()
-      .matches(/^[aA-zZ\s]+$/, "Must be only alphabets")
+      //.matches(/^[aA-zZ\s]+$/, "Must be only alphabets")
       .required("Survey name is required"),
     description: Yup.string().required("Survey description is required"),
     //.matches(/^[aA-zZ0-9\s]+$/, "Please enter a valid description"),
@@ -143,6 +145,12 @@ const CreateSurvey = () => {
   useEffect(() => {
     filterCropType(selectedType);
   }, [selectedType]);
+
+  useEffect(() => {
+    if (SurveyResponse.isSuccess) {
+      resetForm();
+    }
+  }, [SurveyResponse]);
 
   const [selectedItems, setSelectedItems] = useState<any>([]);
 
