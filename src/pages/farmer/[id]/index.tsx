@@ -37,14 +37,14 @@ const FarmerList = () => {
     (state: any) => state.ListFarmerFilterData
   );
 
-  console.log('azr', farmerData);
-  console.log('azar1', FarmerFilterData)
+  console.log("azr", farmerData);
+  console.log("azar1", FarmerFilterData);
 
   const [surveyFilter, setSurveyFilter] = useState({
-    surveyId: 'all',
-    technicianId: 'all',
-    surveyStatus: ''
-  })
+    surveyId: "all",
+    technicianId: "all",
+    surveyStatus: "",
+  });
 
   // console.log(`FarmerSurveyData`, FarmerSurveyData);
 
@@ -58,36 +58,40 @@ const FarmerList = () => {
   useEffect(() => {
     let query = `?villageManagementId=${farmerData?.response?.villageManagementId?.id}`;
     dispatch(listFarmerFilter(query));
-  }, [farmerData])
+  }, [farmerData]);
 
-  const surveyDropDown = FarmerFilterData?.response?.survey?.map((e: any, index: number) => {
-    return { id: e.id, name: e.name };
-  });
+  const surveyDropDown = FarmerFilterData?.response?.survey?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
 
-  const techDropDown = FarmerFilterData?.response?.technician?.map((e: any, index: number) => {
-    return { id: e.id, name: e.name };
-  });
+  const techDropDown = FarmerFilterData?.response?.technician?.map(
+    (e: any, index: number) => {
+      return { id: e.id, name: e.name };
+    }
+  );
 
-  console.log(surveyDropDown, techDropDown)
+  console.log(surveyDropDown, techDropDown);
 
   useEffect(() => {
     let query = `?farmerId=${farmer_id}`;
-    if (surveyFilter.surveyId !== 'all') {
-      query += `&surveyId=${surveyFilter.surveyId}`
+    if (surveyFilter.surveyId !== "all") {
+      query += `&surveyId=${surveyFilter.surveyId}`;
     }
-    if (surveyFilter.surveyStatus !== '') {
-      query += `&surveyStatus=${surveyFilter.surveyStatus}`
+    if (surveyFilter.surveyStatus !== "") {
+      query += `&surveyStatus=${surveyFilter.surveyStatus}`;
     }
-    if (surveyFilter.technicianId !== 'all') {
-      query += `&technicianId=${surveyFilter.technicianId}`
+    if (surveyFilter.technicianId !== "all") {
+      query += `&technicianId=${surveyFilter.technicianId}`;
     }
     dispatch(listFarmerSurvey(query));
     console.log(query);
-  }, [surveyFilter])
+  }, [surveyFilter]);
 
   const filterData = FarmerSurveyData.farmerList?.map(
     (e: any, index: number) => {
-      // console.log(`fgnfh`, e);
+      console.log(`fgnfh`, e);
       return {
         No: `${index + 1} .`,
         Field_Officer: (
@@ -102,20 +106,22 @@ const FarmerList = () => {
         survey: e.surveyId_name,
         survey_status: (
           <div
-            className={`p-[10px]  rounded-[10px] ${e.afs_surveyStatus == "Pending"
-              ? "bg-[#FFE8E8]"
-              : e.afs_surveyStatus == "Completed"
+            className={`p-[10px]  rounded-[10px] ${
+              e.afs_surveyStatus == "Pending"
+                ? "bg-[#FFE8E8]"
+                : e.afs_surveyStatus == "Completed"
                 ? "bg-[#EFF5E6]"
                 : "bg-[#FFF4E4]"
-              }`}
+            }`}
           >
             <span
-              className={`${e.afs_surveyStatus == "Pending"
-                ? "text-[#F75656]"
-                : e.afs_surveyStatus == "Completed"
+              className={`${
+                e.afs_surveyStatus == "Pending"
+                  ? "text-[#F75656]"
+                  : e.afs_surveyStatus == "Completed"
                   ? "text-[#70B10E]"
                   : "text-[#F8B34C]"
-                }`}
+              }`}
             >
               {e.afs_surveyStatus}
             </span>
@@ -129,7 +135,11 @@ const FarmerList = () => {
               fontSize: "16px",
               paddingRight: "2rem",
             }}
-            href={``}
+            href={
+              `/survey-details/` +
+              e.fid_id +
+              `?techId=${e.technician[0].technicianId}&surveyId=${e.surveyId_id}`
+            }
           >{`View`}</Link>
         ),
       };
@@ -401,17 +411,21 @@ const FarmerList = () => {
                           className="text-text "
                           control={<Checkbox />}
                           label="Pending"
-                          checked={surveyFilter.surveyStatus === 'Pending' ? true : false}
+                          checked={
+                            surveyFilter.surveyStatus === "Pending"
+                              ? true
+                              : false
+                          }
                           onChange={(e: any) => {
-                            if (surveyFilter.surveyStatus === 'Pending') {
+                            if (surveyFilter.surveyStatus === "Pending") {
                               setSurveyFilter({
                                 ...surveyFilter,
-                                surveyStatus: '',
+                                surveyStatus: "",
                               });
                             } else {
                               setSurveyFilter({
                                 ...surveyFilter,
-                                surveyStatus: 'Pending',
+                                surveyStatus: "Pending",
                               });
                             }
                           }}
@@ -421,17 +435,21 @@ const FarmerList = () => {
                           value="Complete"
                           control={<Checkbox />}
                           label="Completed"
-                          checked={surveyFilter.surveyStatus === 'Completed' ? true : false}
+                          checked={
+                            surveyFilter.surveyStatus === "Completed"
+                              ? true
+                              : false
+                          }
                           onChange={(e: any) => {
-                            if (surveyFilter.surveyStatus === 'Completed') {
+                            if (surveyFilter.surveyStatus === "Completed") {
                               setSurveyFilter({
                                 ...surveyFilter,
-                                surveyStatus: '',
+                                surveyStatus: "",
                               });
                             } else {
                               setSurveyFilter({
                                 ...surveyFilter,
-                                surveyStatus: 'Completed',
+                                surveyStatus: "Completed",
                               });
                             }
                           }}
