@@ -62,7 +62,7 @@ export default function ResetPassword(props: any) {
   useEffect(() => {
     if (ResetPasswordResponse.isSuccess) {
       resetForm();
-      //router.push(`/`);
+      router.push(`/login`);
     }
   }, [ResetPasswordResponse]);
 
