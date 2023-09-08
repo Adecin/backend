@@ -124,6 +124,8 @@ const ListFieldOfficer = () => {
         return "Pending";
       }
     });
+
+    console.log(`surveyStatus`, surveyStatus);
     return {
       checkBox: (
         <Checkbox
@@ -161,7 +163,7 @@ const ListFieldOfficer = () => {
             e.assign_farmer[0].surveyStatus == "Pending"
               ? `bg-[#FFE8E8]`
               : `bg-[#E6EFFF]`
-          } rounded-[10px] py-2 px-3 w-[8rem]`}
+          } rounded-[10px] py-2 px-3 w-[8rem] text-center`}
         >
           <div
             className={
