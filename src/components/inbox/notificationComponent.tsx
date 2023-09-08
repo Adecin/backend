@@ -67,7 +67,7 @@ const NotificationComponent = ({ items }: { items: NotificationItem[] }) => {
               handleReadAllNotification();
             }}
           >
-            {`Read All ( ${items.length} )`}
+            {`Read All ( ${items?.length ?? 0} )`}
           </p>
         </div>
       </div>

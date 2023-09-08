@@ -69,7 +69,6 @@ const CreateSurvey = () => {
     }
   `;
   const [selectedType, setSelectedType] = useState("FCV");
-  const [chipData, setChipData] = useState<any>([]);
 
   const SignInSchema = Yup.object().shape({
     name: Yup.string()
@@ -112,6 +111,21 @@ const CreateSurvey = () => {
 
   console.log(`vallues`, values);
 
+  const [chipData, setChipData] = useState<any>(
+    values.regulationIdsNo.map((valueItem: any) => {
+      let filteredRegulations: any;
+      RegulationData.find((dataItem: any) => {
+        if (dataItem.id == valueItem) {
+          console.log(`dataItem`, dataItem);
+          filteredRegulations = dataItem;
+          return filteredRegulations;
+        }
+      });
+      console.log(`filteredRegulations`, filteredRegulations);
+      return filteredRegulations;
+    })
+  );
+
   useEffect(() => {
     dispatch(getCrop());
     dispatch(listAllRegulation());
@@ -141,6 +155,22 @@ const CreateSurvey = () => {
     setFieldValue(`regulationIdsNo`, id);
   };
 
+  const handleChipData = (arrayItems: any) => {
+    const data = arrayItems.map((valueItem: any) => {
+      let filteredRegulations: any;
+      RegulationData.find((dataItem: any) => {
+        if (dataItem.id == valueItem) {
+          console.log(`dataItem`, dataItem);
+          filteredRegulations = dataItem;
+          return filteredRegulations;
+        }
+      });
+      console.log(`filteredRegulations`, filteredRegulations);
+      return filteredRegulations;
+    });
+    setChipData(data);
+  };
+
   const handleRemoveRegulation = (array: any, id: any) => {
     array?.findIndex((item: any, index: any) => {
       if (item == id) {
@@ -148,20 +178,8 @@ const CreateSurvey = () => {
       }
     });
     setFieldValue(`regulationIdsNo`, values.regulationIdsNo);
+    handleChipData(values.regulationIdsNo);
   };
-
-  values.regulationIdsNo.map((valueItem: any) => {
-    let filteredRegulations: any;
-    RegulationData.find((dataItem: any) => {
-      if (dataItem.id == valueItem) {
-        console.log(`dataItem`, dataItem);
-        filteredRegulations = dataItem;
-        return filteredRegulations;
-      }
-    });
-    console.log(`filteredRegulations`, filteredRegulations);
-    return filteredRegulations;
-  });
 
   return (
     <>
@@ -258,7 +276,7 @@ const CreateSurvey = () => {
                 />
                 <div className="flex gap-x-6 my-4">
                   <div>
-                    {values.regulationIdsNo?.map((item: any) => {
+                    {chipData?.map((item: any) => {
                       console.log(`item wee`, item);
                       return (
                         <>
