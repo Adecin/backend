@@ -117,6 +117,13 @@ const ListFieldOfficer = () => {
   }, [ListFarmer.response.data]);
 
   const filterData = ListFarmer.response.data?.map((e: any, index: number) => {
+    const surveyStatus = e.assign_farmer.some((item: any) => {
+      if (item.surveyStatus == "Pending") {
+        return item.surveyStatus;
+      } else {
+        return "Pending";
+      }
+    });
     return {
       checkBox: (
         <Checkbox
@@ -151,38 +158,30 @@ const ListFieldOfficer = () => {
       survey_Status: (
         <div
           className={`${
-            e.farmer_status == "Pending" ? `bg-[#FFE8E8]` : `bg-[#E6EFFF]`
-          } rounded-[10px] py-2 px-3`}
+            e.assign_farmer[0].surveyStatus == "Pending"
+              ? `bg-[#FFE8E8]`
+              : `bg-[#E6EFFF]`
+          } rounded-[10px] py-2 px-3 w-[8rem]`}
         >
           <div
             className={
-              e.farmer_status == "Pending" ? `text-[#F75656]` : `text-[#3D7FFA]`
+              e.assign_farmer[0].surveyStatus == "Pending"
+                ? `text-[#F75656]`
+                : `text-[#3D7FFA]`
             }
           >
-            {e.farmer_status}
+            {e.assign_farmer[0].surveyStatus}
           </div>
         </div>
       ),
       approved_status: (
-        <div>
-          <div
-            className={
-              e.assign_farmer?.surveyStatus == "Rejected" || e.assign_farmer?.surveyStatus == "Pending"
-                ? "text-[#F75656]"
-                : "text-[#3D7FFA]"
-            }
-          >
-            <span>
-              {" "}
-              {e.assign_farmer?.surveyStatus == "Pending" || e.assign_farmer?.surveyStatus == "Rejected" ? (
-                <PendingOutlinedIcon className="text-[#F75656]" />
-              ) : (
-                <CheckCircleOutlinedIcon className="text-[#3D7FFA]" />
-              )}{" "}
-            </span>
-            <span>{e.assign_farmer?.surveyStatus}</span>
-          </div>
-        </div>
+        <span>
+          {e.farmer_status == "Pending" || e.farmer_status == "Rejected" ? (
+            <PendingOutlinedIcon className="text-[#F75656]" />
+          ) : (
+            <CheckCircleOutlinedIcon className="text-[#3D7FFA]" />
+          )}
+        </span>
       ),
     };
   });

@@ -355,9 +355,15 @@ const FarmerList = () => {
               <div className="flex">
                 <div className="w-[300px] ">
                   <SelectMenu
-                    name="manager"
+                    name="surveyId"
                     labelname="Survey"
-                    handleChange={() => { }}
+                    handleChange={(e: any) => {
+                      setSurveyFilter({
+                        ...surveyFilter,
+                        surveyId: e.target.value,
+                      });
+                    }}
+                    value={surveyFilter}
                     placeHolderText="Select Survey"
                     background="blue"
                     data={surveyDropDown ?? []}
@@ -365,9 +371,15 @@ const FarmerList = () => {
                 </div>
                 <div className="w-[300px] ml-2">
                   <SelectMenu
-                    name="manager"
+                    name="technicianId"
                     labelname="Field Officer"
-                    handleChange={() => { }}
+                    handleChange={(e: any) => {
+                      setSurveyFilter({
+                        ...surveyFilter,
+                        technicianId: e.target.value,
+                      });
+                    }}
+                    value={surveyFilter}
                     placeHolderText="Select Field Officer"
                     background="blue"
                     data={techDropDown ?? []}
@@ -385,16 +397,44 @@ const FarmerList = () => {
                         name="row-radio-buttons-group"
                       >
                         <FormControlLabel
-                          value="pending"
+                          value="Pending"
                           className="text-text "
                           control={<Checkbox />}
                           label="Pending"
+                          checked={surveyFilter.surveyStatus === 'Pending' ? true : false}
+                          onChange={(e: any) => {
+                            if (surveyFilter.surveyStatus === 'Pending') {
+                              setSurveyFilter({
+                                ...surveyFilter,
+                                surveyStatus: '',
+                              });
+                            } else {
+                              setSurveyFilter({
+                                ...surveyFilter,
+                                surveyStatus: 'Pending',
+                              });
+                            }
+                          }}
                         />
                         <FormControlLabel
                           className="text-text"
-                          value="complete"
+                          value="Complete"
                           control={<Checkbox />}
                           label="Completed"
+                          checked={surveyFilter.surveyStatus === 'Completed' ? true : false}
+                          onChange={(e: any) => {
+                            if (surveyFilter.surveyStatus === 'Completed') {
+                              setSurveyFilter({
+                                ...surveyFilter,
+                                surveyStatus: '',
+                              });
+                            } else {
+                              setSurveyFilter({
+                                ...surveyFilter,
+                                surveyStatus: 'Completed',
+                              });
+                            }
+                          }}
                         />
                       </RadioGroup>
                     </FormControl>

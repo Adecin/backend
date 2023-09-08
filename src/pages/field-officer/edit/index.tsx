@@ -171,7 +171,7 @@ export default function OfficerProfileEdit(props: any) {
       address: getOneFieldData?.address ?? "",
       stateId: getOneFieldData?.stateId?.id ?? "",
       districtId: getOneFieldData?.districtId?.id ?? "",
-      villageId: getOneFieldData?.villageManagementId?.id ?? "",
+      villageId: getOneFieldData?.villageId?.id ?? "",
       pincode: getOneFieldData?.pincode ?? "",
       joiningDate: getOneFieldData?.joiningDate ?? "",
       relievingDate: getOneFieldData?.relievingDate ?? "",

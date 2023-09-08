@@ -208,8 +208,8 @@ export default function OfficerProfile(props: any) {
             {`${getOneFieldData.address ? getOneFieldData.address + `, ` : ``}`}
             <br />
             {`${
-              getOneFieldData?.village?.name
-                ? getOneFieldData?.village?.name + `, `
+              getOneFieldData?.villageId?.name
+                ? getOneFieldData?.villageId?.name + `, `
                 : ``
             }`}
             <br />
