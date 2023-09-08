@@ -51,7 +51,7 @@ export default function SurveyDetails() {
 
   return (
     <div className="p-[2rem] mx-[2rem]">
-      <BreadCrumb />
+      <BreadCrumb backpage={true} />
       <div
         className="grid grid-cols-3 py-[3rem]"
         style={{
