@@ -53,14 +53,14 @@ const EditSurvey = () => {
   const getOneSurveyData = getOneSurvey.response;
   console.log(getOneSurvey);
 
-  const regulationIds = getOneSurveyData?.regulationIdsNo?.map((item: any) => item.name);
+  const regulationIds = getOneSurveyData?.regulationIdsNo?.map(
+    (item: any) => item.name
+  );
 
   const [selectedType, setSelectedType] = useState("FCV");
 
   const SignInSchema = Yup.object().shape({
-    name: Yup.string()
-      .matches(/^[aA-zZ\s]+$/, "Must be only alphabets")
-      .required("Survey name is required"),
+    name: Yup.string().required("Survey name is required"),
     description: Yup.string().required("Survey description is required"),
     //.matches(/^[aA-zZ0-9\s]+$/, "Please enter a valid description"),
     startDate: Yup.string().required("StartDate is required"),
@@ -75,14 +75,14 @@ const EditSurvey = () => {
       id: survey_id,
       name: getOneSurveyData?.name ?? "",
       description: getOneSurveyData?.description ?? "",
-      startDate: getOneSurveyData?.startDate?.split('T')[0] ?? "",
-      endDate: getOneSurveyData?.endDate?.split('T')[0] ?? "",
+      startDate: getOneSurveyData?.startDate?.split("T")[0] ?? "",
+      endDate: getOneSurveyData?.endDate?.split("T")[0] ?? "",
       cropId: getOneSurveyData?.cropId?.id ?? "",
       regulationIdsNo: regulationIds ?? [],
     },
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
-      console.log(values)
+      console.log(values);
       dispatch(updateSurvey(values));
     },
   });
@@ -244,10 +244,10 @@ const EditSurvey = () => {
                           }}
                           sx={{
                             "MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiChip-deleteIcon MuiChip-deleteIconMedium MuiChip-deleteIconColorDefault MuiChip-deleteIconFilledColorDefault css-i4bv87-MuiSvgIcon-root":
-                            {
-                              padding: "1rem",
-                              color: "#3D7FFA",
-                            },
+                              {
+                                padding: "1rem",
+                                color: "#3D7FFA",
+                              },
                           }}
                           label={item}
                         />
@@ -340,24 +340,24 @@ const EditSurvey = () => {
 export default EditSurvey;
 
 const SeperaterText = styled.p`
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 500;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &::before,
-    ::after {
-      content: "";
-      height: 2px;
-      width: 15rem;
-      background-color: #3d7ffa;
-      display: block;
-    }
-    &::before {
-      margin-right: 1rem;
-    }
-    &::after {
-      margin-left: 1rem;
-    }
-  `;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &::before,
+  ::after {
+    content: "";
+    height: 2px;
+    width: 15rem;
+    background-color: #3d7ffa;
+    display: block;
+  }
+  &::before {
+    margin-right: 1rem;
+  }
+  &::after {
+    margin-left: 1rem;
+  }
+`;

@@ -64,7 +64,7 @@ export default function VillageManagement(props: any) {
 
   return (
     <div>
-      <div className="absolute top-0 sticky bg-white flex justify-between mt-14 mb-6 mr-12">
+      <div style={{zIndex:1}} className="absolute top-0 sticky bg-white flex justify-between mt-14 mb-6 mr-12">
         <div className="">
           <BreadCrumb classes={` font-bold text-[#43424D]`} />
         </div>
