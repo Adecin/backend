@@ -22,7 +22,6 @@ export const readNotification: any = createAsyncThunk(
   "readNotification/read",
   async (value: any, { rejectWithValue }) => {
     try {
-      console.log('rediux', value);
       const data: any = await axios.put(`api/notification`, value, {
         withCredentials: true,
       });

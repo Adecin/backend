@@ -31,15 +31,17 @@ export default function SurveyDetails() {
   const getOneField = useSelector((store: any) => store.OneFieldOfficerData);
   const getOneFieldData = getOneField.response;
 
-  console.log(`farmData`, farmData);
-  console.log(`field officer`, getOneFieldData);
-
   const farmDropdown = farmData?.map((e: any, index: number) => {
     return { id: e.id, name: e.farmId };
   });
   const farmerData = filteredFarmer?.farmerId;
 
-  console.log(`filteredFarmer in`, filteredFarmer);
+  // console.log(`filteredFarmer in`, filteredFarmer);
+  useEffect(() => {
+    if (farmDropdown && farmDropdown.length != 0) {
+      setFarmId(farmDropdown[0].id);
+    }
+  }, [farmDropdown]);
 
   useEffect(() => {
     dispatch(listTechnicianSurveyDetails(surveyQuery));
