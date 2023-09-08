@@ -106,9 +106,9 @@ export default function OfficerProfileAdd(props: any) {
       return { id: e.id, name: e.name };
     }
   );
-  const villageDropDown = villageMangList.response?.data?.data?.map(
+  const villageDropDown = GetSVillage.response?.data?.map(
     (e: any, index: number) => {
-      return { id: e.id, name: e.villageId.name };
+      return { id: e.id, name: e.name };
     }
   );
 

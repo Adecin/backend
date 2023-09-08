@@ -29,6 +29,7 @@ import { listAllRegulation } from "@/redux/reducer/regulation/listAllRegulation"
 import MultiSelectMenu from "@/components/inputComponents/multiSelect";
 import { Chip, SelectChangeEvent } from "@mui/material";
 import { addNewSurvey } from "@/redux/reducer/survey/add-survey";
+import { dateFormat } from "./viewSurvey";
 
 const CreateSurvey = () => {
   const [allSelect, setSelect] = useState(false);
@@ -45,6 +46,8 @@ const CreateSurvey = () => {
   const RegulationData = useSelector(
     (state: any) => state.ListAllRegulation.response
   );
+
+  const todatDate = new Date();
 
   const SeperaterText = styled.p`
     font-size: 16px;
@@ -70,9 +73,11 @@ const CreateSurvey = () => {
   `;
   const [selectedType, setSelectedType] = useState("FCV");
 
+  const SurveyResponse = useSelector((state: any) => state.AddNewSurvey);
+
   const SignInSchema = Yup.object().shape({
     name: Yup.string()
-      .matches(/^[aA-zZ\s]+$/, "Must be only alphabets")
+      //.matches(/^[aA-zZ\s]+$/, "Must be only alphabets")
       .required("Survey name is required"),
     description: Yup.string().required("Survey description is required"),
     //.matches(/^[aA-zZ0-9\s]+$/, "Please enter a valid description"),
@@ -111,20 +116,7 @@ const CreateSurvey = () => {
 
   console.log(`vallues`, values);
 
-  const [chipData, setChipData] = useState<any>(
-    values.regulationIdsNo.map((valueItem: any) => {
-      let filteredRegulations: any;
-      RegulationData.find((dataItem: any) => {
-        if (dataItem.id == valueItem) {
-          console.log(`dataItem`, dataItem);
-          filteredRegulations = dataItem;
-          return filteredRegulations;
-        }
-      });
-      console.log(`filteredRegulations`, filteredRegulations);
-      return filteredRegulations;
-    })
-  );
+  const [chipData, setChipData] = useState<any>([]);
 
   useEffect(() => {
     dispatch(getCrop());
@@ -144,6 +136,12 @@ const CreateSurvey = () => {
     filterCropType(selectedType);
   }, [selectedType]);
 
+  useEffect(() => {
+    if (SurveyResponse.isSuccess) {
+      resetForm();
+    }
+  }, [SurveyResponse]);
+
   const [selectedItems, setSelectedItems] = useState<any>([]);
 
   const handleSelectItems = () => {
@@ -155,21 +153,44 @@ const CreateSurvey = () => {
     setFieldValue(`regulationIdsNo`, id);
   };
 
-  const handleChipData = (arrayItems: any) => {
-    const data = arrayItems.map((valueItem: any) => {
-      let filteredRegulations: any;
-      RegulationData.find((dataItem: any) => {
-        if (dataItem.id == valueItem) {
-          console.log(`dataItem`, dataItem);
-          filteredRegulations = dataItem;
-          return filteredRegulations;
-        }
-      });
-      console.log(`filteredRegulations`, filteredRegulations);
-      return filteredRegulations;
-    });
-    setChipData(data);
-  };
+  // const handleChipData = (arrayItems: any) => {
+  //   const data = arrayItems.map((valueItem: any) => {
+  //     let filteredRegulations: any;
+  //     RegulationData.find((dataItem: any) => {
+  //       if (dataItem.id == valueItem) {
+  //         console.log(`dataItem`, dataItem);
+  //         filteredRegulations = dataItem;
+  //         return filteredRegulations;
+  //       }
+  //     });
+  //     console.log(`filteredRegulations`, filteredRegulations);
+  //     return filteredRegulations;
+  //   });
+  //   console.log(`data 2`, data);
+  //   console.log(`type of`, typeof data);
+
+  //   setChipData(data);
+  //   console.log(`chipData 2`, chipData);
+  // };
+
+  // const handleSaveRegulation = () => {
+  //   const data = values.regulationIdsNo.map((valueItem: any) => {
+  //     let filteredRegulations: any;
+  //     RegulationData.find((dataItem: any) => {
+  //       if (dataItem.id == valueItem) {
+  //         console.log(`dataItem`, dataItem);
+  //         filteredRegulations = dataItem;
+  //         return filteredRegulations;
+  //       }
+  //     });
+  //     return filteredRegulations;
+  //   });
+  //   console.log(`data saved`, data);
+  //   setChipData([
+  //     { name: "dvka", id: "wkc" },
+  //     { name: "dvka1", id: "wkc1" },
+  //   ]);
+  // };
 
   const handleRemoveRegulation = (array: any, id: any) => {
     array?.findIndex((item: any, index: any) => {
@@ -178,7 +199,6 @@ const CreateSurvey = () => {
       }
     });
     setFieldValue(`regulationIdsNo`, values.regulationIdsNo);
-    handleChipData(values.regulationIdsNo);
   };
 
   return (
@@ -207,7 +227,7 @@ const CreateSurvey = () => {
               />
               <p className="px-4 py-2">
                 <span>{`Created date :`}</span>
-                <span>{` 20/05/2023`}</span>
+                <span>{` ${todatDate.toLocaleDateString()} `}</span>
               </p>
             </div>
             <div className="w-full">
@@ -276,8 +296,15 @@ const CreateSurvey = () => {
                 />
                 <div className="flex gap-x-6 my-4">
                   <div>
-                    {chipData?.map((item: any) => {
+                    {values.regulationIdsNo?.map((item: any) => {
                       console.log(`item wee`, item);
+                      const filteredData = RegulationData.find(
+                        (dataItem: any) => {
+                          if (dataItem.id == item) {
+                            return dataItem;
+                          }
+                        }
+                      );
                       return (
                         <>
                           <Chip
@@ -296,7 +323,7 @@ const CreateSurvey = () => {
                                   color: "#3D7FFA",
                                 },
                             }}
-                            label={item}
+                            label={filteredData.name ?? item}
                             onDelete={(e: any) => {
                               handleRemoveRegulation(
                                 values.regulationIdsNo,
