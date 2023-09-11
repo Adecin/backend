@@ -32,12 +32,9 @@ export default function ForegetPasswordComp(props: any) {
     },
     validationSchema: SignInSchema,
     onSubmit: (values) => {
-      console.log(`values`, values);
       dispatch(forgetPasswordLink(values));
     },
   });
-
-  console.log(`ForgetPasswordResponse`, ForgetPasswordResponse);
 
   useEffect(() => {
     if (ForgetPasswordResponse.isSuccess) {

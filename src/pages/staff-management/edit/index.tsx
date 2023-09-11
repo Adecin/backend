@@ -44,7 +44,7 @@ export default function OfficerProfileAdd(props: any) {
   ];
   const getOneUser = useSelector((store: any) => store.OneUserState);
   const getOneUserData = getOneUser.response;
-  console.log(`getOneUserData`, getOneUserData);
+  //console.log(`getOneUserData`, getOneUserData);
 
   const GetState = useSelector((state: any) => state.ListState);
   const GetDistrict = useSelector((state: any) => state.ListDistrict);
@@ -152,7 +152,7 @@ export default function OfficerProfileAdd(props: any) {
     },
     validationSchema: UserAddSchema,
     onSubmit: (values: any) => {
-      console.log(`values reg`, values);
+      //console.log(`values reg`, values);
       submit(values);
     },
   });

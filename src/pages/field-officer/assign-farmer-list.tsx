@@ -36,7 +36,7 @@ export default function FarmerList(props: any) {
       checkedItems.has(index)
     );
     const selectedIds = selectedData.map((item: any) => item.id);
-    console.log(selectedIds);
+    //console.log(selectedIds);
     const assignData = {
       technicianId: fieldOfficerId,
       farmerId: selectedIds,
@@ -46,8 +46,8 @@ export default function FarmerList(props: any) {
     onClose();
   };
 
-  console.log(data);
-  console.log("fieldOfficerId", fieldOfficerId);
+  //console.log(data);
+  //console.log("fieldOfficerId", fieldOfficerId);
 
   return (
     <div className="">

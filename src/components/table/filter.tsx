@@ -85,7 +85,7 @@ const Filter = ({
             <div className="flex flex gap-x-[2rem] l w-[100px] ml-auto mr-[5rem] ">
               <div
                 onClick={() => {
-                  console.log(`clearFilter`, clearFilter);
+                  //console.log(`clearFilter`, clearFilter);
                   clearFilter();
                 }}
                 className="bg-grey rounded-[30px] justify-center cursor-pointer flex items-center px-4 py-2 text-white"
@@ -97,7 +97,7 @@ const Filter = ({
               </div>
               <div
                 onClick={() => {
-                  console.log(`isEmpty`, isEmpty);
+                  //console.log(`isEmpty`, isEmpty);
                   //if (!isEmpty) {
                   setOpenFilter(false);
                   applyFilter(true);

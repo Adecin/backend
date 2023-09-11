@@ -41,7 +41,7 @@ const CreateSurvey = () => {
   const CropResponse = useSelector((state: any) => state.ListCrop.response);
   const CropList = CropResponse.data;
 
-  console.log(`CropList`, CropList);
+  //console.log(`CropList`, CropList);
 
   const RegulationData = useSelector(
     (state: any) => state.ListAllRegulation.response
@@ -98,7 +98,7 @@ const CreateSurvey = () => {
     },
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
-      console.log(values);
+      //console.log(values);
       dispatch(addNewSurvey(values));
     },
   });
@@ -114,7 +114,7 @@ const CreateSurvey = () => {
     errors,
   } = formik;
 
-  console.log(`vallues`, values);
+  //console.log(`vallues`, values);
 
   const [chipData, setChipData] = useState<any>([]);
 
@@ -149,7 +149,7 @@ const CreateSurvey = () => {
   };
 
   const handleAddRegulation = (id: any) => {
-    console.log(`id`, id);
+    //console.log(`id`, id);
     setFieldValue(`regulationIdsNo`, id);
   };
 
@@ -158,19 +158,19 @@ const CreateSurvey = () => {
   //     let filteredRegulations: any;
   //     RegulationData.find((dataItem: any) => {
   //       if (dataItem.id == valueItem) {
-  //         console.log(`dataItem`, dataItem);
+  //        //console.log(`dataItem`, dataItem);
   //         filteredRegulations = dataItem;
   //         return filteredRegulations;
   //       }
   //     });
-  //     console.log(`filteredRegulations`, filteredRegulations);
+  //    //console.log(`filteredRegulations`, filteredRegulations);
   //     return filteredRegulations;
   //   });
-  //   console.log(`data 2`, data);
-  //   console.log(`type of`, typeof data);
+  //  //console.log(`data 2`, data);
+  //  //console.log(`type of`, typeof data);
 
   //   setChipData(data);
-  //   console.log(`chipData 2`, chipData);
+  //  //console.log(`chipData 2`, chipData);
   // };
 
   // const handleSaveRegulation = () => {
@@ -178,14 +178,14 @@ const CreateSurvey = () => {
   //     let filteredRegulations: any;
   //     RegulationData.find((dataItem: any) => {
   //       if (dataItem.id == valueItem) {
-  //         console.log(`dataItem`, dataItem);
+  //        //console.log(`dataItem`, dataItem);
   //         filteredRegulations = dataItem;
   //         return filteredRegulations;
   //       }
   //     });
   //     return filteredRegulations;
   //   });
-  //   console.log(`data saved`, data);
+  //  //console.log(`data saved`, data);
   //   setChipData([
   //     { name: "dvka", id: "wkc" },
   //     { name: "dvka1", id: "wkc1" },
@@ -297,7 +297,7 @@ const CreateSurvey = () => {
                 <div className="flex gap-x-6 my-4">
                   <div>
                     {values.regulationIdsNo?.map((item: any) => {
-                      console.log(`item wee`, item);
+                      //console.log(`item wee`, item);
                       const filteredData = RegulationData.find(
                         (dataItem: any) => {
                           if (dataItem.id == item) {
@@ -375,7 +375,7 @@ const CreateSurvey = () => {
                     name={`regulationIdsNo`}
                     data={RegulationData ?? []}
                     handleChange={(e: any) => {
-                      console.log(`e.target.value`, e.target.value);
+                      //console.log(`e.target.value`, e.target.value);
                       handleAddRegulation(e.target.value);
                     }}
                     value={values.regulationIdsNo}
@@ -413,7 +413,7 @@ const CreateSurvey = () => {
                   <RadioGroup
                     value={selectedType}
                     onChange={(e: any) => {
-                      console.log(`value`, e.target.value);
+                     //console.log(`value`, e.target.value);
                       setSelectedType(e.target.value);
                     }}
                     row

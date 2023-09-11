@@ -40,7 +40,7 @@ const ViewSurvey = () => {
 
   useEffect(() => {
     dispatch(listOneSurvey(`${survey_id}`));
-    console.log(survey_id);
+    //console.log(survey_id);
   }, [survey_id]);
 
   return (

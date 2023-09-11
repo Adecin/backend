@@ -27,12 +27,12 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   function (response) {
-    // console.log("response", response);
+    ////console.log("response", response);
     return response;
   },
   function (error) {
     if (error?.response?.status === 404) {
-      console.log("unauthorized", error?.response);
+     //console.log("unauthorized", error?.response);
     }
     return Promise.reject(error);
   }

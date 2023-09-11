@@ -33,7 +33,6 @@ export default function AppLogin(props: any) {
     },
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
-      console.log(`values`, values);
       loginSubmit(values);
     },
   });
@@ -59,7 +58,6 @@ export default function AppLogin(props: any) {
 
   // enter button submit
   const keyPress = (e: any) => {
-    // console.log("value", e);
     if (e.keyCode == 13) {
       // put the login here
       handleSubmit();

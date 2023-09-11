@@ -12,8 +12,6 @@ export default function CodeSubmit(props: any) {
   const [submitted, setSubmitted] = useState(false);
   const [otp, setOtp] = useState(new Array(5).fill(""));
 
-  console.log(`companyEmailId`, companyEmailId);
-
   const handleChange = (element: any, index: number) => {
     if (isNaN(element.value)) return false;
     setOtp([...otp.map((d, idx) => (idx === index ? element.value : d))]);
@@ -45,8 +43,6 @@ export default function CodeSubmit(props: any) {
     dispatch(
       verifyLoginOTP({ companyEmailId: companyEmailId, emailOtp: otpNumber })
     );
-
-    console.log({ companyEmailId: companyEmailId, emailOtp: otpNumber });
   };
 
   const VerifyState = useSelector((state: any) => state.VerifyPasswordState);

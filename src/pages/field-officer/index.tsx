@@ -85,7 +85,7 @@ const ListFieldOfficer = () => {
   );
   const RolesList = useSelector((store: any) => store.GetRolesList);
 
-  console.log(`RolesList`), RolesList;
+  //console.log(`RolesList`), RolesList;
   // const ListOfficerData = ListFieldOfficer.response.data
 
   useEffect(() => {
@@ -95,12 +95,12 @@ const ListFieldOfficer = () => {
 
   useEffect(() => {
     if (counter == 2) {
-      console.log(`filterData 11`, ListFieldOfficer.response.data);
+      //console.log(`filterData 11`, ListFieldOfficer.response.data);
       if (
         !ListFieldOfficer.response.data ||
         ListFieldOfficer.response.data.length === 0
       ) {
-        console.log(`filterData in`, ListFieldOfficer.response.data);
+        //console.log(`filterData in`, ListFieldOfficer.response.data);
 
         Info(`No Data Found`);
       }
@@ -146,7 +146,7 @@ const ListFieldOfficer = () => {
     }
   );
 
-  console.log(`checkedData`, checkedData);
+  //console.log(`checkedData`, checkedData);
   return (
     <>
       <div className="p-5">

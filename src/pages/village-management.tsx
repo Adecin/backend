@@ -47,11 +47,12 @@ export default function VillageManagement(props: any) {
   }, []);
 
   useEffect(() => {
-    dispatch(getAllVillageMang());
     if (AddVillage.isSuccess || UpdateVillage.isSuccess) {
+      dispatch(getAllVillageMang());
       setshowNfcv(false);
       setshowfcv(false);
       dispatch(clear_add_villageMang_success());
+      setTimeout(() => window.location.reload(), 2000);
     }
   }, [AddVillage, UpdateVillage]);
 
@@ -64,7 +65,10 @@ export default function VillageManagement(props: any) {
 
   return (
     <div>
-      <div style={{zIndex:1}} className="absolute top-0 sticky bg-white flex justify-between mt-14 mb-6 mr-12">
+      <div
+        style={{ zIndex: 1 }}
+        className="absolute top-0 sticky bg-white flex justify-between mt-14 mb-6 mr-12"
+      >
         <div className="">
           <BreadCrumb classes={` font-bold text-[#43424D]`} />
         </div>
@@ -79,7 +83,7 @@ export default function VillageManagement(props: any) {
       </div>
       <div className="px-5">
         {villageMangListData?.data?.map((filteredItem: any, index: any) => {
-          console.log(filteredItem);
+          //console.log(filteredItem);
           return <UpdateCropComponent key={index} dataItem={filteredItem} />;
         })}
         {showfcv && (
@@ -163,7 +167,7 @@ const AddCropComponent = (props: any) => {
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
       dispatch(addVillageMang(values));
-      console.log(values);
+      //console.log(values);
     },
   });
 
@@ -239,7 +243,7 @@ const UpdateCropComponent = (props: any) => {
   }, []);
 
   const { dataItem } = props;
-  console.log("azar", dataItem);
+  //console.log("azar", dataItem);
   const SignInSchema = Yup.object().shape({
     tapNumber: Yup.string()
       .min(2, "Must be exactly 2 digits")
@@ -268,7 +272,7 @@ const UpdateCropComponent = (props: any) => {
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
       dispatch(updateVillageMang(values));
-      console.log(values);
+      //console.log(values);
     },
   });
 

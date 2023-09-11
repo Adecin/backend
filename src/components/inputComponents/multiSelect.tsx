@@ -205,7 +205,7 @@ export default function MultiSelectMenu(props: propsType) {
 
   const addRegulation = (e: any, value: any) => {
     handleChange(value);
-    console.log(`selected`, value);
+   //console.log(`selected`, value);
   };
   return (
     <div className={`dropdown px-4 ` + classes}>
