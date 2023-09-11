@@ -92,64 +92,85 @@ export default function OfficerProfile(props: any) {
       </div>
       <div className="my-2">
         <HeaderText text={`Education details`} />
-        <table className="w-[60%] my-4">
-          <tbody className="flex flex-col gap-y-4">
-            {dataedu.map((item: any, index: number) => (
-              <div
-                className="flex bg-[#F4F8FF] py-4 px-6 rounded-[8px] gap-x-8"
-                key={index}
-              >
-                <span className="w-[3rem]">{index + 1}</span>
+        {userProfile?.educationName ? (
+          <table className="w-[60%] my-4">
+            <tbody className="flex flex-col gap-y-4">
+              <div className="flex bg-[#F4F8FF] py-4 px-6 rounded-[8px] gap-x-8">
+                <span className="w-[3rem]">{1}</span>
                 <tr className="w-full flex justify-between">
-                  {educationDetails.map((key) => {
-                    return (
-                      <td className="text-start py-1 pr-5 " key={key}>
-                        <div className="  ">
-                          <div
-                            className="text-base leading-[24px] font-normal tracking-wider"
-                            style={
-                              key == "certificate"
-                                ? {
-                                    color: "#3D7FFA",
-                                    textDecoration: "underline",
-                                  }
-                                : {}
-                            }
-                          >
-                            {item[key]}
-                          </div>
-                        </div>
-                      </td>
-                    );
-                  })}
+                  <td className="text-start py-1 pr-5 ">
+                    <div className="  ">
+                      <div
+                        className="text-base leading-[24px] font-normal tracking-wider"
+                        style={{
+                          color: "#3D7FFA",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        {userProfile?.educationName}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="text-start py-1 pr-5 ">
+                    <div className="  ">
+                      <div
+                        className="text-base leading-[24px] font-normal tracking-wider"
+                        style={{
+                          color: "#3D7FFA",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        {userProfile?.educationCertificate}
+                      </div>
+                    </div>
+                  </td>
                 </tr>
               </div>
-            ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        ) : (
+          <p className="py-[1rem] my-[2rem] w-[60%] bg-[#F4F8FF] text-[18px] rounded-[10px] text-center">
+            No data found
+          </p>
+        )}
       </div>
       <div className="flex justify-start gap-x-24">
         <div className="addressDeatails my-2">
           <HeaderText text={`Address details`} />
           <div
-            style={addressStyle}
-            className="px-8 py-8 mt-[1rem] rounded-[10px]"
+            style={{ ...addressStyle, width: "480px" }}
+            className="px-8 py-4 mt-[1rem] rounded-[10px] text-text max-w-[500px]"
           >
-            <p
-              style={{ maxWidth: "340px" }}
-            >{`G8,248/250, Ln Complex, G8,248/250, lncplx, oldtaragupetB53, Lal Build, Old Taragupet, Bangalore - 560053`}</p>
+            {`${userProfile.address ? userProfile.address + `, ` : ``}`}
+            <br />
+            {`${
+              userProfile?.villageId?.name
+                ? userProfile?.villageId?.name + `, `
+                : ``
+            }`}
+            <br />
+            {userProfile?.districtId?.name
+              ? userProfile?.districtId?.name + `, `
+              : ``}
+            <br />
+            {userProfile?.stateId?.name
+              ? userProfile?.stateId?.name + ` - `
+              : ``}
+            {userProfile?.pincode ?? ``}
           </div>
         </div>
         <div className="idDocuments my-2">
           <HeaderText text={`Government ID proof`} />
           <div
             style={addressStyle}
-            className="px-8 py-8 mt-[1rem] w-[228px] rounded-[10px]"
+            className="px-8 py-8 mt-[1rem]  rounded-[10px]"
           >
             <LabelText labelName={`Aadhar No`} />
-            <p>{`1235 5287 4589`}</p>
+            <p>{userProfile?.aadharNo}</p>
             <Link
-              href={""}
+              href={`${userProfile?.aadharImage}`}
+              target="_blank"
+              download
               style={{
                 textTransform: "none",
                 color: "#3D7FFA",
@@ -158,8 +179,9 @@ export default function OfficerProfile(props: any) {
                 lineHeight: "21px",
                 letterSpacing: "0.05em",
                 textAlign: "left",
+                textDecoration: "underline",
               }}
-            >{`ranga rao aadhar.pdf`}</Link>
+            >{`${userProfile.name}.pdf`}</Link>
           </div>
         </div>
       </div>
@@ -168,17 +190,17 @@ export default function OfficerProfile(props: any) {
         <div className="bg-[#F4F8FF] px-3 py-3 mt-[1rem] flex justify-between w-[70%] rounded-[10px]">
           <div className="flex flex-col m-3 p-3 gap-4">
             <LabelText labelName={`Marital Status`} />
-            <p>{`Married`}</p>
+            <p>{userProfile?.maritalStatus}</p>
           </div>
           <div className="flex flex-col m-3 p-3 gap-4">
             <LabelText labelName={`Spouse name`} />
-            <p>{`Mari`}</p>
+            <p>{userProfile?.spouseName}</p>
           </div>
           <div className="children m-3 p-3 gap-4">
             <LabelText labelName={`Children`} />
             <p className="flex gap-x-4 my-4">
-              <span>{`Male - 02`}</span>
-              <span>{`Female - 01`}</span>
+              <span>{`Male - ${userProfile?.childrenMale}`}</span>
+              <span>{`Female - ${userProfile?.childrenFemale}`}</span>
             </p>
           </div>
         </div>
@@ -221,20 +243,17 @@ const PersonalDetailCard = (props: any) => {
           <div className=" flex flex-col gap-y-6 mr-[3rem]">
             <DatakeyValue label={`Name`} value={profile?.name} />
             <DatakeyValue label={`Phone number`} value={profile?.phoneNo} />
-            <DatakeyValue label={`Gender`} value={`Female`} />
-            <DatakeyValue label={`Education`} value={`BBA`} />
+            <DatakeyValue label={`Gender`} value={profile?.gender} />
+            <DatakeyValue label={`Education`} value={profile?.educationName} />
           </div>
           <Separater />
           <div className="flex flex-col gap-y-6">
-            <DatakeyValue label={`Employee ID`} value={`DTE001`} />
-            <DatakeyValue label={`Date of birth`} value={`23/56/1994`} />
-            <DatakeyValue
-              label={`Personal mail ID`}
-              value={`mohammed@gmail.com`}
-            />
+            <DatakeyValue label={`Employee ID`} value={profile?.employeeId} />
+            <DatakeyValue label={`Date of birth`} value={profile?.dob} />
+            <DatakeyValue label={`Personal mail ID`} value={profile?.emailId} />
             <DatakeyValue
               label={`Company mail ID`}
-              value={`mohammed@dte.com`}
+              value={profile?.companyEmailId}
             />
           </div>
         </div>
