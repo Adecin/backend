@@ -71,7 +71,7 @@ const ListFieldOfficer = () => {
       setfilterEmpty(true);
     } else {
       dispatch(listFieldOfficer(query));
-      setTechnicianFilter(initialValues);
+      //setTechnicianFilter(initialValues);
     }
   };
 
