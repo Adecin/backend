@@ -241,9 +241,6 @@ export default function OfficerProfileAdd(props: any) {
                   aria-label="upload picture"
                   component="label"
                   style={{ position: "absolute", marginTop: "6.2rem" }}
-                  onClick={() => {
-                    openProfile.current.click();
-                  }}
                 >
                   <input
                     hidden
@@ -422,18 +419,16 @@ export default function OfficerProfileAdd(props: any) {
               required={true}
               error={errors}
             />
-            <SelectMenu
-              classes={`pt-[1rem]`}
-              name="villageId"
-              labelname="Village"
-              placeHolderText="Select village"
-              data={villageDropDown ?? []}
+            <TextInput
               value={values}
-              handleChange={handleChange}
+              label={"Village"}
+              name="villageId"
+              placeholder="Enter village"
               onblur={handleBlur}
+              handleChange={handleChange}
               touched={touched}
-              required={true}
               error={errors}
+              required={true}
             />
             <TextInput
               value={values}
@@ -675,9 +670,6 @@ export default function OfficerProfileAdd(props: any) {
                       textTransform: "none",
                       fontSize: "16px",
                       textDecoration: "underline",
-                    }}
-                    onClick={() => {
-                      aadhar.current.click();
                     }}
                   >
                     Upload Aadhar
