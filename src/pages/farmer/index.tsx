@@ -169,18 +169,22 @@ const ListFieldOfficer = () => {
       farmer_ID: e.farmer_farmerId,
       Name: e.farmer_name,
       survey_Status: e.assign_farmer ? (
-        <div className="">
-          {e.assign_farmer?.some((item: any) => {
-            if (item.surveyStatus == "Pending") {
-              console.log(` passed some method`);
-              return <div className="text-[red]">{item.surveyStatus}</div>;
-            } else {
-              return <div>{item.surveyStatus}</div>;
-            }
-          })}
-        </div>
+        e.assign_farmer?.some((item: any) => {
+          // console.log(`e`, e);
+          // console.log(`item.surveyStatus`, item?.surveyStatus);
+          item?.surveyStatus == "Pending";
+          return true;
+        }) ? (
+          <div
+            className={`rounded-[10px] py-2 px-3 w-[8rem] text-center rounded-[10px] p-[10px] text-[#F75656] bg-[#FFE8E8]`}
+          >{`Pending`}</div>
+        ) : (
+          <div
+            className={`rounded-[10px] py-2 px-3 w-[8rem] text-center rounded-[10px] p-[10px] text-[#3D7FFA] bg-[#E6EFFF]`}
+          >{`Completed`}</div>
+        )
       ) : (
-        <div className="bg-[red]"></div>
+        ""
       ),
 
       // e.assign_farmer?.some((item: any) => {
