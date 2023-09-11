@@ -37,7 +37,7 @@ export default function SurveyDetails() {
   });
   const farmerData = filteredFarmer?.farmerId;
 
-  // console.log(`filteredFarmer in`, filteredFarmer);
+  ////console.log(`filteredFarmer in`, filteredFarmer);
   useEffect(() => {
     if (farmDropdown && farmDropdown.length != 0 && updateFarm) {
       setFarm(false);

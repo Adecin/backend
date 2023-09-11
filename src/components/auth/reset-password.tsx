@@ -37,7 +37,6 @@ export default function ResetPassword(props: any) {
     },
     validationSchema: passwordSchema,
     onSubmit: (values) => {
-      console.log(`values`, values);
       dispatch(
         resetPassword({
           companyEmailId: companyEmailId,

@@ -89,7 +89,7 @@ const ManageCropType = (props: any) => {
 
   const AssignTechCrop = useSelector((state: any) => state.AssignTechCrop);
 
-  console.log(`vjkj`, AssignTechCrop);
+  //console.log(`vjkj`, AssignTechCrop);
 
   const CropTypeSchema = Yup.object().shape({
     cropIds: Yup.array().required(),
@@ -103,7 +103,7 @@ const ManageCropType = (props: any) => {
     },
     validationSchema: CropTypeSchema,
     onSubmit: (values: any) => {
-      console.log(values);
+      //console.log(values);
       dispatch(assignTechCrop(values));
     },
   });
@@ -138,7 +138,7 @@ const ManageCropType = (props: any) => {
             color: "#000",
           }}
           handleChange={(e: any) => {
-            console.log(`value`, e.target.value);
+            //console.log(`value`, e.target.value);
             setFieldValue(`cropIds`, e.target.value);
           }}
           placeHolderText="Select crop type"
@@ -175,7 +175,7 @@ const ManageAssignSurvey = (props: any) => {
 
   const { technicianIds, closePopUp } = props;
 
-  console.log(`technicianIds`, technicianIds);
+  //console.log(`technicianIds`, technicianIds);
 
   const SurveyList = useSelector((state: any) => state.ListAllSurvey.response);
   const AssignTechSurvey = useSelector((state: any) => state.AssignTechSurvey);
@@ -192,7 +192,7 @@ const ManageAssignSurvey = (props: any) => {
     },
     validationSchema: AssignSurveySchema,
     onSubmit: (values: any) => {
-      console.log(values);
+      //console.log(values);
       dispatch(assignTechSurvey(values));
     },
   });
@@ -223,7 +223,7 @@ const ManageAssignSurvey = (props: any) => {
         <MultiSelectMenu
           name="surveyIds"
           handleChange={(e: any) => {
-            console.log(e.target, `target.value`);
+            //console.log(e.target, `target.value`);
             setFieldValue(`surveyIds`, e.target.value);
           }}
           fieldStyle={{

@@ -43,6 +43,7 @@ const ListFieldOfficer = () => {
   const [manageOpen, setManageOpen] = useState(false);
   const [checkedData, setCheckData] = useState<any>([]);
   const [counter, setCounter] = useState(0);
+  const [surveyStatus, setSurveyStatus] = useState("");
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -75,7 +76,7 @@ const ListFieldOfficer = () => {
   };
   const handleCheckbox = (selected: any) => {
     const status = selected !== true ? `Approved` : `hf`;
-    console.log(`status in`, status);
+    //console.log(`status in`, status);
     handleSelectFilter(`status`, status);
   };
 
@@ -101,14 +102,14 @@ const ListFieldOfficer = () => {
   useEffect(() => {
     dispatch(listFarmers(query));
     setCheckData([]);
-    console.log(`filterData 1`, ListFarmer.response.data);
+    //console.log(`filterData 1`, ListFarmer.response.data);
   }, [paginateData, ApproveResponse]);
 
   useEffect(() => {
     if (counter == 2) {
-      console.log(`filterData 11`, ListFarmer.response.data);
+      //console.log(`filterData 11`, ListFarmer.response.data);
       if (!ListFarmer.response.data || ListFarmer.response.data.length === 0) {
-        console.log(`filterData in`, ListFarmer.response.data);
+        //console.log(`filterData in`, ListFarmer.response.data);
 
         Info(`No Data Found`);
       }
@@ -117,15 +118,25 @@ const ListFieldOfficer = () => {
   }, [ListFarmer.response.data]);
 
   const filterData = ListFarmer.response.data?.map((e: any, index: number) => {
-    const surveyStatus = e.assign_farmer.some((item: any) => {
-      if (item.surveyStatus == "Pending") {
-        return item.surveyStatus;
-      } else {
-        return "Pending";
-      }
-    });
+    const survey = e.assign_farmer
+      ? e.assign_farmer?.some((item: any) => {
+          let surveyStatus: any;
+          //console.log(`row item`, e);
 
-    console.log(`surveyStatus`, surveyStatus);
+          if (item.surveyStatus == "Pending") {
+            //setSurveyStatus("pending");
+            surveyStatus = true;
+            return surveyStatus;
+          } else {
+            surveyStatus = false;
+            return surveyStatus;
+          }
+        })
+      : "";
+
+    //console.log(`survey`, survey);
+    //console.log(`surveyStatus`, surveyStatus);
+
     return {
       checkBox: (
         <Checkbox
@@ -157,25 +168,47 @@ const ListFieldOfficer = () => {
       ),
       farmer_ID: e.farmer_farmerId,
       Name: e.farmer_name,
-      survey_Status: (
-        <div
-          className={`${
-            e.assign_farmer[0].surveyStatus == "Pending"
-              ? `bg-[#FFE8E8]`
-              : `bg-[#E6EFFF]`
-          } rounded-[10px] py-2 px-3 w-[8rem] text-center`}
-        >
-          <div
-            className={
-              e.assign_farmer[0].surveyStatus == "Pending"
-                ? `text-[#F75656]`
-                : `text-[#3D7FFA]`
+      survey_Status: e.assign_farmer ? (
+        <div className="">
+          {e.assign_farmer?.some((item: any) => {
+            if (item.surveyStatus == "Pending") {
+              console.log(` passed some method`);
+              return <div className="text-[red]">{item.surveyStatus}</div>;
+            } else {
+              return <div>{item.surveyStatus}</div>;
             }
-          >
-            {e.assign_farmer[0].surveyStatus}
-          </div>
+          })}
         </div>
+      ) : (
+        <div className="bg-[red]"></div>
       ),
+
+      // e.assign_farmer?.some((item: any) => {
+      //   let surveyStatus: any;
+      //   //console.log(`row item`, e);
+
+      //   if () {
+      //     //setSurveyStatus("pending");
+      //     surveyStatus = true;
+      //     return surveyStatus;
+      //   } else {
+      //     surveyStatus = false;
+      //     return surveyStatus;
+      //   }
+      // })
+      // survey ? (
+      //   <div
+      //     className={`${
+      //       surveyStatus ? `bg-[#FFE8E8]` : `bg-[#E6EFFF]`
+      //     } rounded-[10px] py-2 px-3 w-[8rem] text-center`}
+      //   >
+      //     <div className={surveyStatus ? `text-[#F75656]` : `text-[#3D7FFA]`}>
+      //       {surveyStatus ? "Pending" : ""}
+      //     </div>
+      //   </div>
+      // ) : (
+      //   <></>
+      // ),
       approved_status: (
         <span>
           {e.farmer_status == "Pending" || e.farmer_status == "Rejected" ? (
@@ -803,7 +836,7 @@ const FieldOfficerFilter = (props: any) => {
               onChange={(e: any) => {
                 setSelected(!selected);
                 handleCheckbox(selected);
-                console.log(`selected`, selected);
+                //console.log(`selected`, selected);
               }}
               checked={selected}
             />
