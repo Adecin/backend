@@ -55,7 +55,7 @@ const ListFieldOfficer = () => {
     districtId: "",
     villageId: "",
     technicianId: "",
-    regulation: [],
+    //regulation: [],
   });
 
   const [paginateData, setData] = useState<any>({
@@ -67,7 +67,7 @@ const ListFieldOfficer = () => {
     districtId: "",
     villageId: "",
     technicianId: "",
-    regulation: [],
+    //regulation: [],
   };
 
   const handleSelectFilter = (name: any, value: any) => {
@@ -82,6 +82,11 @@ const ListFieldOfficer = () => {
 
   const handleClearFilter = () => {
     setFarmerFilter(initialValues);
+    dispatch(
+      listFarmers(
+        `?page=${paginateData.page}&limit=${paginateData.limit}&status=${farmerFilter.status}&districtId=${farmerFilter.districtId}&villageId=${farmerFilter.villageId}&technicianId=${farmerFilter.technicianId}`
+      )
+    );
   };
 
   const handleAddRegulationFilter = (name: any, value: any) => {};

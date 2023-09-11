@@ -77,6 +77,11 @@ const ListFieldOfficer = () => {
 
   const handleClearFilter = () => {
     setTechnicianFilter(initialValues);
+    dispatch(
+      listFieldOfficer(
+        `?page=${paginateData.page}&limit=${paginateData.limit}&districtId=${technicianFilter.districtId}&villageId=${technicianFilter.villageId}`
+      )
+    );
   };
 
   const dispatch = useDispatch();
