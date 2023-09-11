@@ -146,7 +146,7 @@ export default function OfficerProfileAdd(props: any) {
     },
     validationSchema: UserAddSchema,
     onSubmit: (values: any) => {
-      console.log(`values reg`, values);
+      //console.log(`values reg`, values);
       submit(values);
     },
   });
@@ -172,7 +172,7 @@ export default function OfficerProfileAdd(props: any) {
     resetForm,
     errors,
   } = formik;
-  console.log(`values`, values);
+  //console.log(`values`, values);
 
   const GetState = useSelector((state: any) => state.ListState);
   const GetDistrict = useSelector((state: any) => state.ListDistrict);

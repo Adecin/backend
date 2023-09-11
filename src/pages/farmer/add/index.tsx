@@ -45,7 +45,7 @@ const AddFarmer = () => {
     (state: any) => state.getAllVillageMangData
   );
   const villageMangListData = villageMangList.response?.data;
-  console.log(villageMangListData);
+  //console.log(villageMangListData);
 
   // useEffects
   useEffect(() => {
@@ -267,7 +267,7 @@ const AddFarmer = () => {
     setFieldError,
   }: any = formik;
 
-  console.log(errors);
+  //console.log(errors);
 
   return (
     <div className="flex mx-auto">
@@ -375,7 +375,11 @@ const AddFarmer = () => {
                     name="TBGRId"
                     value={values}
                     required={true}
-                    handleChange={handleChange}
+                    handleChange={(e: any) => {
+                      if (e.target.value.length <= 8) {
+                        setFieldValue("TBGRId", e.target.value);
+                      }
+                    }}
                     onblur={handleBlur}
                     touched={touched}
                     error={errors}
@@ -390,7 +394,11 @@ const AddFarmer = () => {
                     changeCountryCode={handleChange}
                     value={values}
                     required={true}
-                    handleChange={handleChange}
+                    handleChange={(e: any) => {
+                      if (e.target.value.length <= 10) {
+                        setFieldValue("phoneNo", e.target.value);
+                      }
+                    }}
                     onblur={handleBlur}
                     touched={touched}
                     error={errors}

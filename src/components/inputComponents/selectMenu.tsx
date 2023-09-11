@@ -57,7 +57,7 @@ export default function SelectMenu(props: propsType) {
     font-weight:400;
    `;
 
-  console.log(`value in wkef`, value);
+  //console.log(`value in wkef`, value);
   return (
     <div className={`dropdown px-4 ` + classes}>
       <label

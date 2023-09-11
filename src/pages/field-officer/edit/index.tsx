@@ -39,7 +39,7 @@ export default function OfficerProfileEdit(props: any) {
   const dispatch = useDispatch();
   const getOneField = useSelector((store: any) => store.OneFieldOfficerData);
   const getOneFieldData = getOneField.response;
-  console.log(getOneFieldData);
+  //console.log(getOneFieldData);
 
   // api data
   const GetState = useSelector((state: any) => state.ListState);
@@ -187,7 +187,7 @@ export default function OfficerProfileEdit(props: any) {
     },
     validationSchema: fieldProfileSchema,
     onSubmit: (values: any) => {
-      console.log(values);
+      //console.log(values);
       submit(values);
     },
   });
@@ -218,7 +218,7 @@ export default function OfficerProfileEdit(props: any) {
     setFieldError,
   }: any = formik;
 
-  console.log(errors);
+  //console.log(errors);
 
   const PageHeader = styled.p`
     font-size: 18px;
@@ -328,7 +328,11 @@ export default function OfficerProfileEdit(props: any) {
                   placeholder="Type phone mobile"
                   name="phoneNo"
                   onblur={handleBlur}
-                  handleChange={handleChange}
+                  handleChange={(e: any) => {
+                    if (e.target.value.length <= 10) {
+                      setFieldValue("phoneNo", e.target.value);
+                    }
+                  }}
                   touched={touched}
                   error={errors}
                   required={true}

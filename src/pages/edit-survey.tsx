@@ -51,7 +51,7 @@ const EditSurvey = () => {
 
   const getOneSurvey = useSelector((state: any) => state.ListOneSurveyData);
   const getOneSurveyData = getOneSurvey.response;
-  console.log(getOneSurvey);
+  //console.log(getOneSurvey);
 
   const regulationIds = getOneSurveyData?.regulationIdsNo?.map(
     (item: any) => item.name
@@ -82,7 +82,7 @@ const EditSurvey = () => {
     },
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
-      console.log(values);
+      //console.log(values);
       dispatch(updateSurvey(values));
     },
   });
@@ -98,7 +98,7 @@ const EditSurvey = () => {
     errors,
   } = formik;
 
-  console.log(`vallues`, values);
+  //console.log(`vallues`, values);
 
   useEffect(() => {
     dispatch(getCrop());
@@ -107,7 +107,7 @@ const EditSurvey = () => {
 
   useEffect(() => {
     dispatch(listOneSurvey(`${survey_id}`));
-    console.log(survey_id);
+    //console.log(survey_id);
   }, [survey_id]);
 
   const filterCropType = (type: any) => {
@@ -130,7 +130,7 @@ const EditSurvey = () => {
   };
 
   const handleAddRegulation = (id: any) => {
-    console.log(`id`, id);
+    //console.log(`id`, id);
     setFieldValue(`regulationIdsNo`, id);
   };
 
@@ -270,7 +270,7 @@ const EditSurvey = () => {
                   <RadioGroup
                     value={selectedType}
                     onChange={(e: any) => {
-                      console.log(`value`, e.target.value);
+                     //console.log(`value`, e.target.value);
                       setSelectedType(e.target.value);
                     }}
                     row

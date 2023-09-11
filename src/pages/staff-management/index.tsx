@@ -31,10 +31,10 @@ const ListFieldOfficer = () => {
   // table data
   const UserDataList = useSelector((store: any) => store.UserListState);
 
-  console.log(`UserDataList`, UserDataList.response);
+  //console.log(`UserDataList`, UserDataList.response);
 
   const filterData = UserDataList.response[0]?.map((e: any, index: number) => {
-    console.log(`e`, e);
+    //console.log(`e`, e);
     return {
       sl_no: index,
       username: (

@@ -43,12 +43,10 @@ const Header = (props: any) => {
     setLogOutPop(false);
     SUCCESS(`Successfully Logged Out`);
   };
-  console.log(`token outer`, token);
 
   useEffect(() => {
     if (counter == 2) {
       if (token == "" || null || undefined) {
-        console.log(`token false`, token);
         router.push("/login");
       }
     }

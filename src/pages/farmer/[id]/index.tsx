@@ -37,8 +37,8 @@ const FarmerList = () => {
     (state: any) => state.ListFarmerFilterData
   );
 
-  console.log("azr", farmerData);
-  console.log("azar1", FarmerFilterData);
+  //console.log("azr", farmerData);
+  //console.log("azar1", FarmerFilterData);
 
   const [surveyFilter, setSurveyFilter] = useState({
     surveyId: "all",
@@ -46,7 +46,7 @@ const FarmerList = () => {
     surveyStatus: "",
   });
 
-  // console.log(`FarmerSurveyData`, FarmerSurveyData);
+  ////console.log(`FarmerSurveyData`, FarmerSurveyData);
 
   // useEffect
   useEffect(() => {
@@ -72,7 +72,7 @@ const FarmerList = () => {
     }
   );
 
-  console.log(surveyDropDown, techDropDown);
+  //console.log(surveyDropDown, techDropDown);
 
   useEffect(() => {
     let query = `?farmerId=${farmer_id}`;
@@ -86,12 +86,12 @@ const FarmerList = () => {
       query += `&technicianId=${surveyFilter.technicianId}`;
     }
     dispatch(listFarmerSurvey(query));
-    console.log(query);
+    //console.log(query);
   }, [surveyFilter]);
 
   const filterData = FarmerSurveyData.farmerList?.map(
     (e: any, index: number) => {
-      console.log(`fgnfh`, e);
+      //console.log(`fgnfh`, e);
       return {
         No: `${index + 1} .`,
         Field_Officer: (

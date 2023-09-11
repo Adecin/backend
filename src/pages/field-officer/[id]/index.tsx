@@ -127,7 +127,7 @@ export default function OfficerProfile(props: any) {
     dispatch(getAllVillageMang());
   }, []);
 
-  console.log(``);
+  //console.log(``);
 
   return (
     <div className="flex flex-col my-[5rem] m-[3rem] gap-y-6">
@@ -371,11 +371,11 @@ const AssignedVillageTable = (props: any) => {
     (state: any) => state.ListAssignedVillage
   );
 
-  console.log(`AssignedVillages`, AssignedVillages);
+  //console.log(`AssignedVillages`, AssignedVillages);
 
   const FilterDataList = AssignedVillages.response.data?.map(
     (e: any, index: number) => {
-      console.log(e, `e list item`);
+      //console.log(e, `e list item`);
       return {
         No: index + 1,
         Assigned_Date: e?.activeDate.split("T")[0] ?? "",
@@ -386,7 +386,7 @@ const AssignedVillageTable = (props: any) => {
     }
   );
 
-  console.log(`FilterDataList`, FilterDataList);
+  //console.log(`FilterDataList`, FilterDataList);
 
   return (
     <div className="my-2">
@@ -401,7 +401,7 @@ const AssignedVillageTable = (props: any) => {
               name={"farmer"}
               data={farmerDrop ?? []}
               handleChange={(e: any) => {
-                console.log(`e.target.value`, e.target.value);
+               //console.log(`e.target.value`, e.target.value);
                 handleChange(`farmer`, e.target.value);
               }}
               value={values}
@@ -415,7 +415,7 @@ const AssignedVillageTable = (props: any) => {
               name={"districtId"}
               data={districtDrop ?? []}
               handleChange={(e: any) => {
-                console.log(`e.target.value`, e.target.value);
+               //console.log(`e.target.value`, e.target.value);
                 handleChange(`districtId`, e.target.value);
               }}
               value={values}
@@ -429,7 +429,7 @@ const AssignedVillageTable = (props: any) => {
               name={"villageId"}
               data={villageDrop ?? []}
               handleChange={(e: any) => {
-                console.log(`e.target.value`, e.target.value);
+               //console.log(`e.target.value`, e.target.value);
                 handleChange(`villageId`, e.target.value);
               }}
               value={values}
@@ -545,15 +545,15 @@ const SurveyComponent = (props: any) => {
       query += `&villageManagementId=${surveyFilter.villageId}`;
     }
     dispatch(listTechnicianSurveyDetails(query));
-    console.log(query);
+    //console.log(query);
   }, [surveyFilter]);
 
   const SurveyDetails = useSelector((state: any) => state.TechSurveyDetails);
-  console.log(`fgnfh`, SurveyDetails.response.farmerList);
+  //console.log(`fgnfh`, SurveyDetails.response.farmerList);
 
   const filterData = SurveyDetails.response.farmerList?.map(
     (e: any, index: number) => {
-      console.log(`fgnfh`, e);
+      //console.log(`fgnfh`, e);
       return {
         No: `${index + 1} .`,
         regional_Manager: "",
@@ -607,7 +607,7 @@ const SurveyComponent = (props: any) => {
     dispatch(listTechnicianSurveyDetails(surveyQuery));
   }, [techId]);
 
-  console.log(`SurveyDetails`, SurveyDetails);
+  //console.log(`SurveyDetails`, SurveyDetails);
 
   return (
     <div className="my-2">
@@ -702,7 +702,7 @@ const AssignVillage = (props: any) => {
     },
     validationSchema: AssignVillageSchema,
     onSubmit: (values: any) => {
-      console.log(`values in`, values);
+      //console.log(`values in`, values);
       dispatch(assignTechVillage(values));
       resetForm();
     },

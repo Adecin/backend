@@ -316,7 +316,7 @@ const UpdateCropComponent = (props: any) => {
     setErrors,
   } = formik;
 
-  console.log("errors", errors);
+  //console.log("errors", errors);
 
   return (
     <TypeElement
@@ -472,7 +472,7 @@ const TypeElement = (props: any) => {
                     setFieldValue("enterTapNumber", "");
                   } else {
                     setErrors(err);
-                    console.log(`errors`, errors["enterTapNumber"]);
+                    //console.log(`errors`, errors["enterTapNumber"]);
                   }
                 }
               }}

@@ -11,7 +11,7 @@ export default function Tabs({ data }: any) {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  console.log("data", data);
+  //console.log("data", data);
 
   return (
     <Box sx={{ width: "100%", typography: "body1", minHeight: "500px" }}>
