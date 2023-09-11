@@ -41,8 +41,8 @@ const DynamicTable = ({
   const keys = Object.keys(data[0]);
 
   const handleChangePage = (event: any, newPage: any) => {
-    console.log(`page change`, newPage);
-    console.log(`rowsPerPage`, rowsPerPage);
+    //console.log(`page change`, newPage);
+    //console.log(`rowsPerPage`, rowsPerPage);
     setPage(newPage);
     paginateData({
       page: newPage,

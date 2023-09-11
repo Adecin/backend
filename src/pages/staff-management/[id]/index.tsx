@@ -29,7 +29,7 @@ export default function OfficerProfile(props: any) {
 
   const getOneUser = useSelector((store: any) => store.OneUserState);
   const userProfile = getOneUser.response;
-  console.log(`getOneUserData`, userProfile);
+  //console.log(`getOneUserData`, userProfile);
 
   useEffect(() => {
     dispatch(oneUserInfo(user_id));

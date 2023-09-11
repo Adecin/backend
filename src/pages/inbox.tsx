@@ -33,12 +33,12 @@ const Inbox = () => {
 
   const NotificationList = NotificationData.data;
 
-  console.log(`NotificationList`, NotificationList);
+  //console.log(`NotificationList`, NotificationList);
 
   const filterCropType = (items: any) => {
     const unReadMsgs = items?.filter((item: any) => {
       if (item.isRead === false) {
-        console.log(`filterItem`, item);
+        //console.log(`filterItem`, item);
         return item;
       }
     });

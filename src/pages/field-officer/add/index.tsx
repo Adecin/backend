@@ -364,7 +364,11 @@ export default function OfficerProfileAdd(props: any) {
                 placeholder="Type phone mobile"
                 name="phoneNo"
                 onblur={handleBlur}
-                handleChange={handleChange}
+                handleChange={(e: any) => {
+                  if (e.target.value.length <= 10) {
+                    setFieldValue("phoneNo", e.target.value);
+                  }
+                }}
                 touched={touched}
                 error={errors}
                 required={true}
@@ -874,7 +878,7 @@ const AssignVillage = (props: any) => {
     },
     validationSchema: AssignVillageSchema,
     onSubmit: (values: any) => {
-      console.log(`values`, values);
+      //console.log(`values`, values);
     },
   });
 
@@ -892,7 +896,7 @@ const AssignVillage = (props: any) => {
     setFieldError,
   }: any = formik;
 
-  console.log(`values`, values);
+  //console.log(`values`, values);
 
   return (
     <div>

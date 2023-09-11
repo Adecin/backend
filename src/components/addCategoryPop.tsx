@@ -30,7 +30,7 @@ export default function AddCategory(props: any) {
     },
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
-      console.log(values);
+      //console.log(values);
       dispatch(addCategory(values));
       if (AddCategoryResponse.isSuccess) {
         onClose();

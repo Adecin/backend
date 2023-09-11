@@ -18,7 +18,7 @@ const NotificationComponent = ({ items }: { items: NotificationItem[] }) => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
 
-  console.log(`recieved`, items?.length);
+  //console.log(`recieved`, items?.length);
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -38,7 +38,7 @@ const NotificationComponent = ({ items }: { items: NotificationItem[] }) => {
   };
   const isItemSelected = (itemId: number) => selectedItems.includes(itemId);
 
-  console.log(`selectedIt ems`, selectedItems);
+  //console.log(`selectedIt ems`, selectedItems);
 
   const handleReadOneNotification = (value: any) => {
     dispatch(readNotification({ id: value }));
