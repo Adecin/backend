@@ -169,10 +169,10 @@ const ListFieldOfficer = () => {
       farmer_ID: e.farmer_farmerId,
       Name: e.farmer_name,
       survey_Status: e.assign_farmer ? (
-        e.assign_farmer.some((item: any) => {
-          console.log(`e`, e);
-          console.log(`item.surveyStatus`, item.surveyStatus);
-          item.surveyStatus == "Pending";
+        e.assign_farmer?.some((item: any) => {
+          // console.log(`e`, e);
+          // console.log(`item.surveyStatus`, item?.surveyStatus);
+          item?.surveyStatus == "Pending";
           return true;
         }) ? (
           <div
