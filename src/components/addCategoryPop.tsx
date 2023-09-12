@@ -5,6 +5,7 @@ import TextInput from "./inputComponents/textInput";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { addCategory } from "@/redux/reducer/survey/addCategory";
+import { useEffect } from "react";
 
 export default function AddCategory(props: any) {
   const { regulationId, onClose } = props;
@@ -32,9 +33,7 @@ export default function AddCategory(props: any) {
     onSubmit: (values: any) => {
       //console.log(values);
       dispatch(addCategory(values));
-      if (AddCategoryResponse.isSuccess) {
-        onClose();
-      }
+      onClose();
     },
   });
 
@@ -108,7 +107,7 @@ export default function AddCategory(props: any) {
               borderRadius: "10px",
             }}
             handleOnClick={(e: any) => {
-              resetForm();
+              onClose();
             }}
           />{" "}
           <CustomButton
