@@ -218,6 +218,7 @@ const AddCropComponent = (props: any) => {
     },
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
+      values.name = values.name.toUpperCase().trim();
       dispatch(addCrop(values));
     },
   });
@@ -298,6 +299,7 @@ const UpdateCropComponent = (props: any) => {
     },
     validationSchema: SignInSchema,
     onSubmit: (values: any) => {
+      values.name = values.name.toUpperCase().trim();
       dispatch(updateCrop(values));
     },
   });
