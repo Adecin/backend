@@ -251,9 +251,9 @@ export default function OfficerProfileAdd(props: any) {
                   aria-label="upload picture"
                   component="label"
                   style={{ position: "absolute", marginTop: "6.2rem" }}
-                  onClick={() => {
-                    openProfile.current.click();
-                  }}
+                  // onClick={() => {
+                  //   openProfile.current.click();
+                  // }}
                 >
                   <input
                     hidden
@@ -683,9 +683,6 @@ export default function OfficerProfileAdd(props: any) {
                       textTransform: "none",
                       fontSize: "16px",
                       textDecoration: "underline",
-                    }}
-                    onClick={() => {
-                      aadhar.current.click();
                     }}
                   >
                     Upload Aadhar

@@ -55,7 +55,7 @@ const ListFieldOfficer = () => {
     districtId: "",
     villageId: "",
     technicianId: "",
-    regulation: [],
+    //regulation: [],
   });
 
   const [paginateData, setData] = useState<any>({
@@ -67,7 +67,7 @@ const ListFieldOfficer = () => {
     districtId: "",
     villageId: "",
     technicianId: "",
-    regulation: [],
+    //regulation: [],
   };
 
   const handleSelectFilter = (name: any, value: any) => {
@@ -82,6 +82,11 @@ const ListFieldOfficer = () => {
 
   const handleClearFilter = () => {
     setFarmerFilter(initialValues);
+    dispatch(
+      listFarmers(
+        `?page=${paginateData.page}&limit=${paginateData.limit}&status=${farmerFilter.status}&districtId=${farmerFilter.districtId}&villageId=${farmerFilter.villageId}&technicianId=${farmerFilter.technicianId}`
+      )
+    );
   };
 
   const handleAddRegulationFilter = (name: any, value: any) => {};
@@ -359,7 +364,7 @@ const ListFieldOfficer = () => {
             >
               Manage
             </div>
-            <div className="mx-4 text-[18px] underline text-[#107C41] cursor-pointer flex items-center">
+            {/* <div className="mx-4 text-[18px] underline text-[#107C41] cursor-pointer flex items-center">
               <div>
                 <svg
                   className=" underline border-b-3 border-[#107C41]"
@@ -428,7 +433,7 @@ const ListFieldOfficer = () => {
                 </svg>
               </div>
               import farmer details
-            </div>
+            </div> */}
           </div>
           <DynamicTable
             onClick={(e: boolean) => {
