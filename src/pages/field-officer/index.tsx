@@ -79,7 +79,7 @@ const ListFieldOfficer = () => {
     setTechnicianFilter(initialValues);
     dispatch(
       listFieldOfficer(
-        `?page=${paginateData.page}&limit=${paginateData.limit}&districtId=${technicianFilter.districtId}&villageId=${technicianFilter.villageId}`
+        `?page=${paginateData.page}&limit=${paginateData.limit}`
       )
     );
   };
