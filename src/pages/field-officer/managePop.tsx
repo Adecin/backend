@@ -194,6 +194,7 @@ const ManageAssignSurvey = (props: any) => {
     onSubmit: (values: any) => {
       //console.log(values);
       dispatch(assignTechSurvey(values));
+      closePopUp();
     },
   });
 
@@ -211,11 +212,11 @@ const ManageAssignSurvey = (props: any) => {
     dispatch(listAllSurvey());
   }, []);
 
-  useEffect(() => {
-    if (AssignTechSurvey.isSuccess) {
-      closePopUp();
-    }
-  }, [AssignTechSurvey]);
+  // useEffect(() => {
+  //   if (AssignTechSurvey.isSuccess) {
+  //     closePopUp();
+  //   }
+  // }, [AssignTechSurvey]);
 
   return (
     <div>

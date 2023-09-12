@@ -364,7 +364,7 @@ const ListFieldOfficer = () => {
             >
               Manage
             </div>
-            <div className="mx-4 text-[18px] underline text-[#107C41] cursor-pointer flex items-center">
+            {/* <div className="mx-4 text-[18px] underline text-[#107C41] cursor-pointer flex items-center">
               <div>
                 <svg
                   className=" underline border-b-3 border-[#107C41]"
@@ -433,7 +433,7 @@ const ListFieldOfficer = () => {
                 </svg>
               </div>
               import farmer details
-            </div>
+            </div> */}
           </div>
           <DynamicTable
             onClick={(e: boolean) => {
